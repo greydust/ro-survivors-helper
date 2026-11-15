@@ -27,13 +27,17 @@ npm test
 npm run publish:greasyfork
 ```
 
-本機指令仍只執行 build + dry-run 預檢，列出 metadata、腳本 ID、同步網址與 SHA-256；不存取網路、不讀取登入憑證、不上傳。`--publish` 不支援。
+此指令先建置與測試，再將合併程式碼與說明推送至 origin 的 `greasyfork` 分支；原生 webhook 收到該分支的 push 後同步至 Greasy Fork。推送 main 不會發佈。需先完成下方一次性同步與 webhook 設定。
 
-`.github/workflows/greasyfork.yml` 僅在手動從 main 執行時，安裝依賴、跑測試與預檢，全部成功後才將生成檔推到 `greasyfork` 分支的 `ro-survivors-helper.user.js`，並將 `doc/GREASYFORK.md` 發佈為 `greasyfork-description.md`。程式碼使用 build 合併產物；說明獨立維護，初始內容複製自 README.md，之後不會自動跟隨 README.md。兩個檔案內容都相同不產生 commit，不強制推送。發佈分支不觸發本 workflow，因此不會循環。請保留此分支供 CI 使用；同時發佈會排隊。
+只要離線預檢而不發佈，執行 `npm run check:greasyfork`。
+
+本機發佈使用目前工作目錄的程式碼與說明（包含未提交修改），在獨立暫存 Git 儲存庫建立發佈 commit，不切換目前分支、不修改目前 index，也不推送 main。請先檢查要發佈的內容。使用 origin 的 push URL 與本機 Git 身分、認證；遠端發佈內容沒變時不推送，並行更新時一般 push 會拒絕覆寫，重新執行即可。
+
+`.github/workflows/greasyfork.yml` 僅在手動從 main 執行時，安裝依賴、跑測試與預檢，全部成功後才將生成檔推到 `greasyfork` 分支的 `ro-survivors-helper.user.js`，並將 `doc/GREASYFORK.md` 發佈為 `greasyfork-description.md`。程式碼使用 build 合併產物；說明獨立維護，初始內容複製自 README.md，之後不會自動跟隨 README.md。兩個檔案內容都相同不產生 commit，不強制推送。發佈分支不觸發本 workflow，因此不會循環。請將此分支保留作為發佈用途；Actions 同時發佈會排隊，本機並行推送則由 Git 的非強制推送保護。
 
 ### 一次性設定（需帳號擁有者操作）
 
-1. 將專案提交並推送到 `https://github.com/greydust/ro-survivors-helper` 的 `main`，到 Actions → Publish Greasy Fork source → Run workflow，選 main 並執行，讓第一次 workflow 成功產生 `greasyfork` 分支。儲存庫與生成檔必須可公開讀取。GitHub Actions 必須啟用，且允許此 workflow 的 `contents: write` 權限；分支規則也必須允許 Actions 推送 `greasyfork`。
+1. 將專案提交並推送到 `https://github.com/greydust/ro-survivors-helper` 的 `main`，在本機執行 `npm run publish:greasyfork` 產生 `greasyfork` 分支；也可手動執行 Actions workflow。儲存庫與生成檔必須可公開讀取。本機 Git 帳號需有推送權限；若使用 Actions 替代方式，需啟用 Actions 並允許 workflow 的 `contents: write` 權限。分支規則需允許使用的帳號推送 `greasyfork`。
 2. 登入 Greasy Fork，開啟**既有腳本 605561** 的管理／同步設定，將程式碼同步網址設為下列網址（不要另建新腳本）：
 
    ```text
@@ -52,7 +56,7 @@ npm run publish:greasyfork
 
 ### 日常發佈與故障處理
 
-升版時同步修改 `package.json`、`src/00-header.js` 與啟動訊息，完成遊戲內瀏覽器驗證，再推送 main。推送 main 不會發佈；確定要公開時，至 Actions → Publish Greasy Fork source → Run workflow，選 main 執行。只有這個手動動作才會更新發佈分支。需要修改腳本頁說明時編輯 `doc/GREASYFORK.md`，提交後以相同方式發佈。
+升版時同步修改 `package.json`、`src/00-header.js` 與啟動訊息，完成遊戲內瀏覽器驗證，再推送 main。推送 main 不會發佈；確定要公開時，在本機執行 `npm run publish:greasyfork`；也可至 Actions → Publish Greasy Fork source → Run workflow，選 main 執行。需要修改腳本頁說明時編輯 `doc/GREASYFORK.md`，提交後以相同方式發佈。
 
 測試失敗不更新發佈分支；修正並推送後，重新手動執行 workflow。Webhook 失敗時，先查 Recent deliveries 的回應，再重新傳送該次 delivery 或在 Greasy Fork 手動同步。需要回復時，以更高版本號發布修正版，避免使用者腳本管理器忽略降版。
 

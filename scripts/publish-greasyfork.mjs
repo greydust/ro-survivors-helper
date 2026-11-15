@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 
-// Local preflight stays offline. GitHub Actions publishes the validated bundle
-// to the greasyfork branch; Greasy Fork's native webhook handles the account.
+// Preflight stays offline. The local push command or GitHub Actions publishes
+// the validated bundle; Greasy Fork's native webhook handles the account.
 if (!process.argv.includes('--dry-run') || process.argv.includes('--publish'))
   throw new Error('Use --dry-run locally. Publication runs through GitHub Actions and native Greasy Fork sync; see doc/WORKFLOWS.md.');
 const file = fileURLToPath(new URL('../dist/RO倖存者助手.user.js',import.meta.url));
@@ -20,5 +20,5 @@ console.log(JSON.stringify({ mode:'dry-run', uploaded:false, file, metadata,
   syncUrl:'https://raw.githubusercontent.com/greydust/ro-survivors-helper/greasyfork/ro-survivors-helper.user.js',
   descriptionFile,
   descriptionSyncUrl:'https://raw.githubusercontent.com/greydust/ro-survivors-helper/greasyfork/greasyfork-description.md',
-  next:'Manually run Publish Greasy Fork source on main in GitHub Actions. One-time Greasy Fork sync and GitHub webhook setup is required; see doc/WORKFLOWS.md.'
+  next:'Run npm run publish:greasyfork locally, or manually run the GitHub Actions workflow. One-time Greasy Fork sync and GitHub webhook setup is required; see doc/WORKFLOWS.md.'
 },null,2));

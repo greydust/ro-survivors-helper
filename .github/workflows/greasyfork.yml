@@ -22,7 +22,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - run: npm run publish:greasyfork
+      - run: npm run check:greasyfork
       - name: Push validated bundle to sync branch
         shell: bash
         run: |

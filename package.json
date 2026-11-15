@@ -6,7 +6,9 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "npm run build && node tests/auto-pick.test.cjs",
-    "publish:greasyfork": "npm run build && node scripts/publish-greasyfork.mjs --dry-run"
+    "test:publish": "npm run build && node tests/publish-greasyfork.test.mjs",
+    "check:greasyfork": "npm run build && node scripts/publish-greasyfork.mjs --dry-run",
+    "publish:greasyfork": "npm test && node scripts/push-greasyfork.mjs"
   },
   "engines": {
     "node": ">=20"
