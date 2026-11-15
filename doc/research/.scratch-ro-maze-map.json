@@ -1,0 +1,41 @@
+{
+  "name": "prt_maze02",
+  "models": "models.json",
+  "ambient": "ambient.json",
+  "collision": {
+    "file": "walk.bin",
+    "w": 200,
+    "h": 200
+  },
+  "altitude": {
+    "file": "altitude.bin",
+    "w": 200,
+    "h": 200
+  },
+  "width": 100,
+  "height": 100,
+  "lightmapCell": 6,
+  "atlas": "atlas.png",
+  "cells": "cells.bin",
+  "heights": "heights.bin",
+  "walls": "walls.bin",
+  "zoom": 10,
+  "shadow": "shadow.png",
+  "light": "light.png",
+  "minimap": "minimap.png",
+  "textures": [
+    "BACKSIDE.bmp",
+    "필드바닥\\pron-dun-07.bmp",
+    "필드바닥\\pron-dun-08.bmp",
+    "필드바닥\\pron-dun-06.bmp",
+    "필드바닥\\pron-dun-02.bmp",
+    "필드바닥\\pron-dun-05.bmp",
+    "필드바닥\\pron-dun-03.bmp",
+    "필드바닥\\pron-dun-04.bmp"
+  ],
+  "warps": [],
+  "start": [
+    85,
+    127
+  ]
+}

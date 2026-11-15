@@ -1,0 +1,152 @@
+[
+  {
+    "file": ".scratch-ro-core-current.js",
+    "bytes": 2962736,
+    "sha256": "06a6749d43e7eb512049d3eba77dd7df4e24671cd688c5a7f70728753de89579"
+  },
+  {
+    "file": ".scratch-ro-core-now.js",
+    "bytes": 2962848,
+    "sha256": "7c9b67d22734a0286ce84e729553cc83dec6c41016720868214f8c0814be6116"
+  },
+  {
+    "file": ".scratch-ro-core.js",
+    "bytes": 2958772,
+    "sha256": "1dc7b063a52d76a16471d7234ab8b4a8c0a1db4f11ef8038ff62f9f81b2aa1ca"
+  },
+  {
+    "file": ".scratch-ro-index.html",
+    "bytes": 44386,
+    "sha256": "6f1476e885ee8b8abbfe99f47b9da89382558d4523b2da10d44d182a85ea424e"
+  },
+  {
+    "file": ".scratch-ro-main-current.js",
+    "bytes": 1321735,
+    "sha256": "20dddee3c9acc8c92d0542d71cdd8c339296b2767e8c596a9cfc1ae38f0c91ed"
+  },
+  {
+    "file": ".scratch-ro-main-latest.js",
+    "bytes": 1325600,
+    "sha256": "a80df9d4b428bc962e1d73e4f150f5a141dd485b280438e329284d70468eba0e"
+  },
+  {
+    "file": ".scratch-ro-main-merchant.js",
+    "bytes": 1363039,
+    "sha256": "2858a2f62f8662caad9818790ffbd6b6d07a25d1c8e91ae3cece989a3cd60c6d"
+  },
+  {
+    "file": ".scratch-ro-main-now.js",
+    "bytes": 1332297,
+    "sha256": "73a8b6cbb500adcde43a803a7c0d1656b328a648e3c7008e058b1de2f3c85dbf"
+  },
+  {
+    "file": ".scratch-ro-main.js",
+    "bytes": 1257379,
+    "sha256": "566e46c83a3093f1436c4cc59130874a3b3e659c503b465b58fe819a284bf656"
+  },
+  {
+    "file": ".scratch-ro-manifest.json",
+    "bytes": 434426,
+    "sha256": "fe7a00bf621380c79066adbfd762819c5ec410c96b74ceca71096d7f4044d061"
+  },
+  {
+    "file": ".scratch-ro-maze-analysis.py",
+    "bytes": 1040,
+    "sha256": "529c59a59c41c15f564a65cf7ffa95906d23707f526c550fa9031e1535ca6726"
+  },
+  {
+    "file": ".scratch-ro-maze-collision.png",
+    "bytes": 22420,
+    "sha256": "2494275e1ae79aea2af9a32181d554635ad1d45264a49c394535527c0fa76202"
+  },
+  {
+    "file": ".scratch-ro-maze-labels.npy",
+    "bytes": 160128,
+    "sha256": "61fa63b8c0e5ab68fc53565d30d9b2366a6569734e2d393694d68fa9b6c42baf"
+  },
+  {
+    "file": ".scratch-ro-maze-map.json",
+    "bytes": 865,
+    "sha256": "f55afb41a85c1aa2e11cef0325848f1b73f5a196f0bcccfb1547b55ee24e86dd"
+  },
+  {
+    "file": ".scratch-ro-maze-minimap.png",
+    "bytes": 13332,
+    "sha256": "641d292b598b0ae24aef8049aa7658ffd98ba7dcb499af6b92ded5f93f5f653a"
+  },
+  {
+    "file": ".scratch-ro-maze-render.py",
+    "bytes": 2238,
+    "sha256": "87bddbc177f3053c53333731a4790e301597bed0c9750783703e7d8d21754a73"
+  },
+  {
+    "file": ".scratch-ro-maze-results.json",
+    "bytes": 3555,
+    "sha256": "0682b6bb60bacb940c42c20775c80af41d88266c096f4d5843f7a7833f0ef8b4"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1000.npy",
+    "bytes": 320128,
+    "sha256": "0fcdb67323382688988602a136390a32b1f31ad67da0c76e552686b830370f04"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1100.npy",
+    "bytes": 320128,
+    "sha256": "01337f1a59395ff75cfbfdaffcf69f5eb37cf43cb7e44c5af7d91ee75fa07e96"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1200.npy",
+    "bytes": 320128,
+    "sha256": "95c04d20dc640942c369c8998589595c81c2ca44b927ab7cc58da5ce148d7780"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1300.npy",
+    "bytes": 320128,
+    "sha256": "2c51291808c066f4e7e0881c6e986a85e839fe2efb2f17ebb703122a292a4d39"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1500.npy",
+    "bytes": 320128,
+    "sha256": "673ecce41cbe318a8d150f6d2e1d50bc09561804c891776fc072d6df932b5096"
+  },
+  {
+    "file": ".scratch-ro-maze-score-1700.npy",
+    "bytes": 320128,
+    "sha256": "0b0231b51106ca921bb1a2ae302bd2e9f0dd4abe4be61cfd452c326a92d40297"
+  },
+  {
+    "file": ".scratch-ro-maze-score-700.npy",
+    "bytes": 320128,
+    "sha256": "7128365cbaf36b23b1bcc34a8347a7f02f53d5170abd13a31f7bc8dbb99df612"
+  },
+  {
+    "file": ".scratch-ro-maze-score-800.npy",
+    "bytes": 320128,
+    "sha256": "337066a9e9830d15fb4a4eacdb07ab4c912ec3aabdfc1236367dde12f56771de"
+  },
+  {
+    "file": ".scratch-ro-maze-score-900.npy",
+    "bytes": 320128,
+    "sha256": "b9343dee4413dfa15c5fc7e69fa961b0cfa709294445883467179d8158bae337"
+  },
+  {
+    "file": ".scratch-ro-maze-score-extra.py",
+    "bytes": 1475,
+    "sha256": "5775eeee35fea6c9ff0513c86d90a36045aa190b48b4b8ec3d27edd2fb1dfa75"
+  },
+  {
+    "file": ".scratch-ro-maze-score.py",
+    "bytes": 1487,
+    "sha256": "f64d46417025d4e954835e84c15e8c8c13552c7c081a750363a2d908bd03bd43"
+  },
+  {
+    "file": ".scratch-ro-maze-walk.bin",
+    "bytes": 40000,
+    "sha256": "f29e945b6804c81a291bc643a1408ecc0994082731e8d6061ab21835df2aa658"
+  },
+  {
+    "file": ".scratch-ro-style.css",
+    "bytes": 210470,
+    "sha256": "7f6174d40d38b420f865424db06af8ef782e8f1aa9f5cdaa2648c142c580b3bd"
+  }
+]

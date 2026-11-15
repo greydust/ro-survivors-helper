@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- el juego trae su propio inglés: el traductor del navegador rompía textos («+1 VIT» salía como «+1 years») -->
+    <meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#8fa8de" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RO倖存者" />
+    <link rel="manifest" href="app-manifest.json" />
+    <!-- Google pide el favicon en un múltiplo de 48 px (el de 192) y mira también /favicon.ico -->
+    <link rel="icon" type="image/png" sizes="192x192" href="app-icons/app-ro-192.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="app-icons/favicon-ro-64.png" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="app-icons/app-ro-apple-180.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Cinzel:wght@900&family=Cinzel+Decorative:wght@900&display=swap" />
+    <title>RO倖存者 · HANS 伺服器</title>
+    <!-- vista previa al compartir el enlace (Reddit, Discord, X...): URLs absolutas al dominio final -->
+    <meta name="description" content="RO倖存者（HANS 伺服器）：受《仙境傳說》啟發的免費同人倖存者遊戲，打開瀏覽器就能玩。選職業、撐過怪物大軍，在普隆德拉廣場和其他玩家組隊、交易。" />
+    <link rel="canonical" href="https://ro.hans-webgametw.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RO倖存者 · HANS 伺服器" />
+    <meta property="og:url" content="https://ro.hans-webgametw.com/" />
+    <meta property="og:title" content="RO倖存者 · HANS 伺服器" />
+    <meta property="og:description" content="RO倖存者（HANS 伺服器）：受《仙境傳說》啟發的免費同人倖存者遊戲，打開瀏覽器就能玩。選職業、撐過怪物大軍，在普隆德拉廣場和其他玩家組隊、交易。" />
+    <meta property="og:image" content="https://ro.hans-webgametw.com/splash/og.jpg?v=97cb6ced" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="module" crossorigin src="./build/main-BNOcv2PN.hz6d2a56e8.js"></script>
+    <link rel="modulepreload" crossorigin href="./build/soul_linker-DllBVIRO.hz5a95db7b.js">
+    <link rel="modulepreload" crossorigin href="./build/CanvasPool-CtHy6K20.hz5a95db7b.js">
+    <link rel="modulepreload" crossorigin href="./build/TextStyle-BRXzeUp1.hz5a95db7b.js">
+    <link rel="modulepreload" crossorigin href="./build/getPo2TextureFromSource-B2uHAAob.hz5a95db7b.js">
+    <link rel="stylesheet" crossorigin href="./build/main-D3mWrOYd.css">
+  </head>
+  <body>
+    <!-- Cloudflare no cifra los correos de la página (su script no corre en la ventana del aviso legal del juego) -->
+    
+    <div id="stage"></div>
+
+    <div id="run-labels"></div>
+    <div id="party-wait" class="hidden"></div>
+    <div id="loot-rolls"></div>
+    <div id="hud" class="hidden">
+      <div id="basic-info">
+        <div class="hud-portrait"><img id="hud-portrait" alt=""><span class="hud-lv">Lv <b id="lv">1</b></span></div>
+        <div class="hud-bars">
+          <div class="hud-name" id="hud-name">Espadachín</div>
+          <div class="bar hp"><div id="hp-fill"></div><span id="hp-text">0 / 0</span></div>
+          <div class="hud-exp"><span>EXP</span><div class="bar exp"><div id="exp-fill"></div></div><span id="exp-text">0.0%</span></div>
+        </div>
+      </div>
+      <div id="buffs"></div>
+      <div id="timer-box">
+        <div id="timer">00:00</div>
+        <div class="hud-chips">
+          <span class="chip" id="kills">☠ 0</span>
+          <span class="chip" id="zeny"><img id="zeny-icon" alt=""><span id="zeny-text">0</span><small id="chest-cost"></small></span>
+        </div>
+        <div id="weather"></div>
+      </div>
+      <div id="minimap" class="ro-window">
+        <div class="ro-title"><span id="minimap-name"></span> <span id="minimap-coords"></span></div>
+        <canvas></canvas>
+        <div class="mm-zoom"><button class="ro-btn small" data-zoom="out" aria-label="Alejar minimapa">−</button><button class="ro-btn small" data-zoom="in" aria-label="Acercar minimapa">+</button></div>
+      </div>
+      <div id="skillbar"></div>
+      <div id="runitems"></div>
+      <div id="toasts"></div>
+      <div id="boss-bar" class="hidden"></div>
+      <div id="announce"></div>
+      <div id="quest" class="hidden"><small>Misión</small><b id="quest-text"></b></div>
+    </div>
+
+    <div id="story" class="hidden">
+      <div class="story-bar top"></div>
+      <div class="story-bar bottom"></div>
+      <div class="story-box">
+        <canvas id="story-face" width="96" height="96"></canvas>
+        <div class="story-body"><b id="story-name"></b><p id="story-text"></p></div>
+        <small class="story-next">▶ <span class="desktop-only">Espacio / clic</span></small>
+      </div>
+    </div>
+
+    <div id="lobby-ui" class="hidden">
+      <div id="lobby-labels"></div>
+      <div id="lobby-place"><b>Prontera</b><small>Plaza de la fuente</small><small id="lobby-online"></small></div>
+      <div id="lobby-actions">
+        <button class="ro-btn" id="lobby-friends">Amigos <span id="lobby-friends-on" class="fr-badge on hidden"></span><span id="lobby-friends-n" class="fr-badge hidden"></span></button>
+        <button class="ro-btn" id="lobby-char">Personaje <kbd class="desktop-only">C</kbd></button>
+        <button class="ro-btn" id="lobby-switch">Cambiar personaje <kbd class="desktop-only">X</kbd></button>
+        <button class="ro-btn" id="lobby-options" aria-label="Opciones">⚙ <kbd class="desktop-only">Esc</kbd></button>
+      </div>
+      <button id="chat-toggle" class="touch-only hidden" aria-label="Chat">💬<span id="chat-unread" class="hidden"></span></button>
+      <div id="party-frame" class="hidden"></div>
+      <div id="lobby-chat" class="hidden">
+        <div id="chat-tabs"></div>
+        <div id="chat-log"></div>
+        <form id="chat-form" autocomplete="off">
+          <button type="button" id="chat-channel" class="chat-ch local" title="Cambiar de canal (Tab)">Canal</button>
+          <input id="chat-input" type="text" enterkeyhint="send" placeholder="Pulsa Enter para escribir" />
+          <button type="button" id="chat-emote" title="Emotes" aria-label="Emotes">☺</button>
+        </form>
+        <div id="emote-panel" class="hidden"></div>
+      </div>
+      <button id="lobby-prompt" class="hidden"></button>
+    </div>
+
+    <div id="npc-dialog" class="overlay hidden">
+      <div class="ro-window npc-window">
+        <div class="ro-title" id="npc-name"></div>
+        <div class="ro-body"><div id="npc-text" class="npc-text"></div></div>
+        <div class="btn-row pad" id="npc-options"></div>
+      </div>
+    </div>
+
+    <!-- amigos de la plaza (friends.ts) -->
+    <div id="friends" class="overlay hidden">
+      <div class="ro-window friends-window">
+        <div class="ro-title">Amigos <small id="fr-count"></small></div>
+        <div class="ro-body">
+          <form id="fr-form" autocomplete="off">
+            <input id="fr-name" type="text" maxlength="16" enterkeyhint="send" placeholder="Nombre del personaje" />
+            <button class="ro-btn primary" type="submit">Añadir</button>
+          </form>
+          <div id="fr-msg" class="fr-msg"></div>
+          <div id="fr-body"></div>
+        </div>
+        <div class="btn-row pad"><span class="spacer"></span><button class="ro-btn" id="fr-close">Cerrar</button></div>
+      </div>
+    </div>
+
+    <!-- inspeccionar a otro jugador del lobby (inspect.ts): su equipo, estadísticas y récord, sin poder tocar nada -->
+    <div id="inspect" class="overlay hidden">
+      <div class="ro-window inspect-window">
+        <div class="ro-title" id="ins-title"></div>
+        <div class="ro-body panel-body">
+          <div class="ins-head" id="ins-head"></div>
+          <div class="tabs ins-tabs">
+            <button class="tab-btn active" data-tab="equip">Equipo</button>
+            <button class="tab-btn" data-tab="stats">Estado</button>
+            <button class="tab-btn" data-tab="job">Job</button>
+          </div>
+          <div id="ins-tab-equip" class="ins-tab">
+            <div class="ins-equip" id="ins-equip">
+              <div class="equip-col" id="ins-slots-left"></div>
+              <div class="equip-col" id="ins-slots-right"></div>
+            </div>
+            <div id="ins-detail" class="inv-box"></div>
+          </div>
+          <div id="ins-tab-stats" class="ins-tab off">
+            <div class="ins-stats">
+              <div class="status-box"><div class="box-title">Estadísticas</div><div id="ins-prim"></div></div>
+              <div class="status-box"><div class="box-title">En partida</div><div id="ins-derived" class="stat-grid"></div></div>
+              <div class="status-box"><div class="box-title">Récord</div><div id="ins-record" class="ins-record"></div></div>
+            </div>
+          </div>
+          <div id="ins-tab-job" class="ins-tab off">
+            <div id="ins-trees" class="talent-trees"></div>
+            <div id="ins-job-detail" class="inv-box hidden"></div>
+          </div>
+        </div>
+        <div class="btn-row pad"><span class="spacer"></span><button class="ro-btn primary" id="ins-close">Cerrar</button></div>
+      </div>
+    </div>
+
+    <!-- comercio con otro jugador del lobby (trade.ts): las dos ofertas, tu inventario y un chat entre los dos -->
+    <div id="trade" class="overlay hidden">
+      <div class="ro-window trade-window">
+        <div class="ro-title" id="tr-title"></div>
+        <div class="ro-body panel-body">
+          <div class="tr-sides">
+            <div class="tr-side">
+              <div class="box-title">Tú ofreces <span id="tr-my-state"></span></div>
+              <div id="tr-mine-items" class="item-grid tr-items"></div>
+              <label class="tr-kafra">Puntos Kafra <input id="tr-kafra" type="number" min="0" step="1" inputmode="numeric" /> <span id="tr-kafra-have" class="muted"></span></label>
+            </div>
+            <div class="tr-side">
+              <div class="box-title"><span id="tr-their-title"></span> <span id="tr-their-state"></span></div>
+              <div id="tr-theirs-items" class="item-grid tr-items"></div>
+              <div class="tr-kafra" id="tr-their-kafra"></div>
+            </div>
+          </div>
+          <div id="tr-note" class="tr-note muted"></div>
+          <div class="inv-box tr-inv-box">
+            <div class="box-title">Tu inventario</div>
+            <div id="tr-filters" class="inv-filters"></div>
+            <div id="tr-inv" class="item-grid tr-inv"></div>
+          </div>
+          <div class="tr-chat">
+            <div id="tr-log" class="tr-log"></div>
+            <form id="tr-form" autocomplete="off"><input id="tr-input" type="text" maxlength="120" enterkeyhint="send" placeholder="Escribe al otro jugador…" /></form>
+          </div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="tr-cancel">Cancelar</button><span class="spacer"></span>
+          <button class="ro-btn" id="tr-lock">OK</button>
+          <button class="ro-btn primary" id="tr-confirm">Comerciar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="charselect" class="overlay menu hidden">
+      <div class="brand"><div class="brand-name"><span>RO</span><b>Survivors</b></div><small>Un survivors inspirado en Ragnarok Online</small></div>
+      <div class="ro-window select-window">
+        <div class="ro-title">Selección de personaje</div>
+        <div class="ro-body">
+          <div id="slots"></div>
+          <div id="slot-info" class="info-panel"></div>
+          <div class="btn-row">
+            <button class="ro-btn" id="btn-delete">Borrar</button>
+            <button class="ro-btn" id="btn-options">⚙ Opciones</button>
+            <span class="spacer"></span>
+            <button class="ro-btn" id="btn-create">Crear</button>
+            <button class="ro-btn primary" id="btn-play">Jugar</button>
+          </div>
+        </div>
+      </div>
+      <!-- barra de perfil (profile.ts): retrato, cuenta, crear cuenta si es de invitado y salir a la portada -->
+      <div id="profile-bar">
+        <button id="pb-portrait" title="Cambiar retrato"><canvas width="128" height="128"></canvas><span class="pb-edit">✎</span></button>
+        <div class="pb-panel">
+          <div class="pb-name"><b id="pb-name">Invitado</b> <small id="pb-kind"></small></div>
+          <div class="pb-ach"><span>Logros</span><div class="bar exp"><div id="pb-ach-fill"></div></div><span id="pb-ach-text"></span></div>
+          <div class="pb-row">
+            <span class="pb-kafra" id="pb-kafra"></span><span class="spacer"></span>
+            <button class="ro-btn small primary" id="pb-register">Crear cuenta</button>
+            <button class="ro-btn small" id="pb-exit" title="Volver a la portada">Salir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- aviso legal dentro del juego (splash.ts): el texto se carga de legal.html, que sigue siendo su página -->
+    <div id="legal-popup" class="overlay hidden">
+      <div class="ro-window legal-window">
+        <div class="ro-title">Aviso legal, normas y privacidad</div>
+        <div class="ro-body" id="legal-body"></div>
+        <div class="btn-row pad">
+          <a class="legal-open" href="legal.html" target="_blank">Abrir en una página aparte ↗</a><span class="spacer"></span>
+          <button class="ro-btn primary" id="legal-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- novedades (news.ts): el CHANGELOG.md del repositorio, empaquetado con el juego -->
+    <div id="news-popup" class="overlay hidden">
+      <div class="ro-window news-window">
+        <div class="ro-title">Novedades</div>
+        <div class="news-main">
+          <div class="news-tabs hidden" id="news-tabs" role="tablist"></div>
+          <div class="ro-body" id="news-body"></div>
+        </div>
+        <div class="btn-row pad"><span class="spacer"></span><button class="ro-btn primary" id="news-close">Cerrar</button></div>
+      </div>
+    </div>
+
+    <!-- preguntas de seguridad al entrar (accountwin.ts): se configuran una sola vez -->
+    <div id="account-popup" class="overlay hidden">
+      <div class="ro-window acc-window">
+        <div class="ro-title">Preguntas de seguridad</div>
+        <div class="ro-body">
+          <!-- al entrar sin preguntas (cuenta de antes) o con las que le dimos desde el panel: por qué y lo importante -->
+          <div class="acc-intro" id="acc-intro">
+            <b>Protege tu cuenta</b>
+            <p class="acc-why" id="acc-why-none">Ahora puedes configurar, si quieres, unas preguntas de seguridad para tu cuenta.</p>
+            <p class="acc-why" id="acc-why-reset">Has recuperado tu cuenta con las respuestas que te dio el equipo del juego. Si quieres, elige ahora las tuyas: las que te dimos dejarán de valer.</p>
+            <p>El juego no pide email. Si algún día olvidas la contraseña, <b>la única forma de recuperar la cuenta</b> es contestar estas 5 preguntas exactamente como las elijas ahora.</p>
+            <p><b>Apunta tus respuestas en un sitio seguro</b> o elige las que sepas que vas a recordar.</p>
+            <p>Son opcionales, pero <b>si no las quieres, es para siempre</b>: no te las volveremos a ofrecer y, si pierdes la contraseña, no se podrá recuperar la cuenta.</p>
+          </div>
+          <form class="acc-section" id="acc-questions" autocomplete="off">
+            <fieldset class="sp-form">
+              <div class="rq-head">Preguntas de seguridad</div>
+              <div class="rq-list" data-questions></div>
+              <div class="sp-error" aria-live="polite"></div>
+              <div class="btn-row acc-q-buttons"><button class="ro-btn" type="button" id="acc-decline">No quiero preguntas</button><span class="spacer"></span><button class="ro-btn primary" type="submit">Guardar preguntas</button></div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="portrait-picker" class="overlay hidden">
+      <div class="ro-window pb-window">
+        <div class="ro-title">Elige tu retrato</div>
+        <div class="ro-body"><div id="pb-grid" class="pb-grid"></div></div>
+        <div class="btn-row pad"><span class="spacer"></span><button class="ro-btn primary" id="pb-close">Cerrar</button></div>
+      </div>
+    </div>
+
+    <div id="charcreate" class="overlay menu hidden">
+      <div class="ro-window create-window">
+        <div class="ro-title">Crear personaje</div>
+        <div class="ro-body create-body">
+          <div class="preview-col">
+            <canvas id="cc-preview" width="200" height="230"></canvas>
+            <div class="btn-row center">
+              <button class="ro-btn small" id="cc-rot-l" title="Girar">⟲</button>
+              <button class="ro-btn small" id="cc-anim">Quieto</button>
+              <button class="ro-btn small" id="cc-rot-r" title="Girar">⟳</button>
+            </div>
+            <div id="cc-jobinfo" class="info-panel"></div>
+          </div>
+          <div class="form-col">
+            <label class="field">Nombre <input id="cc-name" maxlength="16" autocomplete="off" spellcheck="false" /></label>
+            <div class="field">Sexo
+              <div class="seg"><button class="ro-btn small" data-gender="m">♂ Hombre</button><button class="ro-btn small" data-gender="f">♀ Mujer</button></div>
+            </div>
+            <div class="field">Job <div id="cc-jobs"></div></div>
+            <div class="field">Peinado
+              <div class="stepper"><button class="ro-btn small" id="cc-hair-prev">◀</button><span id="cc-hair">1</span><button class="ro-btn small" id="cc-hair-next">▶</button></div>
+            </div>
+            <div class="field">Color de pelo <div id="cc-haircolors" class="swatches"></div></div>
+            <div class="field">Color de ropa <div id="cc-clothcolors" class="swatches"></div></div>
+            <div class="field">Estadísticas <span class="cc-stat-left">Puntos restantes: <b id="cc-stat-left">48</b></span>
+              <div id="cc-stats" class="cc-stats"></div>
+              <div id="cc-stat-desc" class="cc-stat-desc hidden"></div>
+            </div>
+            <div id="cc-error" class="error"></div>
+          </div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="cc-random">Aleatorio</button>
+          <span class="spacer"></span>
+          <button class="ro-btn" id="cc-cancel">Cancelar</button>
+          <button class="ro-btn primary" id="cc-ok">Crear</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="charpanel" class="overlay menu hidden">
+      <div class="ro-window panel-window">
+        <div class="ro-title" id="cp-title">Personaje</div>
+        <div class="ro-body panel-body">
+          <div class="cp-header">
+            <b class="cp-lv" id="cp-level">Base Lv 1</b>
+            <div class="bar exp cp-exp"><div id="cp-exp-fill"></div></div>
+            <div id="cp-exp-text" class="muted"></div>
+            <div id="cp-stat-points"></div>
+            <b class="cp-lv" id="cp-job-level">Job Lv 1</b>
+            <div class="bar exp job cp-exp"><div id="cp-job-exp-fill"></div></div>
+            <div id="cp-job-exp-text" class="muted"></div>
+            <div id="cp-points"></div>
+          </div>
+          <div class="cp-tabrow">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="equip">Equipo</button>
+            <button class="tab-btn" data-tab="inv">Inventario</button>
+            <button class="tab-btn" data-tab="cards">Cartas</button>
+            <button class="tab-btn" data-tab="pets">Pets</button>
+            <button class="tab-btn" data-tab="stats">Estado</button>
+            <button class="tab-btn" data-tab="talents">Job</button>
+          </div>
+          <div id="cp-gs" class="gs-total"></div>
+          </div>
+          <div id="cp-tab-equip" class="tab">
+            <div class="equip-layout">
+              <div class="equip-col" id="cp-slots-left"></div>
+              <div class="equip-center">
+                <canvas id="cp-avatar" width="176" height="220"></canvas>
+              </div>
+              <div class="equip-col" id="cp-slots-right"></div>
+            </div>
+            <div class="eq-work">
+              <div id="cp-eq-current" class="inv-box"></div>
+              <div id="cp-eq-cmp" class="inv-box"></div>
+              <div class="inv-box"><div class="box-title" id="cp-eq-list-title"></div><div id="cp-eq-list" class="cand-list"></div></div>
+            </div>
+          </div>
+          <div id="cp-tab-inv" class="tab hidden">
+            <div class="browse-layout">
+              <div class="inv-box"><div class="box-title">Inventario <span id="cp-kafra" class="kafra"></span></div><div id="cp-inv-filters" class="inv-filters"></div><div id="cp-inventory" class="item-grid"></div></div>
+              <div id="cp-inv-detail" class="inv-box browse-detail"></div>
+            </div>
+          </div>
+          <div id="cp-tab-cards" class="tab hidden">
+            <div class="browse-layout">
+              <div class="inv-box"><div class="box-title">Cartas</div><div id="cp-card-filters" class="inv-filters"></div><div id="cp-cards" class="item-grid"></div></div>
+              <div id="cp-card-detail" class="inv-box browse-detail"></div>
+            </div>
+          </div>
+          <div id="cp-tab-pets" class="tab hidden">
+            <div class="browse-layout">
+              <div class="inv-box"><div class="box-title">Pets <small id="cp-pet-count"></small></div><div id="cp-pets" class="item-grid"></div></div>
+              <div id="cp-pet-detail" class="inv-box browse-detail"></div>
+            </div>
+          </div>
+          <div id="cp-tab-stats" class="tab hidden">
+            <div class="status-layout">
+              <div class="status-box"><div class="box-title">Estadísticas</div><div id="cp-radar" class="radar"></div><div id="cp-prim"></div><div class="status-left">Puntos restantes: <b id="cp-prim-left">0</b></div></div>
+              <div class="status-box"><div class="box-title">En partida</div><div id="cp-derived" class="stat-grid"></div></div>
+            </div>
+            <div id="cp-stats" class="stat-strip"></div>
+            <div class="btn-row cp-reset-row"><span class="muted desktop-only">+: subir · Clic derecho en +: subir 10 · −: bajar</span><span class="muted touch-only">+: subir · −: bajar</span><span class="spacer"></span><button class="ro-btn small" id="cp-stat-reset">Reiniciar estadísticas</button></div>
+          </div>
+          <div id="cp-tab-talents" class="tab hidden">
+            <div id="cp-trees" class="talent-trees"></div>
+            <div class="btn-row cp-reset-row"><span class="muted desktop-only">Clic: añadir punto · Clic derecho: quitar</span><span class="muted touch-only">Toca un talento para ver su ficha y subirlo o bajarlo</span><span class="spacer"></span><button class="ro-btn small" id="cp-reset">Reiniciar talentos</button></div>
+          </div>
+        </div>
+        <!-- a los campos se sale desde el capitán de expediciones del lobby -->
+        <div class="btn-row pad cp-foot">
+          <button class="ro-btn" id="cp-back">Cambiar personaje</button>
+        </div>
+      </div>
+      <div id="cp-sock" class="sock-overlay hidden">
+        <div class="ro-window sock-window">
+          <div class="ro-title">Encajar cartas</div>
+          <div class="ro-body" id="cp-sock-body"></div>
+          <div class="btn-row pad"><span class="spacer"></span><button class="ro-btn primary" id="cp-sock-done">Hecho</button></div>
+        </div>
+      </div>
+      <div id="tooltip" class="tooltip hidden"></div>
+    </div>
+
+    <!-- elegir mejora u objeto (picker.ts): cartas sobre fondo negro, con el aura en el canvas de detrás -->
+    <div id="picker" class="hidden">
+      <canvas id="pk-aura"></canvas>
+      <div class="pk-inner">
+        <div class="pk-head">
+          <div id="pk-title"></div>
+          <div id="pk-gain" class="hidden"></div>
+          <div id="pk-sub"></div>
+        </div>
+        <div id="lu-sockets" class="hidden"></div>
+        <div id="pk-cards"></div>
+        <div id="pk-hint"></div>
+      </div>
+    </div>
+
+    <div id="stages" class="overlay hidden">
+      <div class="ro-window stages-window">
+        <div class="ro-title">Expediciones</div>
+        <div class="ro-body stages-body">
+          <div class="stg-side"><div id="stg-gs" class="stg-gs"></div><div id="stg-list" class="stg-list"></div></div>
+          <div id="stg-detail" class="stg-detail"></div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="stg-close">Cerrar</button>
+          <span class="spacer"></span>
+          <button class="ro-btn stg-go hidden" id="stg-skip">Saltar historia</button>
+          <button class="ro-btn stg-go hidden" id="stg-story">Historia</button>
+          <button class="ro-btn primary stg-go" id="stg-go">Partir</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="shop" class="overlay hidden">
+      <div class="ro-window shop-window">
+        <div class="ro-title">Vendedor de minerales</div>
+        <div class="ro-body">
+          <div class="shop-top">
+            <div class="tabs"><button class="tab-btn active" data-shop="sell">Vender</button><button class="tab-btn" data-shop="buy">Comprar</button></div>
+            <span id="shop-kafra" class="kafra"></span>
+          </div>
+          <div id="shop-sell">
+            <div id="shop-filters" class="inv-filters"></div>
+            <div id="shop-quality" class="shop-quality"></div>
+            <div id="shop-items" class="item-grid shop-grid"></div>
+            <div id="shop-info" class="info-panel"></div>
+          </div>
+          <div id="shop-buy" class="hidden"></div>
+        </div>
+        <div class="btn-row pad">
+          <span id="shop-total" class="shop-total"></span>
+          <span class="spacer"></span>
+          <button class="ro-btn" id="shop-close">Cerrar</button>
+          <button class="ro-btn primary" id="shop-sell-btn">Vender</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="chronicle" class="overlay hidden">
+      <div class="ro-window chronicle-window">
+        <div class="ro-title">Cronista de hazañas</div>
+        <div class="ro-body">
+          <div class="shop-top">
+            <div class="tabs"><button class="tab-btn active" data-chr="perks">Mejoras</button><button class="tab-btn" data-chr="log">Logros</button></div>
+            <span id="chr-points" class="kafra"></span>
+          </div>
+          <div id="chr-perks"></div>
+          <div id="chr-log-tab" class="hidden">
+            <div id="chr-filters" class="inv-filters"></div>
+            <div id="chr-log" class="chr-list chr-scroll"></div>
+          </div>
+        </div>
+        <div class="btn-row pad">
+          <span class="spacer"></span>
+          <button class="ro-btn" id="chr-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- el Guardián de la Endless Tower (towerkeeper.ts): con la forma del selector de stages -->
+    <div id="towerkeeper" class="overlay hidden">
+      <div class="ro-window stages-window">
+        <div class="ro-title">Guardián de la Torre</div>
+        <div class="ro-body stages-body">
+          <div class="stg-side"><div id="tk-nav" class="stg-list"></div></div>
+          <div id="tk-detail" class="stg-detail"></div>
+        </div>
+        <div class="btn-row pad">
+          <span class="spacer"></span>
+          <button class="ro-btn" id="tk-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="petkeeper" class="overlay hidden">
+      <div class="ro-window chronicle-window">
+        <div class="ro-title">Cuidadora de pets</div>
+        <div class="ro-body">
+          <div class="shop-top">
+            <div class="tabs"><button class="tab-btn active" data-pk="acc">Accesorios</button><button class="tab-btn" data-pk="evo">Evoluciones</button></div>
+            <span id="pk-kafra" class="kafra"></span>
+          </div>
+          <div id="pk-list" class="chr-list chr-scroll pk-list"></div>
+          <div id="pk-note" class="info-panel"></div>
+        </div>
+        <div class="btn-row pad">
+          <span class="spacer"></span>
+          <button class="ro-btn" id="pk-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mailbox" class="overlay hidden">
+      <div class="ro-window chronicle-window">
+        <div class="ro-title">Cartero</div>
+        <div class="ro-body mb-body-wrap">
+          <div id="mb-list" class="chr-list chr-scroll mb-list"></div>
+          <div id="mb-read" class="info-panel mb-read"></div>
+          <div id="mb-note" class="mb-note"></div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="mb-delete" hidden>Tirar la carta</button>
+          <span class="spacer"></span>
+          <button class="ro-btn primary" id="mb-claim" hidden>Recoger</button>
+          <button class="ro-btn" id="mb-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="stylist" class="overlay hidden">
+      <div class="ro-window stylist-window">
+        <div class="ro-title">Estilista</div>
+        <div class="ro-body create-body">
+          <div class="preview-col">
+            <canvas id="st-preview" width="200" height="230"></canvas>
+            <div class="btn-row center">
+              <button class="ro-btn small" id="st-rot-l" title="Girar">⟲</button>
+              <button class="ro-btn small" id="st-rot-r" title="Girar">⟳</button>
+            </div>
+          </div>
+          <div class="form-col">
+            <div class="field">Peinado
+              <div class="stepper"><button class="ro-btn small" id="st-hair-prev">◀</button><span id="st-hair">1</span><button class="ro-btn small" id="st-hair-next">▶</button></div>
+            </div>
+            <div class="field">Color de pelo <div id="st-haircolors" class="swatches"></div></div>
+            <div class="field">Color de ropa <div id="st-clothcolors" class="swatches"></div></div>
+            <div id="st-note" class="info-panel"></div>
+          </div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="st-reset">Deshacer</button>
+          <span class="spacer"></span>
+          <button class="ro-btn" id="st-close">Cerrar</button>
+          <button class="ro-btn primary" id="st-ok">Aplicar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- el Bibliotecario (wiki.ts): la wiki del juego, con la forma del selector de stages -->
+    <div id="wiki" class="overlay hidden">
+      <div class="ro-window stages-window wiki-window">
+        <div class="ro-title">Bibliotecario de Prontera</div>
+        <div class="ro-body stages-body wiki-body">
+          <div class="stg-side">
+            <input id="wk-search" class="wk-search" type="search" autocomplete="off" spellcheck="false" placeholder="Buscar en la wiki…" />
+            <div id="wk-nav" class="stg-list wk-nav"></div>
+          </div>
+          <div id="wk-detail" class="stg-detail wk-detail"></div>
+        </div>
+        <div class="btn-row pad">
+          <span class="spacer"></span>
+          <button class="ro-btn" id="wk-close">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="smith" class="overlay hidden">
+      <div class="ro-window smith-window">
+        <div class="ro-title">Herrero Hollgrehenn</div>
+        <div class="ro-body smith-body">
+          <div class="smith-side">
+            <div id="smith-filters" class="inv-filters"></div>
+            <div id="smith-list" class="cand-list"></div>
+          </div>
+          <div id="smith-detail" class="smith-detail"></div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="smith-close">Cerrar</button>
+          <span class="spacer"></span>
+          <button class="ro-btn primary" id="smith-go">Refinar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="pause" class="overlay hidden">
+      <div class="ro-window small-window">
+        <div class="ro-title">Pausa</div>
+        <div class="ro-body center">
+          <button class="ro-btn" id="btn-resume">Continuar</button>
+          <button class="ro-btn" id="btn-pause-options">Opciones</button>
+          <button class="ro-btn" id="btn-quit">Salir al menú</button>
+          <button class="ro-btn hidden" id="btn-endrun">Terminar la partida</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="gameover" class="overlay hidden">
+      <div class="ro-window summary-window">
+        <div class="ro-title" id="go-title">Has muerto</div>
+        <div class="ro-body center">
+          <div id="go-stats"></div>
+        </div>
+        <div class="btn-row pad"><button class="ro-btn primary" id="btn-restart">Volver al personaje</button></div>
+      </div>
+    </div>
+
+    <div id="options" class="overlay hidden">
+      <div class="ro-window options-window">
+        <div class="ro-title">Opciones</div>
+        <div class="ro-body">
+          <div class="tabs" id="opt-tabs"></div>
+          <div id="opt-body"></div>
+        </div>
+        <div class="btn-row pad">
+          <button class="ro-btn" id="opt-defaults">Valores por defecto</button>
+          <button class="ro-btn hidden" id="opt-install">Instalar</button>
+          <span class="spacer"></span>
+          <button class="ro-btn primary" id="opt-close">Cerrar</button>
+          <small class="opt-version" id="opt-version"></small>
+        </div>
+      </div>
+    </div>
+
+    <div id="skill-tip" class="tooltip skill-tip hidden"></div>
+
+    <div id="drop-reveal" class="hidden"></div>
+
+    <!-- portada (splash.ts): Prontera de fondo, el logo y la ventana para entrar; hace de pantalla de carga -->
+    <div id="splash">
+      <div class="sp-bg"></div>
+      <div class="sp-veil"></div>
+      <canvas id="sp-parade"></canvas>
+      <canvas id="sp-parade-fly"></canvas>
+      <div class="sp-motes"></div>
+      <div class="sp-logo">
+        <div class="sp-logo-name"><span>RO</span><b>Survivors</b></div>
+        <small>Un survivors inspirado en Ragnarok Online</small>
+        <div class="sp-tags"><span class="sp-tag">BETA</span><span class="sp-tag light">ro.hans-webgametw.com</span></div>
+      </div>
+      <div class="ro-window sp-card">
+        <div class="ro-title">Prontera te espera</div>
+        <div class="ro-body">
+          <div class="sp-tabs" role="tablist">
+            <button role="tab" data-sp-tab="guest" class="active">Invitado</button>
+            <button role="tab" data-sp-tab="login">Entrar</button>
+            <button role="tab" data-sp-tab="register">Crear cuenta</button>
+          </div>
+          <!-- invitado: la partida vive en este navegador, como hasta ahora -->
+          <div class="sp-pane" data-sp-pane="guest">
+            <div class="sp-feat online-only"><img src="assets/items/1101.png" alt="" />Elige job, empuña tu arma y aguanta la horda. Sin descargas.</div>
+            <div class="sp-feat online-only"><img src="assets/items/501.png" alt="" />Tus personajes y su equipo se quedan guardados en este navegador.</div>
+            <div class="sp-feat online-only"><img src="assets/items/2220.png" alt="" />Con cuenta, a comerciar en la plaza y a jugar con tus personajes desde cualquier sitio.</div>
+            <!-- versión offline (offline.ts): se juega solo, en este PC -->
+            <div class="sp-feat offline-only"><img src="assets/items/1101.png" alt="" />Elige job, empuña tu arma y aguanta la horda.</div>
+            <div class="sp-feat offline-only"><img src="assets/items/501.png" alt="" />Versión offline: juegas solo y sin conexión.</div>
+            <div class="sp-feat offline-only"><img src="assets/items/2220.png" alt="" />Tus personajes y su equipo se guardan en este PC.</div>
+            <button class="ro-btn primary sp-submit" id="sp-play" disabled><i class="sp-fill"></i><span>Cargando…</span></button>
+            <!-- con la sesión de una cuenta guardada: cerrarla y volver a Invitado / Entrar / Crear cuenta -->
+            <button class="ro-btn small sp-leave hidden" id="sp-leave" type="button">Salir</button>
+            <button class="ro-btn small sp-client-update offline-only" id="sp-update">Actualizar cliente</button>
+          </div>
+          <!-- cuentas (usuario + contraseña, sin email): account.ts -->
+          <form class="sp-pane hidden" data-sp-pane="login" id="sp-login" autocomplete="on">
+            <fieldset class="sp-form">
+              <label class="sp-field">Usuario <input name="username" autocomplete="username" maxlength="16" spellcheck="false" /></label>
+              <label class="sp-field">Contraseña <input name="password" type="password" autocomplete="current-password" /></label>
+              <div class="sp-error" aria-live="polite"></div>
+              <button class="ro-btn primary sp-submit" type="submit">Entrar</button>
+            </fieldset>
+            <button class="sp-link" type="button" id="sp-forgot">¿Has olvidado la contraseña?</button>
+          </form>
+          <!-- contraseña olvidada (no es una pestaña: se llega desde Entrar): usuario + las 5 preguntas de seguridad -->
+          <div class="sp-pane hidden" data-sp-pane="recover">
+            <!-- paso 1: usuario + las 5 respuestas (3 intentos fallidos por cuenta cada 7 días) -->
+            <form id="sp-recover" autocomplete="off">
+              <fieldset class="sp-form">
+                <small class="sp-note rq-help">Contesta las 5 preguntas de seguridad de tu cuenta. Si aciertas, podrás poner una contraseña nueva. Tienes 3 intentos a la semana.</small>
+                <label class="sp-field">Usuario <input name="username" autocomplete="username" maxlength="16" spellcheck="false" /></label>
+                <div class="rq-list" data-questions></div>
+                <div class="sp-error" aria-live="polite"></div>
+                <button class="ro-btn primary sp-submit" type="submit">Comprobar respuestas</button>
+              </fieldset>
+            </form>
+            <!-- paso 2: respuestas correctas → contraseña nueva, dos veces -->
+            <form id="sp-reset" class="hidden" autocomplete="on">
+              <fieldset class="sp-form">
+                <div class="sp-ok">Respuestas correctas. Elige tu contraseña nueva.</div>
+                <input name="username" autocomplete="username" hidden />
+                <label class="sp-field">Contraseña nueva <input name="password" type="password" autocomplete="new-password" minlength="8" /></label>
+                <label class="sp-field">Repite la contraseña <input name="password2" type="password" autocomplete="new-password" minlength="8" /></label>
+                <div class="sp-error" aria-live="polite"></div>
+                <button class="ro-btn primary sp-submit" type="submit">Guardar y entrar</button>
+              </fieldset>
+            </form>
+            <button class="sp-link" type="button" id="sp-recover-back">Volver</button>
+          </div>
+          <form class="sp-pane hidden" data-sp-pane="register" id="sp-register" autocomplete="on">
+            <fieldset class="sp-form">
+              <label class="sp-field">Usuario <input name="username" autocomplete="username" maxlength="16" spellcheck="false" /></label>
+              <label class="sp-field">Contraseña <input name="password" type="password" autocomplete="new-password" minlength="8" /></label>
+              <label class="sp-field">Repite la contraseña <input name="password2" type="password" autocomplete="new-password" minlength="8" /></label>
+              <!-- opcionales: sin ellas la cuenta no se puede recuperar, y es para siempre (splash.ts) -->
+              <div class="rq-head">Preguntas de seguridad <small>(opcional)</small></div>
+              <label class="sp-check"><input name="questions" type="checkbox" checked />Configurar preguntas para poder recuperar la contraseña si la olvido</label>
+              <small class="sp-note rq-help" id="sp-rq-help">Sin email, si olvidas la contraseña la única forma de recuperar la cuenta son estas 5 respuestas. Recuérdalas o apúntalas en un sitio seguro.</small>
+              <div class="rq-list" data-questions></div>
+              <div class="rq-declined hidden" id="sp-rq-declined">Sin preguntas de seguridad, si pierdes la contraseña no se podrá recuperar la cuenta. Es una decisión permanente: no podrás añadirlas después.</div>
+              <label class="sp-check"><input name="upload" type="checkbox" checked />Subir a la cuenta los personajes de este dispositivo</label>
+              <div class="sp-error" aria-live="polite"></div>
+              <button class="ro-btn primary sp-submit" type="submit">Crear cuenta</button>
+            </fieldset>
+            <small class="sp-note">De invitado se suben los personajes, su equipo y sus cartas, pero no los Puntos Kafra ni los minerales; lo subido se puede usar, no comerciar.</small>
+          </form>
+          <!-- mantenimiento (maintenance.ts): por qué no se puede jugar ahora -->
+          <small class="sp-maint hidden" id="sp-maint"></small>
+          <small class="sp-soon hidden">Las cuentas llegan muy pronto. De momento, juega como invitado.</small>
+          <small class="sp-status" id="sp-version"></small>
+        </div>
+      </div>
+      <div class="sp-foot">
+        <div class="sp-links"><a class="coffee" target="_blank" rel="noopener">☕ Invítame a un café</a><a class="discord" target="_blank" rel="noopener">Discord</a></div>
+        <p class="sp-legal">RO Survivors es un fan game no oficial y gratuito, sin anuncios ni compras. No está afiliado, patrocinado ni respaldado por Gravity Co., Ltd. ni por Lee Myoung-Jin (studio DTDS). Ragnarok Online y sus personajes, gráficos y músicas son propiedad de sus respectivos dueños. © Gravity Co., Ltd. &amp; Lee Myoung-Jin (studio DTDS).</p>
+        <p class="sp-meta"><a href="legal.html" target="_blank" id="sp-legal-link">Aviso legal, normas y privacidad</a> · <a href="credits.html" target="_blank" id="sp-credits-link">Créditos</a> · <a href="https://discord.gg/7hDHFHfzS" target="_blank" rel="noopener">Discord 聯絡我們</a></p>
+      </div>
+    </div>
+    <!-- arriba a la derecha (splash.ts): café, X y Discord (en escritorio; en móvil van en el pie) y el idioma. Fuera
+         del splash para quedar encima de la selección y la creación; en la plaza y en partida no sale -->
+    <div class="sp-top" id="sp-top">
+      <div class="sp-links sp-top-links"><a class="coffee" target="_blank" rel="noopener">☕ Invítame a un café</a><a class="discord" target="_blank" rel="noopener">Discord</a></div>
+      <!-- página de descargas (public/descargas.html): cliente de Windows offline y la app; no sale en la versión offline -->
+      <a class="sp-news-btn sp-dl-btn online-only" id="dl-btn" href="descargas.html" target="_blank" rel="noopener">Descargas</a>
+      <a class="sp-news-btn sp-dl-btn online-only" id="talents-btn" href="talents.html" target="_blank" rel="noopener">Talentos</a>
+      <button class="sp-news-btn" id="news-btn">Novedades</button>
+      <div class="sp-lang" id="sp-lang">
+        <button class="sp-lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Idioma"><b></b><i class="sp-caret"></i></button>
+        <ul class="sp-lang-list hidden" role="listbox"></ul>
+      </div>
+    </div>
+
+    <script src="hans-splash.js"></script>
+    <div id="loading" class="overlay hidden"><div class="loading-ring"></div><div class="loading-text">Cargando assets de Ragnarok…</div></div>
+
+    
+  
+</body>
+</html>

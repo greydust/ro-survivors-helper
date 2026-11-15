@@ -1,0 +1,51 @@
+name: Publish Greasy Fork source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: greasyfork-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run publish:greasyfork
+      - name: Push validated bundle to sync branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          bundle="$RUNNER_TEMP/ro-survivors-helper.user.js"
+          cp 'dist/RO倖存者助手.user.js' "$bundle"
+          description="$RUNNER_TEMP/greasyfork-description.md"
+          cp doc/GREASYFORK.md "$description"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin greasyfork; then
+            git fetch origin greasyfork
+            git checkout -B greasyfork FETCH_HEAD
+          else
+            git checkout --orphan greasyfork
+            git rm -rf --ignore-unmatch .
+          fi
+          cp "$bundle" ro-survivors-helper.user.js
+          cp "$description" greasyfork-description.md
+          git add -- ro-survivors-helper.user.js greasyfork-description.md
+          if git diff --cached --quiet; then
+            echo 'Code and description unchanged; no publication needed.'
+            exit 0
+          fi
+          git commit -m "Publish userscript from ${GITHUB_SHA}"
+          git push origin HEAD:refs/heads/greasyfork

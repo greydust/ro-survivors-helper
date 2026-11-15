@@ -1,0 +1,90 @@
+{
+  "format": "ro-helper-unwanted",
+  "version": 1,
+  "name": "十字軍",
+  "rule": {
+    "type": "or",
+    "children": [
+      {
+        "type": "tier",
+        "op": "<=",
+        "value": 2
+      },
+      {
+        "type": "or",
+        "children": [
+          {
+            "type": "and",
+            "children": [
+              {
+                "type": "slot",
+                "slot": "shield",
+                "base": ""
+              },
+              {
+                "type": "not",
+                "children": [
+                  {
+                    "type": "slot",
+                    "slot": "shield",
+                    "base": "2114"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "and",
+            "children": [
+              {
+                "type": "slot",
+                "slot": "shoes",
+                "base": ""
+              },
+              {
+                "type": "not",
+                "children": [
+                  {
+                    "type": "slot",
+                    "slot": "shoes",
+                    "base": "2411"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "and",
+            "children": [
+              {
+                "type": "slot",
+                "slot": "garment",
+                "base": ""
+              },
+              {
+                "type": "not",
+                "children": [
+                  {
+                    "type": "or",
+                    "children": [
+                      {
+                        "type": "slot",
+                        "slot": "garment",
+                        "base": "2507"
+                      },
+                      {
+                        "type": "slot",
+                        "slot": "garment",
+                        "base": "2511"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

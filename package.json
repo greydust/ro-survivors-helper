@@ -1,0 +1,17 @@
+{
+  "name": "ro-survivors-helper",
+  "version": "1.9.0",
+  "private": true,
+  "description": "Client-side Tampermonkey helper for ro.hans-webgametw.com",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node tests/auto-pick.test.cjs",
+    "publish:greasyfork": "npm run build && node scripts/publish-greasyfork.mjs --dry-run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.15"
+  }
+}
