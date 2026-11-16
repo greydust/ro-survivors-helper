@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.8
+// @version      1.9.9
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.8'};
+  window[runtimeKey]={version:'1.9.9'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1058,6 +1058,8 @@
       const original = game.events[event];
       if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
       game.events[event] = function(cards, ...args) {
+        // With no rule for this picker, preserve the native path exactly.
+        if(!rules.some(rule=>rule.kind===kind))return Reflect.apply(original,this,[cards,...args]);
         const selected = fastChoice(game, cards, kind);
         // Leave replacements requiring confirmation to the normal UI.
         const current = selected && kind === 'item' ? game.runItems?.slots.get(selected.slot) : null;
@@ -1146,7 +1148,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.8');
+      console.info('[RO助手] 即時自選已啟用 v1.9.9');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1205,12 +1207,11 @@
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
-    // Never reinterpret native picker taps, including chest replacement confirms.
-    if(event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
-      clearLongPress();closeMenu();document.querySelector('#skill-tip')?.classList.add('hidden');
-      if(job){document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();}
-      return;
+    if(job&&event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
+      document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();
     }
+    // Only skill/item slots participate. Native picker controls are untouched.
+    if(!slotOf(event.target)){cancelLongPress();heldSlot=null;return;}
     if(event.pointerType==='touch')touchInputUsed=true;
     // Pointer/touch pairs on Safari represent one gesture, not a second finger.
     if(longPress){
@@ -1341,7 +1342,7 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
-    if(touchInterface())document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
+    if(touchInterface()&&document.querySelector('#picker')?.hasAttribute('data-ro-ap-hidden'))document.querySelector('#picker').removeAttribute('data-ro-ap-hidden');
     updateHordeHud();
     updateStageSpawnSchedule();
     updateCharacterDetails();
@@ -1367,6 +1368,7 @@
     const title = picker.querySelector('#pk-title')?.textContent || '';
     const kind = /Level Up|升級|Subir de nivel|Subiu de nível/i.test(title) ? 'skill'
       : /Cofre del tesoro|Treasure Chest|寶箱|Baú do tesouro/i.test(title) ? 'item' : null;
+    if(kind&&!rules.some(rule=>rule.kind===kind)){if(job)cancel();return;}
     if (!cards.length || !kind || !sockets || sockets.classList.contains('hidden') || sockets.style.visibility === 'hidden') { cancel(); return; }
     const selected = choose(cards, kind);
     if (!selected && rules.some(r => r.kind === kind) && !diagnosed.has(cards[0])) {
