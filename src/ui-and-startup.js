@@ -48,9 +48,6 @@
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
       html.touch #skillbar,html.touch #runitems{pointer-events:auto}
-      /* Touch has no hover cursor: keep the native choice hit area stationary. */
-      html.touch #picker .pk-card:hover,html.touch #picker .pk-card:focus-visible{transform:none!important}
-      html.touch #picker .pk-card{touch-action:manipulation}
       #ro-safari-diagnostics-open{position:fixed;left:max(6px,env(safe-area-inset-left));bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483647;pointer-events:auto;min-height:32px;padding:5px 8px;border:1px solid #8b9cb5;border-radius:6px;background:#172238;color:#fff;font:12px sans-serif}
       #ro-safari-diagnostics{position:fixed;inset:8px;inset:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));z-index:2147483647;box-sizing:border-box;background:#142033;color:#fff;border:1px solid #8b9cb5;border-radius:8px;padding:12px;overflow:auto;pointer-events:auto;font:14px/1.4 sans-serif}
       #ro-safari-diagnostics button,#ro-safari-diagnostics select{min-height:40px;font-size:16px;margin:3px;padding:6px}
@@ -160,7 +157,7 @@
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.
     function refreshBattleOverlays(){
-      if(activeGame){
+      if(activeGame&&!pickerIsOpen()){
         runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
         runHelperHook(activeGame,'角色資料',updateCharacterDetails);
       }

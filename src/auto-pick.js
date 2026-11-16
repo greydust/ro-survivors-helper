@@ -1,3 +1,7 @@
+  function pickerIsOpen(){
+    const picker=document.querySelector('#picker');
+    return !!picker&&!picker.classList.contains('hidden');
+  }
   function fastChoice(game, cards, kind) {
     if (!Array.isArray(cards) || cards.length === 0) return null;
     let best = null;
@@ -119,7 +123,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.14');
+      console.info('[RO助手] 即時自選已啟用 v1.9.15');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -252,6 +256,7 @@
       if(!el.isConnected||!sameSlot(rule,el)||iconOf(el)!==rule.icon){closeMenu();notify('項目已變更，請重新長按或按右鍵設定');return;}
       rules = rules.filter(r => !sameSlot(r, el));
       if (!enabled) rules.push(rule);
+      if(enabled)el.removeAttribute('data-ro-ap-enabled');else el.setAttribute('data-ro-ap-enabled','');
       installFastChoice(activeGame);
       closeMenu(); scan();
       notify(`${rule.name}：已${enabled ? '關閉' : '開啟'}自動選擇`);
@@ -314,19 +319,22 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
-    updateHordeHud();
-    updateStageSpawnSchedule();
-    updateCharacterDetails();
-    updateOfflineUI();
-    updateMinimapOption();
-    updateSmith();
-    updateMerchant();
+    // Native choice gestures must not trigger unrelated helper DOM refreshes.
+    if(!pickerIsOpen()){
+      updateHordeHud();
+      updateStageSpawnSchedule();
+      updateCharacterDetails();
+      updateOfflineUI();
+      updateMinimapOption();
+      updateSmith();
+      updateMerchant();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {
       const enabled = rules.some(r => sameSlot(r, el));
       if (enabled) el.setAttribute('data-ro-ap-enabled', '');
       else el.removeAttribute('data-ro-ap-enabled');
     });
+    }
     const picker = document.querySelector('#picker');
     if (!picker || picker.classList.contains('hidden')) { cancel(); return; }
     if (picker.classList.contains('closing')) return;

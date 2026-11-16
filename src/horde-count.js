@@ -100,6 +100,10 @@
     const hud=document.querySelector('#hud');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
     let panel=document.querySelector('#ro-horde-hud');
+    if(pickerIsOpen()){
+      if(panel&&!panel.hidden)panel.hidden=true;
+      return;
+    }
     if(panel&&!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     if(!panel){
       panel=document.createElement('section');panel.id='ro-horde-hud';panel.setAttribute('aria-label','怪物潮與場上怪物');

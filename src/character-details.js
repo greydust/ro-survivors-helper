@@ -34,6 +34,7 @@
     document.querySelector('#ro-character-details-toggle')?.setAttribute('aria-expanded','false');
   }
   function updateCharacterDetails() {
+    if(pickerIsOpen())return;
     const hud=document.querySelector('#hud'),buffs=document.querySelector('#buffs');
     if(!hud||hud.classList.contains('hidden')||!buffs||!activeGame?.stats){
       document.querySelector('#ro-character-details-toggle')?.remove();closeCharacterDetails();return;

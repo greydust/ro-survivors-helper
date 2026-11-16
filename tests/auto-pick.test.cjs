@@ -865,6 +865,21 @@ test('mobile battle overlays recover without native ticks and expose working det
  panel.remove();e.tick(250);panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.querySelector('[data-horde-ring-toggle]').textContent,'範圍圈：關');
  e.document.querySelector('#hud').classList.add('hidden');e.tick(250);assert(!e.document.querySelector('#ro-horde-hud'));assert(!e.document.querySelector('#ro-character-details-toggle'));
 });
+test('manual native picker pauses unrelated helper UI writes and resumes them after closing',()=>{
+ const e=setup();e.document.documentElement.classList.add('touch');
+ e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div>');
+ const game={state:'playing',hp:10,stats:{maxHp:20},enemies:[]};e.api.setActiveGame(game);e.tick(250);
+ const character=e.document.querySelector('#ro-character-details-toggle'),hud=e.document.querySelector('#ro-horde-hud');
+ const originalLeft=character.style.left;
+ picker(e,[['A','a.png','普通']]);e.api.scan();e.api.helperTick(game);
+ assert(hud.hidden);const before=hud.innerHTML;
+ let layoutReads=0;e.document.querySelector('#buffs').getBoundingClientRect=()=>{layoutReads++;return {left:100,bottom:200};};
+ e.api.scan();e.api.updateCharacterDetails();e.tick(1250);e.api.helperTick(game);
+ assert.equal(layoutReads,0);assert.equal(character.style.left,originalLeft);assert.equal(hud.innerHTML,before);
+ e.document.querySelector('#picker').classList.add('hidden');e.tick(250);
+ assert(layoutReads>0);assert(!hud.hidden);assert.equal(character.style.left,'100px');
+});
+
 test('mobile chest cards and replacement confirmation retain native taps after a held slot',()=>{
   const e=setup(),slot=touchSlot(e,'item');pointer(e,slot,'pointerdown');e.tick(550);pointer(e,slot,'pointerup');
   const cards=picker(e,[['生命藥水','potion.png','普通'],['其他','other.png','稀有']],'item');
