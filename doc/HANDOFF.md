@@ -134,3 +134,14 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - 使用者回報 1.9.10 第一次三選一後又全頁無法點選。審查發現 per-tick 用 `previous.wrapper===game.events[event]` 判定是否重裝，在橋接介面每次 get 回傳 bound/proxy callable 時會一直套疊；新增 getter 回傳 current.bind(events) 的測試，在修正前重現 2000 次檢查造成 2000 次 setter 寫入。這證明邏輯缺陷，但沒有 Safari 實機證據確認就是使用者那一例的原因。
 - 撤回依函式參考追蹤替換的策略。每 game／event 安裝成功後僅一次，回呼尚未存在時不標記，之後可以補裝。若遊戲自行替換已裝回呼／events，尊重原生，不在 tick 重包；此時可能退回原生視窗／既有 DOM 自選後備，而不保證繼續跳過視窗。這項限制優先於1.9.10的動態重掛行為。
 - 回歸測試覆蓋不穩定函式參考、晚到回呼、重複 tick、原生回呼被替換，以及原有手機連續直接自選／無自選原生選卡。
+
+- Safari 調查使用兩版實際合併腳本與目前原生 kr/choose/chooseChest 隔離測試，正常手動／自選交替皆可收尾，否定「跳過下一視窗必然漏清上一視窗」的先前推論。刻意在舊picker開啟時另發自選事件可留舊視窗，但未證實是單人實機路徑。使用者確認第一次是手動、單人遠征；細節與測試限制見 INVESTIGATION-SAFARI.md。本次未修改執行邏輯。
+
+- 電腦怪物統計改為與手機一致的 viewport 右下角固定定位（電腦12px、手機8px），不再依 lu-feed／loot-rolls 的存在或大小重定位。電腦最大高度340px，約容納10種怪物，超出仍可捲動；手機維持110px上限。面板建立不再依賴掉落元素，測試覆蓋掉落新增／移除時位置不變。
+
+## Safari 本機診斷
+
+- 新增 safari-diagnostics.js（state初始化後載入），Safari UA符合AppleWebKit+Version+Safari且非CriOS/FxiOS/Edg等品牌才啟動。只以passive觀察window capture/bubble輸入與error/unhandledrejection，不取消或合成點擊；用微任務記錄派送後defaultPrevented與UI狀態，沒有bubble不能直接斷言攔截者。
+- current.v1保存80筆輸入/狀態與12筆錯誤、堆疊截斷；同步保存click／release／error的capture資料，後續150ms批次保存派送結果。錯誤同源同訊息2秒去重。刷新時只將包含輸入／錯誤的舊current搬到previous，空白重載不覆蓋有用的previous。
+- 左下Safari診斷按鈕可查看本次/上次、剪貼簿與唯讀textarea手動選取；?rodiag=1開頁直接顯示上次內容，避免故障時依賴遊戲onclick。若localStorage不可用顯示保存限制，不能承諾硬凍結或儲存被清除後仍可恢復。
+- 測試覆蓋Safari限制、事件不被取消、錯誤與有界保存、跨頁恢復、空白刷新保留舊紀錄、自動/手動複製及儲存失敗。LinkeDOM的window.navigator由Proxy getter提供預設Chrome UA，測試須額外以Proxy覆蓋navigator，直接defineProperty不會改變讀值。

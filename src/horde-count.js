@@ -97,8 +97,8 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
-    const hud=document.querySelector('#hud'),loot=document.querySelector('#lu-feed')||document.querySelector('#loot-rolls');
-    if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'||!loot){clearHordeHud();return;}
+    const hud=document.querySelector('#hud');
+    if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
     if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
     if(!panel){
@@ -115,16 +115,12 @@
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
-    if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=Math.min(compact?132:180,view.width-24);
-      const right=Math.max(8,Math.round(innerWidth-(rect.width?rect.right:view.left+view.width-8)));
-      // Body-level positioning avoids the native HUD's zoom/transform. On phones
-      // reserve a small strip below the pickup feed instead of chasing each row.
-      const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.max(80,view.height*.45);
-      const anchor=rect.width&&rect.height?rect.bottom:view.top+view.height-(compact?92:150);
-      const top=Math.round(Math.max(view.top+8,Math.min(anchor+4,view.top+view.height-(compact?72:100)-8)));
-      for(const [key,value] of Object.entries({top:compact?'auto':top+'px',bottom:compact?Math.max(8,Math.round(innerHeight-view.top-view.height+8))+'px':'auto',right:right+'px',width:width+'px',maxHeight:(compact?maxHeight:Math.min(maxHeight,view.top+view.height-top-8))+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
-    }
+    // Position against the visible viewport, independent of temporary loot rows.
+    const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);
+    const right=Math.max(inset,Math.round(innerWidth-view.left-view.width+inset));
+    const bottom=Math.max(inset,Math.round(innerHeight-view.top-view.height+inset));
+    const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.min(340,Math.max(80,view.height-24));
+    for(const [key,value] of Object.entries({top:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
     if(counter.textContent!==text)counter.textContent=text;

@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.11
+// @version      1.9.12
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.11'};
+  window[runtimeKey]={version:'1.9.12'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -276,8 +276,8 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
-    const hud=document.querySelector('#hud'),loot=document.querySelector('#lu-feed')||document.querySelector('#loot-rolls');
-    if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'||!loot){clearHordeHud();return;}
+    const hud=document.querySelector('#hud');
+    if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
     if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
     if(!panel){
@@ -294,16 +294,12 @@
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
-    if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=Math.min(compact?132:180,view.width-24);
-      const right=Math.max(8,Math.round(innerWidth-(rect.width?rect.right:view.left+view.width-8)));
-      // Body-level positioning avoids the native HUD's zoom/transform. On phones
-      // reserve a small strip below the pickup feed instead of chasing each row.
-      const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.max(80,view.height*.45);
-      const anchor=rect.width&&rect.height?rect.bottom:view.top+view.height-(compact?92:150);
-      const top=Math.round(Math.max(view.top+8,Math.min(anchor+4,view.top+view.height-(compact?72:100)-8)));
-      for(const [key,value] of Object.entries({top:compact?'auto':top+'px',bottom:compact?Math.max(8,Math.round(innerHeight-view.top-view.height+8))+'px':'auto',right:right+'px',width:width+'px',maxHeight:(compact?maxHeight:Math.min(maxHeight,view.top+view.height-top-8))+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
-    }
+    // Position against the visible viewport, independent of temporary loot rows.
+    const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);
+    const right=Math.max(inset,Math.round(innerWidth-view.left-view.width+inset));
+    const bottom=Math.max(inset,Math.round(innerHeight-view.top-view.height+inset));
+    const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.min(340,Math.max(80,view.height-24));
+    for(const [key,value] of Object.entries({top:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
     if(counter.textContent!==text)counter.textContent=text;
@@ -425,6 +421,111 @@
   ];
 
   // Merchant rules operate on raw affixes, never rendered bonuses/card effects.
+  function isSafariBrowser(){
+    const ua=window.navigator?.userAgent||'';
+    return /AppleWebKit\//.test(ua)&&/Version\//.test(ua)&&/Safari\//.test(ua)
+      &&!/(?:Chrome|Chromium|CriOS|FxiOS|Edg|OPiOS|OPR|GSA|DuckDuckGo)\//.test(ua);
+  }
+  function createSafariDiagnostics(){
+    const currentKey='greydust.ro.safari-diagnostics.current.v1',previousKey='greydust.ro.safari-diagnostics.previous.v1';
+    let storageAvailable=true,saveTimer=null,dialog=null;
+    const trim=(value,max=1800)=>String(value??'').slice(0,max);
+    const read=key=>{
+      try{const raw=localStorage.getItem(key);if(!raw||raw.length>250000)return null;const value=JSON.parse(raw);return value?.format===1&&Array.isArray(value.entries)?value:null;}
+      catch{storageAvailable=false;return null;}
+    };
+    let previous=read(previousKey);const last=read(currentKey);
+    const meaningful=log=>log?.entries.some(entry=>entry?.kind==='error'||entry?.event==='click'||entry?.event==='touchend'||entry?.event==='pointerup');
+    if(meaningful(last)){
+      previous=last;
+      try{localStorage.setItem(previousKey,JSON.stringify(last));}catch{storageAvailable=false;}
+    }
+    const log={format:1,version:window[runtimeKey].version,startedAt:new Date().toISOString(),userAgent:trim(window.navigator?.userAgent,400),entries:[],errors:[]};
+    function snapshot(){
+      const picker=document.querySelector('#picker');
+      return {gameState:activeGame?.state??null,pendingLevels:activeGame?.pendingLevelUps??null,coop:!!activeGame?.coop,
+        picker:picker?{hidden:picker.classList.contains('hidden'),closing:picker.classList.contains('closing'),helperHidden:picker.hasAttribute('data-ro-ap-hidden'),
+          cards:picker.querySelectorAll('.pk-card').length,chosen:picker.querySelectorAll('.pk-slot.chosen').length,asking:picker.querySelectorAll('.pk-slot.asking').length}:null};
+    }
+    function persist(){
+      clearTimeout(saveTimer);saveTimer=null;
+      try{localStorage.setItem(currentKey,JSON.stringify(log));}catch{storageAvailable=false;}
+    }
+    function scheduleSave(){if(saveTimer===null)saveTimer=setTimeout(persist,150);}
+    function record(entry,immediate=false){
+      try{entry.at=Math.round(performance.now());log.entries.push(entry);if(log.entries.length>80)log.entries.shift();if(immediate)persist();else scheduleSave();}catch{}
+    }
+    function describe(target){
+      if(!(target instanceof Element))return trim(target?.nodeName||'window',80);
+      return trim(target.tagName.toLowerCase()+(target.id?'#'+target.id:'')+(target.className?'.'+String(target.className).trim().replace(/\s+/g,'.'):'')
+        +(target.dataset?.i!==undefined?'[data-i='+target.dataset.i+']':''),180);
+    }
+    const events=new WeakMap();
+    function capture(event){
+      try{
+        const target=event.target instanceof Element?event.target:event.target?.parentElement;
+        if(!target||target.closest('#ro-safari-diagnostics, #ro-safari-diagnostics-open'))return;
+        if(!target.closest('#picker, #skillbar, #runitems, button, input, select, a'))return;
+        const entry={kind:'input',event:event.type,target:describe(target),preventedAtCapture:!!event.defaultPrevented,bubbled:false,before:snapshot()};
+        if(typeof document.elementFromPoint==='function'&&Number.isFinite(event.clientX)&&Number.isFinite(event.clientY))entry.hit=describe(document.elementFromPoint(event.clientX,event.clientY));
+        record(entry,/^(click|touchend|pointerup)$/.test(event.type));events.set(event,entry);
+        // Observation after dispatch: never cancel propagation or synthesize input.
+        queueMicrotask(()=>{try{entry.preventedAfterDispatch=!!event.defaultPrevented;entry.after=snapshot();scheduleSave();}catch{}});
+      }catch{}
+    }
+    function bubble(event){const entry=events.get(event);if(entry){entry.bubbled=true;entry.preventedAtBubble=!!event.defaultPrevented;}}
+    for(const type of ['pointerdown','pointerup','pointercancel','touchstart','touchend','touchcancel','click']){
+      window.addEventListener(type,capture,{capture:true,passive:true});window.addEventListener(type,bubble,{passive:true});
+    }
+    const recentErrors=new Map();
+    function recordError(source,error){
+      const message=trim(error?.message??error,800),key=source+message,now=performance.now();
+      if(recentErrors.has(key)&&now-recentErrors.get(key)<2000)return;
+      recentErrors.set(key,now);if(recentErrors.size>50)recentErrors.delete(recentErrors.keys().next().value);
+      const entry={kind:'error',source,message,stack:trim(error?.stack,1200),state:snapshot()};
+      log.errors.push(entry);if(log.errors.length>12)log.errors.shift();record(entry,true);
+    }
+    window.addEventListener('error',event=>{try{recordError('window.error',event.error||event.message);}catch{}},{passive:true});
+    window.addEventListener('unhandledrejection',event=>{try{recordError('unhandledrejection',event.reason);}catch{}},{passive:true});
+    window.addEventListener('pagehide',persist,{passive:true});
+    let lastState='',lastBeat=performance.now();
+    function heartbeat(){
+      try{const now=performance.now(),state=snapshot(),signature=JSON.stringify(state);if(signature!==lastState||now-lastBeat>2500){lastState=signature;record({kind:'state',delay:Math.round(now-lastBeat),state});}lastBeat=now;}catch{}
+      setTimeout(heartbeat,1000);
+    }
+    setTimeout(heartbeat,1000);record({kind:'start',state:snapshot()},true);
+    function mount(){
+      if(document.querySelector('#ro-safari-diagnostics-open'))return;
+      const button=document.createElement('button');button.id='ro-safari-diagnostics-open';button.type='button';button.textContent='Safari 診斷';button.onclick=()=>open(false);document.body.append(button);
+      if(new URL(location.href).searchParams.get('rodiag')==='1')open(true);
+    }
+    function open(preferPrevious){
+      if(dialog){dialog.remove();dialog=null;}
+      dialog=document.createElement('section');dialog.id='ro-safari-diagnostics';dialog.setAttribute('role','dialog');dialog.setAttribute('aria-label','Safari 診斷紀錄');
+      const title=document.createElement('strong');title.textContent='Safari 診斷紀錄';
+      const note=document.createElement('p');note.textContent=storageAvailable?'紀錄自動存於本機，不會上傳。卡住時先重新整理，再查看「上次紀錄」。':'本機保存目前不可用；請先複製紀錄，重新整理可能無法保留。';
+      const select=document.createElement('select');select.setAttribute('aria-label','診斷紀錄來源');
+      for(const [value,label] of [['current','本次紀錄'],['previous','上次紀錄']]){const option=document.createElement('option');option.value=value;option.textContent=label;option.disabled=value==='previous'&&!previous;option.selected=value===(preferPrevious&&previous?'previous':'current');select.append(option);}
+      const text=document.createElement('textarea');text.readOnly=true;text.spellcheck=false;text.setAttribute('aria-label','可手動複製的診斷內容');
+      const status=document.createElement('p');status.setAttribute('role','status');
+      const refresh=()=>{persist();text.value=JSON.stringify(select.value==='previous'?previous:{...log,currentState:snapshot()},null,2);};select.onchange=refresh;
+      const actions=document.createElement('div');
+      function button(label,action){const node=document.createElement('button');node.type='button';node.textContent=label;node.onclick=action;actions.append(node);}
+      button('複製紀錄',()=>{
+        try{const result=window.navigator?.clipboard?.writeText(text.value);if(!result)throw Error('clipboard unavailable');Promise.resolve(result).then(()=>{status.textContent='已複製，可貼到對話中。';},()=>{status.textContent='請長按下方文字，選擇全選 → 複製。';});}
+        catch{status.textContent='請長按下方文字，選擇全選 → 複製。';}
+      });
+      button('選取全部',()=>{text.focus();text.select?.();text.setSelectionRange?.(0,text.value.length);status.textContent='也可長按文字選擇「複製」。';});
+      button('更新本次紀錄',refresh);button('關閉',()=>{dialog.remove();dialog=null;});
+      dialog.append(title,note,select,actions,status,text);document.body.append(dialog);refresh();
+    }
+    return {mount,recordError,getLog:()=>JSON.parse(JSON.stringify(log))};
+  }
+  let safariDiagnostics=null;
+  if(isSafariBrowser()){
+    try{safariDiagnostics=createSafariDiagnostics();window[runtimeKey].diagnostics=()=>safariDiagnostics.getLog();}
+    catch(error){console.warn('[RO助手] Safari 診斷無法啟用',error);}
+  }
   let characterDetails=null,characterDetailsTimer=null;
   let nextCharacterDetailsAt=0;
   const characterStatFields=[
@@ -1118,6 +1219,7 @@
   function runHelperHook(game,name,action){
     try{return action();}
     catch(error){
+      try{safariDiagnostics?.recordError('helper:'+name,error);}catch{}
       let seen=helperHookErrors.get(game);if(!seen){seen=new Set();helperHookErrors.set(game,seen);}
       if(!seen.has(name)){seen.add(name);console.warn('[RO助手] '+name+' 更新失敗，遊戲流程繼續',error);}
     }
@@ -1154,7 +1256,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.11');
+      console.info('[RO助手] 即時自選已啟用 v1.9.12');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1416,7 +1518,7 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
-      #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:8;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:none}
+      #ro-horde-hud{position:fixed;right:12px;top:auto;bottom:12px;width:180px;max-width:calc(100vw - 24px);z-index:8;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:none}
       #ro-horde-hud[hidden]{display:none!important}#ro-horde-hud [data-monster-toggle]{pointer-events:auto;touch-action:manipulation}#ro-horde-hud [data-monster-counts]{pointer-events:auto}#ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
       .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}#stg-detail [data-ro-mob-level]{display:block;width:fit-content;max-width:100%;box-sizing:border-box;font-size:12px;font-weight:700;line-height:1.5;color:#ffe08a;background:#20304c;border:1px solid #a18442;border-radius:4px;padding:1px 6px}#stg-detail .stg-boss [data-ro-mob-level]{margin:3px auto}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
       #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
@@ -1461,6 +1563,10 @@
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
       html.touch #skillbar,html.touch #runitems{pointer-events:auto}
+      #ro-safari-diagnostics-open{position:fixed;left:max(6px,env(safe-area-inset-left));bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483647;pointer-events:auto;min-height:32px;padding:5px 8px;border:1px solid #8b9cb5;border-radius:6px;background:#172238;color:#fff;font:12px sans-serif}
+      #ro-safari-diagnostics{position:fixed;inset:8px;inset:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));z-index:2147483647;box-sizing:border-box;background:#142033;color:#fff;border:1px solid #8b9cb5;border-radius:8px;padding:12px;overflow:auto;pointer-events:auto;font:14px/1.4 sans-serif}
+      #ro-safari-diagnostics button,#ro-safari-diagnostics select{min-height:40px;font-size:16px;margin:3px;padding:6px}
+      #ro-safari-diagnostics textarea{display:block;box-sizing:border-box;width:100%;height:55vh;min-height:140px;font:12px/1.4 monospace;background:#fff;color:#172238;user-select:text;-webkit-user-select:text;-webkit-touch-callout:default;pointer-events:auto}
       @media(pointer:coarse){
         #skillbar,#runitems{pointer-events:auto}
         #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
@@ -1500,6 +1606,7 @@
       }
     `;
     document.head.append(style);
+    safariDiagnostics?.mount();
     document.addEventListener('contextmenu', touchContext, true);
     document.addEventListener('pointerdown',beginLongPress,true);
     document.addEventListener('pointermove',moveLongPress,true);

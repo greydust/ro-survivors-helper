@@ -82,6 +82,7 @@
   function runHelperHook(game,name,action){
     try{return action();}
     catch(error){
+      try{safariDiagnostics?.recordError('helper:'+name,error);}catch{}
       let seen=helperHookErrors.get(game);if(!seen){seen=new Set();helperHookErrors.set(game,seen);}
       if(!seen.has(name)){seen.add(name);console.warn('[RO助手] '+name+' 更新失敗，遊戲流程繼續',error);}
     }
@@ -118,7 +119,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.11');
+      console.info('[RO助手] 即時自選已啟用 v1.9.12');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');

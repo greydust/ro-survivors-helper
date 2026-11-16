@@ -189,8 +189,7 @@ test('held touch cannot cancel unrelated native buttons or release events',()=>{
 });
 test('HUD rendering failure cannot escape native game tick or stop other helper actions',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');let calls=0;
- e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>{throw new Error('simulated mobile layout failure');};
- const game={state:'playing',lootUntil:1,player:{dead:false},enemies:[],vacuum(){calls++;}};
+ const game={state:'playing',lootUntil:1,player:{dead:false},get enemies(){throw new Error('simulated monster data failure');},vacuum(){calls++;}};
  assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
  e.tick(300);assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
 });
@@ -794,7 +793,7 @@ test('right HUD separates cumulative horde births from live monster totals and r
   const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');
   e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>({width:250,height:100,bottom:370,right:1188});
   const {game,flush}=queuedHordeFixture(e);game.horde();
-  const panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.style.top,'374px');
+  const panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.style.top,'auto');assert.equal(panel.style.bottom,'12px');
   assert.equal(panel.querySelector('[data-horde-progress]').textContent,'怪物潮(200/510)');
   assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：200 / —');
   const row=panel.querySelector('[data-monster-counts]').firstElementChild;e.api.updateHordeHud(game,true);assert.equal(panel.querySelector('[data-monster-counts]').firstElementChild,row);
@@ -823,6 +822,16 @@ test('map monster limit follows wave, early ramp and party difficulty without in
   assert.equal(e.api.fieldMonsterLimit(game),60);game.waveTime=15;assert.equal(e.api.fieldMonsterLimit(game),181);
   game.waveTime=30;assert.equal(e.api.fieldMonsterLimit(game),600);game.waveTime=80;assert.equal(e.api.fieldMonsterLimit(game),600);
   assert.equal(e.api.fieldMonsterLimit({}),null);
+});
+test('desktop horde HUD stays bottom-right as loot appears and fits ten monster kinds',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="lu-feed"></div>');
+ const feed=e.document.querySelector('#lu-feed');feed.getBoundingClientRect=()=>{throw Error('fixed HUD must not depend on loot geometry');};
+ const game={state:'playing',enemies:Array.from({length:10},(_,i)=>({def:{id:'test-'+i,name:'怪物'+i},hp:10}))};
+ e.api.updateHordeHud(game,true);const panel=e.document.querySelector('#ro-horde-hud');
+ const position=()=>[panel.style.top,panel.style.bottom,panel.style.right,panel.style.maxHeight];
+ assert.deepEqual(position(),['auto','12px','12px','340px']);assert.equal(panel.querySelector('[data-monster-counts]').children.length,10);
+ feed.innerHTML='<div>新裝備掉落</div>';e.api.updateHordeHud(game,true);assert.deepEqual(position(),['auto','12px','12px','340px']);
+ feed.remove();e.api.updateHordeHud(game,true);assert.equal(e.document.querySelector('#ro-horde-hud'),panel);assert.deepEqual(position(),['auto','12px','12px','340px']);
 });
 test('mobile horde HUD stays outside scaled HUD, docks below feed and preserves changing count rows',()=>{
   const e=setup();vm.runInContext('innerWidth=640;innerHeight=360',e.vmContext);

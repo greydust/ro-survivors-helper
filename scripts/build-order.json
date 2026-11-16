@@ -4,6 +4,7 @@
   "minimap.js",
   "horde-count.js",
   "state-and-refine.js",
+  "safari-diagnostics.js",
   "character-details.js",
   "equipment-catalog.js",
   "monster-names.js",
