@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.7
+// @version      1.9.8
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.7'};
+  window[runtimeKey]={version:'1.9.8'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1106,6 +1106,20 @@
     notify('勝利磁鐵：已吸取地上掉落物');
   }
 
+  const helperHookErrors=new WeakMap();
+  function runHelperHook(game,name,action){
+    try{return action();}
+    catch(error){
+      let seen=helperHookErrors.get(game);if(!seen){seen=new Set();helperHookErrors.set(game,seen);}
+      if(!seen.has(name)){seen.add(name);console.warn('[RO助手] '+name+' 更新失敗，遊戲流程繼續',error);}
+    }
+  }
+  function helperTick(game){
+    runHelperHook(game,'自動選擇',()=>installFastChoice(game));
+    runHelperHook(game,'怪物統計',()=>updateHordeHud(game));
+    runHelperHook(game,'角色資料',()=>{if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}});
+    runHelperHook(game,'勝利磁鐵',()=>victoryMagnet(game));
+  }
   async function installGameHooks() {
     // Import only the already-loaded shared module: never re-run the main game.
     // Locate the public hook registry by its shape, not its minified export name.
@@ -1127,15 +1141,12 @@
       const hooks = Object.values(module).find(value => value && typeof value === 'object'
         && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
       if (!hooks) throw new Error('找不到遊戲事件介面');
-      hooks.start.push(game => { resetRun(); installFastChoice(game); });
-      hooks.tick.push(game => {
-        installFastChoice(game);
-        updateHordeHud(game);
-        if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}
-        try { victoryMagnet(game); }
-        catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
+      hooks.start.push(game => {
+        runHelperHook(game,'重設介面',()=>resetRun());
+        runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.7');
+      hooks.tick.push(helperTick);
+      console.info('[RO助手] 即時自選已啟用 v1.9.8');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1183,12 +1194,14 @@
     const view=window.visualViewport;
     return {left:view?.offsetLeft||0,top:view?.offsetTop||0,width:view?.width||innerWidth,height:view?.height||innerHeight};
   }
-  let longPress=null,heldSlot=null,heldUntil=0;
+  let longPress=null,heldSlot=null,heldUntil=0,touchInputUsed=false;
+  function touchInterface(){return touchInputUsed||document.documentElement.classList.contains('touch')||window.matchMedia?.('(pointer:coarse)').matches===true;}
   function cancelLongPress(){clearTimeout(longPress?.timer);longPress=null;}
   function clearLongPress(){cancelLongPress();heldSlot=null;heldUntil=0;}
   function slotOf(target){return target instanceof Element?target.closest(SLOT):null;}
   function suppressHeldEvent(event){
-    if(!heldSlot||performance.now()>heldUntil||slotOf(event.target)!==heldSlot)return false;
+    if(event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar'))return false;
+    if(!['click','contextmenu'].includes(event.type)||!heldSlot||performance.now()>heldUntil||slotOf(event.target)!==heldSlot)return false;
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
@@ -1198,16 +1211,22 @@
       if(job){document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();}
       return;
     }
-    // A second finger cancels the gesture; ordinary taps and scrolling stay native.
-    if(longPress){cancelLongPress();return;}
+    if(event.pointerType==='touch')touchInputUsed=true;
+    // Pointer/touch pairs on Safari represent one gesture, not a second finger.
+    if(longPress){
+      if(event.isPrimary!==false&&longPress.slot===slotOf(event.target)&&(event.touchFallback||longPress.touchFallback||longPress.pointerId===event.pointerId)){
+        if(!event.touchFallback){longPress.pointerId=event.pointerId;longPress.touchFallback=false;}return;
+      }
+      cancelLongPress();return;
+    }
     if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
     heldSlot=null;
     const slot=slotOf(event.target);if(!slot||slot.classList.contains('empty'))return;
-    const press={slot,pointerId:event.pointerId,x:event.clientX,y:event.clientY,id:slot.dataset.skill??slot.dataset.item,icon:iconOf(slot)};
+    const press={slot,pointerId:event.pointerId,x:event.clientX,y:event.clientY,id:slot.dataset.skill??slot.dataset.item,icon:iconOf(slot),touchFallback:!!event.touchFallback};
     longPress=press;
     press.timer=setTimeout(()=>{
       if(longPress!==press||!slot.isConnected||slot.classList.contains('empty')||(slot.dataset.skill??slot.dataset.item)!==press.id||iconOf(slot)!==press.icon){cancelLongPress();return;}
-      longPress=null;heldSlot=slot;heldUntil=Infinity;
+      longPress=null;heldSlot=slot;heldUntil=performance.now()+1200;
       context({target:slot,clientX:press.x,clientY:press.y,preventDefault(){},stopImmediatePropagation(){}});
     },550);
   }
@@ -1216,12 +1235,25 @@
   }
   function endLongPress(event){
     if(longPress&&event.pointerId===longPress.pointerId)cancelLongPress();
-    if(suppressHeldEvent(event))heldUntil=performance.now()+800;
+    if(heldSlot&&slotOf(event.target)===heldSlot)heldUntil=performance.now()+800;
+  }
+  function touchPressEvent(event){
+    const point=event.changedTouches?.[0]||event.touches?.[0];if(!point)return null;
+    return {target:event.target,pointerType:'touch',pointerId:longPress?.pointerId??point.identifier,isPrimary:true,button:0,clientX:point.clientX,clientY:point.clientY,touchFallback:true};
+  }
+  function startTouchPress(event){
+    touchInputUsed=true;
+    if(event.touches?.length>1){clearLongPress();return;}
+    const pointer=touchPressEvent(event);if(pointer)beginLongPress(pointer);
+  }
+  function moveTouchPress(event){const pointer=touchPressEvent(event);if(pointer)moveLongPress(pointer);}
+  function finishTouchPress(event){
+    const pointer=touchPressEvent(event);if(pointer)endLongPress(pointer);else cancelLongPress();
   }
   function touchContext(event){
     if(suppressHeldEvent(event))return;
     // Some mobile browsers dispatch contextmenu before the 550ms timer.
-    if(longPress&&slotOf(event.target)===longPress.slot){heldSlot=longPress.slot;heldUntil=Infinity;cancelLongPress();}
+    if(longPress&&slotOf(event.target)===longPress.slot){heldSlot=longPress.slot;heldUntil=performance.now()+1200;cancelLongPress();}
     context(event);
   }
   function context(event) {
@@ -1257,7 +1289,7 @@
     const box = menu.getBoundingClientRect(),view=helperViewport();
     menu.style.left = Math.max(view.left+8, Math.min(event.clientX, view.left+view.width - box.width - 8)) + 'px';
     menu.style.top = Math.max(view.top+8, Math.min(event.clientY, view.top+view.height - box.height - 8)) + 'px';
-    button.focus({ preventScroll: true });
+    if(!touchInterface())button.focus({ preventScroll: true });
   }
   function rank(card) {
     const explicit = card.dataset.roApQuality;
@@ -1309,6 +1341,7 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
+    if(touchInterface())document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
     updateHordeHud();
     updateStageSpawnSchedule();
     updateCharacterDetails();
@@ -1347,7 +1380,7 @@
     if (!selected || selected.card.closest('.pk-slot')?.querySelector('.pk-back')) { cancel(); return; }
     if (job?.card === selected.card) return;
     cancel();
-    picker.setAttribute('data-ro-ap-hidden', '');
+    if(!touchInterface())picker.setAttribute('data-ro-ap-hidden', '');
     const current = job = { card: selected.card, started: performance.now(), timer: null };
     const click = () => {
       if (job !== current) return;
@@ -1418,7 +1451,9 @@
       #ro-ap-menu button:hover{background:#3b5f88}
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
+      html.touch #skillbar,html.touch #runitems{pointer-events:auto}
       @media(pointer:coarse){
+        #skillbar,#runitems{pointer-events:auto}
         #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
         #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
         #ro-horde-hud [data-monster-toggle]{min-width:28px;min-height:28px}
@@ -1461,8 +1496,11 @@
     document.addEventListener('pointermove',moveLongPress,true);
     document.addEventListener('pointerup',endLongPress,true);
     document.addEventListener('pointercancel',endLongPress,true);
-    document.addEventListener('touchend',event=>{if(suppressHeldEvent(event))heldUntil=performance.now()+800;}, {capture:true,passive:false});
-    for(const type of ['click','mousedown','mouseup','auxclick'])document.addEventListener(type,suppressHeldEvent,true);
+    document.addEventListener('touchstart',startTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchmove',moveTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchend',finishTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchcancel',finishTouchPress,{capture:true,passive:true});
+    document.addEventListener('click',suppressHeldEvent,true);
     document.addEventListener('scroll',cancelLongPress,true);
     window.addEventListener('blur',clearLongPress);
     window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
