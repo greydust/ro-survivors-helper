@@ -10,6 +10,7 @@ function setup(bundle=source) {
   const { document } = window;
   // LinkeDOM windows share a proxy backing store; each fixture is a new page.
   delete window[Symbol.for('greydust.ro.helper.runtime')];
+  delete window.visualViewport;
   let time = 0, next = 1;
   const timers = new Map(), storage = new Map();
   let observer;
@@ -710,7 +711,7 @@ test('right HUD separates cumulative horde births from live monster totals and r
   const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');
   e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>({width:250,height:100,bottom:370,right:1188});
   const {game,flush}=queuedHordeFixture(e);game.horde();
-  const panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.style.top,'378px');
+  const panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.style.top,'374px');
   assert.equal(panel.querySelector('[data-horde-progress]').textContent,'怪物潮(200/510)');
   assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：200 / —');
   const row=panel.querySelector('[data-monster-counts]').firstElementChild;e.api.updateHordeHud(game,true);assert.equal(panel.querySelector('[data-monster-counts]').firstElementChild,row);
@@ -739,6 +740,26 @@ test('map monster limit follows wave, early ramp and party difficulty without in
   assert.equal(e.api.fieldMonsterLimit(game),60);game.waveTime=15;assert.equal(e.api.fieldMonsterLimit(game),181);
   game.waveTime=30;assert.equal(e.api.fieldMonsterLimit(game),600);game.waveTime=80;assert.equal(e.api.fieldMonsterLimit(game),600);
   assert.equal(e.api.fieldMonsterLimit({}),null);
+});
+test('mobile horde HUD stays outside scaled HUD, docks below feed and preserves changing count rows',()=>{
+  const e=setup();vm.runInContext('innerWidth=640;innerHeight=360',e.vmContext);
+  e.document.body.insertAdjacentHTML('beforeend','<div id="hud" style="zoom:2"><div id="lu-feed" class="land"></div></div>');
+  const feed=e.document.querySelector('#lu-feed');let bottom=200;feed.getBoundingClientRect=()=>({width:180,height:90,right:632,bottom});
+  const game={state:'playing',enemies:[{def:{id:'poring'},hp:10},{def:{id:'poring'},hp:10}]};e.api.setActiveGame(game);e.api.updateHordeHud(game,true);
+  const panel=e.document.querySelector('#ro-horde-hud'),list=panel.querySelector('[data-monster-counts]'),row=list.firstElementChild;
+  assert.equal(panel.parentElement,e.document.body);assert.equal(panel.style.width,'132px');assert.equal(panel.style.bottom,'8px');assert.equal(panel.style.top,'auto');assert(list.hidden);
+  game.enemies[0].hp=0;bottom=290;e.api.updateHordeHud(game,true);assert.equal(list.firstElementChild,row);assert.equal(row.lastElementChild.textContent,'1');assert.equal(panel.style.bottom,'8px');
+  e.document.querySelector('#picker').classList.remove('hidden');e.api.updateHordeHud(game,true);assert(panel.hidden);
+  e.document.querySelector('#picker').classList.add('hidden');e.api.updateHordeHud(game,true);assert(!panel.hidden);assert.equal(e.document.querySelector('#ro-horde-hud'),panel);
+});
+test('mobile chest cards and replacement confirmation retain native taps after a held slot',()=>{
+  const e=setup(),slot=touchSlot(e,'item');pointer(e,slot,'pointerdown');e.tick(550);pointer(e,slot,'pointerup');
+  const cards=picker(e,[['生命藥水','potion.png','普通'],['其他','other.png','稀有']],'item');
+  const nativeSlot=cards[0].closest('.pk-slot');nativeSlot.insertAdjacentHTML('beforeend','<div class="pk-back"><button data-yes>確認替換</button><button data-no>取消</button></div>');
+  let picks=0,confirmed=0;cards[0].onclick=()=>{picks++;nativeSlot.classList.add('asking');};const confirm=nativeSlot.querySelector('[data-yes]');confirm.onclick=()=>confirmed++;
+  assert(!pointer(e,cards[0],'pointerdown').defaultPrevented);assert(!pointer(e,cards[0],'pointerup').defaultPrevented);pointer(e,cards[0],'click');assert.equal(picks,1);
+  assert(!e.document.querySelector('#ro-ap-menu'));assert(e.document.querySelector('#skill-tip').classList.contains('hidden'));
+  assert(!pointer(e,confirm,'pointerdown').defaultPrevented);assert(!pointer(e,confirm,'pointerup').defaultPrevented);pointer(e,confirm,'click');assert.equal(confirmed,1);
 });
 test('horde circle maps world position and radius to exact minimap crop',()=>{
   const e=setup();const game={map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900};

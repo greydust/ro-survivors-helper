@@ -99,3 +99,10 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 
 - build 同步輸出 `.user.js` 與 `.console.js`，後者只去掉 metadata，執行邏輯相同。header 在遊戲 origin 以外不啟動，並用 `Symbol.for('greydust.ro.helper.runtime')` 在 window 記錄已啟動版本，避免重貼／與新版使用者腳本混用造成事件與 WebSocket Proxy 疊加。更新版本須重新整理。
 - Console 注入無法觀測先前已建立的主城 WebSocket，建議主畫面進關前執行；詳細限制見 CONSOLE.md。回歸測試涵蓋 Console 首次啟動、重複執行與使用者腳本混合載入。LinkeDOM 多視窗測試的 Proxy backing store 會共用 window Symbol，獨立頁面 fixture 建立時須清除測試實例標記。
+
+## 手機 HUD 與寶箱觸控修正
+
+- 原生 #hud 有介面 zoom；助手用 getBoundingClientRect 的螢幕座標時，面板應掛 body，不能再放進縮放 HUD。原版放在 HUD 且 z-index 12，存在位置縮放與覆蓋選擇層的風險。現改 body／z-index 8，卡片選擇期間 hidden；面板背景不攔點擊，只有折疊按鈕與怪物明細可互動。
+- 手機／橫向窄高螢幕寬度132px、固定右下、預設折疊，保留原生 #lu-feed 裝備文字區在上；橫向 .land 通知往上留出140px空間。數量更新依怪物 ID 重用 DOM 列，只改名字或數字，避免高頻重建／重新排序造成閃動。
+- #pk-cards 與 #pk-bar 的 pointerdown 清除長按殘留、關閉助手選單／原生技能提示，保留原生 click 與替換確認流程；若手動碰到待自選的卡片，停止該次自動選取。測試涵蓋長按物品後再點寶箱卡片、確認替換、面板與通知高度變動及 picker 顯隱。
+- 此次沒有手機實機重現；修正針對已確認的縮放座標與圖層風險及觸控隔離，不應宣稱寶箱問題已經實機驗證解決。

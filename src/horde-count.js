@@ -97,7 +97,7 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
-    const hud=document.querySelector('#hud'),loot=document.querySelector('#loot-rolls');
+    const hud=document.querySelector('#hud'),loot=document.querySelector('#lu-feed')||document.querySelector('#loot-rolls');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'||!loot){clearHordeHud();return;}
     if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
@@ -107,13 +107,23 @@
       const total=document.createElement('div');total.dataset.monsterTotal='';
       const list=document.createElement('div');list.dataset.monsterCounts='';list.id='ro-field-monsters';
       const header=document.createElement('div');header.dataset.monsterHeader='';
-      const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent='−';toggle.setAttribute('aria-label','折疊怪物明細');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',list.id);
+      const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
+      const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      header.append(progress,toggle);panel.append(header,total,list);hud.append(panel);
+      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
     }
+    const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
+    if(panel.hidden!==!!covered)panel.hidden=!!covered;
+    const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=innerWidth<=700?150:180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
-      for(const [key,value] of Object.entries({top:top+'px',right:Math.max(8,innerWidth-(rect.right||innerWidth-12))+'px',width:Math.min(width,innerWidth-24)+'px',maxHeight:Math.max(80,innerHeight-top-16)+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
+      const rect=loot.getBoundingClientRect(),width=Math.min(compact?132:180,view.width-24);
+      const right=Math.max(8,Math.round(innerWidth-(rect.width?rect.right:view.left+view.width-8)));
+      // Body-level positioning avoids the native HUD's zoom/transform. On phones
+      // reserve a small strip below the pickup feed instead of chasing each row.
+      const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.max(80,view.height*.45);
+      const anchor=rect.width&&rect.height?rect.bottom:view.top+view.height-(compact?92:150);
+      const top=Math.round(Math.max(view.top+8,Math.min(anchor+4,view.top+view.height-(compact?72:100)-8)));
+      for(const [key,value] of Object.entries({top:compact?'auto':top+'px',bottom:compact?Math.max(8,Math.round(innerHeight-view.top-view.height+8))+'px':'auto',right:right+'px',width:width+'px',maxHeight:(compact?maxHeight:Math.min(maxHeight,view.top+view.height-top-8))+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     }
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
@@ -124,9 +134,13 @@
     if(counter.title!==title)counter.title=title;
     const counts=fieldMonsterCounts(game),total=panel.querySelector('[data-monster-total]'),totalText='場上怪物：'+counts.reduce((sum,row)=>sum+row.count,0)+' / '+(fieldMonsterLimit(game)??'—');
     if(total.textContent!==totalText)total.textContent=totalText;
-    const list=panel.querySelector('[data-monster-counts]'),signature=JSON.stringify(counts);
-    if(list.dataset.signature!==signature){
-      list.dataset.signature=signature;list.replaceChildren();
-      for(const row of counts){const line=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');name.textContent=row.name;number.textContent=String(row.count);line.append(name,number);list.append(line);}
+    const list=panel.querySelector('[data-monster-counts]');
+    const existing=new Map([...list.children].map(line=>[line.dataset.monsterId,line])),present=new Set();
+    for(const row of counts){
+      present.add(row.id);let line=existing.get(row.id);
+      if(!line){line=document.createElement('div');line.dataset.monsterId=row.id;line.append(document.createElement('span'),document.createElement('b'));list.append(line);}
+      if(line.firstElementChild.textContent!==row.name)line.firstElementChild.textContent=row.name;
+      if(line.lastElementChild.textContent!==String(row.count))line.lastElementChild.textContent=String(row.count);
     }
+    for(const [id,line] of existing)if(!present.has(id))line.remove();
   }

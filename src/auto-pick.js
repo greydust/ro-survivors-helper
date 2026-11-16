@@ -99,7 +99,7 @@
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.6');
+      console.info('[RO助手] 即時自選已啟用 v1.9.7');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -156,6 +156,12 @@
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
+    // Never reinterpret native picker taps, including chest replacement confirms.
+    if(event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
+      clearLongPress();closeMenu();document.querySelector('#skill-tip')?.classList.add('hidden');
+      if(job){document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();}
+      return;
+    }
     // A second finger cancels the gesture; ordinary taps and scrolling stay native.
     if(longPress){cancelLongPress();return;}
     if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
