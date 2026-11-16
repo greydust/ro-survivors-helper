@@ -302,15 +302,24 @@ test('mobile matching choices bypass each native window while unmatched choices 
  game.events.onLevelUp([{id:'other',rarity:4}]);assert.equal(shown,1);
  game.runItems.slots.set('potion',{item:'other'});game.events.onChest([{slot:'potion',item:'hp',quality:4}],25);assert.equal(shown,2);
 });
-test('fast hook installs late callbacks and repairs replaced event handlers without stacking',()=>{
+test('event bridge returning fresh function references never wraps a callback every tick',()=>{
+ const e=setup();let shown=0,writes=0,current=function(){shown++;};
+ const events={};Object.defineProperty(events,'onLevelUp',{configurable:true,get(){return current.bind(events);},set(fn){writes++;current=fn;}});
+ const game={events,choose(){},player:{dead:false}};
+ for(let i=0;i<2000;i++)e.api.installFastChoice(game);
+ assert.equal(writes,1,'a changed function reference must not create another wrapper');
+ assert.doesNotThrow(()=>game.events.onLevelUp([{id:'other',rarity:1}]));assert.equal(shown,1);
+});
+test('fast hook installs late callbacks once and leaves native callback replacements alone',()=>{
  const e=setup();let shown=0,picks=0;const game={events:{},choose(){picks++;},player:{dead:false}};
  e.api.installFastChoice(game);e.api.setRules([{kind:'skill',id:'bash'}]);
  game.events.onLevelUp=()=>shown++;e.api.installFastChoice(game);const first=game.events.onLevelUp;
  e.api.installFastChoice(game);assert.equal(game.events.onLevelUp,first);game.events.onLevelUp([{id:'bash',rarity:1}]);assert.equal(picks,1);assert.equal(shown,0);
- game.events={onLevelUp:()=>shown++};e.api.installFastChoice(game);const second=game.events.onLevelUp;
- assert.notEqual(first,second);e.api.installFastChoice(game);assert.equal(game.events.onLevelUp,second);game.events.onLevelUp([{id:'bash',rarity:1}]);assert.equal(picks,2);assert.equal(shown,0);
- const currentEvents=game.events;game.events.onLevelUp=()=>shown++;e.api.installFastChoice(game);assert.equal(game.events,currentEvents);game.events.onLevelUp([{id:'bash',rarity:1}]);assert.equal(picks,3);
- e.api.setRules([]);assert.equal(game.events.onLevelUp([{id:'bash',rarity:1}]),0);assert.equal(shown,1);
+ const replacement=()=>shown++;game.events.onLevelUp=replacement;
+ for(let i=0;i<100;i++)e.api.installFastChoice(game);assert.equal(game.events.onLevelUp,replacement);
+ game.events.onLevelUp([{id:'bash',rarity:1}]);assert.equal(shown,1);assert.equal(picks,1);
+ const events={onLevelUp:()=>shown++};game.events=events;e.api.installFastChoice(game);assert.equal(game.events,events);assert.equal(game.events.onLevelUp,events.onLevelUp);
+ game.events.onLevelUp([{id:'bash',rarity:1}]);assert.equal(shown,2);assert.equal(picks,1);
 });
 test('swordsman with four skill slots auto-picks basic attack from 1/2/3 offers',()=>{
   for(const n of [1,2,3]) {

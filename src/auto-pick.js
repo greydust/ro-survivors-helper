@@ -20,8 +20,9 @@
     if(!installed){installed=new Map();fastHooked.set(game,installed);}
     activeGame = game;
     for (const [event, kind, method] of [['onLevelUp', 'skill', 'choose'], ['onChest', 'item', 'chooseChest']]) {
-      const previous=installed.get(event);
-      if(previous?.events===game.events&&previous.wrapper===game.events[event])continue;
+      // Browser/extension bridges may return a fresh callable on each read.
+      // Reference inequality is not evidence that the native callback changed.
+      if(installed.has(event))continue;
       const original = game.events[event];
       if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
       const wrapper=function(cards, ...args) {
@@ -117,7 +118,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.10');
+      console.info('[RO助手] 即時自選已啟用 v1.9.11');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
