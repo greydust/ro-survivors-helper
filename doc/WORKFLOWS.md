@@ -8,10 +8,10 @@
 npm run build
 ```
 
-依相對檔名排序讀取 `src/` 所有 `.js`（包含子目錄），直接串接成
-`dist/RO倖存者助手.user.js`。片段共享同一個 IIFE，不能各自執行；新增片段時以數字檔名前綴指定順序。
+依 `scripts/build-order.json` 的清單順序讀取 `src/` 的 JavaScript 片段，直接串接成
+`dist/RO倖存者助手.user.js`。片段共享同一個 IIFE，不能各自執行；檔名使用功能名稱，不加編號。新增或重新命名片段時同步更新 `scripts/build-order.json`；清單路徑相對於 `src/`，可使用子目錄。建置會檢查重複項目、遺漏檔案及不存在的路徑，避免漏打包。
 建置會檢查單一 metadata header、必要欄位、版本一致性與整體 JavaScript 語法，輸出 SHA-256。
-請修改 `src/`，不要直接修改生成檔。升版時同步更新 `src/00-header.js` 與 `package.json`，並檢查啟動訊息版本字串。
+請修改 `src/`，不要直接修改生成檔。升版時同步更新 `src/header.js` 與 `package.json`，並檢查啟動訊息版本字串。
 
 ```sh
 npm ci
@@ -56,7 +56,7 @@ npm run publish:greasyfork
 
 ### 日常發佈與故障處理
 
-升版時同步修改 `package.json`、`src/00-header.js` 與啟動訊息，完成遊戲內瀏覽器驗證，再推送 main。推送 main 不會發佈；確定要公開時，在本機執行 `npm run publish:greasyfork`；也可至 Actions → Publish Greasy Fork source → Run workflow，選 main 執行。需要修改腳本頁說明時編輯 `doc/GREASYFORK.md`，提交後以相同方式發佈。
+升版時同步修改 `package.json`、`src/header.js` 與啟動訊息，完成遊戲內瀏覽器驗證，再推送 main。推送 main 不會發佈；確定要公開時，在本機執行 `npm run publish:greasyfork`；也可至 Actions → Publish Greasy Fork source → Run workflow，選 main 執行。需要修改腳本頁說明時編輯 `doc/GREASYFORK.md`，提交後以相同方式發佈。
 
 測試失敗不更新發佈分支；修正並推送後，重新手動執行 workflow。Webhook 失敗時，先查 Recent deliveries 的回應，再重新傳送該次 delivery 或在 Greasy Fork 手動同步。需要回復時，以更高版本號發布修正版，避免使用者腳本管理器忽略降版。
 

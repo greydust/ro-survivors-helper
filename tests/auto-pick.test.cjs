@@ -17,7 +17,7 @@ function setup() {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, validRule, matchesRule, baseDetails, baseOptions, setGameCatalog:value=>gameCatalog=value, tierFormula, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, parseFilterImport, loadFilterStore, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, installHordeCount, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -243,172 +243,178 @@ test('smith reopening resets detailed filter and does not alter row handlers',()
   e.document.querySelector('#smith').classList.remove('hidden');e.api.updateSmith();
   assert.equal(e.document.querySelectorAll('#smith-list [data-ro-smith-filtered]').length,0);
 });
-const tierRule=(op,value)=>({type:'tier',op,value});
-function gearEnv(){const e=setup();e.api.setSmithData({1101:{slot:'weapon',wtype:'검'},1163:{slot:'weapon',wtype:'양손검'},2301:{slot:'armor'},2101:{slot:'shield'}},{manifest:{items:{}}});return e;}
-test('rule engine supports nested AND OR NOT with exact tier boundary',()=>{
-  const e=gearEnv();const item={uid:'a',itemId:1101,tier:2,affixes:[]};
-  assert(e.api.matchesRule(tierRule('<=',2),item));assert(e.api.matchesRule(tierRule('=',2),item));assert(!e.api.matchesRule(tierRule('>=',3),item));
-  assert(e.api.matchesRule({type:'and',children:[tierRule('<=',2),{type:'not',children:[{type:'slot',slot:'armor'}]}]},item));
-  assert(e.api.matchesRule({type:'or',children:[tierRule('>=',3),{type:'slot',slot:'onehand'}]},item));
+function catalogEnv(){const e=setup();e.api.setSmithData({1202:{slot:'weapon',wtype:'단검'},1163:{slot:'weapon',wtype:'양손검'},2101:{slot:'shield'},2301:{slot:'armor'}},{manifest:{items:{}}});return e;}
+const gearItem=(overrides={})=>({uid:'gear',itemId:1202,tier:1,quality:4,affixes:[],...overrides});
+const gearSettings=(overrides={})=>({first:[],second:[],third:[],fourth:[],skills:[],...overrides});
+function setDetail(c,id,d){c.filters=[{...d,id:'test-detail',name:'測試細項'}];c.assignments[id]='test-detail';}
+test('catalog defaults keep everything and tier exclusion is exact per equipment',()=>{
+  const e=catalogEnv(),c=e.api.emptyEquipmentFilter();assert(e.api.validEquipmentFilter(c));assert(!e.api.isUnwantedEquipment(c,gearItem()));
+  e.api.setEquipmentTier(c,[1202],1,false);assert(e.api.isUnwantedEquipment(c,gearItem()));
+  assert(!e.api.isUnwantedEquipment(c,gearItem({tier:2})));assert(!e.api.isUnwantedEquipment(c,gearItem({itemId:2101})));
+  e.api.setEquipmentTier(c,[1202],1,true);assert(!e.api.isUnwantedEquipment(c,gearItem()));
 });
-test('main affixes are order-independent and require both when specified',()=>{
-  const e=gearEnv();const item={itemId:1101,tier:2,affixes:[{stat:'luk',value:2},{stat:'str',value:2}]};
-  assert(e.api.matchesRule({type:'primary',first:'str'},item));
-  assert(e.api.matchesRule({type:'primary',first:'str',second:'luk'},item));
-  assert(!e.api.matchesRule({type:'primary',first:'str',second:'dex'},item));
-  assert(!e.api.validRule({type:'primary',second:'luk'}));
-  assert(!e.api.validRule({type:'primary',first:'str',second:'str'}));
+test('catalog excludes selected rarities and all low tiers across categories',()=>{
+  const e=catalogEnv(),c=e.api.emptyEquipmentFilter();c.unwantedRarities=['0','2'];
+  assert(e.api.isUnwantedEquipment(c,gearItem({quality:0})));assert(e.api.isUnwantedEquipment(c,gearItem({quality:2})));
+  assert(!e.api.isUnwantedEquipment(c,gearItem({quality:4})));
+  e.api.excludeEquipmentTiers(c,2);assert(c.disabledTiers['1202:1']);assert(c.disabledTiers['2102:2']);assert(!c.disabledTiers['1163:3']);
 });
-test('secondary groups can be specified independently and ignore card/base bonuses',()=>{
-  const e=gearEnv();const item={itemId:1101,tier:3,affixes:[{stat:'str'},{stat:'luk'},{stat:'pierce'},{stat:'flee'}],cards:[4001]};
-  assert(e.api.matchesRule({type:'secondary',third:'pierce'},item));
-  assert(e.api.matchesRule({type:'secondary',fourth:'flee'},item));
-  assert(!e.api.matchesRule({type:'secondary',third:'crit',fourth:'flee'},item));
-  assert(!e.api.matchesRule({type:'primary',first:'agi'},item));
+test('catalog primary conditions are OR within a field, AND across fields and require distinct affixes',()=>{
+  const e=catalogEnv(),c=e.api.emptyEquipmentFilter();setDetail(c,1202,gearSettings({first:['str','agi'],second:['luk','dex']}));
+  assert(!e.api.isUnwantedEquipment(c,gearItem({affixes:[{stat:'luk'},{stat:'agi'}]})));
+  assert(e.api.isUnwantedEquipment(c,gearItem({affixes:[{stat:'str'},{stat:'vit'}]})));
+  setDetail(c,1202,gearSettings({first:['str'],second:['str']}));assert(e.api.isUnwantedEquipment(c,gearItem({affixes:[{stat:'str'}]})));
 });
-test('base, weapon handedness and skill damage use raw IDs',()=>{
-  const e=gearEnv();const item={itemId:1163,tier:3,affixes:[{stat:'skill',skill:'magnum',value:.15}]};
-  assert(e.api.matchesRule({type:'slot',slot:'twohand',base:'1163'},item));
-  assert(!e.api.matchesRule({type:'slot',slot:'onehand'},item));
-  assert(!e.api.matchesRule({type:'slot',slot:'twohand',base:'1101'},item));
-  assert(e.api.matchesRule({type:'skill',skill:'magnum'},item));
-  assert(!e.api.matchesRule({type:'skill',skill:'shield_bash'},item));
+test('catalog secondary and skill minima combine using raw affixes only and inclusive percent boundary',()=>{
+  const e=catalogEnv(),c=e.api.emptyEquipmentFilter();setDetail(c,1202,gearSettings({third:['crit','cd'],fourth:['flee'],skills:[{id:'bash',min:15},{id:'magnum',min:20}]}));
+  const affixes=[{stat:'cd'},{stat:'flee'},{stat:'skill',skill:'bash',value:.15}];
+  assert(!e.api.isUnwantedEquipment(c,gearItem({affixes})));
+  assert(e.api.isUnwantedEquipment(c,gearItem({affixes:affixes.map(a=>a.stat==='skill'?{...a,value:.149}:a)})));
+  assert(e.api.isUnwantedEquipment(c,gearItem({affixes:affixes.filter(a=>a.stat!=='flee'),cards:[4001]})));
+  assert(!e.api.isUnwantedEquipment(c,gearItem({affixes:[{stat:'crit'},{stat:'flee'},{stat:'skill',skill:'magnum',value:.2}]})));
 });
-test('incomplete and excessive rules never match even when negated',()=>{
-  const e=gearEnv();const item={itemId:1101,tier:2,affixes:[]};
-  for(const rule of [null,{type:'and',children:[]},{type:'or',children:[]},{type:'not',children:[null]},{type:'tier',op:'<=',value:0},{type:'secondary'}]) {
-    assert(!e.api.validRule(rule));assert(!e.api.matchesRule(rule,item));
-  }
-  assert(!e.api.matchesRule({type:'not',children:[tierRule('=',2)]},{itemId:1101,affixes:[]}));
+test('unknown gear, unsafe metadata and protected items are retained; invalid configs cannot select anything',()=>{
+  const e=catalogEnv(),c=e.api.emptyEquipmentFilter();c.unwantedRarities=['4'];
+  for(const patch of [{itemId:999999},{tier:undefined},{tier:NaN},{quality:8},{safe:true},{owner:'char'}])assert(!e.api.isUnwantedEquipment(c,gearItem(patch)));
+  setDetail(c,1202,gearSettings({first:['str']}));assert(!e.api.isUnwantedEquipment(c,gearItem({quality:3,affixes:undefined})));
+  c.filters[0].skills=[{id:'bash',min:-1}];assert(!e.api.validEquipmentFilter(c));assert(!e.api.isUnwantedEquipment(c,gearItem()));
+  c.filters[0].skills=[{id:'bash',min:Infinity}];assert(!e.api.validEquipmentFilter(c));
 });
-function merchantFixture(e){
-  const inventory=[
-    {uid:'low',itemId:1101,tier:1,affixes:[],cards:[]},
-    {uid:'high',itemId:1163,tier:3,affixes:[],cards:[]},
-    {uid:'safe',itemId:2301,tier:1,affixes:[],cards:[],safe:true},
-    {uid:'worn',itemId:2101,tier:1,affixes:[],cards:[]},
-  ];const selection=new Set(['high']);let sold=0;
-  e.document.body.insertAdjacentHTML('beforeend','<div id="shop"><div id="shop-filters"></div><div id="shop-quality"></div><div id="shop-items"></div><button id="shop-sell-btn"></button></div>');
-  function render(){
-    const account=JSON.parse(JSON.stringify({inventory,cards:{},kafra:0}));
-    e.document.querySelector('#shop-filters').innerHTML='<button data-f="all" class="active">全部</button>';
-    e.document.querySelector('[data-f="all"]').onclick=render;
-    e.document.querySelector('#shop-quality').innerHTML='<button data-q="4">傳說</button>'+(selection.size?'<button data-q="none">取消</button>':'');
-    const clear=e.document.querySelector('[data-q="none"]');if(clear)clear.onclick=()=>{selection.clear();render();};
-    e.document.querySelector('#shop-items').innerHTML=account.inventory.map(item=>`<div class="shop-cell ${selection.has(item.uid)?'picked':''} ${item.safe?'safe':''} ${item.uid==='worn'?'worn':''}" data-uid="${item.uid}"></div>`).join('');
-    for(const cell of e.document.querySelectorAll('#shop-items [data-uid]'))cell.onclick=()=>{selection.has(cell.dataset.uid)?selection.delete(cell.dataset.uid):selection.add(cell.dataset.uid);render();};
-  }
-  e.document.querySelector('#shop-sell-btn').onclick=()=>sold++;render();return {selection,sold:()=>sold};
+test('catalog UI has handedness tabs, Chinese monster names, explicit tiers, bulk controls and cancel isolation',()=>{
+  const e=catalogEnv();e.api.openFilter();const d=e.document;
+  assert(d.querySelector('[data-gear-slot="onehand"]'));assert(d.querySelector('[data-gear-slot="twohand"]'));assert(!d.querySelector('[data-gear-slot="weapon"]'));
+  const card=d.querySelector('[data-gear-id="1202"]');assert(card);assert(card.textContent.includes('波利'));assert(card.textContent.includes('T1'));
+  card.querySelector('[data-gear-tier="1"]').click();assert(e.api.getFilterDraft().disabledTiers['1202:1']);
+  assert(!e.api.getFilterStore().disabledTiers['1202:1']);
+  [...d.querySelectorAll('button')].find(b=>b.textContent==='過濾T2以下').click();
+  assert(e.api.getFilterDraft().disabledTiers['2102:2']);
+  d.querySelector('[data-gear-slot="twohand"]').click();assert(d.querySelector('.ro-gear-card [data-gear-tier="3"]'));
+  e.api.closeFilter();assert(!e.api.getFilterStore().disabledTiers['1202:1']);assert.equal(d.querySelector('#ro-unwanted-dialog'),null);
+});
+test('weapon subcategories filter cards within handedness and preserve draft settings',()=>{
+ const e=catalogEnv();e.api.openFilter();let d=e.document;
+ assert(d.querySelector('[aria-label="武器細項分類"]'));d.querySelector('[data-weapon-type="단검"]').click();
+ const cards=[...d.querySelectorAll('.ro-gear-card')];assert(cards.length>0);assert(cards.every(c=>e.api.equipmentGroups().find(g=>String(g.records[0].id)===c.dataset.gearId).records[0].wtype==='단검'));
+ d.querySelector('[data-gear-id="1202"] [data-gear-tier="1"]').click();
+ d.querySelector('[data-gear-slot="twohand"]').click();assert(d.querySelector('[data-weapon-type="활"]'));assert(!d.querySelector('[data-weapon-type="단검"]'));
+ d.querySelector('[data-weapon-type="활"]').click();assert(d.querySelectorAll('.ro-gear-card').length>0);assert(e.api.getFilterDraft().disabledTiers['1202:1']);
+ d.querySelector('[data-gear-slot="shield"]').click();assert.equal(d.querySelector('[aria-label="武器細項分類"]'),null);
+ d.querySelector('[data-gear-slot="onehand"]').click();assert.equal(d.querySelector('[data-weapon-type=""]').getAttribute('aria-pressed'),'true');
+});
+test('rarity buttons cross out exclusions immediately and no unsaved placeholder is shown',()=>{
+ const e=catalogEnv();e.api.openFilter();assert.equal(e.document.querySelectorAll('[data-unwanted-rarity]').length,5);
+ assert(!e.document.querySelector('#ro-unwanted-dialog').textContent.includes('設定尚未儲存'));
+ e.document.querySelector('[data-unwanted-rarity="2"]').click();assert(e.api.getFilterDraft().unwantedRarities.includes('2'));assert(e.document.querySelector('[data-unwanted-rarity="2"]').classList.contains('excluded'));
+ e.document.querySelector('[data-unwanted-rarity="2"]').click();assert(!e.api.getFilterDraft().unwantedRarities.includes('2'));
+});
+function clickText(root,text){const button=[...root.querySelectorAll('button')].find(b=>b.textContent===text);assert(button,'button '+text);button.click();}
+test('named detail manager adds, renames, reorders and cancels without mutating draft',()=>{
+ const e=catalogEnv();e.api.openFilter();clickText(e.document,'管理細項過濾器');clickText(e.document,'新增');
+ let name=e.document.querySelector('[aria-label="細項過濾器名稱"]');name.value='力量';name.oninput();
+ clickText(e.document,'新增');name=e.document.querySelector('[aria-label="細項過濾器名稱"]');name.value='魔法';name.oninput();
+ e.document.querySelector('[aria-label="新細項過濾器上移"]').click();
+ clickText(e.document,'套用管理設定');assert.equal(e.api.getFilterDraft().filters[0].name,'魔法');assert.equal(e.api.getFilterDraft().filters[1].name,'力量');
+ assert.equal(e.api.getFilterStore().filters.length,0);clickText(e.document,'管理細項過濾器');clickText(e.document,'移除');
+ clickText(e.document.querySelector('.ro-gear-detail-panel'),'取消');assert.equal(e.api.getFilterDraft().filters.length,2);
+});
+test('skill multi-select reveals only selected percent rows, validates minima and assigns reusable filters',()=>{
+ const e=catalogEnv();e.api.setGameCatalog({bU:()=>['bash','magnum']});e.api.setSkillDefs({bash:{name:'狂擊'},magnum:{name:'怒爆'}});
+ e.api.openFilter();clickText(e.document,'管理細項過濾器');clickText(e.document,'新增');let panel=e.document.querySelector('.ro-gear-detail-panel');
+ const name=panel.querySelector('[aria-label="細項過濾器名稱"]');name.value='物理配裝';name.oninput();
+ const str=panel.querySelector('input[value="str"]');str.checked=true;str.onchange();
+ assert.equal(panel.querySelectorAll('.ro-selected-skills input').length,0);
+ const skill=panel.querySelector('input[value="bash"]');skill.checked=true;skill.onchange();
+ assert.equal(panel.querySelectorAll('.ro-selected-skills input').length,1);assert.equal(panel.querySelector('[aria-label="怒爆傷害最低百分比"]'),null);
+ let min=panel.querySelector('[aria-label="狂擊傷害最低百分比"]');min.value='-1';min.oninput();clickText(panel,'套用管理設定');assert(panel.querySelector('.ro-gear-error').textContent);
+ min.value='15';min.oninput();clickText(panel,'套用管理設定');
+ const select=e.document.querySelector('[data-gear-id="1202"] select');for(const option of select.querySelectorAll('option'))option.selected=option.value===e.api.getFilterDraft().filters[0].id;select.onchange();
+ assert.equal(e.api.getFilterDraft().assignments[1202],e.api.getFilterDraft().filters[0].id);
+ e.document.querySelector('[data-filter-save]').click();assert(e.storage.has('greydust.ro.unwanted.catalog.v3'));
+ e.api.setFilterStore(e.api.emptyEquipmentFilter());e.api.loadFilterStore();const config=e.api.getFilterStore();assert.equal(config.filters[0].skills[0].min,15);
+ assert(e.api.isUnwantedEquipment(config,gearItem()));assert(!e.api.isUnwantedEquipment(config,gearItem({affixes:[{stat:'str'},{stat:'skill',skill:'bash',value:.15}]})));
+ const imported=e.api.parseFilterImport(JSON.stringify({format:'ro-helper-equipment',settings:config}));assert.equal(imported.assignments[1202],config.filters[0].id);
+});
+test('migration deduplicates former per-item settings and removal clears every assignment',()=>{
+ const e=catalogEnv(),d=gearSettings({first:['str']});const c=e.api.migrateEquipmentFilter({version:2,unwantedRarities:['0'],disabledTiers:{'1202:1':true},details:{1202:d,2102:d}});
+ assert.equal(c.filters.length,1);assert.equal(c.assignments[1202],c.assignments[2102]);assert(c.disabledTiers['1202:1']);
+ e.api.setFilterStore(c);e.api.openFilter();clickText(e.document,'管理細項過濾器');clickText(e.document,'移除');clickText(e.document,'套用管理設定');assert.equal(Object.keys(e.api.getFilterDraft().assignments).length,0);
+});
+test('invalid names and dangling assignments are rejected; all keep preserves the reusable library',()=>{
+ const e=catalogEnv(),c=e.api.emptyEquipmentFilter();setDetail(c,1202,gearSettings({first:['str']}));e.api.setFilterStore(c);e.api.openFilter();clickText(e.document,'全部保留');assert.equal(e.api.getFilterDraft().filters.length,1);assert.equal(Object.keys(e.api.getFilterDraft().assignments).length,0);
+ c.filters[0].name=' ';assert(!e.api.validEquipmentFilter(c));c.filters[0].name='a';c.assignments[1202]='missing';assert(!e.api.validEquipmentFilter(c));
+});
+function catalogMerchant(e,nativeSelection=null){
+  e.document.body.insertAdjacentHTML('beforeend','<div id="shop"><div id="shop-filters"><button class="active" data-f="weapon">武器</button></div><div id="shop-quality"><button data-q="4">傳說</button><button data-q="none">清除</button></div><div id="shop-items"></div><button id="shop-sell">出售</button></div>');
+  const inventory=[gearItem({uid:'low'}),gearItem({uid:'safe',safe:true}),gearItem({uid:'worn'}),gearItem({uid:'high',tier:3})];let sells=0;
+  const render=()=>{JSON.parse(JSON.stringify({inventory}));const root=e.document.querySelector('#shop-items');root.replaceChildren();for(const item of inventory){const cell=e.document.createElement('div');cell.dataset.uid=item.uid;if(nativeSelection?.has(item.uid))cell.classList.add('picked');if(item.safe)cell.classList.add('safe');if(item.uid==='worn')cell.classList.add('worn');cell.onclick=()=>cell.classList.toggle('picked');root.append(cell);}};
+  e.document.querySelector('[data-f="weapon"]').onclick=render;e.document.querySelector('[data-q="none"]').onclick=()=>e.document.querySelectorAll('.picked').forEach(x=>x.classList.remove('picked'));e.document.querySelector('#shop-sell').onclick=()=>sells++;render();return()=>sells;
 }
-test('merchant appends buttons directly after legendary and never sells',()=>{
-  const e=gearEnv();const native=merchantFixture(e);
-  e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'低階裝',rule:tierRule('<=',2)}]});
-  e.api.updateMerchant();assert.equal(e.document.querySelector('[data-q="4"]').nextElementSibling.textContent,'不需要');
-  assert.equal(e.document.querySelector('[data-ro-unwanted]').nextElementSibling.textContent,'過濾器');
-  const original=JSON.parse,has=Set.prototype.has;e.api.selectUnwanted();
-  assert.equal(JSON.parse,original);assert.equal(Set.prototype.has,has);
-  assert.deepEqual([...native.selection],['low']);assert.equal(native.sold(),0);
+test('merchant selects excluded tiers without selling or selecting worn and protected equipment',()=>{
+  const e=catalogEnv(),sells=catalogMerchant(e),c=e.api.emptyEquipmentFilter();e.api.setEquipmentTier(c,[1202],1,false);e.api.setFilterStore(c);
+  e.api.updateMerchant();assert(e.document.querySelector('[data-ro-unwanted]'));e.api.selectUnwanted();
+  assert.deepEqual([...e.document.querySelectorAll('#shop-items .picked')].map(c=>c.dataset.uid),['low']);assert.equal(sells(),0);
 });
-test('filter store persists named nested rules without changing auto-pick settings',()=>{
-  const e=gearEnv();const data={version:1,activeId:'a',profiles:[{id:'a',name:'我的規則',rule:{type:'not',children:[tierRule('>=',3)]}}]};
-  e.storage.set('greydust.ro.unwanted.v1',JSON.stringify(data));e.api.loadFilterStore();
-  assert.equal(e.api.getFilterStore().profiles[0].name,'我的規則');assert.equal(e.api.getRules().length,0);
+test('catalog merchant batch selection uses the original selection Set and restores hooks',()=>{
+  const e=catalogEnv(),selection=new Set(['safe','high']),sells=catalogMerchant(e,selection),c=e.api.emptyEquipmentFilter();
+  e.api.setEquipmentTier(c,[1202],1,false);e.api.setFilterStore(c);
+  const parse=JSON.parse,has=Set.prototype.has;e.api.selectUnwanted();
+  assert.deepEqual([...selection],['low']);assert.equal(sells(),0);assert.equal(JSON.parse,parse);assert.equal(Set.prototype.has,has);
 });
-test('named filter import round trip validates schema, nesting and base-slot consistency',()=>{
-  const e=gearEnv();const data={format:'ro-helper-unwanted',version:1,name:'低階或不合適的劍',rule:{type:'or',children:[tierRule('<=',2),{type:'and',children:[{type:'slot',slot:'twohand',base:'1163'},{type:'not',children:[{type:'primary',first:'str',second:'luk'}]}]}]}};
-  assert.equal(JSON.stringify(e.api.parseFilterImport(JSON.stringify(data))),JSON.stringify(data));
-  assert.throws(()=>e.api.parseFilterImport('{broken'));
-  assert.throws(()=>e.api.parseFilterImport(JSON.stringify({...data,version:2})));
-  assert.throws(()=>e.api.parseFilterImport(JSON.stringify({...data,rule:{type:'slot',slot:'shield',base:'1163'}})));
-  assert.throws(()=>e.api.parseFilterImport(JSON.stringify({...data,rule:{type:'not',children:[null]}})));
+test('catalog metadata has Chinese drop sources without cached library bonuses',()=>{
+  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,201);
+  for(const r of catalog){assert(r.tiers.length);for(const source of r.sources)assert(/[\u4e00-\u9fff]/.test(source.monster));}
+  assert(catalog.every(r=>!Object.hasOwn(r,'bonuses')));
+  const c=e.api.emptyEquipmentFilter();const group=e.api.equipmentGroups().find(g=>g.name==='長戟');
+  e.api.setEquipmentTier(c,group.records.map(r=>r.id),3,false);for(const r of group.records)assert(c.disabledTiers[r.id+':3']);
 });
-test('filter modal renders one root and cancels without saving',()=>{
-  const e=gearEnv();e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'低階',rule:tierRule('<=',2)}]});
-  e.api.openFilter();assert(e.document.querySelector('#ro-unwanted-dialog'));
-  assert.equal(e.document.querySelectorAll('.ro-filter-rule').length,1);
-  e.api.closeFilter();assert.equal(e.document.querySelector('#ro-unwanted-dialog'),null);
-  assert.equal(e.api.getFilterStore().profiles[0].name,'低階');assert.equal(e.storage.size,0);
+test('spawn windows merge adjacent pools, retain separate returns and omit bosses',()=>{
+ const e=setup(),rows=e.api.stageSpawnRows({runLength:360,waves:[{from:0,to:120,pool:['poring','lunatic']},{from:120,to:240,pool:['poring']},{from:240,to:360,pool:['lunatic']}],bosses:[{id:'mastering',t:360}]});
+ const times=Object.fromEntries(rows.map(r=>[r.id,r.times]));assert.equal(times.poring,'00:00–04:00');assert.equal(times.lunatic,'00:00–02:00、04:00–06:00');assert(!times.mastering);
+ assert.equal(e.api.spawnTime(65),'01:05');assert.equal(e.api.stageSpawnRows(null).length,0);
 });
-test('primary editor disables second attribute until first is set and saves named profile',()=>{
-  const e=gearEnv();e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'保留配裝外的物品',rule:{type:'primary'}}]});
-  e.api.openFilter();
-  assert.equal(e.document.querySelectorAll('.ro-filter-rule details').length,1);
-  const checkbox=e.document.querySelector('.ro-filter-rule input[value="str"]');checkbox.checked=true;checkbox.onchange();
-  assert.equal(e.document.querySelectorAll('.ro-filter-rule details').length,2);
-  assert(!e.document.querySelector('[data-filter-save]').disabled);
-  e.document.querySelector('[data-filter-save]').click();
-  const saved=JSON.parse(e.storage.get('greydust.ro.unwanted.v1'));assert.deepEqual(saved.profiles[0].rule.first,['str']);
-  assert.equal(saved.profiles[0].name,'保留配裝外的物品');assert.equal(e.document.querySelector('#ro-unwanted-dialog'),null);
+test('normal spawn windows stop at final boss time instead of boss-fight allowance',()=>{
+ const e=setup(),script={runLength:1020,waves:[{from:0,to:600,pool:['poring']},{from:600,to:1020,pool:['lunatic']},{from:900,to:1020,pool:['fabre']}],bosses:[{id:'mini',t:180},{id:'mvp',t:840}]};
+ const rows=e.api.stageSpawnRows(script);assert.equal(rows.find(r=>r.id==='poring').times,'00:00–10:00');assert.equal(rows.find(r=>r.id==='lunatic').times,'10:00–14:00');assert(!rows.some(r=>r.id==='fabre'));
+ assert(!rows.some(r=>r.times.includes('17:00')));
+ const early=e.api.stageSpawnRows({...script,bosses:[{t:1200,id:'late'}]});assert(early.some(r=>r.times.includes('17:00')));
+ assert.equal(e.api.stageSpawnRows({...script,bosses:[{t:0,id:'immediate'}]}).length,0);
 });
-test('NOT around an incomplete group does not select all inventory',()=>{
-  const e=gearEnv();const item={itemId:1101,tier:1,affixes:[]};
-  assert(!e.api.matchesRule({type:'not',children:[{type:'and',children:[tierRule('=',1),null]}]},item));
+test('spawn windows clip to run length and use native last-wave fallback in gaps',()=>{
+ const e=setup(),rows=e.api.stageSpawnRows({runLength:180,waves:[{from:0,to:60,pool:['poring']},{from:120,to:999,pool:['lunatic']}]});
+ assert.equal(rows.find(r=>r.id==='lunatic').times,'01:00–03:00');
 });
-test('delete buttons belong to the same rule header with group delete after selector',()=>{
-  const e=gearEnv();const rule={type:'and',children:[tierRule('<=',2),{type:'not',children:[{type:'slot',slot:'shield'}]}]};
-  e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'排版',rule}]});e.api.openFilter();
-  const boxes=e.document.querySelectorAll('.ro-filter-rule');
-  const leafHeader=boxes[1].firstElementChild;assert(leafHeader.lastElementChild.hasAttribute('data-filter-remove'));assert.equal(leafHeader.querySelectorAll('label').length,2);
-  const notHeader=boxes[2].firstElementChild;assert(notHeader.querySelector(':scope > select').nextElementSibling.hasAttribute('data-filter-remove'));
+test('stage selection annotates each original mob and updates without duplicates',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="stg-detail"><div class="stg-banner" style="--art:url('https://ro.hans-webgametw.com/assets/stages/prontera.jpg')"></div><div class="stg-sec"><div class="stg-mobs"><span data-mob="poring"></span></div></div></div>`);
+ const stage={runLength:120,waves:[{from:0,to:120,pool:['poring']}],bosses:[]};
+ e.api.setGameCatalog({ca:{prontera:stage}});e.api.updateStageSpawnSchedule();e.api.updateStageSpawnSchedule();
+ assert.equal(e.document.querySelectorAll('[data-ro-mob-time]').length,1);
+ let panel=e.document.querySelector('[data-ro-mob-time]');assert.equal(e.document.querySelector('[data-mob="poring"]').lastElementChild,panel);assert(panel.textContent.includes('波利'));assert(panel.textContent.includes('00:00–02:00'));
+ e.api.setGameCatalog({ca:{prontera:{...stage,waves:[{from:0,to:120,pool:['lunatic']}]}}});e.document.querySelector('[data-mob="poring"]').dataset.mob='lunatic';e.api.updateStageSpawnSchedule();panel=e.document.querySelector('[data-ro-mob-time]');assert(panel.textContent.includes('瘋兔'));assert(!panel.textContent.includes('波利'));
 });
-test('AND and OR folding preserves rule contents and supports reopening',()=>{
-  const e=gearEnv();const rule={type:'or',children:[tierRule('<=',2),{type:'and',children:[{type:'slot',slot:'shield'},{type:'not',children:[tierRule('>=',4)]}]}]};
-  e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'折疊',rule}]});e.api.openFilter();
-  const count=e.document.querySelectorAll('.ro-filter-rule').length;
-  e.document.querySelector('[data-filter-collapse]').click();assert.equal(e.document.querySelectorAll('.ro-filter-rule').length,1);
-  assert.equal(e.document.querySelector('[data-filter-collapse]').textContent,'+');
-  e.document.querySelector('[data-filter-collapse]').click();assert.equal(e.document.querySelectorAll('.ro-filter-rule').length,count);
-  e.api.closeFilter();assert.equal(JSON.stringify(e.api.getFilterStore().profiles[0].rule),JSON.stringify(rule));
+test('two spawn windows appear on separate lines beneath the original monster icon',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/a.jpg')"></div><div class="stg-mobs"><span data-mob="poring"><img src="poring.png"></span></div></div>`);
+ const mob=e.document.querySelector('[data-mob="poring"]'),image=mob.firstElementChild;let clicks=0;mob.onclick=()=>clicks++;
+ e.api.setGameCatalog({ca:{a:{runLength:180,waves:[{from:0,to:60,pool:['poring']},{from:60,to:120,pool:['lunatic']},{from:120,to:180,pool:['poring']}]}}});e.api.updateStageSpawnSchedule();e.api.updateStageSpawnSchedule();
+ assert.deepEqual([...mob.querySelectorAll('small')].map(n=>n.textContent),['00:00–01:00','02:00–03:00']);assert.equal(mob.firstElementChild,image);mob.click();assert.equal(clicks,1);assert.equal(mob.querySelectorAll('[data-ro-mob-time]').length,1);
 });
-test('corrected crusader filter excludes both kept cloaks at Tier 3 and preserves low-tier rule',()=>{
-  const e=setup();e.api.setSmithData({2507:{slot:'garment'},2511:{slot:'garment'},2501:{slot:'garment'},2114:{slot:'shield'},2411:{slot:'shoes'}},{manifest:{items:{}}});
-  const data=JSON.parse(fs.readFileSync(path.join(root,'doc','examples','十字軍-修正版.json'),'utf8'));assert(e.api.validRule(data.rule));
-  for(const id of [2507,2511])assert(!e.api.matchesRule(data.rule,{itemId:id,tier:3,affixes:[]}));
-  assert(e.api.matchesRule(data.rule,{itemId:2501,tier:3,affixes:[]}));
-  assert(e.api.matchesRule(data.rule,{itemId:2507,tier:2,affixes:[]}));
+test('ambiguous or missing stage data never displays an invented timetable',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="stg-detail"><div class="stg-mobs"><span data-mob="poring"></span></div><div class="stg-bosses"></div></div>');
+ const stage={runLength:120,waves:[{from:0,to:120,pool:['poring']}],bosses:[]};e.api.setGameCatalog({ca:{a:stage,b:stage}});e.api.updateStageSpawnSchedule();
+ assert(e.document.querySelector('[data-ro-mob-time]').textContent.includes('時段未提供'));assert.equal(e.document.querySelector('[data-ro-spawn-schedule]'),null);
 });
-test('base dropdown shows all normal drop tiers and inherent Tier-1 bonuses',()=>{
-  const e=setup();e.api.setSmithData({2507:{slot:'garment',bonuses:[{text:()=>'+10 最大 HP'}]}},{manifest:{items:{2507:{name:'伯爵斗篷',icon:'items/2507.png'}}}});
-  e.api.setGameCatalog({ca:{prontera:{waves:[{pool:['a']}],bosses:[]},orcs:{waves:[{pool:['b']}],bosses:[]}},cb:{a:[{id:2507}],b:[{id:2507}]},bs:(id,tier)=>[{text:mult=>`★ STR +${tier*mult}`}],bp:()=> '伯爵斗篷'});
-  const options=e.api.baseOptions('garment');assert.equal(options[0][0],'2507');
-  assert(options[0][1].includes('[T1] [T3]'));assert(options[0][1].includes('+10 最大 HP'));assert(options[0][1].includes('STR +T'));
+test('actual item ID bonuses override library snapshot and same-name gear never shares tier switches',()=>{
+ const e=setup();e.api.setSmithData({2208:{slot:'head_top',bonuses:[]},2209:{slot:'head_top',bonuses:[]}},{manifest:{items:{}}});
+ e.api.setGameCatalog({bs:(id,tier)=>id===2209?[{text:()=>'-'+tier+'% 受到傷害'}]:[]});
+ const catalog=e.api.getEquipmentCatalog(),a=catalog.find(r=>r.id===2208),b=catalog.find(r=>r.id===2209);
+ assert.equal(e.api.actualEquipmentBonuses(a,3).length,0);assert.equal(e.api.actualEquipmentBonuses(b,1)[0],'-1% 受到傷害');
+ const groups=e.api.equipmentGroups().filter(g=>g.name==='紫蝶髮帶');assert.equal(groups.length,2);assert(groups.every(g=>g.records.length===1));
+ const config=e.api.emptyEquipmentFilter();e.api.setEquipmentTier(config,[2208],3,false);assert(!config.disabledTiers['2209:3']);
+ e.api.openFilter();e.document.querySelector('[data-gear-slot="head_top"]').click();
+ const card=e.document.querySelector('[data-gear-id="2208"]');assert(card.textContent.includes('ID 2208'));assert(!card.textContent.includes('受到傷害'));assert(card.textContent.includes('無固有加成'));
 });
-test('base details explicitly distinguish unlisted drop sources and no inherent affixes',()=>{
-  const e=setup();e.api.setSmithData({2507:{slot:'garment',bonuses:[]}},{manifest:{items:{2507:{name:'測試披肩'}}}});
-  e.api.setGameCatalog({ca:{},cb:{},bs:()=>[]});const label=e.api.baseDetails(2507);
-  assert(label.includes('Tier 未列'));assert(label.includes('無額外詞條'));
-});
-test('multiple bases are OR while the part condition remains required',()=>{
-  const e=gearEnv();const rule={type:'slot',slot:'weapon',base:['1101','1163']};
-  assert(e.api.validRule(rule));for(const itemId of [1101,1163])assert(e.api.matchesRule(rule,{itemId,tier:3,affixes:[]}));
-  assert(!e.api.matchesRule(rule,{itemId:2101,tier:3,affixes:[]}));
-  const imported=e.api.parseFilterImport(JSON.stringify({format:'ro-helper-unwanted',version:1,name:'多基底',rule}));assert.equal(imported.rule.base.length,2);
-});
-test('multi-select attributes use OR within each field and distinct attributes across two fields',()=>{
-  const e=gearEnv();const make=stats=>({itemId:1101,tier:3,affixes:stats.map(stat=>({stat}))});
-  assert(e.api.matchesRule({type:'primary',first:['str','luk']},make(['luk','dex'])));
-  assert(!e.api.matchesRule({type:'primary',first:['str','luk']},make(['agi','dex'])));
-  assert(e.api.matchesRule({type:'primary',first:['str','luk'],second:['dex','agi']},make(['str','agi'])));
-  assert(!e.api.matchesRule({type:'primary',first:['str','luk'],second:['str','luk']},make(['str'])));
-  assert(e.api.matchesRule({type:'primary',first:['str','luk'],second:['str','luk']},make(['str','luk'])));
-});
-test('multiple secondary and skill entries use OR within their field',()=>{
-  const e=gearEnv();const item={itemId:1101,tier:3,affixes:[{stat:'cd'},{stat:'hp'},{stat:'skill',skill:'magnum'}]};
-  assert(e.api.matchesRule({type:'secondary',third:['crit','cd'],fourth:['hp','flee']},item));
-  assert(!e.api.matchesRule({type:'secondary',third:['crit','area'],fourth:['hp','flee']},item));
-  assert(e.api.matchesRule({type:'skill',skill:['bash','magnum']},item));
-  assert(!e.api.validRule({type:'primary',first:[],second:['str']}));
-});
-test('Tier formulas scale changing values and preserve fixed interval numbers',()=>{
-  const e=setup();assert.equal(e.api.tierFormula({text:n=>`★ +${n} VIT`}),'+T VIT');
-  assert.equal(e.api.tierFormula({text:n=>`★ 最大HP +${8*n}%`}), '最大HP +T×8%');
-  assert.equal(e.api.tierFormula({text:n=>`★ 每 5 秒回復 ${2*n} HP`}), '每 5 秒回復 T×2 HP');
-});
-test('base multi-select renders library-style Tier tags and formula text',()=>{
-  const e=setup();const control=e.api.formMulti([['2507','伯爵斗篷 ｜ [T3] ｜ +T VIT',{name:'伯爵斗篷',tiers:[3],tierNote:'',bonuses:'+T VIT'}]],[],()=>{});
-  assert.equal(control.querySelector('.wk-star em').textContent,'T3');
-  assert(control.querySelector('.ro-filter-base-info').textContent.includes('+T VIT'));
-  assert(!control.textContent.includes('自帶（T1）'));
+test('unavailable live bonus data is unknown instead of falling back to library effects',()=>{
+ const e=setup(),record=e.api.getEquipmentCatalog().find(r=>r.id===2209);assert.equal(e.api.actualEquipmentBonuses(record,1),null);
+ e.api.setSmithData({2209:{slot:'head_top',bonuses:[]}},{manifest:{items:{}}});e.api.setGameCatalog({bs:()=>{throw new Error('changed API');}});assert.equal(e.api.actualEquipmentBonuses(record,1),null);
 });
 function refineFixture(e,{level=0,mode='success',materials=99,risky=false}={}){
   e.document.body.insertAdjacentHTML('beforeend','<div id="smith"><div id="smith-list"><div class="cand sel" data-uid="piece"></div></div><div id="smith-detail"></div><div><button id="smith-go">精煉</button></div></div><div id="npc-dialog" class="hidden"><div id="npc-options"></div></div>');
@@ -462,48 +468,6 @@ test('refinement stops on close or selection change and will not accept an exist
   e.document.querySelector('#npc-dialog').className='hidden';e.api.startAutoRefine();e.document.querySelector('#smith-list .cand').dataset.uid='other';
   e.tick(500);assert(!e.api.getAutoRefine().active);assert.equal(native.calls(),0);
 });
-test('rarity rule supports multiple OR choices and default common quality',()=>{
-  const e=gearEnv();const rule={type:'rarity',values:['1','4']};
-  assert(e.api.validRule(rule));
-  for(const quality of [1,4])assert(e.api.matchesRule(rule,{itemId:1101,quality,affixes:[]}));
-  assert(!e.api.matchesRule(rule,{itemId:1101,quality:3,affixes:[]}));
-  assert(e.api.matchesRule({type:'rarity',values:['0']},{itemId:1101,affixes:[]}));
-  assert(!e.api.validRule({type:'rarity',values:[]}));assert(!e.api.validRule({type:'rarity',values:['5']}));
-});
-test('AND OR with one child behave exactly as that child',()=>{
-  const e=gearEnv();for(const type of ['and','or']){
-    const rule={type,children:[tierRule('<=',2)]};assert(e.api.validRule(rule));
-    assert(e.api.matchesRule(rule,{itemId:1101,tier:2,affixes:[]}));assert(!e.api.matchesRule(rule,{itemId:1101,tier:3,affixes:[]}));
-  }
-});
-test('rule arrows reorder siblings, preserve nested content and disable at boundaries',()=>{
-  const e=gearEnv();const rule={type:'or',children:[tierRule('=',1),{type:'and',children:[{type:'slot',slot:'shield'}]},tierRule('=',3)]};
-  e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'排序',rule}]});e.api.openFilter();
-  let boxes=e.document.querySelectorAll('.ro-filter-rule');assert(boxes[0].querySelector('[data-filter-move="up"]').disabled);
-  assert(boxes[1].querySelector('[data-filter-move="up"]').disabled);
-  boxes[1].querySelector('[data-filter-move="down"]').click();
-  boxes=e.document.querySelectorAll('.ro-filter-rule');assert.equal(boxes[1].querySelector(':scope > .ro-filter-rule-header > select').value,'and');
-  boxes[1].querySelector('[data-filter-move="down"]').click();
-  boxes=e.document.querySelectorAll('.ro-filter-rule');boxes[2].querySelector('[data-filter-move="down"]').click();
-  e.document.querySelector('[data-filter-save]').click();
-  const saved=e.api.getFilterStore().profiles[0].rule;assert.equal(saved.children[0].value,1);assert.equal(saved.children[1].value,3);assert.equal(saved.children[2].type,'and');assert.equal(saved.children[2].children[0].slot,'shield');
-});
-test('wrap existing root in AND OR NOT preserves the exact rule and saves successfully',()=>{
-  for(const type of ['and','or','not']){
-    const e=gearEnv();const original={type:'primary',first:['str','luk']};
-    e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'包入',rule:original}]});e.api.openFilter();
-    const control=e.document.querySelector('[data-filter-wrap]');control.querySelector(`option[value="${type}"]`).selected=true;control.onchange();
-    e.document.querySelector('[data-filter-save]').click();const rule=e.api.getFilterStore().profiles[0].rule;
-    assert.equal(rule.type,type);assert.equal(rule.children.length,1);assert.equal(JSON.stringify(rule.children[0]),JSON.stringify(original));
-  }
-});
-test('wrap nested subtree without losing its siblings or descendants',()=>{
-  const e=gearEnv();const original={type:'and',children:[tierRule('<=',2),{type:'slot',slot:'shield'}]};
-  e.api.setFilterStore({version:1,activeId:'a',profiles:[{id:'a',name:'巢狀',rule:{type:'or',children:[original,tierRule('=',3)]}}]});e.api.openFilter();
-  const subtree=e.document.querySelectorAll('.ro-filter-rule')[1],control=subtree.querySelector(':scope > .ro-filter-rule-header > [data-filter-wrap]');
-  control.querySelector('option[value="not"]').selected=true;control.onchange();e.document.querySelector('[data-filter-save]').click();
-  const root=e.api.getFilterStore().profiles[0].rule;assert.equal(root.children[1].value,3);assert.equal(root.children[0].type,'not');assert.equal(JSON.stringify(root.children[0].children[0]),JSON.stringify(original));
-});
 function offlineFixture(e){
   const created=[];class Socket extends e.window.EventTarget{
     static CLOSED=3;static OPEN=1;
@@ -553,6 +517,62 @@ test('minimap hides magnet U-strokes and white tips while preserving other marke
   ctx.beginPath();ctx.arc(10,10,3.6,Math.PI,0,true);ctx.stroke();ctx.fillRect(1,1,2,2);assert.equal(calls.length,0);
   ctx.beginPath();ctx.arc(10,10,3.2,0,Math.PI*2);ctx.stroke();ctx.fillRect(1,1,2,2);assert.deepEqual(calls,['stroke','fillRect']);
   e.api.setHideMagnets(false);ctx.beginPath();ctx.arc(10,10,3.6,Math.PI,0,true);ctx.stroke();ctx.fillRect(1,1,2,2);assert.equal(calls.length,4);
+});
+test('character details show live stats and buffs without changing game data',()=>{
+  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div>');
+  e.document.querySelector('#buffs').getBoundingClientRect=()=>({left:8,bottom:130});
+  const stats={maxHp:500,damageReduction:.6,flee:.5,critChance:.2,critMult:1.8,discovery:12.5,enabled:true};
+  const game={hp:250,stats,buffValue:key=>({reduction:.3,flee:.1,crit:.05}[key]||0)};
+  const before=JSON.stringify(game.stats);e.api.setActiveGame(game);e.api.updateCharacterDetails();
+  const button=e.document.querySelector('#ro-character-details-toggle');assert(button);assert.equal(button.style.top,'136px');
+  button.click();const panel=e.document.querySelector('#ro-character-details');assert(panel);
+  const values=Object.fromEntries(e.api.characterStatRows(game));
+  assert.equal(values['生命'],'250 / 500');assert.equal(values['減傷（含 buff，未含 DEF／護甲）'],'75%');
+  assert.equal(values['Flee（含 buff）'],'60%');assert.equal(values['爆擊率（含 buff）'],'25%');
+  assert.equal(values['爆擊傷害'],'×1.8');assert.equal(values['尋寶率（內部值）'],'12.5');assert.equal(values['ATK'],'—');
+  game.hp=123;game.stats={...stats,critMult:2.2};e.tick(250);assert(panel.textContent.includes('123 / 500'));assert(panel.textContent.includes('×2.2'));
+  assert.equal(JSON.stringify(stats),before);assert(panel.textContent.includes('enabledtrue'));
+  e.document.querySelector('#hud').classList.add('hidden');e.tick(250);
+  assert.equal(e.document.querySelector('#ro-character-details'),null);assert.equal(e.document.querySelector('#ro-character-details-toggle'),null);
+});
+test('character details toggle is unique and run reset removes stale player data',()=>{
+  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div>');
+  e.api.setActiveGame({hp:10,stats:{maxHp:20}});e.api.updateCharacterDetails();e.api.updateCharacterDetails();
+  assert.equal(e.document.querySelectorAll('#ro-character-details-toggle').length,1);
+  e.api.openCharacterDetails();e.api.resetRun();e.tick(1000);
+  assert.equal(e.document.querySelector('#ro-character-details'),null);assert.equal(e.document.querySelector('#ro-character-details-toggle'),null);
+});
+test('horde announcement counts successful spawns and rounds target across party anchors',()=>{
+  const e=setup(),announcements=[];
+  let calls=0;
+  const announce=function(text){assert.equal(this,game.events);announcements.push(text);};
+  const spawn=function(){assert.equal(this,game);calls++;return calls%2?{}:null;};
+  const anchors=()=>[{}, {}, {}];
+  const scale=()=>({count:1.1});
+  const game={time:120,difficulty:{count:1},coop:{partyScale:scale},events:{onAnnounce:announce},
+    spawnAnchors:anchors,spawnEnemy:spawn,horde(pool){
+      assert.equal(pool,'pool');
+      const desired=Math.round(Math.min(120,36+this.time/8)*this.difficulty.count*this.coop.partyScale().count);
+      const n=this.spawnAnchors().length;
+      for(let i=0;i<Math.round(desired/n)*n;i++)this.spawnEnemy();
+      this.events.onAnnounce('其他提示');this.events.onAnnounce('怪物潮包圍了你！');return 123;
+    }};
+  e.api.installHordeCount(game);const wrapped=game.horde;e.api.installHordeCount(game);assert.equal(game.horde,wrapped);
+  assert.equal(game.horde('pool'),123);assert.equal(calls,57);
+  assert.deepEqual(announcements,['其他提示','怪物潮(29/57)包圍了你！']);
+  assert.equal(game.spawnEnemy,spawn);assert.equal(game.spawnAnchors,anchors);
+  assert.equal(game.coop.partyScale,scale);assert.equal(game.events.onAnnounce,announce);
+});
+test('horde observers restore inherited methods after native failure and do not invent zero-spawn alerts',()=>{
+  const e=setup(),messages=[];
+  const prototype={spawnEnemy(){return null;},spawnAnchors(){return [{}];}};
+  const game=Object.assign(Object.create(prototype),{time:0,difficulty:{count:1},events:{onAnnounce:t=>messages.push(t)},horde(){
+    this.spawnAnchors();this.spawnEnemy();throw new Error('native failure');
+  }});
+  const announce=game.events.onAnnounce;
+  e.api.installHordeCount(game);assert.throws(()=>game.horde(),/native failure/);
+  assert.equal(Object.hasOwn(game,'spawnEnemy'),false);assert.equal(Object.hasOwn(game,'spawnAnchors'),false);
+  assert.equal(game.events.onAnnounce,announce);assert.deepEqual(messages,[]);
 });
 test('horde circle maps world position and radius to exact minimap crop',()=>{
   const e=setup();const game={map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900};

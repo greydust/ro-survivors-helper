@@ -1,0 +1,16 @@
+[
+  "header.js",
+  "offline.js",
+  "minimap.js",
+  "horde-count.js",
+  "state-and-refine.js",
+  "character-details.js",
+  "equipment-catalog.js",
+  "monster-names.js",
+  "merchant-filter.js",
+  "equipment-filter.js",
+  "stage-schedule.js",
+  "smith.js",
+  "auto-pick.js",
+  "ui-and-startup.js"
+]

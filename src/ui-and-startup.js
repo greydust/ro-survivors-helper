@@ -1,0 +1,100 @@
+  function start() {
+    loadFilterStore();
+    const style = document.createElement('style');
+    style.textContent = `
+      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
+      #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
+      #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+      #ro-unwanted-dialog .ro-equipment-filter>.ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button,#ro-unwanted-dialog .ro-gear-tabs button,#ro-unwanted-dialog .ro-gear-settings{background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
+      #ro-unwanted-dialog .ro-gear-actions{padding-bottom:10px;border-bottom:1px solid #415573;margin-bottom:10px}#ro-unwanted-dialog .ro-gear-actions span{color:#bac9dc;font-size:12px}
+      #ro-unwanted-dialog .ro-gear-tabs button.active{background:#b9e5d1;color:#12332c}#ro-unwanted-dialog .ro-gear-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+      #ro-unwanted-dialog .ro-gear-card{border:1px solid #415573;border-radius:9px;background:#152238;padding:12px;min-width:0}#ro-unwanted-dialog .ro-gear-card header{display:flex;align-items:center;gap:8px}#ro-unwanted-dialog .ro-gear-card header img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated}#ro-unwanted-dialog .ro-gear-card header b{flex:1}
+      #ro-unwanted-dialog .ro-gear-card .ro-gear-settings{margin-left:auto}#ro-unwanted-dialog .ro-gear-settings.configured{outline:2px solid #b9e5d1}#ro-unwanted-dialog .ro-gear-tier{display:flex;align-items:baseline;gap:6px;margin-top:7px;color:#b9e5d1}#ro-unwanted-dialog .ro-gear-tier button{flex:none;background:#b9e5d1;color:#12332c;border:1px solid #b9e5d1;border-radius:5px;padding:3px 8px}#ro-unwanted-dialog .ro-gear-tier button.excluded{background:#4a2731;color:#ffc7c7;border-color:#a96170;text-decoration:line-through}#ro-unwanted-dialog .ro-gear-card ul{padding-left:18px;font-size:12px;color:#bac9dc;line-height:1.6}
+      #ro-unwanted-dialog .ro-equipment-filter .ro-filter-multi-list{color:#172238;width:400px}#ro-unwanted-dialog .ro-equipment-filter summary{color:#172238}#ro-unwanted-dialog .ro-gear-detail-backdrop{position:absolute;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}#ro-unwanted-dialog .ro-gear-detail-panel{background:#f5f7fc;color:#172238;border:2px solid #738ab4;padding:18px;border-radius:10px;width:min(1000px,95vw);max-height:85vh;overflow:auto}#ro-unwanted-dialog .ro-gear-detail-field{display:flex;align-items:center;flex-wrap:nowrap;gap:8px;min-width:0}#ro-unwanted-dialog label.ro-gear-skill{display:flex;flex-wrap:nowrap;gap:5px}#ro-unwanted-dialog .ro-gear-skill span:first-of-type{flex:1}#ro-unwanted-dialog .ro-gear-skill input[type=number]{width:90px;flex:none}#ro-unwanted-dialog .ro-gear-error{color:#b02030}
+      #ro-unwanted-dialog .ro-rarity-buttons{display:flex;flex-wrap:wrap;gap:4px}#ro-unwanted-dialog .ro-equipment-filter .ro-rarity-buttons button{color:var(--rarity-color);border-color:var(--rarity-color)}#ro-unwanted-dialog .ro-rarity-buttons button.excluded{text-decoration:line-through;opacity:.5}#ro-unwanted-dialog .ro-manage-details{margin-left:auto!important}
+      #ro-unwanted-dialog select.ro-gear-filter-select{width:132px;flex:0 1 132px;margin-left:auto;min-width:0;text-overflow:ellipsis}#ro-unwanted-dialog .ro-gear-card header b{min-width:0;overflow-wrap:anywhere}
+      #ro-unwanted-dialog .ro-detail-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}#ro-unwanted-dialog .ro-detail-list{max-height:55vh;overflow:auto}#ro-unwanted-dialog .ro-detail-list-row{display:flex;align-items:center}#ro-unwanted-dialog .ro-detail-list-row button:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#ro-unwanted-dialog .ro-detail-list-row button.active{background:#b9e5d1}#ro-unwanted-dialog .ro-detail-list-row button:not(:first-child){flex:none;padding:4px}
+      #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
+      @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
+      #ro-character-details-toggle{position:fixed;z-index:30;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
+      #ro-character-details{position:fixed;left:12px;top:20vh;width:min(420px,calc(100vw - 24px));max-height:70vh;overflow:auto;box-sizing:border-box;z-index:2147483646;padding:12px;border:1px solid #738ab4;border-radius:8px;background:#172238f5;color:#e8eef8;font:13px sans-serif;pointer-events:auto;box-shadow:0 6px 24px #0009}
+      #ro-character-details header{display:flex;justify-content:space-between;align-items:center;gap:8px}#ro-character-details button{cursor:pointer;padding:4px 10px}#ro-character-details p{font-size:12px;color:#b9c8e4;line-height:1.5}
+      #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
+      [data-ro-ap-enabled]{outline:2px solid #65edb1!important;outline-offset:2px}
+      #smith-list [data-ro-smith-filtered]{display:none!important}
+      #smith-filters{flex-wrap:wrap}
+      #ro-auto-refine{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
+      #ro-auto-refine-target{padding:6px;border:1px solid #a0aec7;border-radius:4px;font:inherit}
+      #ro-unwanted-dialog{position:fixed;inset:0;z-index:2147483647;background:#0009;display:flex;align-items:center;justify-content:center;padding:16px;font:14px sans-serif;color:#172238}
+      #ro-unwanted-dialog .ro-filter-panel{background:#f5f7fc;border:2px solid #738ab4;border-radius:10px;padding:18px;width:min(1440px,96vw);max-width:100%;max-height:90vh;overflow:auto;box-sizing:border-box}
+      #ro-unwanted-dialog h3{margin:0 0 10px}#ro-unwanted-dialog p{line-height:1.5}
+      #ro-unwanted-dialog input,#ro-unwanted-dialog select{max-width:100%;padding:6px;margin:4px;border:1px solid #a0aec7;border-radius:4px;background:white;color:#172238;font:inherit}
+      #ro-unwanted-dialog input[type=number]{width:90px}#ro-unwanted-dialog label{display:inline-flex;align-items:center;flex-wrap:wrap}
+      #ro-unwanted-dialog button{margin:4px}
+      #ro-unwanted-dialog .ro-filter-multi{position:relative;display:inline-block;width:240px;max-width:100%;min-width:0;flex:0 1 240px;margin:4px}
+      #ro-unwanted-dialog .ro-filter-field{display:inline-flex;align-items:center;flex-wrap:wrap;max-width:100%;min-width:0}
+      #ro-unwanted-dialog .ro-filter-multi summary{cursor:pointer;border:1px solid #a0aec7;border-radius:4px;background:white;padding:6px;width:100%;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #ro-unwanted-dialog .ro-filter-multi-list{position:fixed;z-index:2147483647;min-width:0;width:320px;max-width:calc(100vw - 24px);box-sizing:border-box;max-height:300px;overflow:auto;background:white;border:1px solid #738ab4;box-shadow:0 4px 12px #0004;padding:6px}
+      #ro-unwanted-dialog .ro-filter-multi-list label{display:flex;flex-wrap:nowrap;margin:3px;cursor:pointer;white-space:normal;overflow-wrap:anywhere}
+      #ro-unwanted-dialog .ro-filter-multi-list input{flex:none}
+      #picker[data-ro-ap-hidden]{visibility:hidden!important;pointer-events:none!important}
+      #ro-ap-menu{position:fixed;z-index:2147483647;background:#172238;color:#fff;border:1px solid #738ab4;border-radius:8px;padding:6px;box-shadow:0 6px 24px #0009;font:14px sans-serif;min-width:180px}
+      #ro-ap-menu>div{padding:7px 10px;color:#b9c8e4;max-width:280px;overflow-wrap:anywhere}
+      #ro-ap-menu button{display:block;width:100%;padding:10px 14px;color:#fff;background:#2c4365;border:0;border-radius:5px;text-align:left;cursor:pointer;font:inherit}
+      #ro-ap-menu button:hover{background:#3b5f88}
+      #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
+    `;
+    document.head.append(style);
+    document.addEventListener('contextmenu', context, true);
+    document.addEventListener('click',event=>{
+      if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
+        event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
+      }
+      if(!autoRefine.active||!(event.target instanceof Element))return;
+      if(event.target.closest('#smith-close'))stopAutoRefine();
+      const row=event.target.closest('#smith-list .cand[data-uid]');
+      if(row&&row.dataset.uid!==autoRefine.uid)stopAutoRefine('已切換裝備，自動精煉停止');
+    },true);
+    document.addEventListener('pointerdown', e => { if (!menu?.contains(e.target)) closeMenu(); }, true);
+    document.addEventListener('keydown', e => {
+      if(characterDetails&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeCharacterDetails();return;}
+      if(filterDialog){
+        // The game's Escape/number handlers must not react behind this modal.
+        e.stopImmediatePropagation();
+        if(e.key==='Escape'){e.preventDefault();const menu=filterDialog.querySelector('.ro-filter-multi[open]');if(menu)menu.closeMenu();else if(gearDetails)closeGearDetails();else closeFilter();}
+        return;
+      }
+      if (e.key === 'Escape') {
+        if(autoRefine.active)stopAutoRefine();
+        closeMenu();
+        if (job) {
+          document.querySelectorAll('#pk-cards .pk-card').forEach(card => manualCards.add(card));
+          cancel(); notify('已中止本次自動選擇');
+        }
+      }
+    }, true);
+    window.addEventListener('keydown',e=>{
+      if(characterDetails&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeCharacterDetails();return;}
+      if(filterDialog){e.stopImmediatePropagation();if(e.key==='Escape'){e.preventDefault();const menu=filterDialog.querySelector('.ro-filter-multi[open]');if(menu)menu.closeMenu();else if(gearDetails)closeGearDetails();else closeFilter();}}
+    },true);
+    window.addEventListener('blur', closeMenu);
+    new MutationObserver(records => {
+      // The game hides #hud when destroying a run and shows it for a new run.
+      // oldValue also detects a hide/show pair within the same mutation batch.
+      if (records.some(r => r.type === 'attributes' && r.target.id === 'hud' && r.attributeName === 'class'
+        && /(?:^|\s)hidden(?:\s|$)/.test(r.oldValue || '') !== r.target.classList.contains('hidden'))) resetRun();
+      const relevant = records.some(r => {
+        // DOMTokenList can emit a class mutation even when add/toggle leaves
+        // the value unchanged. Never schedule another scan for that no-op.
+        if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
+        const el = r.target instanceof Element ? r.target : r.target.parentElement;
+        return el?.closest('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
+      });
+      if (relevant) schedule();
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
+    scan();
+    installGameHooks();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+})();

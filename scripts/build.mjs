@@ -12,9 +12,18 @@ async function filesIn(directory) {
     : entry.isFile() && entry.name.endsWith('.js') ? [path.join(directory, entry.name)] : []));
   return groups.flat();
 }
-const files = (await filesIn(path.join(root, 'src'))).sort((a,b) =>
-  path.relative(root,a).replaceAll('\\','/').localeCompare(path.relative(root,b).replaceAll('\\','/'), 'en'));
-if (!files.length) throw new Error('src/ contains no JavaScript sources');
+const sourceRoot = path.join(root, 'src');
+const order = JSON.parse(await readFile(new URL('./build-order.json', import.meta.url), 'utf8'));
+if (!Array.isArray(order) || !order.length || order.some(file => typeof file !== 'string'))
+  throw new Error('scripts/build-order.json must be a non-empty array of source paths');
+if (new Set(order).size !== order.length) throw new Error('Duplicate source paths in scripts/build-order.json');
+const available = new Map((await filesIn(sourceRoot)).map(file =>
+  [path.relative(sourceRoot, file).replaceAll('\\', '/'), file]));
+const unknown = order.filter(file => !available.has(file));
+const omitted = [...available.keys()].filter(file => !order.includes(file));
+if (unknown.length || omitted.length)
+  throw new Error(`Source list mismatch: unknown=[${unknown.join(', ')}], omitted=[${omitted.join(', ')}]`);
+const files = order.map(file => available.get(file));
 // Sources are ordered fragments sharing one IIFE. Preserve their exact text;
 // do not add wrappers or separators that could change userscript metadata.
 const source = (await Promise.all(files.map(file => readFile(file, 'utf8')))).join('');

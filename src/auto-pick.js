@@ -13,6 +13,8 @@
   }
 
   function installFastChoice(game) {
+    installHordeCount(game);
+    if(game)activeGame=game;
     if (!game || !game.events || fastHooked.has(game)) return;
     fastHooked.add(game);
     activeGame = game;
@@ -76,6 +78,7 @@
     try {
       const module = await import(new URL(link.getAttribute('href'), location.href).href);
       gameCatalog=module;
+      updateStageSpawnSchedule();
       smithDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value[1101]?.slot === 'weapon' && value[2254]?.slot === 'head_top') || null;
       smithAssets = Object.values(module).find(value => value && typeof value === 'object'
@@ -91,10 +94,11 @@
       hooks.start.push(game => { resetRun(); installFastChoice(game); });
       hooks.tick.push(game => {
         installFastChoice(game);
+        if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.0');
+      console.info('[RO助手] 即時自選已啟用 v1.9.3');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -208,6 +212,9 @@
     document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
   }
   function resetRun() {
+    closeCharacterDetails();
+    activeGame=null;
+    document.querySelector('#ro-character-details-toggle')?.remove();
     rules = [];
     cancel();
     closeMenu();
@@ -215,6 +222,8 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
+    updateStageSpawnSchedule();
+    updateCharacterDetails();
     updateOfflineUI();
     updateMinimapOption();
     updateSmith();
