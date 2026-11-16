@@ -99,7 +99,7 @@
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.4');
+      console.info('[RO助手] 即時自選已啟用 v1.9.5');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -128,7 +128,7 @@
   function identity(el) {
     const kind = el.hasAttribute('data-skill') ? 'skill' : 'item';
     const itemId = kind === 'item' ? activeGame?.runItems?.slots.get(el.dataset.item)?.item : undefined;
-    return { kind, id: kind === 'skill' ? el.dataset.skill : el.dataset.item, itemId, icon: iconOf(el), name: tipName(el) };
+    return { kind, id: kind === 'skill' ? el.dataset.skill : el.dataset.item, itemId, icon: iconOf(el), name: tipName(el) || (kind==='skill'?cleanName((activeGame?.skillDef?.(el.dataset.skill)||skillDefs?.[el.dataset.skill])?.name):'') };
   }
   function sameSlot(rule, el) {
     const skill = el.hasAttribute('data-skill');
@@ -143,6 +143,45 @@
     notify.timer = setTimeout(() => toast.remove(), 2400);
   }
   function closeMenu() { menu?.remove(); menu = null; }
+  function helperViewport(){
+    const view=window.visualViewport;
+    return {left:view?.offsetLeft||0,top:view?.offsetTop||0,width:view?.width||innerWidth,height:view?.height||innerHeight};
+  }
+  let longPress=null,heldSlot=null,heldUntil=0;
+  function cancelLongPress(){clearTimeout(longPress?.timer);longPress=null;}
+  function clearLongPress(){cancelLongPress();heldSlot=null;heldUntil=0;}
+  function slotOf(target){return target instanceof Element?target.closest(SLOT):null;}
+  function suppressHeldEvent(event){
+    if(!heldSlot||performance.now()>heldUntil||slotOf(event.target)!==heldSlot)return false;
+    event.preventDefault();event.stopImmediatePropagation();return true;
+  }
+  function beginLongPress(event){
+    // A second finger cancels the gesture; ordinary taps and scrolling stay native.
+    if(longPress){cancelLongPress();return;}
+    if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
+    heldSlot=null;
+    const slot=slotOf(event.target);if(!slot||slot.classList.contains('empty'))return;
+    const press={slot,pointerId:event.pointerId,x:event.clientX,y:event.clientY,id:slot.dataset.skill??slot.dataset.item,icon:iconOf(slot)};
+    longPress=press;
+    press.timer=setTimeout(()=>{
+      if(longPress!==press||!slot.isConnected||slot.classList.contains('empty')||(slot.dataset.skill??slot.dataset.item)!==press.id||iconOf(slot)!==press.icon){cancelLongPress();return;}
+      longPress=null;heldSlot=slot;heldUntil=Infinity;
+      context({target:slot,clientX:press.x,clientY:press.y,preventDefault(){},stopImmediatePropagation(){}});
+    },550);
+  }
+  function moveLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId&&Math.hypot(event.clientX-longPress.x,event.clientY-longPress.y)>10)cancelLongPress();
+  }
+  function endLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId)cancelLongPress();
+    if(suppressHeldEvent(event))heldUntil=performance.now()+800;
+  }
+  function touchContext(event){
+    if(suppressHeldEvent(event))return;
+    // Some mobile browsers dispatch contextmenu before the 550ms timer.
+    if(longPress&&slotOf(event.target)===longPress.slot){heldSlot=longPress.slot;heldUntil=Infinity;cancelLongPress();}
+    context(event);
+  }
   function context(event) {
     const el = event.target instanceof Element ? event.target.closest(SLOT) : null;
     if (!el || el.classList.contains('empty')) return;
@@ -150,8 +189,9 @@
     event.stopImmediatePropagation();
     closeMenu();
     const rule = identity(el);
+    if(heldSlot===el)el.closest('#skillbar, #lu-sockets, #runitems')?.dispatchEvent(new MouseEvent('mouseleave'));
     // Do not guess when a tooltip is missing or the site's DOM has changed.
-    if (!rule.icon || !rule.name) { notify('無法辨識此項目；請先將滑鼠移到圖示上再按右鍵'); return; }
+    if (!rule.icon || !rule.name) { notify('無法辨識此項目；請關閉提示後，重新長按或按右鍵'); return; }
     const enabled = rules.some(r => sameSlot(r, el));
     menu = document.createElement('div');
     menu.id = 'ro-ap-menu';
@@ -163,16 +203,18 @@
     button.setAttribute('role', 'menuitem');
     button.textContent = enabled ? '關閉自動選擇' : '開啟自動選擇';
     button.onclick = () => {
+      if(!el.isConnected||!sameSlot(rule,el)||iconOf(el)!==rule.icon){closeMenu();notify('項目已變更，請重新長按或按右鍵設定');return;}
       rules = rules.filter(r => !sameSlot(r, el));
       if (!enabled) rules.push(rule);
       closeMenu(); scan();
       notify(`${rule.name}：已${enabled ? '關閉' : '開啟'}自動選擇`);
     };
-    menu.append(title, button);
+    const close=document.createElement('button');close.type='button';close.textContent='取消';close.setAttribute('role','menuitem');close.onclick=closeMenu;
+    menu.append(title, button,close);
     document.body.append(menu);
-    const box = menu.getBoundingClientRect();
-    menu.style.left = Math.max(8, Math.min(event.clientX, innerWidth - box.width - 8)) + 'px';
-    menu.style.top = Math.max(8, Math.min(event.clientY, innerHeight - box.height - 8)) + 'px';
+    const box = menu.getBoundingClientRect(),view=helperViewport();
+    menu.style.left = Math.max(view.left+8, Math.min(event.clientX, view.left+view.width - box.width - 8)) + 'px';
+    menu.style.top = Math.max(view.top+8, Math.min(event.clientY, view.top+view.height - box.height - 8)) + 'px';
     button.focus({ preventScroll: true });
   }
   function rank(card) {
@@ -213,6 +255,7 @@
     document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
   }
   function resetRun() {
+    clearLongPress();
     clearHordeHud();
     closeCharacterDetails();
     activeGame=null;

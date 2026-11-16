@@ -43,23 +43,45 @@
       &&JSON.stringify(s.bosses.map(b=>b.id).sort())===JSON.stringify(bosses));
     return candidates.length===1?{id:candidates[0][0],script:candidates[0][1]}:null;
   }
+  function stageMonsterLevel(id,selected,lap){
+    const monsters=gameCatalog?.bj,base=monsters?.[id]?.level;
+    if(!Number.isFinite(base))return null;
+    if(lap<=1)return base;
+    // Native RO_LAPAVG/RO_LAPK: time-weighted pool mean, rounded difference
+    // from the last eligible stage. Both later laps use the same level offset.
+    const eligible=['prontera','sewer','sunken','byalan','payon','payon_cave','orcs','pyramid','maze'];
+    if(!selected||!eligible.includes(selected.id))return null;
+    const average=script=>{
+      let sum=0,total=0;
+      for(const wave of script?.waves||[]){
+        const pool=(wave.pool||[]).map(key=>monsters[key]).filter(Boolean),duration=Math.max(0,(wave.to||0)-(wave.from||0));
+        if(!pool.length||!duration)continue;
+        sum+=duration*pool.reduce((n,m)=>n+(m.level||0),0)/pool.length;total+=duration;
+      }
+      return total?sum/total:null;
+    };
+    const current=average(selected.script),last=average(gameCatalog?.ca?.maze);
+    return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
+  }
   function updateStageSpawnSchedule(){
     const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs');
     if(!mobs)return;
     detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
+    const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
     if(!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
     for(const mob of mobs.querySelectorAll('[data-mob]')){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
       const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
-      const signature=JSON.stringify([name,times]);
+      const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
       if(mob.dataset.roScheduleSignature===signature&&mob.querySelector('[data-ro-mob-time]'))continue;
       mob.dataset.roScheduleSignature=signature;mob.classList.add('ro-timed-mob');
       mob.querySelector('[data-ro-mob-time]')?.remove();
       const caption=document.createElement('span');caption.dataset.roMobTime='';
       caption.title='可隨機生成的時段，非固定出生時間。依最後頭目預定出場時間截斷；若頭目出生延遲，實際停刷也可能延後。';
       const label=document.createElement('b');label.textContent=name;caption.append(label);
+      const levelLine=document.createElement('span');levelLine.dataset.roMobLevel='';levelLine.textContent='等級 '+(level??'—');levelLine.title='計算經驗衰減使用的怪物等級（含目前周目修正）';caption.append(levelLine);
       for(const time of times){const line=document.createElement('small');line.textContent=time;caption.append(line);}
       mob.append(caption);
     }

@@ -112,7 +112,7 @@
       header.append(progress,toggle);panel.append(header,total,list);hud.append(panel);
     }
     if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
+      const rect=loot.getBoundingClientRect(),width=innerWidth<=700?150:180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
       for(const [key,value] of Object.entries({top:top+'px',right:Math.max(8,innerWidth-(rect.right||innerWidth-12))+'px',width:Math.min(width,innerWidth-24)+'px',maxHeight:Math.max(80,innerHeight-top-16)+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     }
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');

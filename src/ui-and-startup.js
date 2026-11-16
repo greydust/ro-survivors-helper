@@ -4,7 +4,7 @@
     style.textContent = `
       #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:12;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:auto}
       #ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
-      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
+      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-level]{font-size:12px;color:#b9c8e4}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
       #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
       #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
       #ro-unwanted-dialog .ro-equipment-filter>.ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button,#ro-unwanted-dialog .ro-gear-tabs button,#ro-unwanted-dialog .ro-gear-settings{background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
@@ -45,9 +45,57 @@
       #ro-ap-menu button{display:block;width:100%;padding:10px 14px;color:#fff;background:#2c4365;border:0;border-radius:5px;text-align:left;cursor:pointer;font:inherit}
       #ro-ap-menu button:hover{background:#3b5f88}
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
+
+      @media(pointer:coarse){
+        #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+        #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
+        #ro-horde-hud [data-monster-toggle]{min-width:36px;min-height:36px}
+        #ro-character-details-toggle{min-height:36px}
+        #ro-unwanted-dialog input,#ro-unwanted-dialog select{font-size:16px}
+      }
+      @media(max-width:700px),(pointer:coarse) and (max-height:500px){
+        #ro-unwanted-dialog{padding:6px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom));box-sizing:border-box}
+        #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{width:100%;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+        #ro-unwanted-dialog .ro-gear-card{padding:8px}
+        #ro-unwanted-dialog .ro-gear-card header{flex-wrap:wrap;gap:4px}
+        #ro-unwanted-dialog .ro-gear-card header b{flex:1;min-width:90px}
+        #ro-unwanted-dialog select.ro-gear-filter-select{flex:0 0 100%;width:100%;margin:4px 0 0}
+        #ro-unwanted-dialog .ro-gear-tabs{flex-wrap:nowrap;overflow-x:auto;padding:4px 0;overscroll-behavior-x:contain}
+        #ro-unwanted-dialog .ro-gear-tabs button{flex:none;white-space:nowrap;margin:0}
+        #ro-unwanted-dialog .ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button{margin:2px;padding:6px 8px}
+        #ro-unwanted-dialog .ro-manage-details{margin-left:2px!important}
+        #ro-unwanted-dialog .ro-gear-detail-backdrop{position:fixed;padding:6px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-detail-panel{width:100%;box-sizing:border-box;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr);gap:10px}
+        #ro-unwanted-dialog .ro-detail-list{max-height:140px}
+        #ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 82px;font-size:12px}
+        #ro-unwanted-dialog .ro-filter-multi{margin:4px 0;flex:1;min-width:0}
+        #ro-unwanted-dialog .ro-gear-skill input[type=number]{width:72px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-tier span{min-width:0;overflow-wrap:anywhere}
+        #ro-ap-menu{box-sizing:border-box;min-width:0;width:240px;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);overflow:auto}
+        #ro-ap-menu button+button{margin-top:6px}
+        #ro-character-details{left:max(6px,env(safe-area-inset-left));top:max(6px,env(safe-area-inset-top));width:calc(100vw - 12px);max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{gap:8px}
+        #ro-character-details [data-character-stats] span,#ro-character-details [data-character-raw] span{min-width:0;overflow-wrap:anywhere}
+        #ro-horde-hud{font-size:11px;padding:5px 6px}#ro-horde-hud [data-horde-progress]{font-size:12px}
+        #ro-ap-toast{box-sizing:border-box;max-width:calc(100vw - 20px);font-size:13px;padding:8px 10px}
+        .stg-mobs .ro-timed-mob{min-width:90px;max-width:130px;padding:5px}
+      }
     `;
     document.head.append(style);
-    document.addEventListener('contextmenu', context, true);
+    document.addEventListener('contextmenu', touchContext, true);
+    document.addEventListener('pointerdown',beginLongPress,true);
+    document.addEventListener('pointermove',moveLongPress,true);
+    document.addEventListener('pointerup',endLongPress,true);
+    document.addEventListener('pointercancel',endLongPress,true);
+    document.addEventListener('touchend',event=>{if(suppressHeldEvent(event))heldUntil=performance.now()+800;}, {capture:true,passive:false});
+    for(const type of ['click','mousedown','mouseup','auxclick'])document.addEventListener(type,suppressHeldEvent,true);
+    document.addEventListener('scroll',cancelLongPress,true);
+    window.addEventListener('blur',clearLongPress);
+    window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
+    window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearLongPress();closeMenu();}});
     document.addEventListener('click',event=>{
       if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
         event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
@@ -90,7 +138,7 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
-        return el?.closest('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
+        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });

@@ -17,7 +17,7 @@ function setup() {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -79,6 +79,68 @@ test('right click enables and disables without saving',()=>{
   e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,1);assert(el.hasAttribute('data-ro-ap-enabled'));assert.equal(e.storage.size,0);
   e.api.context(event);assert.equal(e.document.querySelector('#ro-ap-menu button').textContent,'關閉自動選擇');
   e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,0);
+});
+function touchSlot(e,kind='skill'){
+  const host=e.document.querySelector(kind==='skill'?'#skillbar':'#runitems');
+  host.innerHTML=kind==='skill'?'<div class="skill-slot" data-skill="bash"><img src="bash.png"></div>':'<div class="run-slot" data-item="potion"><img src="potion.png"></div>';
+  const slot=host.firstElementChild;
+  slot.addEventListener('mouseover',()=>{const tip=e.document.querySelector('#skill-tip');tip.className='';tip.innerHTML=`<div class="st-head"><img src="${kind==='skill'?'bash':'potion'}.png"><b>${kind==='skill'?'狂擊':'生命藥水'} +2</b></div>`;});
+  return slot;
+}
+function pointer(e,slot,type,values={}){const event=new e.window.Event(type,{bubbles:true,cancelable:true});Object.assign(event,{pointerType:'touch',pointerId:1,isPrimary:true,button:0,clientX:300,clientY:650,...values});slot.dispatchEvent(event);return event;}
+test('touch hold opens skill/item settings, suppresses release click and permits menu selection',()=>{
+  for(const kind of ['skill','item']){
+    const e=setup(),slot=touchSlot(e,kind);pointer(e,slot,'pointerdown');e.tick(549);assert(!e.document.querySelector('#ro-ap-menu'));
+    e.tick(1);assert(e.document.querySelector('#ro-ap-menu'));assert.equal(e.api.getRules().length,0);
+    // Even a continued hold must not expire the release suppression.
+    e.tick(3000);const release=pointer(e,slot,'pointerup');assert(release.defaultPrevented);
+    const click=pointer(e,slot,'click');assert(click.defaultPrevented);
+    e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,1);assert.equal(e.api.getRules()[0].kind,kind);
+    pointer(e,slot,'pointerdown');e.tick(550);assert.equal(e.document.querySelector('#ro-ap-menu button').textContent,'關閉自動選擇');
+    pointer(e,slot,'pointerup');e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,0);
+  }
+});
+test('short taps, movement, multitouch, canceled and stale slots never open hold settings',()=>{
+  const e=setup(),slot=touchSlot(e);
+  pointer(e,slot,'pointerdown');e.tick(200);assert(!pointer(e,slot,'pointerup').defaultPrevented);e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');pointer(e,slot,'pointermove',{clientX:312});e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');pointer(e,slot,'pointerdown',{pointerId:2,isPrimary:false});e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');pointer(e,slot,'pointercancel');e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');slot.dataset.skill='other';e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');e.document.dispatchEvent(new e.window.Event('scroll'));e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown');e.api.resetRun();e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+  pointer(e,slot,'pointerdown',{pointerType:'mouse'});e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+});
+test('native touch contextmenu opens once and blocks ghost click without blocking next tap',()=>{
+  const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(300);
+  pointer(e,slot,'contextmenu');const menu=e.document.querySelector('#ro-ap-menu');assert(menu);
+  e.tick(400);pointer(e,slot,'contextmenu');assert.equal(e.document.querySelector('#ro-ap-menu'),menu);
+  pointer(e,slot,'pointerup');assert(pointer(e,slot,'click').defaultPrevented);
+  pointer(e,slot,'pointerdown');assert(!pointer(e,slot,'pointerup').defaultPrevented);assert(!pointer(e,slot,'click').defaultPrevented);
+});
+test('mobile name fallback uses actual skill definition and unknown items remain unconfigured',()=>{
+  const e=setup();e.document.querySelector('#skillbar').innerHTML='<div class="skill-slot" data-skill="bash"><img src="bash.png"></div>';
+  e.api.setSkillDefs({bash:{name:'狂擊'}});const slot=e.document.querySelector('.skill-slot');pointer(e,slot,'pointerdown');e.tick(550);
+  assert(e.document.querySelector('#ro-ap-menu').textContent.includes('狂擊'));pointer(e,slot,'pointerup');
+  e.document.querySelector('#ro-ap-menu button+button').click();assert(!e.document.querySelector('#ro-ap-menu'));
+  e.document.querySelector('#runitems').innerHTML='<div class="run-slot" data-item="unknown"><img src="unknown.png"></div>';
+  const item=e.document.querySelector('.run-slot');pointer(e,item,'pointerdown');e.tick(550);assert(!e.document.querySelector('#ro-ap-menu'));assert.equal(e.api.getRules().length,0);
+});
+test('mobile menu respects visible viewport and dropdown stays above the software keyboard',()=>{
+  const e=setup(),slot=touchSlot(e),view=new e.window.EventTarget();Object.assign(view,{offsetLeft:10,offsetTop:30,width:320,height:400});e.window.visualViewport=view;
+  const original=e.window.HTMLElement.prototype.getBoundingClientRect;
+  e.window.HTMLElement.prototype.getBoundingClientRect=function(){return this.id==='ro-ap-menu'?{width:240,height:160}:original.call(this);};
+  try{e.api.context({target:slot,clientX:320,clientY:500,preventDefault(){},stopImmediatePropagation(){}});
+    const menu=e.document.querySelector('#ro-ap-menu');assert.equal(menu.style.left,'82px');assert.equal(menu.style.top,'262px');
+    const multi=e.api.formMulti([['str','力量']],[],()=>{});e.document.body.append(multi);
+    multi.querySelector('summary').getBoundingClientRect=()=>({left:280,top:350,bottom:390});multi.open=true;multi.ontoggle();
+    const list=multi.querySelector('.ro-filter-multi-list');assert.equal(list.style.width,'296px');assert.equal(list.style.left,'22px');assert.equal(list.style.top,'auto');assert.equal(list.style.maxHeight,'280px');multi.closeMenu();
+    e.window.dispatchEvent(new e.window.Event('resize'));assert(!e.document.querySelector('#ro-ap-menu'));
+  }finally{e.window.HTMLElement.prototype.getBoundingClientRect=original;}
+});
+test('held menu refuses to configure a slot replaced before confirmation',()=>{
+  const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(550);pointer(e,slot,'pointerup');slot.dataset.skill='other';
+  e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,0);assert(!e.document.querySelector('#ro-ap-menu'));
 });
 test('Escape restores current choice and prevents immediate reselection',()=>{
   const e=setup();e.api.setRules([rule('skill','A','a.png')]);
@@ -413,6 +475,14 @@ test('two spawn windows appear on separate lines beneath the original monster ic
  const mob=e.document.querySelector('[data-mob="poring"]'),image=mob.firstElementChild;let clicks=0;mob.onclick=()=>clicks++;
  e.api.setGameCatalog({ca:{a:{runLength:180,waves:[{from:0,to:60,pool:['poring']},{from:60,to:120,pool:['lunatic']},{from:120,to:180,pool:['poring']}]}}});e.api.updateStageSpawnSchedule();e.api.updateStageSpawnSchedule();
  assert.deepEqual([...mob.querySelectorAll('small')].map(n=>n.textContent),['00:00–01:00','02:00–03:00']);assert.equal(mob.firstElementChild,image);mob.click();assert.equal(clicks,1);assert.equal(mob.querySelectorAll('[data-ro-mob-time]').length,1);
+});
+test('monster level sits between name and times and follows native lap level offset',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="stages"><div id="lap-tabs"><button data-laptab="1" class="primary"></button><button data-laptab="2"></button><button data-laptab="3"></button></div><div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/prontera.jpg')"></div><div class="stg-mobs"><span data-mob="poring"><img></span></div></div></div>`);
+ const script=pool=>({runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
+ e.api.setGameCatalog({bj:{poring:{level:1},lunatic:{level:3},late:{level:52}},ca:{prontera:script(['poring','lunatic']),maze:script(['late'])}});
+ e.api.updateStageSpawnSchedule();const caption=e.document.querySelector('[data-ro-mob-time]');assert.equal(caption.children[0].tagName,'B');assert.equal(caption.children[1].textContent,'等級 1');assert.equal(caption.children[2].textContent,'00:00–02:00');
+ for(const lap of ['2','3']){e.document.querySelector('#lap-tabs .primary').classList.remove('primary');e.document.querySelector(`[data-laptab="${lap}"]`).classList.add('primary');e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 51');}
+ e.api.setGameCatalog({ca:{prontera:script(['poring'])}});e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 —');
 });
 test('ambiguous or missing stage data never displays an invented timetable',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="stg-detail"><div class="stg-mobs"><span data-mob="poring"></span></div><div class="stg-bosses"></div></div>');

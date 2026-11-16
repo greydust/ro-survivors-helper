@@ -83,19 +83,19 @@
     const summary=document.createElement('summary'),list=document.createElement('div');list.className='ro-filter-multi-list';details.append(summary,list);
     const position=()=>{
       if(!details.open||typeof summary.getBoundingClientRect!=='function')return;
-      const r=summary.getBoundingClientRect(),width=Math.min(320,innerWidth-24);
-      const below=innerHeight-r.bottom-12,above=r.top-12,up=below<160&&above>below;
-      list.style.width=width+'px';list.style.left=Math.max(12,Math.min(r.left,innerWidth-width-12))+'px';
+      const r=summary.getBoundingClientRect(),view=helperViewport(),width=Math.min(320,view.width-24);
+      const below=view.top+view.height-r.bottom-12,above=r.top-view.top-12,up=below<160&&above>below;
+      list.style.width=width+'px';list.style.left=Math.max(view.left+12,Math.min(r.left,view.left+view.width-width-12))+'px';
       list.style.maxHeight=Math.max(60,Math.min(280,up?above:below))+'px';
       list.style.top=up?'auto':(r.bottom+4)+'px';list.style.bottom=up?(innerHeight-r.top+4)+'px':'auto';
     };
-    const unlisten=()=>{document.removeEventListener('scroll',position,true);window.removeEventListener('resize',position);document.removeEventListener('pointerdown',outside,true);};
+    const unlisten=()=>{document.removeEventListener('scroll',position,true);window.removeEventListener('resize',position);window.visualViewport?.removeEventListener('resize',position);window.visualViewport?.removeEventListener('scroll',position);document.removeEventListener('pointerdown',outside,true);};
     const outside=event=>{if(!details.contains(event.target))details.closeMenu();};
     details.closeMenu=()=>{details.open=false;unlisten();};
     details.ontoggle=()=>{
       unlisten();if(!details.open)return;
       filterDialog?.querySelectorAll('.ro-filter-multi').forEach(menu=>{if(menu!==details)menu.closeMenu?.();});
-      position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);document.addEventListener('pointerdown',outside,true);
+      position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);document.addEventListener('pointerdown',outside,true);
     };
     let selected=selections(value).map(String);
     const refresh=()=>{const names=options.filter(([id])=>selected.includes(String(id))).map(([,name])=>name.split(' ｜ ')[0]);summary.textContent=names.length?names.join('、')+'（OR）':placeholder;};

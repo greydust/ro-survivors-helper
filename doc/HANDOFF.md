@@ -85,3 +85,10 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 
 - 2026-11-16 公開遊戲 `main-BNOcv2PN.hz0107ea21.js` 的 `RO_LAPC.max=3`、`tierMax=5`；`RO_LAPTIER(g,t)` 在二周目以上回傳 `RO_LAPTOP()+lap-1`，不是在各件裝備原 Tier 加一。基礎最高 T3，因此二、三周目分別 T4／T5。
 - 圖鑑保留各裝備原有 Tier，另加 T4／T5，屬性仍交給實際 `bs(id,tier)`。批次排除按鈕從 T1 到最高 T-1，涵蓋所有分類；既有設定相容且新增 Tier 預設保留。多周目數目前依公開配置記錄在 `EQUIPMENT_LAP_COUNT`，遊戲改動時須重新核對。
+
+## 手機長按與關卡怪物等級
+
+- 技能／道具格以 touch/pen Pointer Events 長按 550ms 開啟原本的自選設定；移動超過 10px、多指、pointercancel、scroll、失焦、切關取消。長按後攔截同格的 release/相容滑鼠事件，下一次新觸控恢復普通點按。原生 contextmenu 提早出現時沿用同一流程，避免重複開啟。技能名稱可從實際 skillDef 讀取，缺少可確認名稱的道具不猜測。
+- 觸控介面增加取消按鈕、44px 主要按鈕及 16px 輸入框；窄螢幕對話框改單欄、分類橫捲，戰鬥統計縮至 150px。自選選單與多選清單位置依 visualViewport，避免軟鍵盤遮蔽；旋轉視窗時關閉浮動選單。
+- 關卡怪物名稱下方新增「等級 X」，取目前共用模組 bj 的 level。#lap-tabs [data-laptab].primary 決定周目；二／三周目照原生 RO_LAPAVG/RO_LAPK，以最後關卡 maze 與目前關卡的波次時長加權平均等級差取整，兩周目加成相同。未能判定等級顯示 —。名稱／等級／時段共同參與簽章，避免 MutationObserver 循環。
+- 新增手勢、取消、重複 contextmenu、放手誤點、軟鍵盤可視範圍及周目等級回歸測試。本次本機 file: 預覽被瀏覽器 URL 安全政策阻擋，未進行手機實機或視覺驗證。
