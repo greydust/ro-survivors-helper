@@ -17,7 +17,7 @@ function setup() {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, installHordeCount, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -258,6 +258,23 @@ test('catalog excludes selected rarities and all low tiers across categories',()
   assert(e.api.isUnwantedEquipment(c,gearItem({quality:0})));assert(e.api.isUnwantedEquipment(c,gearItem({quality:2})));
   assert(!e.api.isUnwantedEquipment(c,gearItem({quality:4})));
   e.api.excludeEquipmentTiers(c,2);assert(c.disabledTiers['1202:1']);assert(c.disabledTiers['2102:2']);assert(!c.disabledTiers['1163:3']);
+});
+test('multi-lap gear exposes T4 and T5, bulk exclusions stop below highest and persist',()=>{
+  const e=catalogEnv(),seen=[];
+  e.api.setSmithData({1202:{slot:'weapon',wtype:'단검',bonuses:[]}},{manifest:{items:{}}});
+  e.api.setGameCatalog({bs:(id,tier)=>{seen.push(tier);return [{text:()=>`實際 T${tier} 屬性`}];}});
+  e.api.openFilter();
+  const card=e.document.querySelector('[data-gear-id="1202"]');
+  assert.deepEqual([...card.querySelectorAll('[data-gear-tier]')].map(b=>b.dataset.gearTier),['1','4','5']);
+  assert(card.textContent.includes('實際 T4 屬性'));assert(card.textContent.includes('實際 T5 屬性'));assert(seen.includes(5));
+  assert.deepEqual([...e.document.querySelectorAll('[data-exclude-tier]')].map(b=>b.dataset.excludeTier),['1','2','3','4']);
+  e.document.querySelector('[data-exclude-tier="4"]').click();
+  const draft=e.api.getFilterDraft();assert(e.api.validEquipmentFilter(draft));
+  assert(e.api.isUnwantedEquipment(draft,gearItem({tier:4})));assert(!e.api.isUnwantedEquipment(draft,gearItem({tier:5})));
+  assert(draft.disabledTiers['1163:3']);assert(draft.disabledTiers['1163:4']);assert(!draft.disabledTiers['1163:5']);
+  e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="5"]').click();
+  e.document.querySelector('[data-filter-save]').click();assert(e.api.isUnwantedEquipment(e.api.getFilterStore(),gearItem({tier:5})));
+  e.api.openFilter();assert.equal(e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="5"]').getAttribute('aria-pressed'),'false');
 });
 test('catalog primary conditions are OR within a field, AND across fields and require distinct affixes',()=>{
   const e=catalogEnv(),c=e.api.emptyEquipmentFilter();setDetail(c,1202,gearSettings({first:['str','agi'],second:['luk','dex']}));
@@ -542,7 +559,7 @@ test('character details toggle is unique and run reset removes stale player data
   e.api.openCharacterDetails();e.api.resetRun();e.tick(1000);
   assert.equal(e.document.querySelector('#ro-character-details'),null);assert.equal(e.document.querySelector('#ro-character-details-toggle'),null);
 });
-test('horde announcement counts successful spawns and rounds target across party anchors',()=>{
+test('horde progress counts successful spawns and preserves native announcements',()=>{
   const e=setup(),announcements=[];
   let calls=0;
   const announce=function(text){assert.equal(this,game.events);announcements.push(text);};
@@ -559,8 +576,9 @@ test('horde announcement counts successful spawns and rounds target across party
     }};
   e.api.installHordeCount(game);const wrapped=game.horde;e.api.installHordeCount(game);assert.equal(game.horde,wrapped);
   assert.equal(game.horde('pool'),123);assert.equal(calls,57);
-  assert.deepEqual(announcements,['其他提示','怪物潮(29/57)包圍了你！']);
-  assert.equal(game.spawnEnemy,spawn);assert.equal(game.spawnAnchors,anchors);
+  assert.deepEqual(announcements,['其他提示','怪物潮包圍了你！']);
+  assert.equal(e.api.hordeProgress(game).actual,29);assert.equal(e.api.hordeProgress(game).theoretical,57);assert.equal(e.api.hordeProgress(game).complete,true);
+  game.spawnEnemy();assert.equal(e.api.hordeProgress(game).actual,29);assert.equal(game.spawnAnchors,anchors);
   assert.equal(game.coop.partyScale,scale);assert.equal(game.events.onAnnounce,announce);
 });
 test('horde observers restore inherited methods after native failure and do not invent zero-spawn alerts',()=>{
@@ -571,8 +589,65 @@ test('horde observers restore inherited methods after native failure and do not 
   }});
   const announce=game.events.onAnnounce;
   e.api.installHordeCount(game);assert.throws(()=>game.horde(),/native failure/);
-  assert.equal(Object.hasOwn(game,'spawnEnemy'),false);assert.equal(Object.hasOwn(game,'spawnAnchors'),false);
+  assert.equal(e.api.hordeProgress(game).canceled,true);assert.equal(Object.hasOwn(game,'spawnAnchors'),false);
   assert.equal(game.events.onAnnounce,announce);assert.deepEqual(messages,[]);
+});
+function queuedHordeFixture(e){
+  const game={time:120,difficulty:{count:10},closeAt:-1,enemies:[],spawnAnchors:()=>[{}, {}, {}],
+    spawnEnemy(id,hp,normal,point){if(id==='failed')return null;const enemy={def:{id,name:id},hp};this.enemies.push(enemy);return enemy;},
+    horde(id='poring',amount=450){this.spawnAnchors();for(let i=0;i<amount;i++)(this.roHq||(this.roHq=[])).push([id,10,i,0]);flush();return 'native';}};
+  function flush(){if(!game.roHq?.length)return;if(game.bossArena||game.closeAt>=0){game.roHq.length=0;return;}for(const [id,hp,x,y] of game.roHq.splice(0,200))game.spawnEnemy(id,hp,false,{x,y});}
+  e.api.installHordeCount(game);return {game,flush};
+}
+test('batched hordes count successful births independently of survivors and theory',()=>{
+  const e=setup(),{game,flush}=queuedHordeFixture(e);
+  assert.equal(game.horde(),'native');assert.equal(game.roHq.length,250);
+  let progress=e.api.hordeProgress(game);assert.equal(progress.actual,200);assert.equal(progress.theoretical,510);assert.equal(progress.complete,false);
+  game.enemies[0].hp=0;game.spawnEnemy('normal',10,true,{x:999,y:0});
+  assert.equal(e.api.hordeProgress(game).actual,200);
+  flush();assert.equal(e.api.hordeProgress(game).actual,400);flush();
+  progress=e.api.hordeProgress(game);assert.equal(progress.actual,450);assert.equal(progress.complete,true);
+  assert.equal(e.api.fieldMonsterCounts(game).reduce((sum,row)=>sum+row.count,0),450);
+});
+test('overlapping waves retain queue attribution and canceled waves never finish green',()=>{
+  const e=setup(),{game,flush}=queuedHordeFixture(e);game.horde();game.horde('failed',10);
+  assert.equal(e.api.hordeProgress(game).actual,0);assert.equal(e.api.hordeProgress(game).pending,10);
+  flush();assert.equal(e.api.hordeProgress(game).failed,10);assert.equal(e.api.hordeProgress(game).complete,true);
+  game.horde();game.bossArena=true;flush();assert.equal(e.api.hordeProgress(game).canceled,true);assert.equal(e.api.hordeProgress(game).complete,false);
+});
+test('right HUD separates cumulative horde births from live monster totals and reuses rows',()=>{
+  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');
+  e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>({width:250,height:100,bottom:370,right:1188});
+  const {game,flush}=queuedHordeFixture(e);game.horde();
+  const panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.style.top,'378px');
+  assert.equal(panel.querySelector('[data-horde-progress]').textContent,'怪物潮(200/510)');
+  assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：200 / —');
+  const row=panel.querySelector('[data-monster-counts]').firstElementChild;e.api.updateHordeHud(game,true);assert.equal(panel.querySelector('[data-monster-counts]').firstElementChild,row);
+  game.enemies[0].hp=0;e.api.updateHordeHud(game,true);assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：199 / —');
+  assert.equal(panel.querySelector('[data-horde-progress]').textContent,'怪物潮(200/510)');
+  flush();flush();e.api.updateHordeHud(game,true);assert.equal(panel.querySelector('[data-horde-progress]').dataset.status,'complete');
+  e.document.querySelector('#hud').classList.add('hidden');e.api.updateHordeHud(game,true);assert.equal(e.document.querySelector('#ro-horde-hud'),null);
+});
+test('monster HUD folds details, keeps counts live and clears completed horde after three seconds',()=>{
+  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');
+  e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>({width:250,height:100,bottom:370,right:1188});
+  const {game,flush}=queuedHordeFixture(e);game.waveTime=30;game.script={waves:[{from:0,to:100,maxAlive:50}]};game.horde();
+  const panel=e.document.querySelector('#ro-horde-hud'),toggle=panel.querySelector('[data-monster-toggle]'),list=panel.querySelector('[data-monster-counts]'),counter=panel.querySelector('[data-horde-progress]');
+  assert.equal(panel.style.width,'180px');assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：200 / 500');
+  toggle.click();assert.equal(list.hidden,true);assert.equal(toggle.textContent,'+');assert.equal(toggle.getAttribute('aria-expanded'),'false');
+  e.tick(4000);e.api.updateHordeHud(game,true);assert.equal(counter.textContent,'怪物潮(200/510)');
+  flush();flush();e.api.updateHordeHud(game,true);assert.equal(counter.dataset.status,'complete');
+  e.tick(2999);e.api.updateHordeHud(game,true);assert.equal(counter.textContent,'怪物潮(450/510)');
+  e.tick(1);e.api.updateHordeHud(game,true);assert.equal(counter.textContent,'怪物潮(-/-)');assert.equal(counter.dataset.status,'idle');
+  assert.equal(panel.querySelector('[data-monster-total]').textContent,'場上怪物：450 / 500');
+  toggle.click();assert.equal(list.hidden,false);assert.equal(toggle.textContent,'−');
+  game.horde();e.api.updateHordeHud(game,true);assert.equal(counter.textContent,'怪物潮(200/510)');
+});
+test('map monster limit follows wave, early ramp and party difficulty without inventing missing limits',()=>{
+  const e=setup(),game={waveTime:0,difficulty:{count:1.5},coop:{partyScale:()=>({count:2})},script:{waves:[{from:0,to:30,maxAlive:100},{from:30,to:60,maxAlive:200}]}};
+  assert.equal(e.api.fieldMonsterLimit(game),60);game.waveTime=15;assert.equal(e.api.fieldMonsterLimit(game),181);
+  game.waveTime=30;assert.equal(e.api.fieldMonsterLimit(game),600);game.waveTime=80;assert.equal(e.api.fieldMonsterLimit(game),600);
+  assert.equal(e.api.fieldMonsterLimit({}),null);
 });
 test('horde circle maps world position and radius to exact minimap crop',()=>{
   const e=setup();const game={map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900};

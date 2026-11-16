@@ -26,7 +26,7 @@ const assert = require('node:assert/strict');
     performance,setTimeout,clearTimeout,queueMicrotask,innerWidth:1200,innerHeight:800});
   const source=fs.readFileSync(path.join(__dirname,'../dist/RO倖存者助手.user.js'),'utf8');
   vm.runInContext(source.replace(/\}\)\(\);\s*$/,
-    'globalThis.stageTest={updateStageSpawnSchedule,scan,setCatalog:value=>gameCatalog=value};})();'),context);
+    'globalThis.stageTest={updateStageSpawnSchedule,updateHordeHud,scan,setCatalog:value=>gameCatalog=value};})();'),context);
   const settle=()=>new Promise(resolve=>setTimeout(resolve,30));
   try{
     context.stageTest.setCatalog({ca:{test:{runLength:1020,bosses:[{t:840,id:'mastering'}],waves:[{from:0,to:1020,pool:['poring']}]}}});
@@ -42,5 +42,12 @@ const assert = require('node:assert/strict');
     assert.equal(window.document.querySelectorAll('[data-ro-mob-time]').length,1);
     assert(window.document.querySelector('[data-ro-mob-time]').textContent.includes('14:00'));
     console.log('PASS expedition annotations settle with a real MutationObserver');
+    window.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');
+    const game={state:'running',enemies:[{def:{id:'poring'},hp:10}]};
+    context.stageTest.updateHordeHud(game,true);await settle();assert(!overflow);
+    const hudStable=callbacks;
+    for(let i=0;i<20;i++)context.stageTest.updateHordeHud(game,true);
+    await settle();assert(!overflow);assert.equal(callbacks,hudStable,'unchanged monster HUD must perform no DOM writes');
+    console.log('PASS monster HUD settles with a real MutationObserver');
   }finally{observers.forEach(observer=>observer.disconnect());}
 })().catch(error=>{console.error(error);process.exitCode=1;});

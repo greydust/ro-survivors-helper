@@ -1,4 +1,13 @@
   const equipmentById=new Map(EQUIPMENT_CATALOG.map(item=>[item.id,item]));
+  // Public game RO_LAPC (2026-11-16): three laps; RO_LAPTIER = base maximum + lap - 1.
+  const EQUIPMENT_LAP_COUNT=3;
+  const EQUIPMENT_BASE_MAX_TIER=Math.max(1,...EQUIPMENT_CATALOG.flatMap(record=>record.tiers));
+  function equipmentBaseMaxTier(){return EQUIPMENT_BASE_MAX_TIER;}
+  function equipmentTiers(record){
+    const base=equipmentBaseMaxTier();
+    return [...new Set([...record.tiers,...Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>base+i+1)])].sort((a,b)=>a-b);
+  }
+  function equipmentMaxTier(){return equipmentBaseMaxTier()+EQUIPMENT_LAP_COUNT-1;}
   let filterSlot='onehand',filterSearch='',gearDetails=null;
   let filterWeaponType='';
   const weaponTypeLabels=[['단검','短劍'],['검','單手劍'],['양손검','雙手劍'],['카타르','拳刃'],['창','單手矛'],['양손창','雙手矛'],['도끼','單手斧'],['양손도끼','雙手斧'],['클럽','鈍器'],['너클','拳套'],['롯드','法杖'],['책','書'],['활','弓'],['악기','樂器'],['채찍','鞭子'],['권총','手槍'],['라이플','步槍'],['샷건','散彈槍'],['수리검','風魔手裏劍'],['unknown','其他']];
@@ -87,7 +96,7 @@
     for(const id of ids){if(keep)delete config.disabledTiers[id+':'+tier];else config.disabledTiers[id+':'+tier]=true;}
   }
   function excludeEquipmentTiers(config,max){
-    for(const group of equipmentGroups())for(const tier of new Set(group.records.flatMap(r=>r.tiers)))if(tier<=max)setEquipmentTier(config,group.records.map(r=>r.id),tier,false);
+    for(const group of equipmentGroups())for(const tier of new Set(group.records.flatMap(r=>equipmentTiers(r))))if(tier<=max)setEquipmentTier(config,group.records.map(r=>r.id),tier,false);
   }
   function element(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
   function drawEquipmentCards(container,summary){
@@ -95,7 +104,7 @@
     const query=filterSearch.trim().toLocaleLowerCase();
     container.replaceChildren();let shown=0;
     for(const group of groups){
-      const searchable=group.name+' '+group.records.map(r=>r.id).join(' ')+' '+group.records.flatMap(r=>r.sources.map(s=>s.stage+' '+s.monster)).join(' ')+' '+group.records.flatMap(r=>r.tiers.flatMap(t=>actualEquipmentBonuses(r,t)||[])).join(' ');
+      const searchable=group.name+' '+group.records.map(r=>r.id).join(' ')+' '+group.records.flatMap(r=>r.sources.map(s=>s.stage+' '+s.monster)).join(' ')+' '+group.records.flatMap(r=>equipmentTiers(r).flatMap(t=>actualEquipmentBonuses(r,t)||[])).join(' ');
       if(query&&!searchable.toLocaleLowerCase().includes(query))continue;
       shown++;
       const card=element('article',undefined,'ro-gear-card'),header=element('header');card.dataset.gearId=String(group.records[0].id);
@@ -109,7 +118,7 @@
       for(const [id,name] of options){const option=element('option',name);option.value=id;option.selected=id===(assigned.length>1?'__mixed':assigned[0]);option.disabled=id==='__mixed';settings.append(option);}
       settings.onchange=()=>{for(const r of group.records){if(settings.value)filterDraft.assignments[r.id]=settings.value;else delete filterDraft.assignments[r.id];}};
       header.append(image,title,settings);card.append(header);
-      const tiers=[...new Set(group.records.flatMap(r=>r.tiers))].sort((a,b)=>a-b);
+      const tiers=[...new Set(group.records.flatMap(r=>equipmentTiers(r)))].sort((a,b)=>a-b);
       for(const tier of tiers){
         const records=group.records,ids=records.map(r=>r.id);
         const row=element('div',undefined,'ro-gear-tier'),keep=tierIsKept(filterDraft,ids,tier);
@@ -124,6 +133,7 @@
         const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster);
       }
       for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
+      sources.append(element('li','二周目 T'+(equipmentBaseMaxTier()+1)+'、三周目 T'+equipmentMaxTier()+'：同上關卡與怪物（依遊戲多周目規則）'));
       card.append(sources);container.append(card);
     }
     summary.textContent='目前分類 '+shown+' 筆裝備；T 亮起＝保留，關閉＝不需要。';
@@ -175,7 +185,9 @@
     const rarities=element('div',undefined,'ro-rarity-buttons');
     for(const [id,name] of RARITIES){const button=formButton(name,()=>{filterDraft.unwantedRarities=filterDraft.unwantedRarities.includes(id)?filterDraft.unwantedRarities.filter(v=>v!==id):[...filterDraft.unwantedRarities,id];drawFilter();});button.dataset.unwantedRarity=id;button.style.setProperty('--rarity-color',COLORS[Number(id)]);button.classList.toggle('excluded',filterDraft.unwantedRarities.includes(id));button.setAttribute('aria-pressed',String(filterDraft.unwantedRarities.includes(id)));button.setAttribute('aria-label',name+' 不要');rarities.append(button);}
     const manager=formButton('管理細項過濾器',openGearDetails);manager.classList.add('ro-manage-details');
-    toolbar.append(rarities,formButton('過濾T1以下',()=>{excludeEquipmentTiers(filterDraft,1);drawFilter();}),formButton('過濾T2以下',()=>{excludeEquipmentTiers(filterDraft,2);drawFilter();}),manager);panel.append(toolbar);
+    toolbar.append(rarities);
+    for(let tier=1;tier<equipmentMaxTier();tier++){const button=formButton('過濾T'+tier+'以下',()=>{excludeEquipmentTiers(filterDraft,tier);drawFilter();});button.dataset.excludeTier=String(tier);toolbar.append(button);}
+    toolbar.append(manager);panel.append(toolbar);
     const actions=element('div',undefined,'ro-gear-actions'),status=element('span','');
     const save=formButton('儲存並套用',()=>{
       if(!validEquipmentFilter(filterDraft)){status.textContent='設定不完整，無法儲存';return;}
