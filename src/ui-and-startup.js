@@ -24,6 +24,7 @@
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
       [data-ro-ap-enabled]{outline:2px solid #65edb1!important;outline-offset:2px}
       #smith-list [data-ro-smith-filtered]{display:none!important}
+      [data-ro-inventory-categories]{display:contents}#cp-inv-filters [hidden],#ks-filt [hidden]{display:none!important}[data-ro-inventory-subtypes]{display:flex;gap:4px;flex:0 0 100%;order:1;min-width:0;max-width:100%;overflow-x:auto;flex-wrap:nowrap;margin:4px 0 8px}[data-ro-inventory-subtypes] button{flex:none;white-space:nowrap}[data-ro-gear-details]{font-size:11px;line-height:1.5;white-space:normal;overflow-wrap:anywhere;color:var(--ro-text,#24304f)}#cp-eq-list .cand-info{min-width:0}#cp-eq-list .cand-side{flex:none}[data-ro-card-preview]{font-size:12px;line-height:1.5;padding-top:6px}[data-ro-gs-preview]{display:block;font-size:10px}
       #smith-filters{flex-wrap:wrap}
       #ro-auto-refine{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
       #ro-auto-refine-target{padding:6px;border:1px solid #a0aec7;border-radius:4px;font:inherit}
@@ -148,7 +149,7 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
-        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
+        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });

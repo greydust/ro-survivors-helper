@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RO 倖存者｜各部位裝備圖鑑</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0c1423;color:#e5edf8;font:15px/1.65 system-ui,"Microsoft JhengHei",sans-serif}main{max-width:1200px;margin:auto;padding:30px 20px}h1{font-size:30px;margin:0 0 8px;color:#fff}header p{color:#adbed7;max-width:900px;margin:7px 0}a{color:#8bcfff}.toolbar{position:sticky;top:0;background:#0c1423f5;padding:12px 0 8px;z-index:5}input{width:100%;padding:12px 14px;background:#18263b;color:#fff;border:1px solid #455873;border-radius:8px;font:inherit}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 6px}button{background:#1a2940;color:#dce8fa;border:1px solid #415573;padding:7px 12px;border-radius:7px;cursor:pointer;font:inherit}button.active{background:#b9e5d1;color:#12332c;border-color:#b9e5d1}button small{opacity:.75;margin-left:5px}button:focus-visible,input:focus-visible{outline:2px solid #8bcfff;outline-offset:2px}#subtypes{flex-wrap:nowrap;overflow-x:auto;margin-bottom:8px}#subtypes button{flex:none;white-space:nowrap}#result{font-size:13px;color:#b9e5d1;margin:7px 0}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:12px}.gear{padding:13px;background:#152238;border:1px solid #415573;border-radius:9px;min-width:0}.gear header{display:flex;gap:10px;align-items:center}.gear img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated;flex:none}.gear h2{font-size:15px;line-height:1.5;margin:0;overflow-wrap:anywhere}.gear header small{margin-left:auto;color:#8fabc9;font-size:11px}.tier{display:flex;align-items:baseline;gap:7px;color:#b9e5d1;margin-top:7px;line-height:1.55}.tier b{font-size:12px;color:#12332c;background:#b9e5d1;border-radius:4px;padding:1px 6px;flex:none}.tier span{overflow-wrap:anywhere}.tier.empty span{color:#9eb1cb}.gear ul{padding-left:18px;margin:10px 0 0;color:#adbed7;font-size:12px}.gear li{margin:3px 0}.gear li b{color:#e0eafa}.empty-result{grid-column:1/-1;padding:30px;text-align:center;color:#adbed7}.note{font-size:12px;color:#9eb1cb}footer{margin-top:25px;padding-top:14px;border-top:1px solid #2d405c;font-size:12px;color:#9eb1cb}[hidden]{display:none!important}@media(max-width:560px){main{padding:18px 12px}.grid{grid-template-columns:1fr}.tabs{flex-wrap:nowrap;overflow-x:auto}.tabs button{flex:none;white-space:nowrap}h1{font-size:26px}button{padding:7px 10px}.toolbar{position:relative}}
+</style>
+</head>
+<body><main>
+<header>
+<h1>各部位裝備</h1>
+<p>與 RO 倖存者助手裝備過濾器共用分類、Tier 與實際遊戲固定加成。可直接開啟瀏覽，不需登入遊戲。</p>
+<p class="note">數值以未精煉裝備顯示；隨機詞綴與技能傷害依實際掉落為準。T4／T5 為多周目階級，來源清單保留基礎周目的關卡與 Tier。</p>
+</header>
+<div class="toolbar">
+<input id="search" type="search" aria-label="搜尋裝備、屬性或掉落來源" placeholder="搜尋名稱、屬性、關卡或怪物（跨全部部位）…">
+<nav id="categories" class="tabs" aria-label="裝備部位"></nav>
+<nav id="subtypes" class="tabs" aria-label="武器細部分類"></nav>
+<div id="result" role="status" aria-live="polite"></div>
+</div>
+<section id="equipment" class="grid" aria-label="裝備清單"></section>
+<footer><span id="snapshot-note"></span> · <a href="https://ro.hans-webgametw.com/" target="_blank" rel="noopener">遊戲來源</a>。文字與分類可離線使用，圖片需連網載入。遊戲更新後需重新產生快照；裝備與圖像權利屬原權利人。</footer>
+</main>
+<script id="equipment-data" type="application/json"><!--EQUIPMENT_DATA--></script>
+<script><!--EQUIPMENT_SCRIPT--></script>
+</body></html>

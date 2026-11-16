@@ -10,6 +10,7 @@
   "monster-names.js",
   "merchant-filter.js",
   "equipment-filter.js",
+  "inventory.js",
   "stage-schedule.js",
   "smith.js",
   "auto-pick.js",

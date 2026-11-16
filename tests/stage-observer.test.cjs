@@ -26,7 +26,7 @@ const assert = require('node:assert/strict');
     performance,setTimeout,clearTimeout,queueMicrotask,innerWidth:1200,innerHeight:800});
   const source=fs.readFileSync(path.join(__dirname,'../dist/RO倖存者助手.user.js'),'utf8');
   vm.runInContext(source.replace(/\}\)\(\);\s*$/,
-    'globalThis.stageTest={updateStageSpawnSchedule,updateHordeHud,scan,setCatalog:value=>gameCatalog=value};})();'),context);
+    'globalThis.stageTest={updateStageSpawnSchedule,updateHordeHud,updateInventoryViews,scan,setDefs:value=>smithDefs=value,setCatalog:value=>gameCatalog=value};})();'),context);
   const settle=()=>new Promise(resolve=>setTimeout(resolve,30));
   try{
     context.stageTest.setCatalog({ca:{test:{runLength:1020,bosses:[{t:840,id:'mastering'}],waves:[{from:0,to:1020,pool:['poring']}]}}});
@@ -49,5 +49,19 @@ const assert = require('node:assert/strict');
     for(let i=0;i<20;i++)context.stageTest.updateHordeHud(game,true);
     await settle();assert(!overflow);assert.equal(callbacks,hudStable,'unchanged monster HUD must perform no DOM writes');
     console.log('PASS monster HUD settles with a real MutationObserver');
+    window.document.body.insertAdjacentHTML('beforeend','<section id="charpanel"><div id="cp-inv-filters"></div><div id="cp-inventory"></div></section>');
+    vm.runInContext(`stageTest.setDefs({1:{slot:'weapon',wtype:'검'},2:{slot:'weapon',wtype:'양손검'}});
+      const bagItems=[{uid:'one',itemId:1,cards:[]},{uid:'two',itemId:2,cards:[]}];let bagFilter='all';
+      function bagDraw(){const filters=document.querySelector('#cp-inv-filters');filters.innerHTML=['all','weapon','head'].map(id=>'<button class="inv-chip" data-f="'+id+'">'+id+'</button>').join('');
+        for(const button of filters.querySelectorAll('button'))button.onclick=()=>{bagFilter=button.dataset.f;bagDraw();};
+        const G={id:bagFilter},D=(group,item)=>group.id!=='head';
+        document.querySelector('#cp-inventory').innerHTML=bagItems.filter(item=>D(G,item)).map(item=>'<div data-uid="'+item.uid+'"></div>').join('');}
+      bagDraw();stageTest.updateInventoryViews();`,context);
+    await settle();assert(!overflow,'inventory controls must not create an observer loop');
+    window.document.querySelector('[data-ro-inventory-category="twohand"]').click();await settle();assert(!overflow);
+    assert.equal(window.document.querySelectorAll('#cp-inventory [data-uid]').length,1);
+    const inventoryStable=callbacks;for(let i=0;i<20;i++)context.stageTest.updateInventoryViews();await settle();
+    assert(!overflow);assert(callbacks-inventoryStable<=2,'unchanged inventory controls must settle');
+    console.log('PASS inventory classification settles with a real MutationObserver');
   }finally{observers.forEach(observer=>observer.disconnect());}
 })().catch(error=>{console.error(error);process.exitCode=1;});

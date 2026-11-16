@@ -126,7 +126,8 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v2.0.0');
+      runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
+      console.info('[RO助手] 即時自選已啟用 v2.0.1');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -336,6 +337,7 @@
       updateMinimapOption();
       updateSmith();
       updateMerchant();
+      updateInventoryViews();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {
       const enabled = rules.some(r => sameSlot(r, el));

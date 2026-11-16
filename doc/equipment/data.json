@@ -1,0 +1,7874 @@
+{
+  "updatedAt": "2026-11-16",
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzf296bcc4.js",
+  "sourceSha256": "bbd94da1e882e1a4e33f83ad3b0a1bfb7d5a79aff17fa5a580cd44945c8c33bc",
+  "slots": [
+    [
+      "onehand",
+      "單手武"
+    ],
+    [
+      "twohand",
+      "雙手武"
+    ],
+    [
+      "shield",
+      "盾牌"
+    ],
+    [
+      "head_top",
+      "頭部（上）"
+    ],
+    [
+      "head_mid",
+      "頭部（中）"
+    ],
+    [
+      "head_low",
+      "頭部（下）"
+    ],
+    [
+      "armor",
+      "護甲"
+    ],
+    [
+      "garment",
+      "披肩"
+    ],
+    [
+      "shoes",
+      "鞋子"
+    ],
+    [
+      "acc",
+      "飾品"
+    ]
+  ],
+  "weaponTypes": [
+    [
+      "단검",
+      "短劍"
+    ],
+    [
+      "검",
+      "單手劍"
+    ],
+    [
+      "양손검",
+      "雙手劍"
+    ],
+    [
+      "카타르",
+      "拳刃"
+    ],
+    [
+      "창",
+      "單手矛"
+    ],
+    [
+      "양손창",
+      "雙手矛"
+    ],
+    [
+      "도끼",
+      "單手斧"
+    ],
+    [
+      "양손도끼",
+      "雙手斧"
+    ],
+    [
+      "클럽",
+      "鈍器"
+    ],
+    [
+      "너클",
+      "拳套"
+    ],
+    [
+      "롯드",
+      "法杖"
+    ],
+    [
+      "책",
+      "書"
+    ],
+    [
+      "활",
+      "弓"
+    ],
+    [
+      "악기",
+      "樂器"
+    ],
+    [
+      "채찍",
+      "鞭子"
+    ],
+    [
+      "권총",
+      "手槍"
+    ],
+    [
+      "라이플",
+      "步槍"
+    ],
+    [
+      "샷건",
+      "散彈槍"
+    ],
+    [
+      "수리검",
+      "風魔手裏劍"
+    ],
+    [
+      "unknown",
+      "其他"
+    ]
+  ],
+  "maxTier": 5,
+  "records": [
+    {
+      "id": 1202,
+      "name": "短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1202.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 急速 +1"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "波利",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2102,
+      "name": "鐵盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2102.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.8 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "波利",
+          "boss": false
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蟲蛹",
+          "boss": false
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "大嘴鳥蛋",
+          "boss": false
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "盜蟲卵",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "卡那多斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2262,
+      "name": "小丑鼻子",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2262.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "瘋兔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1502,
+      "name": "木錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1502.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 命中時 +1% 暈眩"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時 +4% 暈眩"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時 +5% 暈眩"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "綠棉蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1602,
+      "name": "手杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1602.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 詠唱速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 詠唱速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "土波利",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2302,
+      "name": "棉襯衫",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2302.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +5 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "小雞",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2424,
+      "name": "防水長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2424.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.1 HP/秒"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.2 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "羅達蛙",
+          "boss": false
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蛙王",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "劍魚",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "狄奧斯",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "海神",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1702,
+      "name": "弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1702.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% 投射物速度"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 投射物速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 投射物速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 投射物速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "禿鷹",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "弓箭哥布靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1302,
+      "name": "斧",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1302.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "小野豬",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2321,
+      "name": "絲質外袍",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2321.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "克瑞米",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2207,
+      "name": "花朵頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2207.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "克瑞米",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "刺尾蜻蜓",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1208,
+      "name": "笨拙短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1208.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蜂兵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1405,
+      "name": "長矛",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1405.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +2% 近戰距離"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +8% 近戰距離"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +10% 近戰距離"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "曼陀羅魔花",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2306,
+      "name": "冒險衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2306.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "沙漠幼狼",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13011,
+      "name": "阿修羅",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13011.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "沙漠幼狼",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2298,
+      "name": "觸角頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2298.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 拾取範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "搖滾蝗蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1402,
+      "name": "長戟",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1402.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% 投射物速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 投射物速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 投射物速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "搖滾蝗蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2250,
+      "name": "粉紗髮圈",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2250.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 急速 +1"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "月蝕兔",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2355,
+      "name": "天使的守護",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2355.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "月蝕兔",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2244,
+      "name": "紅蝶髮帶",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2244.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蛙王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2245,
+      "name": "紳士帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2245.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "龍蠅",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2607,
+      "name": "髮夾",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2607.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 急速 +1"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 急速 +2"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "龍蠅",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "水母",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "人魚",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2247,
+      "name": "回憶帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2247.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蟋蟀王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2420,
+      "name": "天使的轉生",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2420.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +5 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "蟋蟀王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5035,
+      "name": "波利帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5035.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "波利之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2257,
+      "name": "獸角頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2257.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.1 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "波利之王",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "異變魚",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2116,
+      "name": "天使之保護",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2116.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.1 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉原野",
+          "monster": "波利之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2303,
+      "name": "皮製外套",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2303.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "盜蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2304,
+      "name": "皮製外套",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2304.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "盜蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1105,
+      "name": "圓月刀",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1105.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "吸血蝙蝠",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2209,
+      "name": "紫蝶髮帶",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2209.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "吸血蝙蝠",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2288,
+      "name": "整人面具",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2288.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 命中時 +1% 暈眩"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時 +4% 暈眩"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時 +5% 暈眩"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "白鼠",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2615,
+      "name": "防禦戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2615.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "漂浮蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2286,
+      "name": "精靈耳",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2286.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "紅蝙蝠",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1108,
+      "name": "厚刃劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1108.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "浮勒盜蟲",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2616,
+      "name": "爆擊戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2616.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "藍鼠",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2292,
+      "name": "鋼鐵面具",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2292.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "撕咬塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "瘟疫塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "鑽地塔羅鼠",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2627,
+      "name": "皮帶",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2627.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +5 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "撕咬塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "瘟疫塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "鑽地塔羅鼠",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2620,
+      "name": "怪盜戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2620.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "撕咬塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "瘟疫塔羅鼠",
+          "boss": true
+        },
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "鑽地塔羅鼠",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1524,
+      "name": "黃金之錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1524.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "黃金蟲",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2246,
+      "name": "黃金帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2246.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲",
+            "★ +3% Zeny"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲",
+            "★ +12% Zeny"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲",
+            "★ +15% Zeny"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "黃金蟲",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2610,
+      "name": "金戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2610.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% Zeny"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% Zeny"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% Zeny"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "普隆德拉地下水道",
+          "monster": "黃金蟲",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2503,
+      "name": "披肩",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2503.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.1 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "庫克雷",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2405,
+      "name": "戰士長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2405.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "庫克雷",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1604,
+      "name": "橡木魔杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1604.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "水母",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1704,
+      "name": "坎普茲弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1704.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 急速 +1"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海葵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13104,
+      "name": "加立遜手槍",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13104.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +3% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海葵",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2201,
+      "name": "太陽眼鏡",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2201.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海葵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2333,
+      "name": "秘銀之衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2333.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 詠唱速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 詠唱速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "白幽靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1117,
+      "name": "武士刀",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1117.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 爆擊"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "異變魚",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "青蛇",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2211,
+      "name": "方頭巾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2211.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +5 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "邪骸海盜",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1104,
+      "name": "圓月刀",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1104.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "邪骸海盜",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2287,
+      "name": "海盜頭巾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2287.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "邪骸海盜",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2274,
+      "name": "亡者髮箍",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2274.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 AGI"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 AGI"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "幽靈波利",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸戰士長",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "幽靈波利",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸戰士長",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2336,
+      "name": "盜賊之衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2336.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 AGI"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "幽靈波利",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "幽靈波利",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2308,
+      "name": "大衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2308.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% Flee"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% Flee"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "梅納海葵",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "狼",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "狼",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2505,
+      "name": "斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2505.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ -1% 受到傷害"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "梅納海葵",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "狄奧斯",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "九尾狐",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "九尾狐",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2406,
+      "name": "戰士長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2406.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.8 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "梅納海葵",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "妖君",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1125,
+      "name": "圓柄馬刀",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1125.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ 急速 +1"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1127,
+      "name": "騎兵之劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1127.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1128,
+      "name": "海東劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1128.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5019,
+      "name": "海盜船長帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5019.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 VIT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 VIT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1135,
+      "name": "狂擊之劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1135.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 STR",
+            "★ +0.4 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR",
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR",
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1189,
+      "name": "克拉斯拿雅劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1189.png",
+      "tiers": [
+        {
+          "tier": 1,
+          "bonuses": [
+            "★ +1 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 1,
+          "stage": "失事輪",
+          "monster": "海盜之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2104,
+      "name": "圓盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2104.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "螃蟹",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "大腳龍蝦",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2205,
+      "name": "泳鏡",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2205.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.8 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "烏賊",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "人魚士兵",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "狄奧斯",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "魔鬼大烏賊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2605,
+      "name": "敏捷別針",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2605.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "氣泡蟲",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "九尾狐",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "九尾狐",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1460,
+      "name": "德瑞尹長戟",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1460.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "人魚士兵",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "海神",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "魔鬼大烏賊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2603,
+      "name": "項鍊",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2603.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 VIT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 VIT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "海神",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "大腳龍蝦",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "狂暴月夜貓",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2235,
+      "name": "王冠",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2235.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "大腳龍蝦",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "魔鬼大烏賊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2509,
+      "name": "生存斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2509.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 VIT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 VIT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "柏伊亞嵐島",
+          "monster": "魔鬼大烏賊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2220,
+      "name": "漁夫帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2220.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "魔菇",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1610,
+      "name": "言靈魔杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1610.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 INT"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "樹精",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2103,
+      "name": "圓盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2103.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "樹精",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1207,
+      "name": "笨拙短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1207.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "波波利",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "波波利",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1408,
+      "name": "步兵長矛",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1408.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +4% 近戰距離"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +8% 近戰距離"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +10% 近戰距離"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "森靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2221,
+      "name": "漁夫帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2221.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "毒魔菇",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2213,
+      "name": "貓耳髮圈",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2213.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "浣熊",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2329,
+      "name": "木製鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2329.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.8 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "長老樹精",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2226,
+      "name": "無邊帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2226.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.8 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "刺尾蜻蜓",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2289,
+      "name": "糞便帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2289.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "大腳熊",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2272,
+      "name": "停止標誌頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2272.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 命中時 +2% 暈眩"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時 +4% 暈眩"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時 +5% 暈眩"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "將軍魔碑",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1517,
+      "name": "尖刃鐵錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1517.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "土人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1613,
+      "name": "巫杖 魂咬",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1613.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "土人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1711,
+      "name": "十字弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1711.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "九尾狐",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "九尾狐",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2254,
+      "name": "天使之翼",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2254.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 AGI",
+            "★ +2 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI",
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI",
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "天使波利",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2324,
+      "name": "聖職之袍",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2324.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.2 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "天使波利",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2282,
+      "name": "光環",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2282.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "天使波利",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2255,
+      "name": "惡魔髮圈",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2255.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 STR"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "惡魔波利",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "小巴風特",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "惡魔波利",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2248,
+      "name": "牛仔帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2248.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "流浪之狼",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2268,
+      "name": "煙斗",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2268.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "虎王",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1258,
+      "name": "火靈拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1258.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +6%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "虎王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1133,
+      "name": "火靈之劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1133.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +6%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "虎王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13046,
+      "name": "刺針短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13046.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +6%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚森林",
+          "monster": "虎王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2212,
+      "name": "獨眼龍眼罩",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2212.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "腐屍",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2608,
+      "name": "念珠",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2608.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 LUK"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "腐屍",
+          "boss": false
+        },
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人腐屍",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1505,
+      "name": "鐵錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1505.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸戰士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2609,
+      "name": "骷髏戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2609.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 低 HP 時傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸戰士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1708,
+      "name": "克羅伊特弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1708.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸弓箭手",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人弓箭手",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸弓箭手",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2285,
+      "name": "蘋果頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2285.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 DEX"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸弓箭手",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸弓箭手",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1216,
+      "name": "雙刃短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1216.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸士兵",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸士兵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1214,
+      "name": "大駒短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1214.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸士兵",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸士兵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2305,
+      "name": "冒險衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2305.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "殭屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2404,
+      "name": "長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2404.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "殭屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2264,
+      "name": "殭屍帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2264.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "殭屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2337,
+      "name": "忍服 血櫻",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2337.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "殭屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5046,
+      "name": "妖道帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5046.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 VIT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 VIT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "妖道",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2504,
+      "name": "披肩",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2504.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.2 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼女",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1217,
+      "name": "雙刃短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1217.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼女",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2277,
+      "name": "護士帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2277.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25% 肉類回復量"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼女",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1351,
+      "name": "巨斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1351.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼火",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13151,
+      "name": "風暴來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13151.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2% 爆擊"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼火",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2107,
+      "name": "鏡盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2107.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ -2% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "鬼火",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1219,
+      "name": "長柄短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1219.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸戰士長",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸戰士長",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1220,
+      "name": "長柄短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1220.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "邪骸戰士長",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸戰士長",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1234,
+      "name": "月靈短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1234.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ 急速 +2"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "狂暴月夜貓",
+          "boss": true
+        },
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "月夜貓",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5008,
+      "name": "花冠",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5008.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +0.2 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "狂暴月夜貓",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1525,
+      "name": "秘銀長錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1525.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +4% 近戰距離"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +8% 近戰距離"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +10% 近戰距離"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "月夜貓",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1648,
+      "name": "波爾多之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1648.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +2 INT",
+            "★ +2 DEX"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT",
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT",
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT",
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "月夜貓",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1477,
+      "name": "妖怪的槍",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1477.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +6% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "斐揚洞穴",
+          "monster": "月夜貓",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1401,
+      "name": "長戟",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1401.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": []
+        },
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布林",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "黑蛇",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2314,
+      "name": "鋼鐵鎖子甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2314.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "★ +10 最大 HP"
+          ]
+        },
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "狗頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人戰士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2210,
+      "name": "髮箍",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2210.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": []
+        },
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布林",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "弓箭哥布靈",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人戰士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2501,
+      "name": "連帽披肩",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2501.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": []
+        },
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布林",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人嬰兒",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "木乃伊",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2401,
+      "name": "輕便鞋",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2401.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": []
+        },
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "狗頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人女戰士",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人弓箭手",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "黑狐",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 22847,
+      "name": "普隆德拉巡邏徽章",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/22847.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "關卡獎勵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1452,
+      "name": "彎刃長矛",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1452.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "狗頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "牛頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴螳螂",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2604,
+      "name": "手套",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2604.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "狗頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "黑狐",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "赤蒼蠅",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2299,
+      "name": "獸人頭盔",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2299.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人嬰兒",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2619,
+      "name": "神射手套",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2619.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "弓箭哥布靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2310,
+      "name": "長大衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2310.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人腐屍",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "牛頭人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "艾吉歐蜈蚣",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2316,
+      "name": "鋼鐵鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2316.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2297,
+      "name": "哥布靈面具",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2297.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1806,
+      "name": "賀勒拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1806.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1358,
+      "name": "毀滅之斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1358.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13103,
+      "name": "鮮紅閃電手槍",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13103.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13155,
+      "name": "黑玫瑰霰彈槍",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13155.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5113,
+      "name": "憤怒的嘴",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5113.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "哥布靈首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2114,
+      "name": "石製圓盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2114.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1718,
+      "name": "獵人之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1718.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13301,
+      "name": "風魔輪飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13301.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1958,
+      "name": "幸運鞭子",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1958.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1801,
+      "name": "虎爪拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1801.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1616,
+      "name": "羽翼之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1616.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1908,
+      "name": "吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1908.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2267,
+      "name": "香菸",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2267.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +0.3 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "犬妖首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1124,
+      "name": "獸人刀",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1124.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13156,
+      "name": "守門霰彈槍",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13156.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1734,
+      "name": "獸人弓箭手之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1734.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1222,
+      "name": "大馬士革短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1222.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13303,
+      "name": "風魔熱火飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13303.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1387,
+      "name": "巨人斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1387.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR",
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR",
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR",
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1366,
+      "name": "智天使之斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1366.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR",
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR",
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR",
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2106,
+      "name": "鋼盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2106.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "獸人村",
+          "monster": "獸人英雄",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2203,
+      "name": "眼鏡",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2203.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "木乃伊犬",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸獸人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2612,
+      "name": "花戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2612.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "木乃伊",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸獸人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2330,
+      "name": "緊身便衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2330.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "木乃伊",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2208,
+      "name": "紫蝶髮帶",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2208.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸獸人",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "伊希斯",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "小巴風特",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2511,
+      "name": "邪骸戰士的斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2511.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "邪骸獸人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2602,
+      "name": "智力耳環",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2602.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "伊希斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2617,
+      "name": "智慧手套",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2617.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 詠唱速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 詠唱速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "伊希斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2411,
+      "name": "重靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2411.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "牛頭人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2124,
+      "name": "刺針盾牌",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2124.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2611,
+      "name": "銀戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2611.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1377,
+      "name": "狂暴颶風斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1377.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1513,
+      "name": "日星錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1513.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1909,
+      "name": "豎琴",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1909.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1614,
+      "name": "聖杖 英靈",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1614.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1615,
+      "name": "骷髏魔杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1615.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1260,
+      "name": "骸靈拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1260.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2618,
+      "name": "黑狐頸鏈",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2618.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "狂暴木乃伊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1254,
+      "name": "秘刃 闇嘯",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1254.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1370,
+      "name": "超重雙手斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1370.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1813,
+      "name": "風靈拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1813.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 低 HP 時傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1913,
+      "name": "電子吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1913.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1964,
+      "name": "秘鞭 眷戀",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1964.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1285,
+      "name": "恰克蘭拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1285.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13153,
+      "name": "昏暗來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13153.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5053,
+      "name": "人面獅身帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5053.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT",
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT",
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT",
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "夢羅克金字塔",
+          "monster": "俄塞里斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2110,
+      "name": "聖耀之盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2110.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2601,
+      "name": "力量戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2601.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": []
+        },
+        {
+          "tier": 4,
+          "bonuses": []
+        },
+        {
+          "tier": 5,
+          "bonuses": []
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1555,
+      "name": "火靈之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1555.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1809,
+      "name": "龍爪拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1809.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 命中時 +3% 暈眩"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時 +4% 暈眩"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時 +5% 暈眩"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1551,
+      "name": "聖言之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1551.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1816,
+      "name": "秘拳套 閃光",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1816.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1305,
+      "name": "切削之斧",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1305.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 拾取範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "狂暴大腳熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2419,
+      "name": "哥夫內軍靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2419.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 移動速度",
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度",
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度",
+            "★ +2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2507,
+      "name": "伯爵斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2507.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1261,
+      "name": "刺殺拳刃",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1261.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1519,
+      "name": "鏈錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1519.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 命中時 +3% 暈眩"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時 +4% 暈眩"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時 +5% 暈眩"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1163,
+      "name": "十字巨劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1163.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2122,
+      "name": "白金鋼盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2122.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 受到傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 受到傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 受到傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13300,
+      "name": "風魔翼飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13300.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1957,
+      "name": "流星鞭子",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1957.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "雪熊",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1466,
+      "name": "死神之鐮",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1466.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍",
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍",
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍",
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1557,
+      "name": "預言錄",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1557.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 急速 +5"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1262,
+      "name": "洛奇的指甲",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1262.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊",
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊",
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊",
+            "★ +15% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2256,
+      "name": "山羊頭盔",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2256.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR",
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR",
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR",
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1263,
+      "name": "邪惡拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1263.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13164,
+      "name": "長身來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13164.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1526,
+      "name": "魔錘 安魂曲",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1526.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "迷宮森林",
+          "monster": "巴風特",
+          "boss": true
+        }
+      ]
+    }
+  ]
+}
