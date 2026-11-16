@@ -99,7 +99,7 @@
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.5');
+      console.info('[RO助手] 即時自選已啟用 v1.9.6');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');

@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 (async()=>{
   const {window}=parseHTML(`<html><head></head><body><div id="stages"><div id="stg-detail">
     <div class="stg-banner" style="--art:url('/assets/stages/test.jpg')"></div>
-    <div class="stg-mobs"><span data-mob="poring"><img src="poring.png"></span></div>
+    <div class="stg-bosses"><div class="stg-boss" data-mob="mastering"><b>波利之王</b><small>14:00</small></div></div><div class="stg-mobs"><span data-mob="poring"><img src="poring.png"></span></div>
     </div></div></body></html>`);
   let callbacks=0,overflow=false;
   const observers=[];

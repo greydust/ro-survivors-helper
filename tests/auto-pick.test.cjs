@@ -5,9 +5,11 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(root, 'dist', 'RO倖存者助手.user.js'), 'utf8');
-function setup() {
+function setup(bundle=source) {
   const { window } = parseHTML('<html><head></head><body><div id="skillbar"></div><div id="runitems"></div><div id="skill-tip" class="hidden"></div><div id="picker" class="hidden"><div id="pk-title">Level Up！</div><div id="lu-sockets"></div><div id="pk-cards"></div></div></body></html>');
   const { document } = window;
+  // LinkeDOM windows share a proxy backing store; each fixture is a new page.
+  delete window[Symbol.for('greydust.ro.helper.runtime')];
   let time = 0, next = 1;
   const timers = new Map(), storage = new Map();
   let observer;
@@ -17,7 +19,7 @@ function setup() {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(source.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(bundle.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -27,7 +29,7 @@ function setup() {
     }
     time = end;
   }
-  return { document, window, api: context.api, tick, storage, mutations: records => observer(records) };
+  return { document, window, vmContext:context, api: context.api, tick, storage, mutations: records => observer(records) };
 }
 function rule(kind, name, icon) { return {kind, name, icon:'https://ro.hans-webgametw.com/'+icon, id:kind==='skill'?'test':'potion'}; }
 function picker(env, cards, kind='skill') {
@@ -39,6 +41,15 @@ function picker(env, cards, kind='skill') {
 }
 let count=0;
 function test(name,fn) {fn(); console.log('PASS',name); count++;}
+test('console build starts normally and repeated execution never duplicates installation',()=>{
+  const consoleSource=fs.readFileSync(path.join(root,'dist','RO倖存者助手.console.js'),'utf8');
+  assert(!consoleSource.includes('// ==UserScript=='));assert(consoleSource.includes('installGameHooks();'));
+  const e=setup(consoleSource),styles=e.document.querySelectorAll('style').length;
+  assert.equal(styles,1);assert(e.api);assert.equal(e.window[Symbol.for('greydust.ro.helper.runtime')].version,JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version);
+  vm.runInContext(consoleSource,e.vmContext);vm.runInContext(source,e.vmContext);
+  assert.equal(e.document.querySelectorAll('style').length,styles);
+  const slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(550);assert.equal(e.document.querySelectorAll('#ro-ap-menu').length,1);
+});
 test('highest rarity among enabled items; ignore unselected legendary',()=>{
   const e=setup(); e.api.setRules([rule('skill','A','a.png'),rule('skill','B','b.png')]);
   const c=picker(e,[['A','a.png','稀有'],['B','b.png','史詩'],['C','c.png','傳說']]);
@@ -483,6 +494,16 @@ test('monster level sits between name and times and follows native lap level off
  e.api.updateStageSpawnSchedule();const caption=e.document.querySelector('[data-ro-mob-time]');assert.equal(caption.children[0].tagName,'B');assert.equal(caption.children[1].textContent,'等級 1');assert.equal(caption.children[2].textContent,'00:00–02:00');
  for(const lap of ['2','3']){e.document.querySelector('#lap-tabs .primary').classList.remove('primary');e.document.querySelector(`[data-laptab="${lap}"]`).classList.add('primary');e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 51');}
  e.api.setGameCatalog({ca:{prontera:script(['poring'])}});e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 —');
+});
+test('boss levels appear below names, preserve native times and update without duplicate rows',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="lap-tabs"><button data-laptab="2" class="primary"></button></div><div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/pyramid.jpg')"></div><div class="stg-bosses"><div class="stg-boss mvp" data-mob="osiris"><span class="stg-boss-face"><img></span><b>俄塞里斯</b><small>MVP · min 14:00</small></div></div></div>`);
+ const script=pool=>({runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
+ e.api.setGameCatalog({bj:{mummy:{level:40},late:{level:53},osiris:{level:50}},ca:{pyramid:script(['mummy']),maze:script(['late'])}});
+ const boss=e.document.querySelector('.stg-boss'),name=boss.querySelector('b'),time=boss.querySelector('small');let clicks=0;boss.onclick=()=>clicks++;
+ e.api.updateStageSpawnSchedule();const line=boss.querySelector('[data-ro-mob-level]');assert.equal(line.textContent,'等級 63');assert.equal(name.nextElementSibling,line);assert.equal(line.nextElementSibling,time);
+ e.api.updateStageSpawnSchedule();assert.equal(boss.querySelector('[data-ro-mob-level]'),line);assert.equal(boss.querySelectorAll('[data-ro-mob-level]').length,1);assert.equal(time.textContent,'MVP · min 14:00');boss.click();assert.equal(clicks,1);
+ e.document.querySelector('[data-laptab]').dataset.laptab='1';e.api.updateStageSpawnSchedule();assert.equal(line.textContent,'等級 50');
+ e.api.setGameCatalog({ca:{pyramid:script(['mummy'])}});e.api.updateStageSpawnSchedule();assert.equal(line.textContent,'等級 —');
 });
 test('ambiguous or missing stage data never displays an invented timetable',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="stg-detail"><div class="stg-mobs"><span data-mob="poring"></span></div><div class="stg-bosses"></div></div>');

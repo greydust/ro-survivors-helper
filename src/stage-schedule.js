@@ -64,14 +64,14 @@
     return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
   }
   function updateStageSpawnSchedule(){
-    const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs');
-    if(!mobs)return;
+    const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs'),bosses=detail?.querySelector('.stg-bosses');
+    if(!detail||(!mobs&&!bosses))return;
     detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
     const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
-    if(!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
-    for(const mob of mobs.querySelectorAll('[data-mob]')){
+    if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
+    for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
       const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
       const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
@@ -84,5 +84,11 @@
       const levelLine=document.createElement('span');levelLine.dataset.roMobLevel='';levelLine.textContent='等級 '+(level??'—');levelLine.title='計算經驗衰減使用的怪物等級（含目前周目修正）';caption.append(levelLine);
       for(const time of times){const line=document.createElement('small');line.textContent=time;caption.append(line);}
       mob.append(caption);
+    }
+    for(const boss of bosses?.querySelectorAll('[data-mob]')||[]){
+      const level=stageMonsterLevel(boss.dataset.mob,selected,lap),text='等級 '+(level??'—');
+      let line=boss.querySelector('[data-ro-mob-level]');
+      if(!line){line=document.createElement('span');line.dataset.roMobLevel='';line.title='計算經驗衰減使用的怪物等級（含目前周目修正）';const name=boss.querySelector('b');if(name)name.after(line);else boss.append(line);}
+      if(line.textContent!==text)line.textContent=text;
     }
   }

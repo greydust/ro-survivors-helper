@@ -92,3 +92,10 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - 觸控介面增加取消按鈕、44px 主要按鈕及 16px 輸入框；窄螢幕對話框改單欄、分類橫捲，戰鬥統計縮至 150px。自選選單與多選清單位置依 visualViewport，避免軟鍵盤遮蔽；旋轉視窗時關閉浮動選單。
 - 關卡怪物名稱下方新增「等級 X」，取目前共用模組 bj 的 level。#lap-tabs [data-laptab].primary 決定周目；二／三周目照原生 RO_LAPAVG/RO_LAPK，以最後關卡 maze 與目前關卡的波次時長加權平均等級差取整，兩周目加成相同。未能判定等級顯示 —。名稱／等級／時段共同參與簽章，避免 MutationObserver 循環。
 - 新增手勢、取消、重複 contextmenu、放手誤點、軟鍵盤可視範圍及周目等級回歸測試。本次本機 file: 預覽被瀏覽器 URL 安全政策阻擋，未進行手機實機或視覺驗證。
+
+- 等級改為金黃色文字／深藍底的獨立標籤，避免沿用原遊戲淺色背景時看不清楚；頭目 `.stg-bosses [data-mob]` 在原名稱後、原生出場時間前插入同一等級標籤。頭目也用相同周目修正，保留原生圖示、時間與點擊事件；重複更新只修改變動文字。
+
+## Console 建置
+
+- build 同步輸出 `.user.js` 與 `.console.js`，後者只去掉 metadata，執行邏輯相同。header 在遊戲 origin 以外不啟動，並用 `Symbol.for('greydust.ro.helper.runtime')` 在 window 記錄已啟動版本，避免重貼／與新版使用者腳本混用造成事件與 WebSocket Proxy 疊加。更新版本須重新整理。
+- Console 注入無法觀測先前已建立的主城 WebSocket，建議主畫面進關前執行；詳細限制見 CONSOLE.md。回歸測試涵蓋 Console 首次啟動、重複執行與使用者腳本混合載入。LinkeDOM 多視窗測試的 Proxy backing store 會共用 window Symbol，獨立頁面 fixture 建立時須清除測試實例標記。

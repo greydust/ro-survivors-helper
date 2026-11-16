@@ -1,6 +1,6 @@
 {
   "name": "ro-survivors-helper",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "private": true,
   "description": "Client-side Tampermonkey helper for ro.hans-webgametw.com",
   "scripts": {

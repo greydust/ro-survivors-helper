@@ -40,3 +40,11 @@ const output = path.join(root,'dist','RO倖存者助手.user.js');
 await writeFile(output, source, 'utf8');
 console.log(`Built ${path.relative(root,output)} from ${files.length} files`);
 console.log(`SHA256 ${createHash('sha256').update(source).digest('hex')}`);
+
+// Plain JavaScript for DevTools Console/Snippets, sharing the exact runtime.
+const consoleSource='// RO 倖存者助手 '+version+' — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。\n'
+  +source.slice(source.indexOf('// ==/UserScript==')+'// ==/UserScript=='.length).trimStart();
+new vm.Script(consoleSource,{filename:'RO倖存者助手.console.js'});
+const consoleOutput=path.join(root,'dist','RO倖存者助手.console.js');
+await writeFile(consoleOutput,consoleSource,'utf8');
+console.log(`Built ${path.relative(root,consoleOutput)} for DevTools Console`);

@@ -1,0 +1,1491 @@
+// RO 倖存者助手 1.9.6 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+(() => {
+  'use strict';
+  // Console and userscript installs share one instance per page.
+  if(new URL(location.href).origin!=='https://ro.hans-webgametw.com'){
+    console.warn('[RO助手] 請在 RO 倖存者遊戲頁面執行');return;
+  }
+  const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
+  if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
+  window[runtimeKey]={version:'1.9.6'};
+  const OFFLINE_KEY='greydust.ro.keep-offline.v1';
+  let keepOffline=false;
+  try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
+  const lobbySockets=new Set(),blockedLobbySockets=new Set();
+  function isLobbySocket(url){
+    try{const page=new URL(location.href),target=new URL(String(url),page);return ['ws:','wss:'].includes(target.protocol)&&target.host===page.host&&target.pathname===new URL('ws',page).pathname;}catch{return false;}
+  }
+  function installOfflineGate(){
+    const Native=window.WebSocket;if(typeof Native!=='function')return;
+    const Gate=new Proxy(Native,{construct(target,args,newTarget){
+      if(isLobbySocket(args[0])&&keepOffline){
+        // A closed, inert socket prevents network access without triggering the
+        // native reconnect backoff repeatedly. HTTP saves and ws-run are intact.
+        const socket=new window.EventTarget();
+        Object.assign(socket,{url:String(args[0]),readyState:Native.CLOSED??3,bufferedAmount:0,protocol:'',extensions:'',binaryType:'blob',onopen:null,onclose:null,onerror:null,onmessage:null});
+        socket.send=()=>{throw new Error('WebSocket is closed: 保持離線遊玩');};
+        socket.close=()=>blockedLobbySockets.delete(socket);
+        socket.release=()=>{blockedLobbySockets.delete(socket);socket.onclose?.({type:'close',code:1000,reason:'offline preference disabled',wasClean:true,target:socket});};
+        blockedLobbySockets.add(socket);return socket;
+      }
+      const socket=Reflect.construct(target,args,newTarget===Gate?target:newTarget);
+      if(isLobbySocket(args[0])){lobbySockets.add(socket);socket.addEventListener('close',()=>lobbySockets.delete(socket),{once:true});}
+      return socket;
+    }});
+    window.WebSocket=Gate;
+  }
+  function setKeepOffline(enabled){
+    keepOffline=!!enabled;
+    try{localStorage.setItem(OFFLINE_KEY,String(keepOffline));}catch{notify('離線設定無法保存，目前只在本分頁有效');}
+    if(keepOffline){for(const socket of lobbySockets)try{socket.close(1000,'保持離線遊玩');}catch{}lobbySockets.clear();}
+    else{
+      const blocked=[...blockedLobbySockets];for(const socket of blocked)socket.release();
+      if(!blocked.length)document.querySelector('#lobby-online')?.click();
+    }
+    updateOfflineUI();notify(keepOffline?'已開啟保持離線遊玩；帳號存檔同步保留':'已關閉保持離線遊玩');
+  }
+  function updateOfflineUI(){
+    const body=document.querySelector('#opt-body');
+    if(body&&document.querySelector('#opt-tabs [data-opt-tab="game"].active')&&!body.querySelector('[data-ro-keep-offline]')){
+      const row=document.createElement('label');row.className='opt-row opt-check';
+      const text=document.createElement('span'),name=document.createElement('b'),hint=document.createElement('small');
+      name.textContent='保持離線遊玩';hint.textContent='不自動連入主城多人伺服器；保留帳號登入與存檔同步';text.append(name,hint);
+      const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=keepOffline;checkbox.setAttribute('data-ro-keep-offline','');checkbox.onchange=()=>setKeepOffline(checkbox.checked);
+      const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,checkbox,toggle);body.append(row);
+    }
+    const checkbox=body?.querySelector('[data-ro-keep-offline]');if(checkbox)checkbox.checked=keepOffline;
+    if(!keepOffline)return;
+    const status=document.querySelector('#lobby-online');
+    if(status){if(status.textContent!=='離線遊玩（助手）')status.textContent='離線遊玩（助手）';if(status.classList.contains('online'))status.classList.remove('online');}
+    const dialog=document.querySelector('#npc-dialog');
+    if(dialog&&!dialog.classList.contains('hidden')&&dialog.querySelector('.lb-pick [data-lb]')){
+      const buttons=[...dialog.querySelectorAll('#npc-options button')];
+      const offline=buttons.find(button=>/離線|sin conexi[oó]n|offline|sem conex[aã]o/i.test(button.textContent));
+      offline?.click();
+    }
+  }
+  installOfflineGate();
+  const MINIMAP_MAGNET_KEY='greydust.ro.hide-minimap-magnets.v1';
+  const HORDE_RING_KEY='greydust.ro.show-horde-ring.v1';
+  let hideMinimapMagnets=false;
+  let showHordeRing=false;
+  try{hideMinimapMagnets=localStorage.getItem(MINIMAP_MAGNET_KEY)==='true';}catch{}
+  try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)==='true';}catch{}
+  function hordeRingGeometry(game,image,crop){
+    if(!game?.player||!game.map||!image||!crop)return null;
+    const [sx,sy,sw,sh,dx,dy,dw,dh]=crop;
+    const worldWidth=game.map.width*64,worldHeight=game.map.height*64;
+    const iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height;
+    const scale=Math.min(iw/worldWidth,ih/worldHeight);
+    const reach=typeof game.logicReach==='function'?game.logicReach():game.world3d?.viewReach;
+    if(!Number.isFinite(reach)||reach<=0||![scale,sw,sh,dw,dh].every(value=>Number.isFinite(value)&&value>0))return null;
+    const padX=(iw-worldWidth*scale)/2,padY=(ih-worldHeight*scale)/2;
+    return {x:dx+(padX+game.player.x*scale-sx)*dw/sw,y:dy+(padY+game.player.y*scale-sy)*dh/sh,
+      rx:(reach+90)*scale*dw/sw,ry:(reach+90)*scale*dh/sh,
+      outerX:(reach+130)*scale*dw/sw,outerY:(reach+130)*scale*dh/sh};
+  }
+  function paintHordeRing(context,image,crop){
+    if(!showHordeRing)return;
+    const ring=hordeRingGeometry(activeGame,image,crop);if(!ring)return;
+    context.save();
+    try{
+      context.setTransform(1,0,0,1,0,0);context.globalAlpha=.9;context.strokeStyle='#5de7ff';
+      const dpr=Math.min(2,window.devicePixelRatio||1);context.lineWidth=1.3*dpr;
+      context.setLineDash([]);context.beginPath();context.ellipse(ring.x,ring.y,ring.rx,ring.ry,0,0,Math.PI*2);context.stroke();
+      context.globalAlpha=.55;context.setLineDash([3*dpr,3*dpr]);context.beginPath();context.ellipse(ring.x,ring.y,ring.outerX,ring.outerY,0,0,Math.PI*2);context.stroke();
+    }finally{context.restore();}
+  }
+  const patchedMinimapContexts=new WeakSet();
+  function patchMinimapContext(context){
+    if(!context||patchedMinimapContexts.has(context))return;
+    if(!['beginPath','arc','stroke','fillRect'].every(key=>typeof context[key]==='function'))return;
+    patchedMinimapContexts.add(context);
+    let magnetPath=false;
+    const begin=context.beginPath,arc=context.arc,stroke=context.stroke,fillRect=context.fillRect;
+    context.beginPath=function(...args){magnetPath=false;return Reflect.apply(begin,this,args);};
+    context.arc=function(x,y,radius,start,end,reverse,...rest){
+      // The native minimap magnet is a U-shaped, reversed half-circle. Player,
+      // bosses and teammates use full circles; equipment uses diamond paths.
+      if(Math.abs(start-Math.PI)<1e-8&&Math.abs(end)<1e-8&&reverse===true)magnetPath=true;
+      return Reflect.apply(arc,this,[x,y,radius,start,end,reverse,...rest]);
+    };
+    context.stroke=function(...args){if(hideMinimapMagnets&&magnetPath)return;return Reflect.apply(stroke,this,args);};
+    context.fillRect=function(...args){
+      if(hideMinimapMagnets&&magnetPath&&String(this.fillStyle).toLowerCase()==='#e8eef8')return;
+      return Reflect.apply(fillRect,this,args);
+    };
+    // Capture the game's exact minimap crop instead of guessing its zoom/pan.
+    let image=null,crop=null,playerArrow=false,drawingOverlay=false;
+    if(typeof context.drawImage==='function'){
+      const drawImage=context.drawImage;
+      context.drawImage=function(...args){if(args.length===9){image=args[0];crop=args.slice(1);}return Reflect.apply(drawImage,this,args);};
+    }
+    if(typeof context.rotate==='function'&&typeof context.restore==='function'){
+      const rotate=context.rotate,restore=context.restore;
+      context.rotate=function(...args){if(!drawingOverlay)playerArrow=true;return Reflect.apply(rotate,this,args);};
+      context.restore=function(...args){
+        const result=Reflect.apply(restore,this,args);
+        if(playerArrow&&!drawingOverlay){
+          playerArrow=false;drawingOverlay=true;
+          try{paintHordeRing(this,image,crop);}catch(error){console.debug('[RO助手] 怪潮範圍繪製失敗',error);}finally{drawingOverlay=false;}
+        }
+        return result;
+      };
+    }
+  }
+  function installMinimapGate(){
+    const prototype=window.HTMLCanvasElement?.prototype;if(typeof prototype?.getContext!=='function')return;
+    const getContext=prototype.getContext;
+    prototype.getContext=function(...args){
+      const context=Reflect.apply(getContext,this,args);
+      if(args[0]==='2d'&&this.closest('#minimap'))patchMinimapContext(context);
+      return context;
+    };
+  }
+  function updateMinimapOption(){
+    const original=document.querySelector('#lu-p-hide');
+    const row=original?.closest('label');
+    if(row&&!document.querySelector('[data-ro-hide-minimap-magnets]')){
+      const label=document.createElement('label');label.className='opt-row opt-check';
+      const text=document.createElement('span'),title=document.createElement('b'),hint=document.createElement('small');
+      title.textContent='隱藏小地圖磁鐵';hint.textContent='只隱藏小地圖上的磁鐵標記，不影響地上磁鐵與拾取';text.append(title,hint);
+      const input=document.createElement('input');input.type='checkbox';input.setAttribute('data-ro-hide-minimap-magnets','');
+      input.onchange=()=>{hideMinimapMagnets=input.checked;try{localStorage.setItem(MINIMAP_MAGNET_KEY,String(hideMinimapMagnets));}catch{notify('設定無法保存，目前只在本分頁有效');}};
+      const toggle=document.createElement('i');toggle.className='opt-switch';label.append(text,input,toggle);row.after(label);
+    }
+    const input=document.querySelector('[data-ro-hide-minimap-magnets]');if(input)input.checked=hideMinimapMagnets;
+    const magnetRow=input?.closest('label');
+    if(magnetRow&&!document.querySelector('[data-ro-show-horde-ring]')){
+      const label=document.createElement('label');label.className='opt-row opt-check';
+      const text=document.createElement('span'),title=document.createElement('b'),hint=document.createElement('small');
+      title.textContent='顯示怪物潮第一圈範圍';hint.textContent='青色實線為基礎半徑，虛線為第一圈隨機距離上限；不代表地形允許出生';text.append(title,hint);
+      const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=showHordeRing;checkbox.setAttribute('data-ro-show-horde-ring','');
+      checkbox.onchange=()=>{showHordeRing=checkbox.checked;try{localStorage.setItem(HORDE_RING_KEY,String(showHordeRing));}catch{notify('設定無法保存，目前只在本分頁有效');}};
+      const toggle=document.createElement('i');toggle.className='opt-switch';label.append(text,checkbox,toggle);magnetRow.after(label);
+    }
+    const ringInput=document.querySelector('[data-ro-show-horde-ring]');if(ringInput)ringInput.checked=showHordeRing;
+  }
+  installMinimapGate();
+  const hordeStates = new WeakMap();
+  const observedHordeQueues = new WeakSet();
+  let nextHordeHudAt=0;
+  const hordeSpawnKey=(id,hp,point)=>point&&[id,hp,point.x,point.y].join('|');
+  function observeHordeQueue(game,state,queue){
+    if(!Array.isArray(queue)||observedHordeQueues.has(queue))return;
+    observedHordeQueues.add(queue);
+    const push=queue.push,splice=queue.splice;
+    Object.defineProperty(queue,'push',{configurable:true,writable:true,value:function(...tuples){
+      const result=Reflect.apply(push,this,tuples),wave=state.current;
+      if(this===queue&&wave)for(const tuple of tuples){
+        if(!Array.isArray(tuple)||tuple.length<4||state.entries.has(tuple))continue;
+        const entry={tuple,wave,status:'queued'};state.entries.set(tuple,entry);wave.pending.add(entry);wave.enqueued++;state.pendingWaves.add(wave);
+      }
+      return result;
+    }});
+    Object.defineProperty(queue,'splice',{configurable:true,writable:true,value:function(...args){
+      const removed=Reflect.apply(splice,this,args);
+      if(this===queue)for(const tuple of removed){
+        const entry=state.entries.get(tuple);if(!entry||entry.status!=='queued')continue;
+        entry.status='processing';const key=hordeSpawnKey(tuple[0],tuple[1],{x:tuple[2],y:tuple[3]});
+        if(!state.processing.has(key))state.processing.set(key,[]);state.processing.get(key).push(entry);
+      }
+      return removed;
+    }});
+  }
+  function observeNewHordeQueue(game,state){
+    let value=game.roHq;observeHordeQueue(game,state,value);
+    const descriptor=Object.getOwnPropertyDescriptor(game,'roHq');
+    if(descriptor&&(!descriptor.configurable||descriptor.get||descriptor.set))return ()=>{};
+    Object.defineProperty(game,'roHq',{configurable:true,enumerable:descriptor?.enumerable??true,
+      get:()=>value,set:next=>{value=next;observeHordeQueue(game,state,next);}});
+    return ()=>{
+      if(!descriptor&&value===undefined)delete game.roHq;
+      else Object.defineProperty(game,'roHq',descriptor?{...descriptor,value}:{configurable:true,enumerable:true,writable:true,value});
+    };
+  }
+  function installHordeCount(game){
+    if(!game||hordeStates.has(game)||typeof game.horde!=='function'||typeof game.spawnEnemy!=='function')return;
+    const state={latest:null,current:null,entries:new WeakMap(),processing:new Map(),pendingWaves:new Set()};hordeStates.set(game,state);
+    const spawnEnemy=game.spawnEnemy,horde=game.horde;
+    game.spawnEnemy=function(...args){
+      const key=hordeSpawnKey(args[0],args[1],args[3]),entries=state.processing.get(key),entry=entries?.shift();
+      if(entries&&!entries.length)state.processing.delete(key);
+      try{
+        const enemy=Reflect.apply(spawnEnemy,this,args);
+        if(entry){if(enemy)entry.wave.actual++;else entry.wave.failed++;}
+        else if(state.current&&!Array.isArray(this.roHq)){state.current.enqueued++;if(enemy)state.current.actual++;else state.current.failed++;}
+        return enemy;
+      }catch(error){if(entry)entry.wave.canceled=true;else if(state.current)state.current.canceled=true;throw error;}
+      finally{if(entry){entry.status='done';entry.wave.pending.delete(entry);if(!entry.wave.pending.size){state.pendingWaves.delete(entry.wave);if(entry.wave.closed&&!entry.wave.canceled)entry.wave.completedAt=performance.now();}}}
+    };
+    game.horde=function(...args){
+      const wave={actual:0,theoretical:null,enqueued:0,failed:0,pending:new Set(),closed:false,canceled:false,completedAt:null};
+      const previous=state.current;state.current=wave;state.latest=wave;
+      let partyCount=1;const time=this.time,count=this.difficulty?.count,restore=[];
+      const wrap=(object,key,make)=>{const descriptor=Object.getOwnPropertyDescriptor(object,key),original=object[key];object[key]=make(original);restore.push(()=>{if(descriptor)Object.defineProperty(object,key,descriptor);else delete object[key];});};
+      try{
+        restore.push(observeNewHordeQueue(this,state));
+        if(typeof this.coop?.partyScale==='function')wrap(this.coop,'partyScale',original=>function(...values){const scale=Reflect.apply(original,this,values);partyCount=scale?.count??1;return scale;});
+        if(typeof this.spawnAnchors==='function')wrap(this,'spawnAnchors',original=>function(...values){
+          const anchors=Reflect.apply(original,this,values),desired=Math.round(Math.min(120,36+time/8)*count*partyCount);
+          if(anchors?.length&&Number.isFinite(desired)&&desired>=0)wave.theoretical=Math.round(desired/anchors.length)*anchors.length;
+          return anchors;
+        });
+        return Reflect.apply(horde,this,args);
+      }catch(error){wave.canceled=true;throw error;}
+      finally{for(const undo of restore.reverse())undo();wave.closed=true;if(!wave.pending.size&&!wave.canceled)wave.completedAt=performance.now();state.current=previous;try{updateHordeHud(this,true);}catch(error){console.debug('怪物潮面板更新失敗',error);}}
+    };
+  }
+  function reconcileHordeCancellation(game,state){
+    if(!state||!(game.bossArena||game.closeAt>=0||game.state==='over'))return;
+    for(const wave of state.pendingWaves){wave.canceled=true;for(const entry of wave.pending)entry.status='canceled';wave.pending.clear();}
+    state.pendingWaves.clear();state.processing.clear();
+  }
+  function hordeProgress(game){
+    const state=hordeStates.get(game);reconcileHordeCancellation(game,state);
+    const wave=state?.latest;if(!wave)return null;
+    return {actual:wave.actual,theoretical:wave.theoretical,enqueued:wave.enqueued,failed:wave.failed,pending:wave.pending.size,
+      complete:wave.theoretical!==null&&wave.closed&&!wave.pending.size&&!wave.canceled,canceled:wave.canceled,expired:wave.completedAt!==null&&performance.now()-wave.completedAt>=3000};
+  }
+  function fieldMonsterCounts(game){
+    const counts=new Map();
+    for(const enemy of game?.enemies||[]){
+      if(!enemy||enemy.dead||enemy.removed||enemy.state==='dead'||(Number.isFinite(enemy.hp)&&enemy.hp<=0))continue;
+      const id=enemy.def?.id||'unknown',name=MONSTER_NAMES[id]||enemy.def?.name||id;
+      if(!counts.has(id))counts.set(id,{id,name,count:0});counts.get(id).count++;
+    }
+    return [...counts.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'zh-Hant')||a.id.localeCompare(b.id));
+  }
+  function fieldMonsterLimit(game){
+    const waves=game?.script?.waves,time=game?.waveTime;
+    if(!Array.isArray(waves)||!waves.length||!Number.isFinite(time))return null;
+    const wave=waves.find(row=>time>=row.from&&time<row.to)||waves[waves.length-1];
+    const limit=wave.maxAlive*game.difficulty?.count*(game.coop?.partyScale?.()?.count??1)*(time<30?.2+.8*time/30:1);
+    return Number.isFinite(limit)&&limit>=0?Math.ceil(limit):null;
+  }
+  function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
+  function updateHordeHud(game=activeGame,force=false){
+    const hud=document.querySelector('#hud'),loot=document.querySelector('#loot-rolls');
+    if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'||!loot){clearHordeHud();return;}
+    if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
+    let panel=document.querySelector('#ro-horde-hud');
+    if(!panel){
+      panel=document.createElement('section');panel.id='ro-horde-hud';panel.setAttribute('aria-label','怪物潮與場上怪物');
+      const progress=document.createElement('div');progress.dataset.hordeProgress='';
+      const total=document.createElement('div');total.dataset.monsterTotal='';
+      const list=document.createElement('div');list.dataset.monsterCounts='';list.id='ro-field-monsters';
+      const header=document.createElement('div');header.dataset.monsterHeader='';
+      const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent='−';toggle.setAttribute('aria-label','折疊怪物明細');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',list.id);
+      toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
+      header.append(progress,toggle);panel.append(header,total,list);hud.append(panel);
+    }
+    if(typeof loot.getBoundingClientRect==='function'){
+      const rect=loot.getBoundingClientRect(),width=innerWidth<=700?150:180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
+      for(const [key,value] of Object.entries({top:top+'px',right:Math.max(8,innerWidth-(rect.right||innerWidth-12))+'px',width:Math.min(width,innerWidth-24)+'px',maxHeight:Math.max(80,innerHeight-top-16)+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
+    }
+    const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
+    const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
+    if(counter.textContent!==text)counter.textContent=text;
+    const status=progress?.expired?'idle':progress?.canceled?'canceled':progress?.complete?'complete':'pending';
+    if(counter.dataset.status!==status)counter.dataset.status=status;
+    const title=progress?.expired?'本波生成已結束。':progress?`本波累計成功出生／理論總數；已排入 ${progress.enqueued}，待處理 ${progress.pending}，生成失敗 ${progress.failed}。`+(progress.canceled?'剩餘生成已中止。':progress.complete?'分批生成已結束；地形限制可能使出生數低於理論值。':'分批生成中。'):(game.coop?.replica?'隊員端尚未收到可追蹤的怪物潮佇列。':'尚未發生怪物潮。');
+    if(counter.title!==title)counter.title=title;
+    const counts=fieldMonsterCounts(game),total=panel.querySelector('[data-monster-total]'),totalText='場上怪物：'+counts.reduce((sum,row)=>sum+row.count,0)+' / '+(fieldMonsterLimit(game)??'—');
+    if(total.textContent!==totalText)total.textContent=totalText;
+    const list=panel.querySelector('[data-monster-counts]'),signature=JSON.stringify(counts);
+    if(list.dataset.signature!==signature){
+      list.dataset.signature=signature;list.replaceChildren();
+      for(const row of counts){const line=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');name.textContent=row.name;number.textContent=String(row.count);line.append(name,number);list.append(line);}
+    }
+  }
+  const SLOT = '#skillbar .skill-slot[data-skill], #runitems .run-slot[data-item], #lu-sockets .skill-slot[data-skill], #lu-sockets .run-slot[data-item]';
+  const COLORS = ['#9aa6c4', '#3ddc5a', '#2f7bff', '#a040ff', '#ff9a2e'];
+  let rules = [];
+  let menu, toast, job = null, scheduled = false;
+  const manualCards = new WeakSet();
+  const victoryCollected = new WeakSet();
+  const fastHooked = new WeakSet();
+  let activeGame = null;
+  let skillDefs = null;
+  let gameCatalog = null;
+  const diagnosed = new WeakSet();
+  let smithDefs = null, smithAssets = null;
+  let twoHandTypes = new Set(['양손검', '양손창', '양손도끼', '활', '권총', '라이플', '샷건', '수리검', '카타르']);
+  const smith = { panel: null, category: '', switching: false, inventory: [] };
+  const smithNativeButtons = new WeakSet();
+  const autoRefine={active:false,uid:null,target:4,timer:null,pending:null};
+  function refineState(){
+    const panel=document.querySelector('#smith'),go=document.querySelector('#smith-go');
+    const selected=document.querySelector('#smith-list .cand.sel[data-uid]');
+    const ladder=document.querySelector('#smith-detail .ref-ladder');
+    if(!panel||panel.classList.contains('hidden')||!go||!selected||!ladder)return null;
+    return {panel,go,uid:selected.dataset.uid,level:ladder.querySelectorAll(':scope > .done').length,max:ladder.children.length,
+      detail:document.querySelector('#smith-detail'),selected};
+  }
+  function stopAutoRefine(message){
+    autoRefine.active=false;autoRefine.uid=null;autoRefine.pending=null;
+    clearTimeout(autoRefine.timer);autoRefine.timer=null;
+    updateAutoRefine();if(message)notify(message);
+  }
+  function scheduleRefine(){clearTimeout(autoRefine.timer);autoRefine.timer=setTimeout(refineStep,250);}
+  function refineStep(){
+    if(!autoRefine.active)return;
+    const state=refineState();
+    if(!state)return stopAutoRefine('自動精煉已停止：裝備已消失、爆掉或視窗已關閉');
+    if(state.uid!==autoRefine.uid)return stopAutoRefine('已切換裝備，自動精煉停止');
+    if(state.level>=autoRefine.target)return stopAutoRefine(`已精煉至 +${state.level}`);
+    if(autoRefine.pending){
+      const pending=autoRefine.pending;
+      if(state.level>pending.level){autoRefine.pending=null;scheduleRefine();return;}
+      if(performance.now()-pending.at>30000)return stopAutoRefine('精煉回應逾時，已停止；請確認裝備狀態');
+      if(!state.go.disabled&&state.detail.innerHTML!==pending.detail)return stopAutoRefine('本次精煉未完成，已停止');
+      scheduleRefine();return;
+    }
+    if(state.go.disabled)return stopAutoRefine('無法繼續精煉：材料不足或已達上限');
+    const dialog=document.querySelector('#npc-dialog');
+    if(dialog&&!dialog.classList.contains('hidden'))return stopAutoRefine('有其他確認視窗，自動精煉已停止');
+    autoRefine.pending={level:state.level,detail:state.detail.innerHTML,at:performance.now()};
+    // Invoke the existing button, preserving cost, probability and server rules.
+    state.go.click();
+    if(!autoRefine.active)return;
+    if(dialog&&!dialog.classList.contains('hidden')){
+      // Only accept the refinement confirmation created synchronously by our
+      // own click, with the selected piece's exact icon. Never accept other NPCs.
+      const confirmation=dialog.querySelector('.confirm-piece .item-cell img');
+      const expected=state.detail.querySelector('.eq-item img.big');
+      const confirm=dialog.querySelector('#npc-options button.primary');
+      const now=refineState();
+      if(!confirmation||!expected||confirmation.getAttribute('src')!==expected.getAttribute('src')||!confirm||now?.uid!==autoRefine.uid)
+        return stopAutoRefine('無法確認精煉提示，已停止，請手動檢查');
+      confirm.click();
+    }
+    scheduleRefine();
+  }
+  function startAutoRefine(){
+    if(autoRefine.active){stopAutoRefine('已停止自動精煉；已送出的單次精煉仍會完成');return;}
+    const state=refineState();
+    if(!state||state.go.disabled||state.selected.hasAttribute('data-ro-smith-filtered')){notify('請先選擇可精煉的裝備，並確認材料足夠');return;}
+    if(!Number.isInteger(autoRefine.target)||autoRefine.target<=state.level||autoRefine.target>state.max){notify('請選擇高於目前加值的目標');return;}
+    if(document.querySelector('#npc-dialog:not(.hidden)')){notify('請先關閉其他確認視窗');return;}
+    autoRefine.active=true;autoRefine.uid=state.uid;autoRefine.pending=null;updateAutoRefine();scheduleRefine();
+  }
+  function updateAutoRefine(){
+    const panel=document.querySelector('#smith'),go=document.querySelector('#smith-go');
+    if(!panel||panel.classList.contains('hidden')||!go){
+      if(autoRefine.active){autoRefine.active=false;autoRefine.uid=null;autoRefine.pending=null;clearTimeout(autoRefine.timer);}
+      return;
+    }
+    let controls=document.querySelector('#ro-auto-refine');
+    if(!controls){
+      controls=document.createElement('span');controls.id='ro-auto-refine';
+      const button=formButton('自動精煉至',startAutoRefine);button.id='ro-auto-refine-button';
+      const select=document.createElement('select');select.id='ro-auto-refine-target';select.setAttribute('aria-label','自動精煉目標加值');
+      select.onchange=()=>{autoRefine.target=Number(select.value);updateAutoRefine();};controls.append(button,select);go.before(controls);
+    }
+    const state=refineState(),button=controls.querySelector('button'),select=controls.querySelector('select');
+    const max=state?.max||10;
+    if(select.children.length!==max){
+      select.replaceChildren();for(let value=1;value<=max;value++){const option=document.createElement('option');option.value=String(value);option.textContent='+'+value;if(value===autoRefine.target)option.selected=true;select.append(option);}
+    }
+    const label=autoRefine.active?'停止':'自動精煉至';if(button.textContent!==label)button.textContent=label;
+    button.disabled=!autoRefine.active&&(!state||go.disabled||autoRefine.target<=state.level);
+    select.disabled=autoRefine.active;
+  }
+  let smithManifestItems = null;
+  const smithIconIndex = new Map(), smithPathCache = new Map();
+  const SMITH_FILTERS = [
+    ['twohand', '雙手武'], ['onehand', '單手武'], ['shield', '盾牌'],
+    ['head_top', '頭部（上）'],
+    ['armor', '護甲'], ['garment', '披肩'], ['shoes', '鞋子']
+  ];
+
+  // Merchant rules operate on raw affixes, never rendered bonuses/card effects.
+  let characterDetails=null,characterDetailsTimer=null;
+  let nextCharacterDetailsAt=0;
+  const characterStatFields=[
+    ['maxHp','最大生命','number'],['armor','護甲（固定減傷）','number'],['def','DEF','number'],
+    ['damageReduction','減傷（stats）','percent'],['flee','Flee（stats）','percent'],
+    ['discovery','尋寶率（內部值）','number'],['critChance','爆擊率（stats）','percent'],['critMult','爆擊傷害','multiplier'],
+    ['atk','ATK','number'],['matk','MATK','number'],['damageMult','傷害倍率（stats）','multiplier'],
+    ['haste','急速','number'],['castHaste','施法急速','number'],['speedMult','移動速度倍率（stats）','multiplier'],
+    ['pierceChance','穿透機率','percent'],['doubleChance','雙重施法機率','percent'],
+    ['areaMult','範圍倍率','multiplier'],['reachMult','近戰距離倍率','multiplier'],
+    ['lifesteal','吸血','percent'],['regen','生命回復／秒','number'],['regen5','每 5 秒生命回復','number'],
+    ['expMult','經驗倍率','multiplier'],['zenyMult','Zeny 倍率','multiplier'],
+    ...['str','agi','vit','int','dex','luk'].map(key=>[key,key.toUpperCase(),'number'])
+  ];
+  function formatCharacterStat(value,format='number') {
+    if(typeof value!=='number'||!Number.isFinite(value))return '—';
+    const text=number=>String(Math.round(number*100)/100);
+    return format==='percent'?text(value*100)+'%':format==='multiplier'?'×'+text(value):text(value);
+  }
+  function characterStatRows(game) {
+    const stats=game?.stats;if(!stats)return [];
+    const buff=key=>typeof game.buffValue==='function'?game.buffValue(key):0;
+    const rows=[['生命',formatCharacterStat(game.hp)+' / '+formatCharacterStat(stats.maxHp)]];
+    const brace=buff('brace');
+    if(Number.isFinite(stats.damageReduction))rows.push(['減傷（含 buff，未含 DEF／護甲）',formatCharacterStat(Math.min(Math.max(.75,brace),stats.damageReduction+buff('reduction')+buff('soulWard')+brace),'percent')]);
+    if(Number.isFinite(stats.flee))rows.push(['Flee（含 buff）',formatCharacterStat(stats.flee+buff('flee'),'percent')]);
+    if(Number.isFinite(stats.critChance))rows.push(['爆擊率（含 buff）',formatCharacterStat(stats.critChance+buff('crit'),'percent')]);
+    for(const [key,label,format] of characterStatFields)rows.push([label,formatCharacterStat(stats[key],format)]);
+    return rows;
+  }
+  function closeCharacterDetails() {
+    clearTimeout(characterDetailsTimer);characterDetailsTimer=null;
+    characterDetails?.remove();characterDetails=null;
+    document.querySelector('#ro-character-details-toggle')?.setAttribute('aria-expanded','false');
+  }
+  function updateCharacterDetails() {
+    const hud=document.querySelector('#hud'),buffs=document.querySelector('#buffs');
+    if(!hud||hud.classList.contains('hidden')||!buffs||!activeGame?.stats){
+      document.querySelector('#ro-character-details-toggle')?.remove();closeCharacterDetails();return;
+    }
+    let button=document.querySelector('#ro-character-details-toggle');
+    if(!button){
+      button=document.createElement('button');button.id='ro-character-details-toggle';button.type='button';
+      button.textContent='角色詳細資料';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ro-character-details');
+      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};hud.append(button);
+    }
+    if(typeof buffs.getBoundingClientRect==='function'){
+      const rect=buffs.getBoundingClientRect();button.style.left=rect.left+'px';button.style.top=(rect.bottom+6)+'px';
+    }
+    if(!characterDetails)return;
+    const populate=(target,rows)=>{
+      const signature=JSON.stringify(rows);if(target.dataset.signature===signature)return;
+      target.dataset.signature=signature;target.replaceChildren();
+      for(const [label,value] of rows){const row=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');name.textContent=label;number.textContent=value;row.append(name,number);target.append(row);}
+    };
+    populate(characterDetails.querySelector('[data-character-stats]'),characterStatRows(activeGame));
+    const raw=Object.entries(activeGame.stats).filter(([,v])=>typeof v==='boolean'||typeof v==='number').sort(([a],[b])=>a.localeCompare(b));
+    populate(characterDetails.querySelector('[data-character-raw]'),raw.map(([key,value])=>[key,String(value)]));
+  }
+  function openCharacterDetails() {
+    closeCharacterDetails();if(!activeGame?.stats)return;
+    characterDetails=document.createElement('section');characterDetails.id='ro-character-details';
+    characterDetails.setAttribute('role','region');characterDetails.setAttribute('aria-label','角色詳細資料');
+    const header=document.createElement('header'),title=document.createElement('strong'),close=document.createElement('button');
+    title.textContent='角色詳細資料';close.type='button';close.textContent='關閉';close.onclick=closeCharacterDetails;header.append(title,close);
+    const note=document.createElement('p');note.textContent='每 0.25 秒更新。stats 為角色目前內部值；臨時增益另列。尋寶率不是單件物品掉落機率，減傷仍會受敵人與技能影響。';
+    const rows=document.createElement('div');rows.setAttribute('data-character-stats','');
+    const raw=document.createElement('details'),summary=document.createElement('summary'),values=document.createElement('div');
+    summary.textContent='全部原始 stats 欄位';values.setAttribute('data-character-raw','');raw.append(summary,values);
+    characterDetails.append(header,note,rows,raw);document.body.append(characterDetails);
+    document.querySelector('#ro-character-details-toggle')?.setAttribute('aria-expanded','true');
+    const refresh=()=>{updateCharacterDetails();if(characterDetails)characterDetailsTimer=setTimeout(refresh,250);};refresh();
+  }
+  // Name/drop-source snapshot only, 2026-11-16. Bonuses must come from live game definitions.
+  const EQUIPMENT_CATALOG = [{"id":1202,"name":"短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1202.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"波利","boss":false}]},{"id":2102,"name":"鐵盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2102.png","tiers":[1,2],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"波利","boss":false},{"tier":1,"stage":"普隆德拉原野","monster":"蟲蛹","boss":false},{"tier":1,"stage":"普隆德拉原野","monster":"大嘴鳥蛋","boss":false},{"tier":1,"stage":"普隆德拉地下水道","monster":"盜蟲卵","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"卡那多斯","boss":false}]},{"id":2262,"name":"小丑鼻子","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2262.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"瘋兔","boss":false}]},{"id":1502,"name":"木錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1502.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"綠棉蟲","boss":false}]},{"id":1602,"name":"手杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1602.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"土波利","boss":false}]},{"id":2302,"name":"棉襯衫","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2302.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"小雞","boss":false}]},{"id":2424,"name":"防水長靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2424.png","tiers":[1,2],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"羅達蛙","boss":false},{"tier":1,"stage":"普隆德拉原野","monster":"蛙王","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"劍魚","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"狄奧斯","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"海神","boss":true}]},{"id":1702,"name":"弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1702.png","tiers":[1,3],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"禿鷹","boss":false},{"tier":3,"stage":"獸人村","monster":"弓箭哥布靈","boss":false}]},{"id":1302,"name":"斧","slot":"weapon","wtype":"도끼","icon":"https://ro.hans-webgametw.com/assets/items/1302.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"小野豬","boss":false}]},{"id":2321,"name":"絲質外袍","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2321.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"克瑞米","boss":false}]},{"id":2207,"name":"花朵頭飾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2207.png","tiers":[1,2],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"克瑞米","boss":false},{"tier":2,"stage":"斐揚森林","monster":"刺尾蜻蜓","boss":false}]},{"id":1208,"name":"笨拙短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1208.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"蜂兵","boss":false}]},{"id":1405,"name":"長矛","slot":"weapon","wtype":"창","icon":"https://ro.hans-webgametw.com/assets/items/1405.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"曼陀羅魔花","boss":false}]},{"id":2306,"name":"冒險衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2306.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"沙漠幼狼","boss":false}]},{"id":13011,"name":"阿修羅","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/13011.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"沙漠幼狼","boss":false}]},{"id":2298,"name":"觸角頭飾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2298.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"搖滾蝗蟲","boss":false}]},{"id":1402,"name":"長戟","slot":"weapon","wtype":"창","icon":"https://ro.hans-webgametw.com/assets/items/1402.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"搖滾蝗蟲","boss":false}]},{"id":2250,"name":"粉紗髮圈","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2250.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"月蝕兔","boss":true}]},{"id":2355,"name":"天使的守護","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2355.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"月蝕兔","boss":true}]},{"id":2244,"name":"紅蝶髮帶","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2244.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"蛙王","boss":true}]},{"id":2245,"name":"紳士帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2245.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"龍蠅","boss":true}]},{"id":2607,"name":"髮夾","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2607.png","tiers":[1,2],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"龍蠅","boss":true},{"tier":1,"stage":"失事輪","monster":"水母","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"人魚","boss":false}]},{"id":2247,"name":"回憶帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2247.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"蟋蟀王","boss":true}]},{"id":2420,"name":"天使的轉生","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2420.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"蟋蟀王","boss":true}]},{"id":5035,"name":"波利帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5035.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"波利之王","boss":true}]},{"id":2257,"name":"獸角頭飾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2257.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"波利之王","boss":true},{"tier":1,"stage":"失事輪","monster":"異變魚","boss":false}]},{"id":2116,"name":"天使之保護","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2116.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉原野","monster":"波利之王","boss":true}]},{"id":2303,"name":"皮製外套","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2303.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"盜蟲","boss":false}]},{"id":2304,"name":"皮製外套","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2304.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"盜蟲","boss":false}]},{"id":1105,"name":"圓月刀","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1105.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"吸血蝙蝠","boss":false}]},{"id":2209,"name":"紫蝶髮帶","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2209.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"吸血蝙蝠","boss":false}]},{"id":2288,"name":"整人面具","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2288.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"白鼠","boss":false}]},{"id":2615,"name":"防禦戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2615.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"漂浮蟲","boss":false}]},{"id":2286,"name":"精靈耳","slot":"head_mid","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2286.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"紅蝙蝠","boss":false}]},{"id":1108,"name":"厚刃劍","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1108.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"浮勒盜蟲","boss":false}]},{"id":2616,"name":"爆擊戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2616.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"藍鼠","boss":false}]},{"id":2292,"name":"鋼鐵面具","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2292.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"撕咬塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"瘟疫塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"鑽地塔羅鼠","boss":true}]},{"id":2627,"name":"皮帶","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2627.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"撕咬塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"瘟疫塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"鑽地塔羅鼠","boss":true}]},{"id":2620,"name":"怪盜戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2620.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"撕咬塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"瘟疫塔羅鼠","boss":true},{"tier":1,"stage":"普隆德拉地下水道","monster":"鑽地塔羅鼠","boss":true}]},{"id":1524,"name":"黃金之錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1524.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"黃金蟲","boss":true}]},{"id":2246,"name":"黃金帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2246.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"黃金蟲","boss":true}]},{"id":2610,"name":"金戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2610.png","tiers":[1],"sources":[{"tier":1,"stage":"普隆德拉地下水道","monster":"黃金蟲","boss":true}]},{"id":2503,"name":"披肩","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2503.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"庫克雷","boss":false}]},{"id":2405,"name":"戰士長靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2405.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"庫克雷","boss":false}]},{"id":1604,"name":"橡木魔杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1604.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"水母","boss":false}]},{"id":1704,"name":"坎普茲弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1704.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海葵","boss":false}]},{"id":13104,"name":"加立遜手槍","slot":"weapon","wtype":"권총","icon":"https://ro.hans-webgametw.com/assets/items/13104.png","tiers":[1,3],"sources":[{"tier":1,"stage":"失事輪","monster":"海葵","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":2201,"name":"太陽眼鏡","slot":"head_mid","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2201.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海葵","boss":false}]},{"id":2333,"name":"秘銀之衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2333.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"白幽靈","boss":false}]},{"id":1117,"name":"武士刀","slot":"weapon","wtype":"양손검","icon":"https://ro.hans-webgametw.com/assets/items/1117.png","tiers":[1,2],"sources":[{"tier":1,"stage":"失事輪","monster":"異變魚","boss":false},{"tier":2,"stage":"斐揚森林","monster":"青蛇","boss":false}]},{"id":2211,"name":"方頭巾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2211.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"邪骸海盜","boss":false}]},{"id":1104,"name":"圓月刀","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1104.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"邪骸海盜","boss":false}]},{"id":2287,"name":"海盜頭巾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2287.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"邪骸海盜","boss":false}]},{"id":2274,"name":"亡者髮箍","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2274.png","tiers":[1,2,3],"sources":[{"tier":1,"stage":"失事輪","monster":"幽靈波利","boss":true},{"tier":2,"stage":"斐揚洞穴","monster":"邪骸戰士長","boss":true},{"tier":3,"stage":"夢羅克金字塔","monster":"幽靈波利","boss":true},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸戰士長","boss":true}]},{"id":2336,"name":"盜賊之衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2336.png","tiers":[1,3],"sources":[{"tier":1,"stage":"失事輪","monster":"幽靈波利","boss":true},{"tier":3,"stage":"夢羅克金字塔","monster":"幽靈波利","boss":true}]},{"id":2308,"name":"大衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2308.png","tiers":[1,2,3],"sources":[{"tier":1,"stage":"失事輪","monster":"梅納海葵","boss":true},{"tier":2,"stage":"斐揚森林","monster":"狼","boss":false},{"tier":3,"stage":"獸人村","monster":"狼","boss":false}]},{"id":2505,"name":"斗篷","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2505.png","tiers":[1,2],"sources":[{"tier":1,"stage":"失事輪","monster":"梅納海葵","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"狄奧斯","boss":true},{"tier":2,"stage":"斐揚森林","monster":"九尾狐","boss":false},{"tier":2,"stage":"斐揚洞穴","monster":"九尾狐","boss":false}]},{"id":2406,"name":"戰士長靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2406.png","tiers":[1,2],"sources":[{"tier":1,"stage":"失事輪","monster":"梅納海葵","boss":true},{"tier":2,"stage":"斐揚洞穴","monster":"妖君","boss":true}]},{"id":1125,"name":"圓柄馬刀","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1125.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":1127,"name":"騎兵之劍","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1127.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":1128,"name":"海東劍","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1128.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":5019,"name":"海盜船長帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5019.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":1135,"name":"狂擊之劍","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1135.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":1189,"name":"克拉斯拿雅劍","slot":"weapon","wtype":"양손검","icon":"https://ro.hans-webgametw.com/assets/items/1189.png","tiers":[1],"sources":[{"tier":1,"stage":"失事輪","monster":"海盜之王","boss":true}]},{"id":2104,"name":"圓盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2104.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"螃蟹","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"大腳龍蝦","boss":true}]},{"id":2205,"name":"泳鏡","slot":"head_mid","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2205.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"烏賊","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"人魚士兵","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"狄奧斯","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"魔鬼大烏賊","boss":true}]},{"id":2605,"name":"敏捷別針","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2605.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"氣泡蟲","boss":false},{"tier":2,"stage":"斐揚森林","monster":"九尾狐","boss":false},{"tier":2,"stage":"斐揚洞穴","monster":"九尾狐","boss":false}]},{"id":1460,"name":"德瑞尹長戟","slot":"weapon","wtype":"양손창","icon":"https://ro.hans-webgametw.com/assets/items/1460.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"人魚士兵","boss":false},{"tier":2,"stage":"柏伊亞嵐島","monster":"海神","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"魔鬼大烏賊","boss":true}]},{"id":2603,"name":"項鍊","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2603.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"海神","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"大腳龍蝦","boss":true},{"tier":2,"stage":"斐揚洞穴","monster":"狂暴月夜貓","boss":true}]},{"id":2235,"name":"王冠","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2235.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"大腳龍蝦","boss":true},{"tier":2,"stage":"柏伊亞嵐島","monster":"魔鬼大烏賊","boss":true}]},{"id":2509,"name":"生存斗篷","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2509.png","tiers":[2],"sources":[{"tier":2,"stage":"柏伊亞嵐島","monster":"魔鬼大烏賊","boss":true}]},{"id":2220,"name":"漁夫帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2220.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"魔菇","boss":false}]},{"id":1610,"name":"言靈魔杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1610.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚森林","monster":"樹精","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":2103,"name":"圓盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2103.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"樹精","boss":false}]},{"id":1207,"name":"笨拙短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1207.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"波波利","boss":false},{"tier":2,"stage":"斐揚洞穴","monster":"波波利","boss":false}]},{"id":1408,"name":"步兵長矛","slot":"weapon","wtype":"창","icon":"https://ro.hans-webgametw.com/assets/items/1408.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"森靈","boss":false}]},{"id":2221,"name":"漁夫帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2221.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"毒魔菇","boss":false}]},{"id":2213,"name":"貓耳髮圈","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2213.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"浣熊","boss":false}]},{"id":2329,"name":"木製鎧甲","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2329.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"長老樹精","boss":false}]},{"id":2226,"name":"無邊帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2226.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"刺尾蜻蜓","boss":false}]},{"id":2289,"name":"糞便帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2289.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"大腳熊","boss":false}]},{"id":2272,"name":"停止標誌頭飾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2272.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"將軍魔碑","boss":false}]},{"id":1517,"name":"尖刃鐵錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1517.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"土人","boss":false}]},{"id":1613,"name":"巫杖 魂咬","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1613.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"土人","boss":false}]},{"id":1711,"name":"十字弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1711.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"九尾狐","boss":false},{"tier":2,"stage":"斐揚洞穴","monster":"九尾狐","boss":false}]},{"id":2254,"name":"天使之翼","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2254.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"天使波利","boss":true}]},{"id":2324,"name":"聖職之袍","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2324.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"天使波利","boss":true}]},{"id":2282,"name":"光環","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2282.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"天使波利","boss":true}]},{"id":2255,"name":"惡魔髮圈","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2255.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚森林","monster":"惡魔波利","boss":true},{"tier":3,"stage":"迷宮森林","monster":"小巴風特","boss":false},{"tier":3,"stage":"迷宮森林","monster":"惡魔波利","boss":true},{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":2248,"name":"牛仔帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2248.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"流浪之狼","boss":true}]},{"id":2268,"name":"煙斗","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2268.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚森林","monster":"虎王","boss":true},{"tier":3,"stage":"獸人村","monster":"獸人腐屍","boss":false}]},{"id":1258,"name":"火靈拳刃","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1258.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"虎王","boss":true}]},{"id":1133,"name":"火靈之劍","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1133.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"虎王","boss":true}]},{"id":13046,"name":"刺針短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/13046.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚森林","monster":"虎王","boss":true}]},{"id":2212,"name":"獨眼龍眼罩","slot":"head_mid","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2212.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"腐屍","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"腐屍","boss":false}]},{"id":2608,"name":"念珠","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2608.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"腐屍","boss":false},{"tier":2,"stage":"普隆德拉城","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人腐屍","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"腐屍","boss":false}]},{"id":1505,"name":"鐵錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1505.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸戰士","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸戰士","boss":false}]},{"id":2609,"name":"骷髏戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2609.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸戰士","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸戰士","boss":false}]},{"id":1708,"name":"克羅伊特弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1708.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸弓箭手","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人弓箭手","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸弓箭手","boss":false}]},{"id":2285,"name":"蘋果頭飾","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2285.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸弓箭手","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸弓箭手","boss":false}]},{"id":1216,"name":"雙刃短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1216.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸士兵","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸士兵","boss":false}]},{"id":1214,"name":"大駒短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1214.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸士兵","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸士兵","boss":false}]},{"id":2305,"name":"冒險衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2305.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"殭屍","boss":false}]},{"id":2404,"name":"長靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2404.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"殭屍","boss":false}]},{"id":2264,"name":"殭屍帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2264.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"殭屍","boss":false}]},{"id":2337,"name":"忍服 血櫻","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2337.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"殭屍","boss":false}]},{"id":5046,"name":"妖道帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5046.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"妖道","boss":false}]},{"id":2504,"name":"披肩","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2504.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼女","boss":false}]},{"id":1217,"name":"雙刃短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1217.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼女","boss":false}]},{"id":2277,"name":"護士帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2277.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼女","boss":false}]},{"id":1351,"name":"巨斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1351.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼火","boss":false}]},{"id":13151,"name":"風暴來福槍","slot":"weapon","wtype":"라이플","icon":"https://ro.hans-webgametw.com/assets/items/13151.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼火","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":2107,"name":"鏡盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2107.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"鬼火","boss":false}]},{"id":1219,"name":"長柄短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1219.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸戰士長","boss":true},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸戰士長","boss":true}]},{"id":1220,"name":"長柄短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1220.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"邪骸戰士長","boss":true},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸戰士長","boss":true}]},{"id":1234,"name":"月靈短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1234.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"狂暴月夜貓","boss":true},{"tier":2,"stage":"斐揚洞穴","monster":"月夜貓","boss":true}]},{"id":5008,"name":"花冠","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5008.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"狂暴月夜貓","boss":true}]},{"id":1525,"name":"秘銀長錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1525.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"月夜貓","boss":true}]},{"id":1648,"name":"波爾多之杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1648.png","tiers":[2,3],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"月夜貓","boss":true},{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1477,"name":"妖怪的槍","slot":"weapon","wtype":"양손창","icon":"https://ro.hans-webgametw.com/assets/items/1477.png","tiers":[2],"sources":[{"tier":2,"stage":"斐揚洞穴","monster":"月夜貓","boss":true}]},{"id":1401,"name":"長戟","slot":"weapon","wtype":"창","icon":"https://ro.hans-webgametw.com/assets/items/1401.png","tiers":[2,3],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"獸人戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布林","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人戰士","boss":false},{"tier":3,"stage":"迷宮森林","monster":"黑蛇","boss":false}]},{"id":2314,"name":"鋼鐵鎖子甲","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2314.png","tiers":[2,3],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"獸人戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"狗頭人","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人戰士","boss":false}]},{"id":2210,"name":"髮箍","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2210.png","tiers":[2,3],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"獸人戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布林","boss":false},{"tier":3,"stage":"獸人村","monster":"弓箭哥布靈","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人戰士","boss":false}]},{"id":2501,"name":"連帽披肩","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2501.png","tiers":[2,3],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"哥布林","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人嬰兒","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"木乃伊","boss":false}]},{"id":2401,"name":"輕便鞋","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2401.png","tiers":[2,3],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"狗頭人","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人女戰士","boss":false},{"tier":3,"stage":"獸人村","monster":"獸人弓箭手","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"黑狐","boss":false}]},{"id":22847,"name":"普隆德拉巡邏徽章","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/22847.png","tiers":[2],"sources":[{"tier":2,"stage":"普隆德拉城","monster":"關卡獎勵","boss":false}]},{"id":1452,"name":"彎刃長矛","slot":"weapon","wtype":"양손창","icon":"https://ro.hans-webgametw.com/assets/items/1452.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"狗頭人","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"牛頭人","boss":false},{"tier":3,"stage":"迷宮森林","monster":"狂暴螳螂","boss":false}]},{"id":2604,"name":"手套","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2604.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"狗頭人","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"黑狐","boss":false},{"tier":3,"stage":"迷宮森林","monster":"赤蒼蠅","boss":false}]},{"id":2299,"name":"獸人頭盔","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2299.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人嬰兒","boss":false}]},{"id":2619,"name":"神射手套","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2619.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"弓箭哥布靈","boss":false}]},{"id":2310,"name":"長大衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2310.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人腐屍","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"牛頭人","boss":false},{"tier":3,"stage":"迷宮森林","monster":"艾吉歐蜈蚣","boss":false}]},{"id":2316,"name":"鋼鐵鎧甲","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2316.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人腐屍","boss":false}]},{"id":2297,"name":"哥布靈面具","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2297.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":1806,"name":"賀勒拳套","slot":"weapon","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/1806.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":1358,"name":"毀滅之斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1358.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":13103,"name":"鮮紅閃電手槍","slot":"weapon","wtype":"권총","icon":"https://ro.hans-webgametw.com/assets/items/13103.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":13155,"name":"黑玫瑰霰彈槍","slot":"weapon","wtype":"샷건","icon":"https://ro.hans-webgametw.com/assets/items/13155.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":5113,"name":"憤怒的嘴","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5113.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"哥布靈首領","boss":true}]},{"id":2114,"name":"石製圓盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2114.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1718,"name":"獵人之弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1718.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":13301,"name":"風魔輪飛鏢","slot":"weapon","wtype":"수리검","icon":"https://ro.hans-webgametw.com/assets/items/13301.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1958,"name":"幸運鞭子","slot":"weapon","wtype":"채찍","icon":"https://ro.hans-webgametw.com/assets/items/1958.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1801,"name":"虎爪拳套","slot":"weapon","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/1801.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1616,"name":"羽翼之杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1616.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1908,"name":"吉他","slot":"weapon","wtype":"악기","icon":"https://ro.hans-webgametw.com/assets/items/1908.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":2267,"name":"香菸","slot":"head_low","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2267.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"犬妖首領","boss":true}]},{"id":1124,"name":"獸人刀","slot":"weapon","wtype":"검","icon":"https://ro.hans-webgametw.com/assets/items/1124.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":13156,"name":"守門霰彈槍","slot":"weapon","wtype":"샷건","icon":"https://ro.hans-webgametw.com/assets/items/13156.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":1734,"name":"獸人弓箭手之弓","slot":"weapon","wtype":"활","icon":"https://ro.hans-webgametw.com/assets/items/1734.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":1222,"name":"大馬士革短劍","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1222.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":13303,"name":"風魔熱火飛鏢","slot":"weapon","wtype":"수리검","icon":"https://ro.hans-webgametw.com/assets/items/13303.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":1387,"name":"巨人斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1387.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":1366,"name":"智天使之斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1366.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":2106,"name":"鋼盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2106.png","tiers":[3],"sources":[{"tier":3,"stage":"獸人村","monster":"獸人英雄","boss":true}]},{"id":2203,"name":"眼鏡","slot":"head_mid","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2203.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"木乃伊犬","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸獸人","boss":false}]},{"id":2612,"name":"花戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2612.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"木乃伊","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸獸人","boss":false}]},{"id":2330,"name":"緊身便衣","slot":"armor","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2330.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"木乃伊","boss":false}]},{"id":2208,"name":"紫蝶髮帶","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2208.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸獸人","boss":false},{"tier":3,"stage":"夢羅克金字塔","monster":"伊希斯","boss":false},{"tier":3,"stage":"迷宮森林","monster":"小巴風特","boss":false}]},{"id":2511,"name":"邪骸戰士的斗篷","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2511.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"邪骸獸人","boss":false}]},{"id":2602,"name":"智力耳環","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2602.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"伊希斯","boss":false}]},{"id":2617,"name":"智慧手套","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2617.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"伊希斯","boss":false}]},{"id":2411,"name":"重靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2411.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"牛頭人","boss":false}]},{"id":2124,"name":"刺針盾牌","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2124.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":2611,"name":"銀戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2611.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1377,"name":"狂暴颶風斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1377.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1513,"name":"日星錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1513.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1909,"name":"豎琴","slot":"weapon","wtype":"악기","icon":"https://ro.hans-webgametw.com/assets/items/1909.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1614,"name":"聖杖 英靈","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1614.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1615,"name":"骷髏魔杖","slot":"weapon","wtype":"롯드","icon":"https://ro.hans-webgametw.com/assets/items/1615.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1260,"name":"骸靈拳刃","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1260.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":2618,"name":"黑狐頸鏈","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2618.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"狂暴木乃伊","boss":true}]},{"id":1254,"name":"秘刃 闇嘯","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1254.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":1370,"name":"超重雙手斧","slot":"weapon","wtype":"양손도끼","icon":"https://ro.hans-webgametw.com/assets/items/1370.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":1813,"name":"風靈拳套","slot":"weapon","wtype":"너클","icon":"https://ro.hans-webgametw.com/assets/items/1813.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":1913,"name":"電子吉他","slot":"weapon","wtype":"악기","icon":"https://ro.hans-webgametw.com/assets/items/1913.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":1964,"name":"秘鞭 眷戀","slot":"weapon","wtype":"채찍","icon":"https://ro.hans-webgametw.com/assets/items/1964.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":1285,"name":"恰克蘭拳刃","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1285.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":13153,"name":"昏暗來福槍","slot":"weapon","wtype":"라이플","icon":"https://ro.hans-webgametw.com/assets/items/13153.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":5053,"name":"人面獅身帽","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/5053.png","tiers":[3],"sources":[{"tier":3,"stage":"夢羅克金字塔","monster":"俄塞里斯","boss":true}]},{"id":2110,"name":"聖耀之盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2110.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":2601,"name":"力量戒指","slot":"acc","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2601.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1555,"name":"火靈之書","slot":"weapon","wtype":"책","icon":"https://ro.hans-webgametw.com/assets/items/1555.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1809,"name":"龍爪拳套","slot":"weapon","wtype":"너클","icon":"https://ro.hans-webgametw.com/assets/items/1809.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1551,"name":"聖言之書","slot":"weapon","wtype":"책","icon":"https://ro.hans-webgametw.com/assets/items/1551.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1816,"name":"秘拳套 閃光","slot":"weapon","wtype":"너클","icon":"https://ro.hans-webgametw.com/assets/items/1816.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":1305,"name":"切削之斧","slot":"weapon","wtype":"도끼","icon":"https://ro.hans-webgametw.com/assets/items/1305.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"狂暴大腳熊","boss":true}]},{"id":2419,"name":"哥夫內軍靴","slot":"shoes","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2419.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":2507,"name":"伯爵斗篷","slot":"garment","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2507.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":1261,"name":"刺殺拳刃","slot":"weapon","wtype":"단검","icon":"https://ro.hans-webgametw.com/assets/items/1261.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":1519,"name":"鏈錘","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1519.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":1163,"name":"十字巨劍","slot":"weapon","wtype":"양손검","icon":"https://ro.hans-webgametw.com/assets/items/1163.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":2122,"name":"白金鋼盾","slot":"shield","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2122.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":13300,"name":"風魔翼飛鏢","slot":"weapon","wtype":"수리검","icon":"https://ro.hans-webgametw.com/assets/items/13300.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":1957,"name":"流星鞭子","slot":"weapon","wtype":"채찍","icon":"https://ro.hans-webgametw.com/assets/items/1957.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"雪熊","boss":true}]},{"id":1466,"name":"死神之鐮","slot":"weapon","wtype":"양손창","icon":"https://ro.hans-webgametw.com/assets/items/1466.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":1557,"name":"預言錄","slot":"weapon","wtype":"책","icon":"https://ro.hans-webgametw.com/assets/items/1557.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":1262,"name":"洛奇的指甲","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1262.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":2256,"name":"山羊頭盔","slot":"head_top","wtype":"","icon":"https://ro.hans-webgametw.com/assets/items/2256.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":1263,"name":"邪惡拳刃","slot":"weapon","wtype":"카타르","icon":"https://ro.hans-webgametw.com/assets/items/1263.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":13164,"name":"長身來福槍","slot":"weapon","wtype":"라이플","icon":"https://ro.hans-webgametw.com/assets/items/13164.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]},{"id":1526,"name":"魔錘 安魂曲","slot":"weapon","wtype":"클럽","icon":"https://ro.hans-webgametw.com/assets/items/1526.png","tiers":[3],"sources":[{"tier":3,"stage":"迷宮森林","monster":"巴風特","boss":true}]}];
+  // Chinese names from the public library snapshot, 2026-11-16.
+  const MONSTER_NAMES = {"poring":"波利","lunatic":"瘋兔","fabre":"綠棉蟲","pupa":"蟲蛹","drops":"土波利","picky":"小雞","roda_frog":"羅達蛙","peco_egg":"大嘴鳥蛋","condor":"禿鷹","savage_babe":"小野豬","creamy":"克瑞米","hornet":"蜂兵","mandragora":"曼陀羅魔花","baby_desert_wolf":"沙漠幼狼","rocker":"搖滾蝗蟲","eclipse":"月蝕兔","toad":"蛙王","dragon_fly":"龍蠅","vocal":"蟋蟀王","mastering":"波利之王","thief_bug_egg":"盜蟲卵","familiar":"吸血蝙蝠","thief_bug":"盜蟲","tarou":"白鼠","plankton":"漂浮蟲","drainliar":"紅蝙蝠","thief_bug_female":"浮勒盜蟲","cramp":"藍鼠","tarou_bite":"撕咬塔羅鼠","tarou_plague":"瘟疫塔羅鼠","tarou_burrow":"鑽地塔羅鼠","golden_thief_bug":"黃金蟲","chonchon":"蒼蠅","goblin":"哥布林","kobold":"狗頭人","orc_skeleton":"邪骸獸人","ghostring":"幽靈波利","orc_hero":"獸人英雄","osiris":"俄塞里斯","baphomet":"巴風特","orc_baby":"獸人嬰兒","goblin_archer":"弓箭哥布靈","orc_archer":"獸人弓箭手","orc_zombie":"獸人腐屍","goblin_leader":"哥布靈首領","kobold_leader":"犬妖首領","verit":"木乃伊犬","mummy":"木乃伊","matyr":"黑狐","isis":"伊希斯","minorous":"牛頭人","ancient_mummy":"狂暴木乃伊","hunter_fly":"赤蒼蠅","side_winder":"黑蛇","argiope":"艾吉歐蜈蚣","baphomet_jr":"小巴風特","killer_mantis":"狂暴螳螂","leib_olmai":"狂暴大腳熊","sasquatch":"雪熊","kukre":"庫克雷","marina":"水母","hydra":"海葵","whisper":"白幽靈","penomena":"梅納海葵","sword_fish":"異變魚","pirate_skel":"邪骸海盜","drake":"海盜之王","vadon":"螃蟹","cornutus":"卡那多斯","marse":"烏賊","phen":"劍魚","obeaune":"人魚","marine_sphere":"氣泡蟲","merman":"人魚士兵","kraken_leg":"魔鬼大烏賊腳","deviace":"狄奧斯","strouf":"海神","king_dramoh":"大腳龍蝦","kraken":"魔鬼大烏賊","spore":"魔菇","willow":"樹精","poporing":"波波利","snake":"青蛇","worm_tail":"森靈","poison_spore":"毒魔菇","smokie":"浣熊","wolf":"狼","elder_willow":"長老樹精","dragon_tail":"刺尾蜻蜓","bigfoot":"大腳熊","greatest_general":"將軍魔碑","dokebi":"土人","nine_tail":"九尾狐","angeling":"天使波利","deviling":"惡魔波利","vagabond_wolf":"流浪之狼","eddga":"虎王","zombie":"腐屍","skeleton":"邪骸戰士","skel_archer":"邪骸弓箭手","skel_soldier":"邪骸士兵","munak":"殭屍","bon_gun":"妖道","sohee":"鬼女","horong":"鬼火","skeleton_general":"邪骸戰士長","cat_o_nine_tail":"狂暴月夜貓","hyegun":"妖君","moonlight":"月夜貓","orc_warrior":"獸人戰士","orc_lady":"獸人女戰士","high_orc":"獸人戰士長"};
+  const FILTER_KEY = 'greydust.ro.unwanted.catalog.v3';
+  const PREVIOUS_FILTER_KEY = 'greydust.ro.unwanted.catalog.v2';
+  const PRIMARY = [['str','STR'],['agi','AGI'],['vit','VIT'],['int','INT'],['dex','DEX'],['luk','LUK']];
+  const SECOND3 = [['crit','爆擊'],['cd','急速'],['area','範圍'],['pierce','穿透機率']];
+  const SECOND4 = [['spd','移動速度'],['flee','Flee'],['armor','護甲'],['hp','最大 HP']];
+  const GEAR_SLOTS = [['onehand','單手武'],['twohand','雙手武'],['shield','盾牌'],['head_top','頭部（上）'],['head_mid','頭部（中）'],['head_low','頭部（下）'],['armor','護甲'],['garment','披肩'],['shoes','鞋子'],['acc','飾品']];
+  const RARITIES=[['0','普通'],['1','優良'],['2','稀有'],['3','史詩'],['4','傳說']];
+  const selections=value=>Array.isArray(value)?value:(value===undefined||value===null||value===''?[]:[value]);
+  const copy=value=>JSON.parse(JSON.stringify(value));
+  const emptyEquipmentFilter=()=>({version:3,unwantedRarities:[],disabledTiers:{},filters:[],assignments:{}});
+  let filterStore=emptyEquipmentFilter(),filterDraft=null,filterDialog=null;
+  function captureMerchantInventory() {
+    const button=document.querySelector('#shop-filters [data-f].active');
+    if(!button||button.dataset.f==='cards')return null;
+    let inventory=null,inventoryIds=null;
+    const candidates=new Set();
+    // The native merchant reads an in-memory account through JSON.parse, rather
+    // than localStorage for signed-in players. Capture only this synchronous
+    // redraw, return every parsed value unchanged, and restore in finally.
+    const original=JSON.parse;
+    const originalHas=Set.prototype.has;
+    try {
+      JSON.parse=function(...args){
+        const value=Reflect.apply(original,this,args);
+        if(value&&Array.isArray(value.inventory)&&value.inventory.every(it=>it&&typeof it.uid==='string'&&Number.isFinite(it.itemId))){inventory=value.inventory;inventoryIds=new Set(inventory.map(item=>item.uid));}
+        return value;
+      };
+      Set.prototype.has=function(value){
+        if(typeof value==='string'&&inventoryIds&&originalHas.call(inventoryIds,value))candidates.add(this);
+        return Reflect.apply(originalHas,this,[value]);
+      };
+      button.click();
+    } finally {JSON.parse=original;Set.prototype.has=originalHas;}
+    if(!inventory)return null;
+    const cells=[...document.querySelectorAll('#shop-items [data-uid]')];
+    const matching=[...candidates].filter(set=>cells.length&&cells.every(cell=>originalHas.call(set,cell.dataset.uid)===cell.classList.contains('picked')));
+    return {inventory,selection:matching.length===1?matching[0]:null};
+  }
+  function selectUnwanted() {
+    if(!smithDefs){notify('裝備資料尚未就緒，未變更選取');return;}
+    const rule=filterStore;
+    if(!validEquipmentFilter(rule)){openFilter();notify('請先儲存完整的圖鑑過濾設定');return;}
+    let captured;
+    try{captured=captureMerchantInventory();}catch(error){console.warn('[RO助手] 讀取商人清單失敗',error);notify('讀取商人清單失敗，未變更選取');return;}
+    if(!captured){notify('無法讀取商人裝備資料，未變更選取');return;}
+    const {inventory,selection}=captured;
+    const byId=new Map(inventory.map(item=>[item.uid,item]));
+    const cells=[...document.querySelectorAll('#shop-items [data-uid]')];
+    if(cells.some(cell=>!byId.has(cell.dataset.uid))){notify('商人資料與清單不一致，未變更選取');return;}
+    const targets=cells.filter(cell=>!cell.classList.contains('worn')&&!cell.classList.contains('safe'))
+      .map(cell=>byId.get(cell.dataset.uid)).filter(item=>!item.safe&&!item.owner&&!smithDefs[item.itemId]?.starter&&isUnwantedEquipment(rule,item)).map(item=>item.uid);
+    // Update the positively identified native selection Set in one redraw.
+    // Inventory, cards, currencies and sale endpoints are never changed here.
+    if(selection){
+      selection.clear();for(const uid of targets)selection.add(uid);
+      document.querySelector('#shop-filters [data-f].active')?.click();
+      // Clear selected cards too, using the native clear-selection control if
+      // cards were previously selected; the DOM fallback below handles that case.
+      const cardPicked=document.querySelector('#shop-items [data-card].picked');
+      if(!cardPicked){notify(`已選取 ${targets.length} 件不需要的裝備，請檢查後自行出售`);return;}
+    }
+    // Replace the selection. Never invoke either native sell button.
+    document.querySelector('#shop-quality [data-q="none"]')?.click();
+    let selected=0;
+    for(const uid of targets){
+      const cell=[...document.querySelectorAll('#shop-items [data-uid]')].find(el=>el.dataset.uid===uid);
+      if(cell&&!cell.classList.contains('picked')&&!cell.classList.contains('worn')&&!cell.classList.contains('safe')){cell.click();selected++;}
+    }
+    notify(`已選取 ${selected} 件不需要的裝備，請檢查後自行出售`);
+  }
+  function updateMerchant() {
+    const panel=document.querySelector('#shop'),bar=document.querySelector('#shop-quality');
+    if(!panel||panel.classList.contains('hidden')||!bar||bar.querySelector('[data-ro-unwanted]'))return;
+    const legend=bar.querySelector('[data-q="4"]');
+    if(!legend)return;
+    const unwanted=document.createElement('button');unwanted.type='button';unwanted.className='inv-chip';unwanted.textContent='不需要';unwanted.setAttribute('data-ro-unwanted','');unwanted.onclick=selectUnwanted;
+    const filter=document.createElement('button');filter.type='button';filter.className='inv-chip';filter.textContent='過濾器';filter.onclick=openFilter;
+    legend.after(unwanted,filter);
+  }
+  function formButton(text,action) {const button=document.createElement('button');button.type='button';button.className='ro-btn small';button.textContent=text;button.onclick=action;return button;}
+  function formMulti(options,value,onchange,placeholder='不限') {
+    const details=document.createElement('details');details.className='ro-filter-multi';
+    const summary=document.createElement('summary'),list=document.createElement('div');list.className='ro-filter-multi-list';details.append(summary,list);
+    const position=()=>{
+      if(!details.open||typeof summary.getBoundingClientRect!=='function')return;
+      const r=summary.getBoundingClientRect(),view=helperViewport(),width=Math.min(320,view.width-24);
+      const below=view.top+view.height-r.bottom-12,above=r.top-view.top-12,up=below<160&&above>below;
+      list.style.width=width+'px';list.style.left=Math.max(view.left+12,Math.min(r.left,view.left+view.width-width-12))+'px';
+      list.style.maxHeight=Math.max(60,Math.min(280,up?above:below))+'px';
+      list.style.top=up?'auto':(r.bottom+4)+'px';list.style.bottom=up?(innerHeight-r.top+4)+'px':'auto';
+    };
+    const unlisten=()=>{document.removeEventListener('scroll',position,true);window.removeEventListener('resize',position);window.visualViewport?.removeEventListener('resize',position);window.visualViewport?.removeEventListener('scroll',position);document.removeEventListener('pointerdown',outside,true);};
+    const outside=event=>{if(!details.contains(event.target))details.closeMenu();};
+    details.closeMenu=()=>{details.open=false;unlisten();};
+    details.ontoggle=()=>{
+      unlisten();if(!details.open)return;
+      filterDialog?.querySelectorAll('.ro-filter-multi').forEach(menu=>{if(menu!==details)menu.closeMenu?.();});
+      position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);document.addEventListener('pointerdown',outside,true);
+    };
+    let selected=selections(value).map(String);
+    const refresh=()=>{const names=options.filter(([id])=>selected.includes(String(id))).map(([,name])=>name.split(' ｜ ')[0]);summary.textContent=names.length?names.join('、')+'（OR）':placeholder;};
+    const clear=formButton('清除選擇',()=>{selected=[];list.querySelectorAll('input').forEach(input=>input.checked=false);refresh();onchange([]);});list.append(clear);
+    for(const [id,name]of options){
+      const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=id;input.checked=selected.includes(String(id));
+      input.onchange=()=>{selected=input.checked?[...new Set([...selected,String(id)])]:selected.filter(entry=>entry!==String(id));refresh();onchange([...selected]);};
+      label.append(input);
+      label.append(document.createTextNode(name));
+      list.append(label);
+    }
+    refresh();return details;
+  }
+  const equipmentById=new Map(EQUIPMENT_CATALOG.map(item=>[item.id,item]));
+  // Public game RO_LAPC (2026-11-16): three laps; RO_LAPTIER = base maximum + lap - 1.
+  const EQUIPMENT_LAP_COUNT=3;
+  const EQUIPMENT_BASE_MAX_TIER=Math.max(1,...EQUIPMENT_CATALOG.flatMap(record=>record.tiers));
+  function equipmentBaseMaxTier(){return EQUIPMENT_BASE_MAX_TIER;}
+  function equipmentTiers(record){
+    const base=equipmentBaseMaxTier();
+    return [...new Set([...record.tiers,...Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>base+i+1)])].sort((a,b)=>a-b);
+  }
+  function equipmentMaxTier(){return equipmentBaseMaxTier()+EQUIPMENT_LAP_COUNT-1;}
+  let filterSlot='onehand',filterSearch='',gearDetails=null;
+  let filterWeaponType='';
+  const weaponTypeLabels=[['단검','短劍'],['검','單手劍'],['양손검','雙手劍'],['카타르','拳刃'],['창','單手矛'],['양손창','雙手矛'],['도끼','單手斧'],['양손도끼','雙手斧'],['클럽','鈍器'],['너클','拳套'],['롯드','法杖'],['책','書'],['활','弓'],['악기','樂器'],['채찍','鞭子'],['권총','手槍'],['라이플','步槍'],['샷건','散彈槍'],['수리검','風魔手裏劍'],['unknown','其他']];
+  function groupWeaponType(group){return smithDefs?.[group.records[0].id]?.wtype||group.records[0].wtype||'unknown';}
+  const emptyDetailSettings=()=>({first:[],second:[],third:[],fourth:[],skills:[]});
+  function validDetailSettings(d){
+    const field=(values,options)=>Array.isArray(values)&&values.length<=options.length&&values.every(v=>options.some(([id])=>id===v));
+    return d&&field(d.first,PRIMARY)&&field(d.second,PRIMARY)&&field(d.third,SECOND3)&&field(d.fourth,SECOND4)
+      &&Array.isArray(d.skills)&&d.skills.length<=500&&new Set(d.skills.map(s=>s?.id)).size===d.skills.length&&d.skills.every(s=>s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<100&&typeof s.min==='number'&&Number.isFinite(s.min)&&s.min>=0&&s.min<=10000);
+  }
+  function validEquipmentFilter(data){
+    if(!data||![2,3].includes(data.version)||!Array.isArray(data.unwantedRarities)||data.unwantedRarities.length>5||!data.unwantedRarities.every(v=>RARITIES.some(([id])=>id===v)))return false;
+    if(!data.disabledTiers||typeof data.disabledTiers!=='object'||Array.isArray(data.disabledTiers)||Object.keys(data.disabledTiers).length>5000||!Object.entries(data.disabledTiers).every(([k,v])=>/^\d+:[1-9]\d*$/.test(k)&&v===true))return false;
+    if(data.version===2)return data.details&&typeof data.details==='object'&&!Array.isArray(data.details)&&Object.keys(data.details).length<=1000&&Object.entries(data.details).every(([id,d])=>/^\d+$/.test(id)&&validDetailSettings(d));
+    if(!Array.isArray(data.filters)||data.filters.length>100||new Set(data.filters.map(f=>f?.id)).size!==data.filters.length)return false;
+    if(!data.filters.every(f=>f&&typeof f.id==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(f.id)&&typeof f.name==='string'&&f.name.trim().length>0&&f.name.length<=80&&validDetailSettings(f)))return false;
+    return data.assignments&&typeof data.assignments==='object'&&!Array.isArray(data.assignments)&&Object.keys(data.assignments).length<=1000&&Object.entries(data.assignments).every(([id,filter])=>/^\d+$/.test(id)&&data.filters.some(f=>f.id===filter));
+  }
+  function migrateEquipmentFilter(data){
+    if(!validEquipmentFilter(data))throw new Error('不是有效的裝備過濾器');
+    if(data.version===3)return copy(data);
+    const next={...emptyEquipmentFilter(),unwantedRarities:copy(data.unwantedRarities),disabledTiers:copy(data.disabledTiers)},seen=new Map();
+    for(const [id,d] of Object.entries(data.details)){
+      const signature=JSON.stringify(d);let filter=seen.get(signature);
+      if(!filter){filter={...copy(d),id:'migrated-'+next.filters.length,name:'細項過濾器 '+(next.filters.length+1)};next.filters.push(filter);seen.set(signature,filter);}
+      next.assignments[id]=filter.id;
+    }
+    if(!validEquipmentFilter(next))throw new Error('舊設定超過可轉換的細項過濾器數量');
+    return next;
+  }
+  function loadFilterStore(){
+    try{const text=localStorage.getItem(FILTER_KEY)||localStorage.getItem(PREVIOUS_FILTER_KEY);if(text)filterStore=migrateEquipmentFilter(JSON.parse(text));}
+    catch(error){console.warn('[RO助手] 圖鑑過濾器讀取失敗',error);}
+  }
+  function isUnwantedEquipment(config,item) {
+    if(!validEquipmentFilter(config)||!item||item.safe||item.owner)return false;
+    const record=equipmentById.get(Number(item.itemId)),def=smithDefs?.[item.itemId];
+    // Unlisted/special gear and unknown legacy tiers are kept for manual review.
+    if(!record||def?.starter||def?.secret||!Number.isInteger(item.tier)||item.tier<1)return false;
+    const quality=item.quality??0;
+    if(!Number.isInteger(quality)||quality<0||quality>4)return false;
+    if(config.unwantedRarities.includes(String(quality))||config.disabledTiers[item.itemId+':'+item.tier])return true;
+    const settings=config.version===2?config.details[item.itemId]:config.filters.find(f=>f.id===config.assignments[item.itemId]);if(!settings)return false;
+    if(!Array.isArray(item.affixes))return false;
+    const affixes=item.affixes;
+    if(!affixes.every(a=>a&&typeof a==='object'&&typeof a.stat==='string'))return false;
+    const first=affixes.filter(a=>PRIMARY.some(([id])=>id===a.stat));
+    // Primary fields are unordered, but require two distinct affixes when both are set.
+    const mainOK=(!settings.first.length&&!settings.second.length)
+      ||(settings.first.length&&settings.second.length
+        ?first.some((a,i)=>settings.first.includes(a.stat)&&first.some((b,j)=>i!==j&&settings.second.includes(b.stat)))
+        :first.some(a=>(settings.first.length?settings.first:settings.second).includes(a.stat)));
+    const thirdOK=!settings.third.length||affixes.some(a=>settings.third.includes(a.stat));
+    const fourthOK=!settings.fourth.length||affixes.some(a=>settings.fourth.includes(a.stat));
+    const skillOK=!settings.skills.length||settings.skills.some(s=>affixes.some(a=>a.stat==='skill'&&a.skill===s.id&&Number.isFinite(a.value)&&a.value*100+1e-8>=s.min));
+    return !(mainOK&&thirdOK&&fourthOK&&skillOK);
+  }
+  function damageSkillOptions() {
+    try {
+      const ids=gameCatalog?.bU?.();
+      if(!Array.isArray(ids))return [];
+      return [...new Set(ids)].filter(id=>skillDefs?.[id]).map(id=>[id,`${skillDefs[id].name}傷害`]).sort((a,b)=>a[1].localeCompare(b[1],'zh-Hant'));
+    }catch{return [];}
+  }
+  function equipmentGroups() {
+    const groups=new Map();
+    for(const record of EQUIPMENT_CATALOG){
+      const def=smithDefs?.[record.id];if(def?.secret||def?.starter)continue;
+      const slot=smithCategory(def||record),key=String(record.id);
+      if(!groups.has(key))groups.set(key,{name:record.name,slot,records:[]});
+      groups.get(key).records.push(record);
+    }
+    return [...groups.values()];
+  }
+  function actualEquipmentBonuses(record,tier){
+    const def=smithDefs?.[record.id];
+    if(!def||!Array.isArray(def.bonuses)||typeof gameCatalog?.bs!=='function')return null;
+    try{
+      const bonuses=[...def.bonuses,...gameCatalog.bs(record.id,tier)];
+      if(!bonuses.every(b=>typeof b?.text==='function'))return null;
+      return [...new Set(bonuses.map(b=>String(b.text(1)).replace(/<[^>]*>/g,'').trim()).filter(Boolean))];
+    }catch{return null;}
+  }
+  function tierIsKept(config,ids,tier){return ids.every(id=>!config.disabledTiers[id+':'+tier]);}
+  function setEquipmentTier(config,ids,tier,keep){
+    for(const id of ids){if(keep)delete config.disabledTiers[id+':'+tier];else config.disabledTiers[id+':'+tier]=true;}
+  }
+  function excludeEquipmentTiers(config,max){
+    for(const group of equipmentGroups())for(const tier of new Set(group.records.flatMap(r=>equipmentTiers(r))))if(tier<=max)setEquipmentTier(config,group.records.map(r=>r.id),tier,false);
+  }
+  function element(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
+  function drawEquipmentCards(container,summary){
+    const groups=equipmentGroups().filter(group=>group.slot===filterSlot&&(!filterWeaponType||groupWeaponType(group)===filterWeaponType));
+    const query=filterSearch.trim().toLocaleLowerCase();
+    container.replaceChildren();let shown=0;
+    for(const group of groups){
+      const searchable=group.name+' '+group.records.map(r=>r.id).join(' ')+' '+group.records.flatMap(r=>r.sources.map(s=>s.stage+' '+s.monster)).join(' ')+' '+group.records.flatMap(r=>equipmentTiers(r).flatMap(t=>actualEquipmentBonuses(r,t)||[])).join(' ');
+      if(query&&!searchable.toLocaleLowerCase().includes(query))continue;
+      shown++;
+      const card=element('article',undefined,'ro-gear-card'),header=element('header');card.dataset.gearId=String(group.records[0].id);
+      const image=element('img');image.src=group.records[0].icon;image.alt='';image.loading='lazy';
+      const duplicate=EQUIPMENT_CATALOG.some(r=>r.id!==group.records[0].id&&r.name===group.name);
+      const displayName=group.name+(duplicate?'（ID '+group.records[0].id+'）':'');
+      const title=element('b',displayName),settings=element('select');settings.className='ro-gear-filter-select';settings.setAttribute('aria-label',displayName+'細項過濾器');
+      const assigned=[...new Set(group.records.map(r=>filterDraft.assignments[r.id]||''))];
+      const options=[['','不限細項'],...filterDraft.filters.map(f=>[f.id,f.name])];
+      if(assigned.length>1)options.unshift(['__mixed','多個設定']);
+      for(const [id,name] of options){const option=element('option',name);option.value=id;option.selected=id===(assigned.length>1?'__mixed':assigned[0]);option.disabled=id==='__mixed';settings.append(option);}
+      settings.onchange=()=>{for(const r of group.records){if(settings.value)filterDraft.assignments[r.id]=settings.value;else delete filterDraft.assignments[r.id];}};
+      header.append(image,title,settings);card.append(header);
+      const tiers=[...new Set(group.records.flatMap(r=>equipmentTiers(r)))].sort((a,b)=>a-b);
+      for(const tier of tiers){
+        const records=group.records,ids=records.map(r=>r.id);
+        const row=element('div',undefined,'ro-gear-tier'),keep=tierIsKept(filterDraft,ids,tier);
+        const toggle=formButton('T'+tier,()=>{setEquipmentTier(filterDraft,ids,tier,!tierIsKept(filterDraft,ids,tier));drawEquipmentCards(container,summary);});
+        toggle.dataset.gearTier=String(tier);toggle.setAttribute('aria-pressed',String(keep));toggle.setAttribute('aria-label',group.name+' T'+tier+' 保留');toggle.classList.toggle('excluded',!keep);
+        const bonuses=actualEquipmentBonuses(records[0],tier);
+        row.append(toggle,element('span',bonuses===null?'遊戲屬性資料尚未就緒':bonuses.length?bonuses.join(' · '):'無固有加成（依實際裝備資料）'));card.append(row);
+      }
+      const sources=element('ul');
+      const locations=new Map();
+      for(const record of group.records)for(const source of record.sources){
+        const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster);
+      }
+      for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
+      sources.append(element('li','二周目 T'+(equipmentBaseMaxTier()+1)+'、三周目 T'+equipmentMaxTier()+'：同上關卡與怪物（依遊戲多周目規則）'));
+      card.append(sources);container.append(card);
+    }
+    summary.textContent='目前分類 '+shown+' 筆裝備；T 亮起＝保留，關閉＝不需要。';
+    if(!shown)container.append(element('p','沒有符合搜尋的裝備。'));
+  }
+  function closeFilterMenus(root=filterDialog){root?.querySelectorAll('.ro-filter-multi').forEach(menu=>menu.closeMenu?.());}
+  function closeGearDetails(){closeFilterMenus(gearDetails);gearDetails?.remove();gearDetails=null;}
+  function openGearDetails(){
+    closeGearDetails();
+    const working={filters:copy(filterDraft.filters),assignments:copy(filterDraft.assignments)};
+    let selected=working.filters[0]?.id||'';
+    gearDetails=element('div',undefined,'ro-gear-detail-backdrop');
+    const panel=element('section',undefined,'ro-gear-detail-panel ro-detail-manager');panel.setAttribute('role','dialog');panel.setAttribute('aria-label','管理細項過濾器');gearDetails.append(panel);filterDialog.append(gearDetails);
+    const draw=()=>{
+      closeFilterMenus(panel);panel.replaceChildren();panel.append(element('h3','管理細項過濾器'),element('p','同格多選符合任一項，不同格必須全部符合；未選不限。移除過濾器會一併解除裝備的選用。'));
+      const layout=element('div',undefined,'ro-detail-layout'),sidebar=element('div',undefined,'ro-detail-list'),editor=element('div',undefined,'ro-detail-editor');
+      sidebar.append(formButton('新增',()=>{if(working.filters.length>=100)return;const f={...emptyDetailSettings(),id:'f-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),name:'新細項過濾器'};working.filters.push(f);selected=f.id;draw();}));
+      working.filters.forEach((f,index)=>{
+        const row=element('div',undefined,'ro-detail-list-row'),choose=formButton(f.name,()=>{selected=f.id;draw();});choose.dataset.detailId=f.id;choose.classList.toggle('active',selected===f.id);row.append(choose);
+        for(const [delta,label] of [[-1,'↑'],[1,'↓']]){const button=formButton(label,()=>{const other=index+delta;[working.filters[index],working.filters[other]]=[working.filters[other],working.filters[index]];draw();});button.disabled=index+delta<0||index+delta>=working.filters.length;button.setAttribute('aria-label',f.name+(delta<0?'上移':'下移'));row.append(button);}sidebar.append(row);
+      });
+      const settings=working.filters.find(f=>f.id===selected);
+      if(settings){
+        const name=element('input');name.type='text';name.maxLength=80;name.value=settings.name;name.setAttribute('aria-label','細項過濾器名稱');name.oninput=()=>{settings.name=name.value;const button=sidebar.querySelector('[data-detail-id="'+settings.id+'"]');if(button)button.textContent=name.value||'未命名';};editor.append(name,formButton('移除',()=>{working.filters=working.filters.filter(f=>f.id!==selected);for(const [id,value] of Object.entries(working.assignments))if(value===selected)delete working.assignments[id];selected=working.filters[0]?.id||'';draw();}));
+        for(const [key,title,options] of [['first','屬性一',PRIMARY],['second','屬性二',PRIMARY],['third','副屬性第一格',SECOND3],['fourth','副屬性第二格',SECOND4]]){
+          const row=element('div',undefined,'ro-gear-detail-field');row.append(element('b',title),formMulti(options,settings[key],v=>settings[key]=v,'不限（可多選）'));editor.append(row);
+        }
+        const options=damageSkillOptions(),known=new Set(options.map(([id])=>id));for(const s of settings.skills)if(!known.has(s.id))options.push([s.id,s.id]);
+        const skillRows=element('div',undefined,'ro-selected-skills'),thresholds=new Map(settings.skills.map(s=>[s.id,s.min]));
+        const drawSkills=()=>{skillRows.replaceChildren();for(const skill of settings.skills){const row=element('label',undefined,'ro-gear-skill'),min=element('input');min.type='number';min.min='0';min.max='10000';min.step='0.1';min.value=Number.isFinite(skill.min)?String(skill.min):'';const title=options.find(([id])=>id===skill.id)?.[1]||skill.id;min.setAttribute('aria-label',title+'最低百分比');min.oninput=()=>{skill.min=min.value.trim()===''?NaN:Number(min.value);thresholds.set(skill.id,skill.min);};row.append(element('span',title),min,element('span','% 以上'));skillRows.append(row);}};
+        const skillField=element('div',undefined,'ro-gear-detail-field');skillField.append(element('b','技能傷害'),formMulti(options,settings.skills.map(s=>s.id),ids=>{settings.skills=ids.map(id=>({id,min:thresholds.get(id)??0}));drawSkills();},'不限（可多選）'));editor.append(skillField,skillRows);drawSkills();
+      }else editor.append(element('p','按「新增」建立可供裝備選用的細項過濾器。'));
+      layout.append(sidebar,editor);panel.append(layout);
+      const status=element('p','', 'ro-gear-error');panel.append(status,formButton('套用管理設定',()=>{
+        const next={...filterDraft,...working};if(!validEquipmentFilter(next)){status.textContent='請填寫名稱，最低百分比必須為 0～10000 的有效數字。';return;}
+        filterDraft.filters=copy(working.filters);filterDraft.assignments=copy(working.assignments);closeGearDetails();drawFilter();
+      }),formButton('取消',closeGearDetails));
+    };draw();
+  }
+  function parseFilterImport(text){
+    if(typeof text!=='string'||text.length>500000)throw new Error('檔案過大');
+    const data=JSON.parse(text);if(data?.format!=='ro-helper-equipment')throw new Error('不是有效的新版裝備過濾器');return migrateEquipmentFilter(data.settings);
+  }
+  function drawFilter(){
+    if(!filterDialog||!filterDraft)return;
+    const panel=filterDialog.querySelector('.ro-filter-panel');closeFilterMenus(panel);panel.replaceChildren();
+    panel.append(element('h3','裝備圖鑑過濾器'),element('p','設定不要的稀有度、關閉不保留的 Tier；裝備右上角選取細項過濾器。任一已設定欄位未符合即納入「不需要」。只勾選目前商人分類，請檢查後自行出售。'));
+    const toolbar=element('div',undefined,'ro-gear-toolbar');
+    const rarities=element('div',undefined,'ro-rarity-buttons');
+    for(const [id,name] of RARITIES){const button=formButton(name,()=>{filterDraft.unwantedRarities=filterDraft.unwantedRarities.includes(id)?filterDraft.unwantedRarities.filter(v=>v!==id):[...filterDraft.unwantedRarities,id];drawFilter();});button.dataset.unwantedRarity=id;button.style.setProperty('--rarity-color',COLORS[Number(id)]);button.classList.toggle('excluded',filterDraft.unwantedRarities.includes(id));button.setAttribute('aria-pressed',String(filterDraft.unwantedRarities.includes(id)));button.setAttribute('aria-label',name+' 不要');rarities.append(button);}
+    const manager=formButton('管理細項過濾器',openGearDetails);manager.classList.add('ro-manage-details');
+    toolbar.append(rarities);
+    for(let tier=1;tier<equipmentMaxTier();tier++){const button=formButton('過濾T'+tier+'以下',()=>{excludeEquipmentTiers(filterDraft,tier);drawFilter();});button.dataset.excludeTier=String(tier);toolbar.append(button);}
+    toolbar.append(manager);panel.append(toolbar);
+    const actions=element('div',undefined,'ro-gear-actions'),status=element('span','');
+    const save=formButton('儲存並套用',()=>{
+      if(!validEquipmentFilter(filterDraft)){status.textContent='設定不完整，無法儲存';return;}
+      try{localStorage.setItem(FILTER_KEY,JSON.stringify(filterDraft));filterStore=copy(filterDraft);closeFilter();notify('圖鑑過濾器已儲存');}catch{status.textContent='儲存失敗，請匯出備份';}
+    });save.dataset.filterSave='';
+    actions.append(save,formButton('取消',closeFilter),formButton('全部保留',()=>{filterDraft={...emptyEquipmentFilter(),filters:copy(filterDraft.filters)};drawFilter();}),formButton('匯出',()=>{
+      const url=URL.createObjectURL(new Blob([JSON.stringify({format:'ro-helper-equipment',settings:filterDraft},null,2)],{type:'application/json'}));
+      const a=element('a');a.href=url;a.download='RO裝備圖鑑過濾器.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }));
+    const file=element('input');file.type='file';file.accept='.json,application/json';file.hidden=true;
+    file.onchange=async()=>{try{const f=file.files?.[0];if(!f)return;if(f.size>500000)throw new Error('檔案過大');filterDraft=parseFilterImport(await f.text());drawFilter();}catch(error){status.textContent='匯入失敗：'+error.message;}};
+    actions.append(file,formButton('匯入',()=>file.click()),status);panel.append(actions);
+    const tabs=element('nav',undefined,'ro-gear-tabs'),counts=equipmentGroups();
+    for(const [id,name] of GEAR_SLOTS){const button=formButton(name+' '+counts.filter(g=>g.slot===id).length,()=>{filterSlot=id;filterWeaponType='';drawFilter();});button.dataset.gearSlot=id;button.classList.toggle('active',id===filterSlot);button.setAttribute('aria-pressed',String(id===filterSlot));tabs.append(button);}panel.append(tabs);
+    if(['onehand','twohand'].includes(filterSlot)){
+      const weapons=counts.filter(g=>g.slot===filterSlot),subtabs=element('nav',undefined,'ro-gear-tabs ro-weapon-tabs');subtabs.setAttribute('aria-label','武器細項分類');
+      const available=new Set(weapons.map(groupWeaponType));
+      const types=[['','全部'],...weaponTypeLabels.filter(([id])=>available.has(id)),...[...available].filter(id=>!weaponTypeLabels.some(([known])=>known===id)).map(id=>[id,'其他（'+id+'）'])];
+      for(const [id,name] of types){const count=id?weapons.filter(g=>groupWeaponType(g)===id).length:weapons.length;const button=formButton(name+' '+count,()=>{filterWeaponType=id;drawFilter();});button.dataset.weaponType=id;button.classList.toggle('active',filterWeaponType===id);button.setAttribute('aria-pressed',String(filterWeaponType===id));subtabs.append(button);}panel.append(subtabs);
+    }
+    const search=element('input');search.type='search';search.placeholder='搜尋裝備、屬性、關卡或中文怪物';search.value=filterSearch;search.setAttribute('aria-label','搜尋裝備圖鑑');
+    const summary=element('p'),cards=element('div',undefined,'ro-gear-grid');search.oninput=()=>{filterSearch=search.value;drawEquipmentCards(cards,summary);};panel.append(search,summary,cards);
+    panel.append(element('p','屬性依遊戲目前載入的裝備 ID、固有加成與 Tier 函式顯示（未計入精煉、隨機詞綴或卡片）。名稱與掉落來源快照：2026-11-16；同名裝備依 ID 分開。未列出的特殊裝備或缺少必要判斷資料時保留手動檢查。'));
+    drawEquipmentCards(cards,summary);
+  }
+  function closeFilter(){closeFilterMenus();closeGearDetails();filterDialog?.remove();filterDialog=null;filterDraft=null;}
+  function openFilter(){
+    closeFilter();filterDraft=copy(filterStore);filterDialog=element('div');filterDialog.id='ro-unwanted-dialog';filterDialog.setAttribute('role','dialog');filterDialog.setAttribute('aria-label','裝備圖鑑過濾器');filterDialog.setAttribute('aria-modal','true');
+    const panel=element('div',undefined,'ro-filter-panel ro-equipment-filter');filterDialog.append(panel);document.body.append(filterDialog);
+    filterDialog.onclick=event=>{if(event.target===filterDialog)closeFilter();};drawFilter();
+  }
+  function spawnTime(seconds){
+    if(!Number.isFinite(seconds)||seconds<0)return '時間未提供';
+    const n=Math.floor(seconds);return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+  }
+  function stageSpawnRows(script){
+    if(!script||!Array.isArray(script.waves))return [];
+    const rows=[],lastBoss=script.bosses?.[script.bosses.length-1];
+    // The final scheduled boss triggers clearMobs/bossArena. runLength also
+    // includes the boss-fight allowance and is not the normal-spawn cutoff.
+    const cutoff=Number.isFinite(lastBoss?.t)&&lastBoss.t>=0?lastBoss.t:Infinity;
+    const length=Math.min(script.runLength,cutoff);
+    const waves=script.waves.filter(w=>Number.isFinite(w.from)&&Number.isFinite(w.to)&&w.to>w.from&&Array.isArray(w.pool));
+    if(Number.isFinite(length)&&length>0&&waves.length){
+      // The native scheduler uses the first matching pool, falling back to its
+      // last wave in gaps. This is availability, not an individual spawn timer.
+      const boundaries=[...new Set([0,length,...waves.flatMap(w=>[w.from,w.to]).filter(t=>t>0&&t<length)])].sort((a,b)=>a-b);
+      const intervals=new Map();
+      for(let i=0;i<boundaries.length-1;i++){
+        const from=boundaries[i],to=boundaries[i+1],wave=waves.find(w=>from>=w.from&&from<w.to)??waves[waves.length-1];
+        if(wave.perSecond===0)continue;
+        for(const id of new Set(wave.pool)){
+          if(typeof id!=='string')continue;
+          if(!intervals.has(id))intervals.set(id,[]);
+          const ranges=intervals.get(id),last=ranges[ranges.length-1];
+          if(last&&last.to===from)last.to=to;else ranges.push({from,to});
+        }
+      }
+      for(const [id,ranges] of intervals)rows.push({id,kind:'一般怪（隨機）',times:ranges.map(r=>spawnTime(r.from)+'–'+spawnTime(r.to)).join('、')});
+    }
+    return rows;
+  }
+  function selectedStageScript(detail,scripts){
+    if(!scripts||typeof scripts!=='object')return null;
+    const art=detail.querySelector('.stg-banner')?.style.getPropertyValue('--art')||'';
+    const match=art.match(/\/stages\/([^/"'()?]+)\.jpg/);
+    if(match&&scripts[match[1]])return {id:match[1],script:scripts[match[1]]};
+    // Fallback only when the visible normal and boss pools identify one stage.
+    const mobs=[...detail.querySelectorAll('.stg-mobs [data-mob]')].map(n=>n.dataset.mob).sort();
+    const bosses=[...detail.querySelectorAll('.stg-bosses [data-mob]')].map(n=>n.dataset.mob).sort();
+    if(!mobs.length)return null;
+    const candidates=Object.entries(scripts).filter(([,s])=>Array.isArray(s?.waves)&&Array.isArray(s.bosses)
+      &&JSON.stringify([...new Set(s.waves.flatMap(w=>w.pool||[]))].sort())===JSON.stringify(mobs)
+      &&JSON.stringify(s.bosses.map(b=>b.id).sort())===JSON.stringify(bosses));
+    return candidates.length===1?{id:candidates[0][0],script:candidates[0][1]}:null;
+  }
+  function stageMonsterLevel(id,selected,lap){
+    const monsters=gameCatalog?.bj,base=monsters?.[id]?.level;
+    if(!Number.isFinite(base))return null;
+    if(lap<=1)return base;
+    // Native RO_LAPAVG/RO_LAPK: time-weighted pool mean, rounded difference
+    // from the last eligible stage. Both later laps use the same level offset.
+    const eligible=['prontera','sewer','sunken','byalan','payon','payon_cave','orcs','pyramid','maze'];
+    if(!selected||!eligible.includes(selected.id))return null;
+    const average=script=>{
+      let sum=0,total=0;
+      for(const wave of script?.waves||[]){
+        const pool=(wave.pool||[]).map(key=>monsters[key]).filter(Boolean),duration=Math.max(0,(wave.to||0)-(wave.from||0));
+        if(!pool.length||!duration)continue;
+        sum+=duration*pool.reduce((n,m)=>n+(m.level||0),0)/pool.length;total+=duration;
+      }
+      return total?sum/total:null;
+    };
+    const current=average(selected.script),last=average(gameCatalog?.ca?.maze);
+    return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
+  }
+  function updateStageSpawnSchedule(){
+    const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs'),bosses=detail?.querySelector('.stg-bosses');
+    if(!detail||(!mobs&&!bosses))return;
+    detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
+    const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
+    const byId=new Map(rows.map(row=>[row.id,row]));
+    const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
+    if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
+    for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
+      const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
+      const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
+      const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
+      if(mob.dataset.roScheduleSignature===signature&&mob.querySelector('[data-ro-mob-time]'))continue;
+      mob.dataset.roScheduleSignature=signature;mob.classList.add('ro-timed-mob');
+      mob.querySelector('[data-ro-mob-time]')?.remove();
+      const caption=document.createElement('span');caption.dataset.roMobTime='';
+      caption.title='可隨機生成的時段，非固定出生時間。依最後頭目預定出場時間截斷；若頭目出生延遲，實際停刷也可能延後。';
+      const label=document.createElement('b');label.textContent=name;caption.append(label);
+      const levelLine=document.createElement('span');levelLine.dataset.roMobLevel='';levelLine.textContent='等級 '+(level??'—');levelLine.title='計算經驗衰減使用的怪物等級（含目前周目修正）';caption.append(levelLine);
+      for(const time of times){const line=document.createElement('small');line.textContent=time;caption.append(line);}
+      mob.append(caption);
+    }
+    for(const boss of bosses?.querySelectorAll('[data-mob]')||[]){
+      const level=stageMonsterLevel(boss.dataset.mob,selected,lap),text='等級 '+(level??'—');
+      let line=boss.querySelector('[data-ro-mob-level]');
+      if(!line){line=document.createElement('span');line.dataset.roMobLevel='';line.title='計算經驗衰減使用的怪物等級（含目前周目修正）';const name=boss.querySelector('b');if(name)name.after(line);else boss.append(line);}
+      if(line.textContent!==text)line.textContent=text;
+    }
+  }
+  function smithCategory(definition) {
+    if (!definition) return '';
+    return definition.slot === 'weapon' ? (twoHandTypes.has(definition.wtype) ? 'twohand' : 'onehand') : definition.slot;
+  }
+  function smithDefinition(row) {
+    const src = row.querySelector('.ico img')?.getAttribute('src');
+    if (!src || !smithDefs || !smithAssets?.manifest?.items) return null;
+    let path;
+    try { path = decodeURI(new URL(src, location.href).pathname); } catch { return null; }
+    if (smithManifestItems !== smithAssets.manifest.items) {
+      smithManifestItems = smithAssets.manifest.items;
+      smithIconIndex.clear(); smithPathCache.clear();
+      for (const [id, item] of Object.entries(smithManifestItems)) {
+        if (!item.icon || !smithDefs[id]) continue;
+        const suffix = '/' + decodeURI(item.icon).replace(/^(?:\.\/|\/)+/, '');
+        if (!smithIconIndex.has(suffix)) smithIconIndex.set(suffix, []);
+        smithIconIndex.get(suffix).push(smithDefs[id]);
+      }
+    }
+    if (smithPathCache.has(path)) return smithPathCache.get(path);
+    // Manifest icons are asset-relative. All matching definitions must agree
+    // on category; ambiguous shared icons must never be silently misclassified.
+    const matches = [];
+    for (let index = path.indexOf('/'); index >= 0; index = path.indexOf('/', index + 1)) {
+      matches.push(...(smithIconIndex.get(path.slice(index)) || []));
+    }
+    const category = smithCategory(matches[0]);
+    const result = matches.length && matches.every(def => smithCategory(def) === category) ? matches[0] : null;
+    smithPathCache.set(path, result);
+    return result;
+  }
+  function nativeSmithAll() {
+    const all = document.querySelector('#smith-filters [data-f="all"]');
+    if (!all) return;
+    smith.switching = true;
+    try { all.click(); } finally { smith.switching = false; }
+  }
+  function updateSmith() {
+    updateAutoRefine();
+    const panel = document.querySelector('#smith');
+    const filters = document.querySelector('#smith-filters');
+    const list = document.querySelector('#smith-list');
+    if (!panel || panel.classList.contains('hidden') || !filters || !list || !smithDefs || !smithAssets?.manifest?.items) {
+      if (!panel || panel.classList.contains('hidden')) { smith.panel = null; smith.category = ''; smith.inventory = []; }
+      return;
+    }
+    if (smith.panel !== panel) {
+      smith.panel = panel; smith.category = ''; smith.inventory = [];
+      // Populate the complete refinable list once on opening, including equipped
+      // and locked pieces exactly as permitted by the game's original filter.
+      nativeSmithAll();
+    }
+    filters.querySelectorAll('[data-f]').forEach(button => {
+      if (smithNativeButtons.has(button)) return;
+      const original = button.onclick;
+      button.onclick = function(event) {
+        if (!smith.switching) smith.category = '';
+        return original?.call(this, event);
+      };
+      smithNativeButtons.add(button);
+    });
+    const rows = [...list.querySelectorAll('.cand[data-uid]')];
+    if (filters.querySelector('[data-f="all"].active') || smith.category) {
+      smith.inventory = rows.map(row => ({ uid: row.dataset.uid, category: smithCategory(smithDefinition(row)) }));
+    }
+    let extras = filters.querySelector('[data-ro-smith-extra]');
+    if (!extras) {
+      extras = document.createElement('span');
+      extras.setAttribute('data-ro-smith-extra', '');
+      extras.style.display = 'contents';
+      for (const [id, label] of SMITH_FILTERS) {
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'inv-chip'; button.dataset.roSmithCategory = id;
+        button.append(document.createTextNode(label + ' '), document.createElement('small'));
+        button.onclick = () => {
+          smith.category = id;
+          nativeSmithAll();
+          updateSmith();
+        };
+        extras.append(button);
+      }
+      filters.append(extras);
+    }
+    for (const button of extras.querySelectorAll('button')) {
+      const id = button.dataset.roSmithCategory;
+      const count = smith.inventory.filter(item => item.category === id).length;
+      const small = button.querySelector('small');
+      if (small.textContent !== String(count)) small.textContent = String(count);
+      button.disabled = count === 0;
+      button.classList.toggle('active', smith.category === id);
+    }
+    if (smith.category) filters.querySelectorAll('[data-f].active').forEach(button => button.classList.remove('active'));
+    rows.forEach(row => {
+      const category = smith.inventory.find(item => item.uid === row.dataset.uid)?.category;
+      const hide = !!smith.category && category !== smith.category;
+      row.toggleAttribute('data-ro-smith-filtered', hide);
+    });
+    let empty = list.querySelector('[data-ro-smith-empty]');
+    if (smith.category && !rows.some(row => !row.hasAttribute('data-ro-smith-filtered'))) {
+      if (!empty) {
+        empty = document.createElement('div'); empty.className = 'empty-note';
+        empty.setAttribute('data-ro-smith-empty', ''); empty.textContent = '此分類沒有可強化的裝備'; list.append(empty);
+      }
+    } else empty?.remove();
+  }
+
+  function fastChoice(game, cards, kind) {
+    if (!Array.isArray(cards) || cards.length === 0) return null;
+    let best = null;
+    for (const card of cards) {
+      const matched = kind === 'skill'
+        ? rules.some(r => r.kind === 'skill' && r.id === card.id)
+        : rules.some(r => r.kind === 'item' && r.id === card.slot && r.itemId === card.item);
+      const quality = kind === 'skill' ? card.rarity : card.quality;
+      if (!matched || !Number.isInteger(quality) || quality < 0) continue;
+      if (!best || quality > best.quality) best = { card, quality };
+    }
+    return best?.card || null;
+  }
+
+  function installFastChoice(game) {
+    installHordeCount(game);
+    if(game)activeGame=game;
+    if (!game || !game.events || fastHooked.has(game)) return;
+    fastHooked.add(game);
+    activeGame = game;
+    for (const [event, kind, method] of [['onLevelUp', 'skill', 'choose'], ['onChest', 'item', 'chooseChest']]) {
+      const original = game.events[event];
+      if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
+      game.events[event] = function(cards, ...args) {
+        const selected = fastChoice(game, cards, kind);
+        // Leave replacements requiring confirmation to the normal UI.
+        const current = selected && kind === 'item' ? game.runItems?.slots.get(selected.slot) : null;
+        if (!selected || (current && current.item !== selected.item)) {
+          const result = original.call(this, cards, ...args);
+          // Preserve authoritative offer IDs for the DOM fallback, including
+          // rerendered weapon icons and localized basic-attack labels.
+          const buttons = document.querySelectorAll('#pk-cards .pk-card');
+          if (buttons.length === cards.length) buttons.forEach((button, index) => {
+            const offer = cards[index];
+            button.dataset.roApKind = kind;
+            button.dataset.roApId = kind === 'skill' ? offer.id : offer.item;
+            button.dataset.roApQuality = String(kind === 'skill' ? offer.rarity : offer.quality);
+          });
+          return result;
+        }
+        // Drain consecutive levels without recursively growing the JS stack.
+        // No picker DOM, entrance lock, or exit animation is created.
+        queueMicrotask(() => {
+          if (activeGame !== game || game.player?.dead || game.state === 'over') return;
+          try { game[method](selected); }
+          catch (error) {
+            console.warn('[RO助手] 即時自選失敗，恢復手動選擇', error);
+            original.call(game.events, cards, ...args);
+          }
+        });
+      };
+    }
+  }
+
+  function victoryMagnet(game) {
+    if (!game || game.lootUntil < 0 || !Number.isFinite(game.lootUntil)
+      || game.endless || game.isStory || game.player?.dead || victoryCollected.has(game)) return;
+    if (game.coop?.replica) {
+      if (typeof game.coop.take !== 'function') return;
+      // Client pickup requests go through the host and its normal loot rolls.
+      victoryCollected.add(game);
+      for (const pickup of game.pickups || []) {
+        if (!pickup.dead && ['loot', 'card', 'egg'].includes(pickup.kind)) game.coop.take(pickup);
+      }
+    } else {
+      if (typeof game.vacuum !== 'function') return;
+      victoryCollected.add(game);
+      game.vacuum();
+    }
+    notify('勝利磁鐵：已吸取地上掉落物');
+  }
+
+  async function installGameHooks() {
+    // Import only the already-loaded shared module: never re-run the main game.
+    // Locate the public hook registry by its shape, not its minified export name.
+    const link = document.querySelector('link[rel="modulepreload"][href*="soul_linker-"]');
+    if (!link) { console.warn('[RO助手] 找不到共用模組，勝利磁鐵未啟用'); return; }
+    try {
+      const module = await import(new URL(link.getAttribute('href'), location.href).href);
+      gameCatalog=module;
+      updateStageSpawnSchedule();
+      smithDefs = Object.values(module).find(value => value && typeof value === 'object'
+        && value[1101]?.slot === 'weapon' && value[2254]?.slot === 'head_top') || null;
+      smithAssets = Object.values(module).find(value => value && typeof value === 'object'
+        && value.icons instanceof Map && value.itemTextures instanceof Map) || null;
+      const nativeTwoHand = Object.values(module).find(value => value instanceof Set && value.has('양손검') && value.has('활'));
+      if (nativeTwoHand) twoHandTypes = nativeTwoHand;
+      updateSmith();
+      skillDefs = Object.values(module).find(value => value && typeof value === 'object'
+        && value.atk_sword?.kind === 'weapon' && value.bash?.kind === 'weapon') || null;
+      const hooks = Object.values(module).find(value => value && typeof value === 'object'
+        && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
+      if (!hooks) throw new Error('找不到遊戲事件介面');
+      hooks.start.push(game => { resetRun(); installFastChoice(game); });
+      hooks.tick.push(game => {
+        installFastChoice(game);
+        updateHordeHud(game);
+        if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}
+        try { victoryMagnet(game); }
+        catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
+      });
+      console.info('[RO助手] 即時自選已啟用 v1.9.6');
+    } catch (error) {
+      console.warn('[RO助手] 勝利磁鐵未啟用', error);
+      notify('勝利磁鐵載入失敗；自動選擇仍可使用');
+    }
+  }
+
+  function iconOf(el) {
+    const src = el?.querySelector('img')?.getAttribute('src');
+    if (!src) return '';
+    try {
+      const url = new URL(src, location.href);
+      // Preserve data/blob URLs: some game icons are generated at runtime.
+      return ['data:', 'blob:'].includes(url.protocol) ? url.href : url.origin + url.pathname;
+    } catch { return ''; }
+  }
+  const cleanName = text => (text || '').replace(/\s*\+\d+\s*$/, '').replace(/\s+/g, ' ').trim();
+  function tipName(el) {
+    // Run the game's existing hover handler to obtain this exact slot's name.
+    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    const tip = document.querySelector('#skill-tip');
+    if (!tip || tip.classList.contains('hidden') || iconOf(tip.querySelector('.st-head')) !== iconOf(el)) return '';
+    const heading = tip.querySelector('.st-head b')?.cloneNode(true);
+    heading?.querySelectorAll('.ro-orig').forEach(n => n.remove());
+    return cleanName(heading?.textContent);
+  }
+  function identity(el) {
+    const kind = el.hasAttribute('data-skill') ? 'skill' : 'item';
+    const itemId = kind === 'item' ? activeGame?.runItems?.slots.get(el.dataset.item)?.item : undefined;
+    return { kind, id: kind === 'skill' ? el.dataset.skill : el.dataset.item, itemId, icon: iconOf(el), name: tipName(el) || (kind==='skill'?cleanName((activeGame?.skillDef?.(el.dataset.skill)||skillDefs?.[el.dataset.skill])?.name):'') };
+  }
+  function sameSlot(rule, el) {
+    const skill = el.hasAttribute('data-skill');
+    return skill ? rule.kind === 'skill' && rule.id === el.dataset.skill
+      : rule.kind === 'item' && rule.id === el.dataset.item && rule.icon === iconOf(el);
+  }
+  function notify(text) {
+    toast ||= Object.assign(document.createElement('div'), { id: 'ro-ap-toast' });
+    toast.textContent = text;
+    document.body.append(toast);
+    clearTimeout(notify.timer);
+    notify.timer = setTimeout(() => toast.remove(), 2400);
+  }
+  function closeMenu() { menu?.remove(); menu = null; }
+  function helperViewport(){
+    const view=window.visualViewport;
+    return {left:view?.offsetLeft||0,top:view?.offsetTop||0,width:view?.width||innerWidth,height:view?.height||innerHeight};
+  }
+  let longPress=null,heldSlot=null,heldUntil=0;
+  function cancelLongPress(){clearTimeout(longPress?.timer);longPress=null;}
+  function clearLongPress(){cancelLongPress();heldSlot=null;heldUntil=0;}
+  function slotOf(target){return target instanceof Element?target.closest(SLOT):null;}
+  function suppressHeldEvent(event){
+    if(!heldSlot||performance.now()>heldUntil||slotOf(event.target)!==heldSlot)return false;
+    event.preventDefault();event.stopImmediatePropagation();return true;
+  }
+  function beginLongPress(event){
+    // A second finger cancels the gesture; ordinary taps and scrolling stay native.
+    if(longPress){cancelLongPress();return;}
+    if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
+    heldSlot=null;
+    const slot=slotOf(event.target);if(!slot||slot.classList.contains('empty'))return;
+    const press={slot,pointerId:event.pointerId,x:event.clientX,y:event.clientY,id:slot.dataset.skill??slot.dataset.item,icon:iconOf(slot)};
+    longPress=press;
+    press.timer=setTimeout(()=>{
+      if(longPress!==press||!slot.isConnected||slot.classList.contains('empty')||(slot.dataset.skill??slot.dataset.item)!==press.id||iconOf(slot)!==press.icon){cancelLongPress();return;}
+      longPress=null;heldSlot=slot;heldUntil=Infinity;
+      context({target:slot,clientX:press.x,clientY:press.y,preventDefault(){},stopImmediatePropagation(){}});
+    },550);
+  }
+  function moveLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId&&Math.hypot(event.clientX-longPress.x,event.clientY-longPress.y)>10)cancelLongPress();
+  }
+  function endLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId)cancelLongPress();
+    if(suppressHeldEvent(event))heldUntil=performance.now()+800;
+  }
+  function touchContext(event){
+    if(suppressHeldEvent(event))return;
+    // Some mobile browsers dispatch contextmenu before the 550ms timer.
+    if(longPress&&slotOf(event.target)===longPress.slot){heldSlot=longPress.slot;heldUntil=Infinity;cancelLongPress();}
+    context(event);
+  }
+  function context(event) {
+    const el = event.target instanceof Element ? event.target.closest(SLOT) : null;
+    if (!el || el.classList.contains('empty')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeMenu();
+    const rule = identity(el);
+    if(heldSlot===el)el.closest('#skillbar, #lu-sockets, #runitems')?.dispatchEvent(new MouseEvent('mouseleave'));
+    // Do not guess when a tooltip is missing or the site's DOM has changed.
+    if (!rule.icon || !rule.name) { notify('無法辨識此項目；請關閉提示後，重新長按或按右鍵'); return; }
+    const enabled = rules.some(r => sameSlot(r, el));
+    menu = document.createElement('div');
+    menu.id = 'ro-ap-menu';
+    menu.setAttribute('role', 'menu');
+    const title = document.createElement('div');
+    title.textContent = rule.name;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('role', 'menuitem');
+    button.textContent = enabled ? '關閉自動選擇' : '開啟自動選擇';
+    button.onclick = () => {
+      if(!el.isConnected||!sameSlot(rule,el)||iconOf(el)!==rule.icon){closeMenu();notify('項目已變更，請重新長按或按右鍵設定');return;}
+      rules = rules.filter(r => !sameSlot(r, el));
+      if (!enabled) rules.push(rule);
+      closeMenu(); scan();
+      notify(`${rule.name}：已${enabled ? '關閉' : '開啟'}自動選擇`);
+    };
+    const close=document.createElement('button');close.type='button';close.textContent='取消';close.setAttribute('role','menuitem');close.onclick=closeMenu;
+    menu.append(title, button,close);
+    document.body.append(menu);
+    const box = menu.getBoundingClientRect(),view=helperViewport();
+    menu.style.left = Math.max(view.left+8, Math.min(event.clientX, view.left+view.width - box.width - 8)) + 'px';
+    menu.style.top = Math.max(view.top+8, Math.min(event.clientY, view.top+view.height - box.height - 8)) + 'px';
+    button.focus({ preventScroll: true });
+  }
+  function rank(card) {
+    const explicit = card.dataset.roApQuality;
+    if (explicit !== undefined && /^[0-4]$/.test(explicit)) return Number(explicit);
+    const badge = card.querySelector('.pk-badge')?.textContent.trim() || '';
+    const names = [/(普通|Common|Común|Comum)$/i, /不普通|非凡|優良|罕見|Uncommon|Poco común|Incomum/i, /稀有|Rare|Raro/i, /史詩|Epic|Épico/i, /傳說|Legendary|Legendario|Lendári[oa]/i];
+    for (let i = 4; i >= 0; i--) if (names[i].test(badge)) return i;
+    const color = card.closest('.pk-slot')?.style.getPropertyValue('--q').trim().toLowerCase();
+    const index = color === '#f2f2f2' ? 0 : COLORS.indexOf(color);
+    return index < 0 ? -1 : index;
+  }
+  function choose(cards, kind) {
+    let best = null;
+    for (const card of cards) {
+      const icon = iconOf(card.querySelector('.pk-art'));
+      const name = cleanName(card.querySelector('.pk-name')?.textContent);
+      const matched = rules.some(r => {
+        if (r.kind !== kind) return false;
+        if (card.dataset.roApKind === kind && card.dataset.roApId)
+          return kind === 'skill' ? r.id === card.dataset.roApId : r.itemId === card.dataset.roApId;
+        if (kind === 'skill') {
+          const definition = activeGame?.skillDef?.(r.id) || skillDefs?.[r.id];
+          if (definition && cleanName(definition.name) === name) return true;
+        }
+        return r.icon === icon && r.name === name;
+      });
+      if (!matched) continue;
+      const quality = rank(card);
+      // Unknown quality fails open instead of silently choosing the wrong card.
+      if (quality < 0) return null;
+      if (!best || quality > best.quality) best = { card, quality, name };
+    }
+    return best;
+  }
+  function cancel() {
+    if (job) { clearTimeout(job.timer); job = null; }
+    document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
+  }
+  function resetRun() {
+    clearLongPress();
+    clearHordeHud();
+    closeCharacterDetails();
+    activeGame=null;
+    document.querySelector('#ro-character-details-toggle')?.remove();
+    rules = [];
+    cancel();
+    closeMenu();
+    toast?.remove();
+    document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
+  }
+  function scan() {
+    updateHordeHud();
+    updateStageSpawnSchedule();
+    updateCharacterDetails();
+    updateOfflineUI();
+    updateMinimapOption();
+    updateSmith();
+    updateMerchant();
+    // Bottom bars are recreated whenever levels or items change.
+    document.querySelectorAll(SLOT).forEach(el => {
+      const enabled = rules.some(r => sameSlot(r, el));
+      if (enabled) el.setAttribute('data-ro-ap-enabled', '');
+      else el.removeAttribute('data-ro-ap-enabled');
+    });
+    const picker = document.querySelector('#picker');
+    if (!picker || picker.classList.contains('hidden')) { cancel(); return; }
+    if (picker.classList.contains('closing')) return;
+    const cards = [...picker.querySelectorAll('#pk-cards .pk-card')];
+    if (cards.some(card => manualCards.has(card))) { cancel(); return; }
+    // Only normal skill/chest choices with the expected sockets.
+    // The game may offer fewer than 3 cards when upgrades are exhausted/banished.
+    // Story reward animations and other generic pickers must remain manual.
+    const sockets = picker.querySelector('#lu-sockets');
+    const title = picker.querySelector('#pk-title')?.textContent || '';
+    const kind = /Level Up|升級|Subir de nivel|Subiu de nível/i.test(title) ? 'skill'
+      : /Cofre del tesoro|Treasure Chest|寶箱|Baú do tesouro/i.test(title) ? 'item' : null;
+    if (!cards.length || !kind || !sockets || sockets.classList.contains('hidden') || sockets.style.visibility === 'hidden') { cancel(); return; }
+    const selected = choose(cards, kind);
+    if (!selected && rules.some(r => r.kind === kind) && !diagnosed.has(cards[0])) {
+      diagnosed.add(cards[0]);
+      console.debug('[RO助手] 自選未命中', {
+        rules: rules.filter(r => r.kind === kind),
+        offers: cards.map(card => ({ id: card.dataset.roApId, name: card.querySelector('.pk-name')?.textContent, icon: iconOf(card.querySelector('.pk-art')), quality: rank(card) })),
+        fastHook: !!activeGame
+      });
+    }
+    if (!selected || selected.card.closest('.pk-slot')?.querySelector('.pk-back')) { cancel(); return; }
+    if (job?.card === selected.card) return;
+    cancel();
+    picker.setAttribute('data-ro-ap-hidden', '');
+    const current = job = { card: selected.card, started: performance.now(), timer: null };
+    const click = () => {
+      if (job !== current) return;
+      if (!current.card.isConnected || picker.classList.contains('hidden')) { cancel(); schedule(); return; }
+      if (picker.classList.contains('closing')) return;
+      if (performance.now() - current.started > 5000) {
+        cards.forEach(card => manualCards.add(card));
+        cancel(); notify('自動選擇逾時，已恢復手動選擇'); return;
+      }
+      // The game rejects clicks until 380 + cardCount*120 ms have passed.
+      current.card.click();
+      if (picker.classList.contains('closing')) {
+        notify(`自動選擇：${selected.name}`);
+      } else current.timer = setTimeout(click, 100);
+    };
+    current.timer = setTimeout(click, Math.max(800, 400 + cards.length * 120));
+  }
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    queueMicrotask(() => { scheduled = false; scan(); });
+  }
+  function start() {
+    loadFilterStore();
+    const style = document.createElement('style');
+    style.textContent = `
+      #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:12;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:auto}
+      #ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
+      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}#stg-detail [data-ro-mob-level]{display:block;width:fit-content;max-width:100%;box-sizing:border-box;font-size:12px;font-weight:700;line-height:1.5;color:#ffe08a;background:#20304c;border:1px solid #a18442;border-radius:4px;padding:1px 6px}#stg-detail .stg-boss [data-ro-mob-level]{margin:3px auto}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
+      #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
+      #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+      #ro-unwanted-dialog .ro-equipment-filter>.ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button,#ro-unwanted-dialog .ro-gear-tabs button,#ro-unwanted-dialog .ro-gear-settings{background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
+      #ro-unwanted-dialog .ro-gear-actions{padding-bottom:10px;border-bottom:1px solid #415573;margin-bottom:10px}#ro-unwanted-dialog .ro-gear-actions span{color:#bac9dc;font-size:12px}
+      #ro-unwanted-dialog .ro-gear-tabs button.active{background:#b9e5d1;color:#12332c}#ro-unwanted-dialog .ro-gear-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+      #ro-unwanted-dialog .ro-gear-card{border:1px solid #415573;border-radius:9px;background:#152238;padding:12px;min-width:0}#ro-unwanted-dialog .ro-gear-card header{display:flex;align-items:center;gap:8px}#ro-unwanted-dialog .ro-gear-card header img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated}#ro-unwanted-dialog .ro-gear-card header b{flex:1}
+      #ro-unwanted-dialog .ro-gear-card .ro-gear-settings{margin-left:auto}#ro-unwanted-dialog .ro-gear-settings.configured{outline:2px solid #b9e5d1}#ro-unwanted-dialog .ro-gear-tier{display:flex;align-items:baseline;gap:6px;margin-top:7px;color:#b9e5d1}#ro-unwanted-dialog .ro-gear-tier button{flex:none;background:#b9e5d1;color:#12332c;border:1px solid #b9e5d1;border-radius:5px;padding:3px 8px}#ro-unwanted-dialog .ro-gear-tier button.excluded{background:#4a2731;color:#ffc7c7;border-color:#a96170;text-decoration:line-through}#ro-unwanted-dialog .ro-gear-card ul{padding-left:18px;font-size:12px;color:#bac9dc;line-height:1.6}
+      #ro-unwanted-dialog .ro-equipment-filter .ro-filter-multi-list{color:#172238;width:400px}#ro-unwanted-dialog .ro-equipment-filter summary{color:#172238}#ro-unwanted-dialog .ro-gear-detail-backdrop{position:absolute;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}#ro-unwanted-dialog .ro-gear-detail-panel{background:#f5f7fc;color:#172238;border:2px solid #738ab4;padding:18px;border-radius:10px;width:min(1000px,95vw);max-height:85vh;overflow:auto}#ro-unwanted-dialog .ro-gear-detail-field{display:flex;align-items:center;flex-wrap:nowrap;gap:8px;min-width:0}#ro-unwanted-dialog label.ro-gear-skill{display:flex;flex-wrap:nowrap;gap:5px}#ro-unwanted-dialog .ro-gear-skill span:first-of-type{flex:1}#ro-unwanted-dialog .ro-gear-skill input[type=number]{width:90px;flex:none}#ro-unwanted-dialog .ro-gear-error{color:#b02030}
+      #ro-unwanted-dialog .ro-rarity-buttons{display:flex;flex-wrap:wrap;gap:4px}#ro-unwanted-dialog .ro-equipment-filter .ro-rarity-buttons button{color:var(--rarity-color);border-color:var(--rarity-color)}#ro-unwanted-dialog .ro-rarity-buttons button.excluded{text-decoration:line-through;opacity:.5}#ro-unwanted-dialog .ro-manage-details{margin-left:auto!important}
+      #ro-unwanted-dialog select.ro-gear-filter-select{width:132px;flex:0 1 132px;margin-left:auto;min-width:0;text-overflow:ellipsis}#ro-unwanted-dialog .ro-gear-card header b{min-width:0;overflow-wrap:anywhere}
+      #ro-unwanted-dialog .ro-detail-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}#ro-unwanted-dialog .ro-detail-list{max-height:55vh;overflow:auto}#ro-unwanted-dialog .ro-detail-list-row{display:flex;align-items:center}#ro-unwanted-dialog .ro-detail-list-row button:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#ro-unwanted-dialog .ro-detail-list-row button.active{background:#b9e5d1}#ro-unwanted-dialog .ro-detail-list-row button:not(:first-child){flex:none;padding:4px}
+      #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
+      @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
+      #ro-character-details-toggle{position:fixed;z-index:30;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
+      #ro-character-details{position:fixed;left:12px;top:20vh;width:min(420px,calc(100vw - 24px));max-height:70vh;overflow:auto;box-sizing:border-box;z-index:2147483646;padding:12px;border:1px solid #738ab4;border-radius:8px;background:#172238f5;color:#e8eef8;font:13px sans-serif;pointer-events:auto;box-shadow:0 6px 24px #0009}
+      #ro-character-details header{display:flex;justify-content:space-between;align-items:center;gap:8px}#ro-character-details button{cursor:pointer;padding:4px 10px}#ro-character-details p{font-size:12px;color:#b9c8e4;line-height:1.5}
+      #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
+      [data-ro-ap-enabled]{outline:2px solid #65edb1!important;outline-offset:2px}
+      #smith-list [data-ro-smith-filtered]{display:none!important}
+      #smith-filters{flex-wrap:wrap}
+      #ro-auto-refine{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
+      #ro-auto-refine-target{padding:6px;border:1px solid #a0aec7;border-radius:4px;font:inherit}
+      #ro-unwanted-dialog{position:fixed;inset:0;z-index:2147483647;background:#0009;display:flex;align-items:center;justify-content:center;padding:16px;font:14px sans-serif;color:#172238}
+      #ro-unwanted-dialog .ro-filter-panel{background:#f5f7fc;border:2px solid #738ab4;border-radius:10px;padding:18px;width:min(1440px,96vw);max-width:100%;max-height:90vh;overflow:auto;box-sizing:border-box}
+      #ro-unwanted-dialog h3{margin:0 0 10px}#ro-unwanted-dialog p{line-height:1.5}
+      #ro-unwanted-dialog input,#ro-unwanted-dialog select{max-width:100%;padding:6px;margin:4px;border:1px solid #a0aec7;border-radius:4px;background:white;color:#172238;font:inherit}
+      #ro-unwanted-dialog input[type=number]{width:90px}#ro-unwanted-dialog label{display:inline-flex;align-items:center;flex-wrap:wrap}
+      #ro-unwanted-dialog button{margin:4px}
+      #ro-unwanted-dialog .ro-filter-multi{position:relative;display:inline-block;width:240px;max-width:100%;min-width:0;flex:0 1 240px;margin:4px}
+      #ro-unwanted-dialog .ro-filter-field{display:inline-flex;align-items:center;flex-wrap:wrap;max-width:100%;min-width:0}
+      #ro-unwanted-dialog .ro-filter-multi summary{cursor:pointer;border:1px solid #a0aec7;border-radius:4px;background:white;padding:6px;width:100%;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #ro-unwanted-dialog .ro-filter-multi-list{position:fixed;z-index:2147483647;min-width:0;width:320px;max-width:calc(100vw - 24px);box-sizing:border-box;max-height:300px;overflow:auto;background:white;border:1px solid #738ab4;box-shadow:0 4px 12px #0004;padding:6px}
+      #ro-unwanted-dialog .ro-filter-multi-list label{display:flex;flex-wrap:nowrap;margin:3px;cursor:pointer;white-space:normal;overflow-wrap:anywhere}
+      #ro-unwanted-dialog .ro-filter-multi-list input{flex:none}
+      #picker[data-ro-ap-hidden]{visibility:hidden!important;pointer-events:none!important}
+      #ro-ap-menu{position:fixed;z-index:2147483647;background:#172238;color:#fff;border:1px solid #738ab4;border-radius:8px;padding:6px;box-shadow:0 6px 24px #0009;font:14px sans-serif;min-width:180px}
+      #ro-ap-menu>div{padding:7px 10px;color:#b9c8e4;max-width:280px;overflow-wrap:anywhere}
+      #ro-ap-menu button{display:block;width:100%;padding:10px 14px;color:#fff;background:#2c4365;border:0;border-radius:5px;text-align:left;cursor:pointer;font:inherit}
+      #ro-ap-menu button:hover{background:#3b5f88}
+      #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
+
+      @media(pointer:coarse){
+        #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+        #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
+        #ro-horde-hud [data-monster-toggle]{min-width:36px;min-height:36px}
+        #ro-character-details-toggle{min-height:36px}
+        #ro-unwanted-dialog input,#ro-unwanted-dialog select{font-size:16px}
+      }
+      @media(max-width:700px),(pointer:coarse) and (max-height:500px){
+        #ro-unwanted-dialog{padding:6px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom));box-sizing:border-box}
+        #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{width:100%;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+        #ro-unwanted-dialog .ro-gear-card{padding:8px}
+        #ro-unwanted-dialog .ro-gear-card header{flex-wrap:wrap;gap:4px}
+        #ro-unwanted-dialog .ro-gear-card header b{flex:1;min-width:90px}
+        #ro-unwanted-dialog select.ro-gear-filter-select{flex:0 0 100%;width:100%;margin:4px 0 0}
+        #ro-unwanted-dialog .ro-gear-tabs{flex-wrap:nowrap;overflow-x:auto;padding:4px 0;overscroll-behavior-x:contain}
+        #ro-unwanted-dialog .ro-gear-tabs button{flex:none;white-space:nowrap;margin:0}
+        #ro-unwanted-dialog .ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button{margin:2px;padding:6px 8px}
+        #ro-unwanted-dialog .ro-manage-details{margin-left:2px!important}
+        #ro-unwanted-dialog .ro-gear-detail-backdrop{position:fixed;padding:6px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-detail-panel{width:100%;box-sizing:border-box;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr);gap:10px}
+        #ro-unwanted-dialog .ro-detail-list{max-height:140px}
+        #ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 82px;font-size:12px}
+        #ro-unwanted-dialog .ro-filter-multi{margin:4px 0;flex:1;min-width:0}
+        #ro-unwanted-dialog .ro-gear-skill input[type=number]{width:72px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-tier span{min-width:0;overflow-wrap:anywhere}
+        #ro-ap-menu{box-sizing:border-box;min-width:0;width:240px;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);overflow:auto}
+        #ro-ap-menu button+button{margin-top:6px}
+        #ro-character-details{left:max(6px,env(safe-area-inset-left));top:max(6px,env(safe-area-inset-top));width:calc(100vw - 12px);max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{gap:8px}
+        #ro-character-details [data-character-stats] span,#ro-character-details [data-character-raw] span{min-width:0;overflow-wrap:anywhere}
+        #ro-horde-hud{font-size:11px;padding:5px 6px}#ro-horde-hud [data-horde-progress]{font-size:12px}
+        #ro-ap-toast{box-sizing:border-box;max-width:calc(100vw - 20px);font-size:13px;padding:8px 10px}
+        .stg-mobs .ro-timed-mob{min-width:90px;max-width:130px;padding:5px}
+      }
+    `;
+    document.head.append(style);
+    document.addEventListener('contextmenu', touchContext, true);
+    document.addEventListener('pointerdown',beginLongPress,true);
+    document.addEventListener('pointermove',moveLongPress,true);
+    document.addEventListener('pointerup',endLongPress,true);
+    document.addEventListener('pointercancel',endLongPress,true);
+    document.addEventListener('touchend',event=>{if(suppressHeldEvent(event))heldUntil=performance.now()+800;}, {capture:true,passive:false});
+    for(const type of ['click','mousedown','mouseup','auxclick'])document.addEventListener(type,suppressHeldEvent,true);
+    document.addEventListener('scroll',cancelLongPress,true);
+    window.addEventListener('blur',clearLongPress);
+    window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
+    window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearLongPress();closeMenu();}});
+    document.addEventListener('click',event=>{
+      if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
+        event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
+      }
+      if(!autoRefine.active||!(event.target instanceof Element))return;
+      if(event.target.closest('#smith-close'))stopAutoRefine();
+      const row=event.target.closest('#smith-list .cand[data-uid]');
+      if(row&&row.dataset.uid!==autoRefine.uid)stopAutoRefine('已切換裝備，自動精煉停止');
+    },true);
+    document.addEventListener('pointerdown', e => { if (!menu?.contains(e.target)) closeMenu(); }, true);
+    document.addEventListener('keydown', e => {
+      if(characterDetails&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeCharacterDetails();return;}
+      if(filterDialog){
+        // The game's Escape/number handlers must not react behind this modal.
+        e.stopImmediatePropagation();
+        if(e.key==='Escape'){e.preventDefault();const menu=filterDialog.querySelector('.ro-filter-multi[open]');if(menu)menu.closeMenu();else if(gearDetails)closeGearDetails();else closeFilter();}
+        return;
+      }
+      if (e.key === 'Escape') {
+        if(autoRefine.active)stopAutoRefine();
+        closeMenu();
+        if (job) {
+          document.querySelectorAll('#pk-cards .pk-card').forEach(card => manualCards.add(card));
+          cancel(); notify('已中止本次自動選擇');
+        }
+      }
+    }, true);
+    window.addEventListener('keydown',e=>{
+      if(characterDetails&&e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeCharacterDetails();return;}
+      if(filterDialog){e.stopImmediatePropagation();if(e.key==='Escape'){e.preventDefault();const menu=filterDialog.querySelector('.ro-filter-multi[open]');if(menu)menu.closeMenu();else if(gearDetails)closeGearDetails();else closeFilter();}}
+    },true);
+    window.addEventListener('blur', closeMenu);
+    new MutationObserver(records => {
+      // The game hides #hud when destroying a run and shows it for a new run.
+      // oldValue also detects a hide/show pair within the same mutation batch.
+      if (records.some(r => r.type === 'attributes' && r.target.id === 'hud' && r.attributeName === 'class'
+        && /(?:^|\s)hidden(?:\s|$)/.test(r.oldValue || '') !== r.target.classList.contains('hidden'))) resetRun();
+      const relevant = records.some(r => {
+        // DOMTokenList can emit a class mutation even when add/toggle leaves
+        // the value unchanged. Never schedule another scan for that no-op.
+        if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
+        const el = r.target instanceof Element ? r.target : r.target.parentElement;
+        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
+      });
+      if (relevant) schedule();
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
+    scan();
+    installGameHooks();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+})();
