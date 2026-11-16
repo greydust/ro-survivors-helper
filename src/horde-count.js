@@ -97,6 +97,7 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
+    if(touchUiIsQuiet())return;
     const hud=document.querySelector('#hud');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
     let panel=document.querySelector('#ro-horde-hud');

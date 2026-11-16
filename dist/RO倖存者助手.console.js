@@ -1,4 +1,4 @@
-// RO 倖存者助手 1.9.15 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+// RO 倖存者助手 1.9.16 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
 (() => {
   'use strict';
   // Console and userscript installs share one instance per page.
@@ -7,7 +7,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.15'};
+  window[runtimeKey]={version:'1.9.16'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -274,6 +274,7 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
+    if(touchUiIsQuiet())return;
     const hud=document.querySelector('#hud');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
     let panel=document.querySelector('#ro-horde-hud');
@@ -629,7 +630,7 @@
     document.querySelector('#ro-character-details-toggle')?.setAttribute('aria-expanded','false');
   }
   function updateCharacterDetails() {
-    if(pickerIsOpen())return;
+    if(pickerIsOpen()||touchUiIsQuiet())return;
     const hud=document.querySelector('#hud'),buffs=document.querySelector('#buffs');
     if(!hud||hud.classList.contains('hidden')||!buffs||!activeGame?.stats){
       document.querySelector('#ro-character-details-toggle')?.remove();closeCharacterDetails();return;
@@ -1211,6 +1212,9 @@
     const picker=document.querySelector('#picker');
     return !!picker&&!picker.classList.contains('hidden');
   }
+  let touchUiQuietUntil=0,touchUiActive=false;
+  function touchUiIsQuiet(){return touchUiActive||performance.now()<touchUiQuietUntil;}
+  function deferTouchUI(){touchUiQuietUntil=performance.now()+1000;}
   function fastChoice(game, cards, kind) {
     if (!Array.isArray(cards) || cards.length === 0) return null;
     let best = null;
@@ -1332,7 +1336,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.15');
+      console.info('[RO助手] 即時自選已啟用 v1.9.16');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1391,6 +1395,7 @@
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
+    if(event.pointerType==='touch')deferTouchUI();
     if(job&&event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
       document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();
     }
@@ -1427,12 +1432,16 @@
     return {target:event.target,pointerType:'touch',pointerId:longPress?.pointerId??point.identifier,isPrimary:true,button:0,clientX:point.clientX,clientY:point.clientY,touchFallback:true};
   }
   function startTouchPress(event){
+    touchUiActive=!!event.touches?.length;
+    deferTouchUI();
     touchInputUsed=true;
     if(event.touches?.length>1){clearLongPress();return;}
     const pointer=touchPressEvent(event);if(pointer)beginLongPress(pointer);
   }
-  function moveTouchPress(event){const pointer=touchPressEvent(event);if(pointer)moveLongPress(pointer);}
+  function moveTouchPress(event){deferTouchUI();const pointer=touchPressEvent(event);if(pointer)moveLongPress(pointer);}
   function finishTouchPress(event){
+    touchUiActive=!!event.touches?.length;
+    deferTouchUI();
     const pointer=touchPressEvent(event);if(pointer)endLongPress(pointer);else cancelLongPress();
   }
   function touchContext(event){
@@ -1529,7 +1538,7 @@
   }
   function scan() {
     // Native choice gestures must not trigger unrelated helper DOM refreshes.
-    if(!pickerIsOpen()){
+    if(!pickerIsOpen()&&!touchUiIsQuiet()){
       updateHordeHud();
       updateStageSpawnSchedule();
       updateCharacterDetails();
@@ -1698,10 +1707,10 @@
     document.addEventListener('touchcancel',finishTouchPress,{capture:true,passive:true});
     document.addEventListener('click',suppressHeldEvent,true);
     document.addEventListener('scroll',cancelLongPress,true);
-    window.addEventListener('blur',clearLongPress);
+    window.addEventListener('blur',()=>{touchUiActive=false;clearLongPress();});
     window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
     window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearLongPress();closeMenu();}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){touchUiActive=false;clearLongPress();closeMenu();}});
     document.addEventListener('click',event=>{
       if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
         event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
@@ -1752,7 +1761,7 @@
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.
     function refreshBattleOverlays(){
-      if(activeGame&&!pickerIsOpen()){
+      if(activeGame&&!pickerIsOpen()&&!touchUiIsQuiet()){
         runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
         runHelperHook(activeGame,'角色資料',updateCharacterDetails);
       }

@@ -865,6 +865,17 @@ test('mobile battle overlays recover without native ticks and expose working det
  panel.remove();e.tick(250);panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.querySelector('[data-horde-ring-toggle]').textContent,'範圍圈：關');
  e.document.querySelector('#hud').classList.add('hidden');e.tick(250);assert(!e.document.querySelector('#ro-horde-hud'));assert(!e.document.querySelector('#ro-character-details-toggle'));
 });
+test('ordinary battle taps pause background layout updates through native click and then resume',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div><button id="native-action">Action</button>');
+ const game={state:'playing',hp:10,stats:{maxHp:20},enemies:[]};e.api.setActiveGame(game);e.tick(250);
+ let reads=0,clicks=0;e.document.querySelector('#buffs').getBoundingClientRect=()=>{reads++;return {left:100,bottom:200};};
+ const button=e.document.querySelector('#native-action');button.onclick=()=>clicks++;
+ assert(!safariTouch(e,button,'touchstart').defaultPrevented);e.tick(1500);e.api.scan();e.api.helperTick(game);assert.equal(reads,0,'a held finger must keep updates paused');
+ assert(!safariTouch(e,button,'touchend').defaultPrevented);e.tick(750);assert.equal(reads,0);
+ assert(!pointer(e,button,'click').defaultPrevented);assert.equal(clicks,1);
+ e.tick(500);assert(reads>0,'background updates resume after touch settles');
+});
+
 test('manual native picker pauses unrelated helper UI writes and resumes them after closing',()=>{
  const e=setup();e.document.documentElement.classList.add('touch');
  e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div>');

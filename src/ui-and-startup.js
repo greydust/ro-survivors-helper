@@ -103,10 +103,10 @@
     document.addEventListener('touchcancel',finishTouchPress,{capture:true,passive:true});
     document.addEventListener('click',suppressHeldEvent,true);
     document.addEventListener('scroll',cancelLongPress,true);
-    window.addEventListener('blur',clearLongPress);
+    window.addEventListener('blur',()=>{touchUiActive=false;clearLongPress();});
     window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
     window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearLongPress();closeMenu();}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){touchUiActive=false;clearLongPress();closeMenu();}});
     document.addEventListener('click',event=>{
       if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
         event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
@@ -157,7 +157,7 @@
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.
     function refreshBattleOverlays(){
-      if(activeGame&&!pickerIsOpen()){
+      if(activeGame&&!pickerIsOpen()&&!touchUiIsQuiet()){
         runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
         runHelperHook(activeGame,'角色資料',updateCharacterDetails);
       }

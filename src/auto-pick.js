@@ -2,6 +2,9 @@
     const picker=document.querySelector('#picker');
     return !!picker&&!picker.classList.contains('hidden');
   }
+  let touchUiQuietUntil=0,touchUiActive=false;
+  function touchUiIsQuiet(){return touchUiActive||performance.now()<touchUiQuietUntil;}
+  function deferTouchUI(){touchUiQuietUntil=performance.now()+1000;}
   function fastChoice(game, cards, kind) {
     if (!Array.isArray(cards) || cards.length === 0) return null;
     let best = null;
@@ -123,7 +126,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.15');
+      console.info('[RO助手] 即時自選已啟用 v1.9.16');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -182,6 +185,7 @@
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
+    if(event.pointerType==='touch')deferTouchUI();
     if(job&&event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
       document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();
     }
@@ -218,12 +222,16 @@
     return {target:event.target,pointerType:'touch',pointerId:longPress?.pointerId??point.identifier,isPrimary:true,button:0,clientX:point.clientX,clientY:point.clientY,touchFallback:true};
   }
   function startTouchPress(event){
+    touchUiActive=!!event.touches?.length;
+    deferTouchUI();
     touchInputUsed=true;
     if(event.touches?.length>1){clearLongPress();return;}
     const pointer=touchPressEvent(event);if(pointer)beginLongPress(pointer);
   }
-  function moveTouchPress(event){const pointer=touchPressEvent(event);if(pointer)moveLongPress(pointer);}
+  function moveTouchPress(event){deferTouchUI();const pointer=touchPressEvent(event);if(pointer)moveLongPress(pointer);}
   function finishTouchPress(event){
+    touchUiActive=!!event.touches?.length;
+    deferTouchUI();
     const pointer=touchPressEvent(event);if(pointer)endLongPress(pointer);else cancelLongPress();
   }
   function touchContext(event){
@@ -320,7 +328,7 @@
   }
   function scan() {
     // Native choice gestures must not trigger unrelated helper DOM refreshes.
-    if(!pickerIsOpen()){
+    if(!pickerIsOpen()&&!touchUiIsQuiet()){
       updateHordeHud();
       updateStageSpawnSchedule();
       updateCharacterDetails();
