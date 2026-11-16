@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.10
+// @version      1.9.11
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.10'};
+  window[runtimeKey]={version:'1.9.11'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1056,8 +1056,9 @@
     if(!installed){installed=new Map();fastHooked.set(game,installed);}
     activeGame = game;
     for (const [event, kind, method] of [['onLevelUp', 'skill', 'choose'], ['onChest', 'item', 'chooseChest']]) {
-      const previous=installed.get(event);
-      if(previous?.events===game.events&&previous.wrapper===game.events[event])continue;
+      // Browser/extension bridges may return a fresh callable on each read.
+      // Reference inequality is not evidence that the native callback changed.
+      if(installed.has(event))continue;
       const original = game.events[event];
       if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
       const wrapper=function(cards, ...args) {
@@ -1153,7 +1154,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.10');
+      console.info('[RO助手] 即時自選已啟用 v1.9.11');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
