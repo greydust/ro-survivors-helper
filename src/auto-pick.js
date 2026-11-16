@@ -119,7 +119,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.12');
+      console.info('[RO助手] 即時自選已啟用 v1.9.13');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -314,7 +314,6 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
-    if(touchInterface()&&document.querySelector('#picker')?.hasAttribute('data-ro-ap-hidden'))document.querySelector('#picker').removeAttribute('data-ro-ap-hidden');
     updateHordeHud();
     updateStageSpawnSchedule();
     updateCharacterDetails();
@@ -354,7 +353,7 @@
     if (!selected || selected.card.closest('.pk-slot')?.querySelector('.pk-back')) { cancel(); return; }
     if (job?.card === selected.card) return;
     cancel();
-    if(!touchInterface())picker.setAttribute('data-ro-ap-hidden', '');
+    picker.setAttribute('data-ro-ap-hidden', '');
     const current = job = { card: selected.card, started: performance.now(), timer: null };
     const click = () => {
       if (job !== current) return;

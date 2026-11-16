@@ -11,7 +11,7 @@ function setup({ua=safari,storage=new Map(),query='',failStorage=false,clipboard
   localStorage:{getItem:key=>{if(failStorage)throw Error('storage unavailable');return storage.get(key)||null;},setItem:(key,value)=>{if(failStorage)throw Error('storage unavailable');storage.set(key,value);}},
   MutationObserver:class{observe(){}},console,performance:{now:()=>now},innerWidth:390,innerHeight:844,
   queueMicrotask:fn=>microtasks.push(fn),setTimeout:(fn,delay)=>{const id=++next;timers.set(id,{at:now+delay,fn});return id;},clearTimeout:id=>timers.delete(id)});
- vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.diagnosticTest={isSafariBrowser,get:()=>safariDiagnostics};})();'),context);
+ vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.diagnosticTest={isSafariBrowser,get:()=>safariDiagnostics,setGame:value=>activeGame=value,setRing:value=>showHordeRing=value,patchMinimapContext,paintHordeRing};})();'),context);
  const flush=()=>{for(let i=0;microtasks.length;i++){assert(i<1000);microtasks.shift()();}};
  const tick=ms=>{const end=now+ms;for(;;){const due=[...timers].filter(([,v])=>v.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!due)break;timers.delete(due[0]);now=due[1].at;due[1].fn();flush();}now=end;flush();};
  return {window:browserWindow,document:window.document,api:context.diagnosticTest,storage,tick,flush};
@@ -23,6 +23,28 @@ const current='greydust.ro.safari-diagnostics.current.v1',previous='greydust.ro.
   const e=setup({ua});assert.equal(e.api.get(),null);assert.equal(e.storage.size,0);assert(!e.document.querySelector('#ro-safari-diagnostics-open'));
  }
  console.log('PASS diagnostics only activate in Safari');
+ const ui=setup();let report=ui.api.get().getLog().currentUI;
+ assert.equal(report.hasGame,false);assert.equal(report.characterButton.exists,false);assert.equal(report.monsters.exists,false);assert.equal(report.minimap.enabled,false);
+ ui.document.body.insertAdjacentHTML('beforeend','<div id="buffs"></div><button id="ro-character-details-toggle"></button><section id="ro-horde-hud" hidden><div data-monster-counts hidden></div></section><div id="minimap"><canvas width="200" height="180"></canvas></div>');
+ const character=ui.document.querySelector('#ro-character-details-toggle');
+ ui.document.querySelector('#minimap canvas').width=200;
+ character.getBoundingClientRect=()=>({left:500,top:20,right:600,bottom:50,width:100,height:30});
+ ui.api.setGame({state:'playing',stats:{},map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900});
+ ui.api.setRing(true);ui.tick(1000);report=ui.api.get().getLog().currentUI;
+ assert.equal(report.hasStats,true);assert.equal(report.characterButton.intersectsViewport,false);assert.equal(report.monsters.hidden,true);
+ assert(report.monsterList.hiddenAncestors.some(row=>row.element.includes('ro-horde-hud')));assert.equal(report.minimap.geometry.reach,900);assert.equal(report.minimap.canvasWidth,200);
+ character.getBoundingClientRect=()=>({left:10,top:20,right:110,bottom:50,width:100,height:30});
+ ui.document.elementFromPoint=()=>ui.document.querySelector('#picker');report=ui.api.get().getLog().currentUI;
+ assert.equal(report.characterButton.intersectsViewport,true);assert.equal(report.characterButton.centerHitWithin,false);assert(report.characterButton.centerHit.includes('picker'));
+ const ctx={beginPath(){},arc(){},stroke(){},fillRect(){},drawImage(){},rotate(){},restore(){},save(){},setTransform(){},setLineDash(){},ellipse(){}};
+ ui.api.patchMinimapContext(ctx);ui.api.patchMinimapContext(ctx);
+ ui.api.paintHordeRing(ctx,null,null);report=ui.api.get().getLog().currentUI;assert.equal(report.minimap.trace.lastReason,'geometry-unavailable');
+ ui.api.paintHordeRing(ctx,{width:512,height:512},[0,0,512,512,0,0,200,200]);report=ui.api.get().getLog().currentUI;
+ assert.equal(report.minimap.trace.patched,1);assert.equal(report.minimap.trace.drawn,1);assert.equal(report.minimap.trace.lastReason,null);
+ ui.api.setRing(false);ui.api.paintHordeRing(ctx,null,null);assert.equal(ui.api.get().getLog().currentUI.minimap.trace.lastReason,'disabled');
+ for(let i=0;i<20;i++){ui.api.setRing(i%2===0);ui.tick(1000);}
+ assert.equal(ui.api.get().getLog().uiHistory.length,12);assert(JSON.parse(ui.storage.get(current)).currentUI);
+ console.log('PASS UI diagnostics identify missing, hidden, offscreen, covered elements and minimap draw availability');
  const e=setup();let clicks=0;e.document.querySelector('#native').onclick=()=>clicks++;
  e.document.querySelector('#native').click();e.flush();e.tick(200);assert.equal(clicks,1);
  let entries=e.api.get().getLog().entries;const click=entries.find(row=>row.event==='click');assert(click);assert.equal(click.preventedAfterDispatch,false);assert.equal(click.bubbled,true);assert(click.after);

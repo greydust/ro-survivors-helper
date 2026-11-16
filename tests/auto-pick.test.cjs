@@ -173,15 +173,24 @@ test('Safari combined pointer and touch events create one hold and lost release 
  safariTouch(e,slot,'touchstart');pointer(e,slot,'pointerdown');e.tick(550);assert(e.document.querySelector('#ro-ap-menu'));
  e.tick(1201);assert(!pointer(e,slot,'click').defaultPrevented,'a lost release must never leave an infinite click interceptor');
 });
-test('Safari auto selection keeps choices visible and a manual tap cancels pending automation',()=>{
+test('Safari auto selection hides matching choices and manual input still cancels pending automation',()=>{
  for(const kind of ['skill','item']){
   const e=setup();e.document.documentElement.classList.add('touch');e.api.setRules([rule(kind,'A','a.png')]);
   const cards=picker(e,[['A','a.png','稀有'],['B','b.png','普通'],['C','c.png','普通']],kind);let picks=0;cards[1].onclick=()=>picks++;
-  e.api.scan();assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+  e.api.scan();assert(e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+  e.api.scan();assert(e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'),'rescanning must keep the pending automatic choice hidden');
   assert(!safariTouch(e,cards[1],'touchstart').defaultPrevented);assert(!safariTouch(e,cards[1],'touchend').defaultPrevented);assert(!pointer(e,cards[1],'click').defaultPrevented);assert.equal(picks,1);
   e.tick(6000);assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));assert.equal(picks,1);
  }
 });
+test('Safari unmatched choices remain manual and stalled automatic choices become visible',()=>{
+ const e=setup();e.document.documentElement.classList.add('touch');e.api.setRules([rule('skill','A','a.png')]);
+ picker(e,[['B','b.png','普通']]);e.api.scan();assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+ picker(e,[['A','a.png','稀有']]);e.api.scan();assert(e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+ e.tick(5200);assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+ e.api.scan();assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+});
+
 test('held touch cannot cancel unrelated native buttons or release events',()=>{
  const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(550);
  e.document.body.insertAdjacentHTML('beforeend','<button id="native-settings">遊戲設定</button>');const native=e.document.querySelector('#native-settings');let clicks=0;native.onclick=()=>clicks++;

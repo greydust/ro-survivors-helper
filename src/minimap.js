@@ -18,14 +18,17 @@
       outerX:(reach+130)*scale*dw/sw,outerY:(reach+130)*scale*dh/sh};
   }
   function paintHordeRing(context,image,crop){
-    if(!showHordeRing)return;
-    const ring=hordeRingGeometry(activeGame,image,crop);if(!ring)return;
+    if(!showHordeRing){safariDiagnostics?.recordMinimap('attempt','disabled');return;}
+    const ring=hordeRingGeometry(activeGame,image,crop);
+    safariDiagnostics?.recordMinimap('attempt',ring?null:'geometry-unavailable');
+    if(!ring)return;
     context.save();
     try{
       context.setTransform(1,0,0,1,0,0);context.globalAlpha=.9;context.strokeStyle='#5de7ff';
       const dpr=Math.min(2,window.devicePixelRatio||1);context.lineWidth=1.3*dpr;
       context.setLineDash([]);context.beginPath();context.ellipse(ring.x,ring.y,ring.rx,ring.ry,0,0,Math.PI*2);context.stroke();
       context.globalAlpha=.55;context.setLineDash([3*dpr,3*dpr]);context.beginPath();context.ellipse(ring.x,ring.y,ring.outerX,ring.outerY,0,0,Math.PI*2);context.stroke();
+      safariDiagnostics?.recordMinimap('drawn');
     }finally{context.restore();}
   }
   const patchedMinimapContexts=new WeakSet();
@@ -33,6 +36,7 @@
     if(!context||patchedMinimapContexts.has(context))return;
     if(!['beginPath','arc','stroke','fillRect'].every(key=>typeof context[key]==='function'))return;
     patchedMinimapContexts.add(context);
+    safariDiagnostics?.recordMinimap('patched');
     let magnetPath=false;
     const begin=context.beginPath,arc=context.arc,stroke=context.stroke,fillRect=context.fillRect;
     context.beginPath=function(...args){magnetPath=false;return Reflect.apply(begin,this,args);};

@@ -96,3 +96,22 @@ map width/height=100，世界 tile=64，walk grid=200×200，每格32；可走�
 主屬性為str/agi/vit/int/dex/luk；第三類crit/cd/area，armor與特定遠程武器可加pierce；
 第四類hp/armor/spd/flee。傳說可加skill傷害，選單取原生可骰技能集合。
 自帶詞條須包含原生固定star bonuses（bs），而不只是裝備def.bonuses；很多普通掉落的def.bonuses已被遊戲清空。
+
+## 爆擊與急速（2026-11-16核對）
+
+來源：`main-BNOcv2PN.hzcd62bfc7.js`、`soul_linker-DllBVIRO.hzf296bcc4.js`（同前述 /build/ 前綴）。
+
+- YW 基礎 critMult=1.6。一般 damageEnemy 的爆擊倍率為 stats.critMult + buffValue("trueSight") + hit.critDmg，屬於倍率加算；+20%爆傷把1.6改成1.8，不是1.6×1.2。LUK在a9增加critChance，沒有直接增加critMult。
+- 裝備應先執行Z/re/wr/Bd完整註冊，re會清除舊版bonuses，不能只讀Z初始值。jh的爆傷Tier加成每T為0.03，包含1219/1220長柄短劍、1254秘刃闇嘯、1261刺殺拳刃、1262洛奇的指甲、1370超重雙手斧、1387巨人斧、1505鐵錘、1708克羅伊特弓、5113憤怒的嘴、13104加立遜手槍。
+- Go 將固有／Tier／隨機詞綴用 vr(refine) 放大；vr在+4為1.16、+7為1.34、+10為1.70。卡片另由Uh套用，不乘這個精煉倍率。弓箭哥布靈卡4157基本爆傷+0.12；e_critdmg爆擊傷害秘藥apply累加critMult。另有全域／技能限定天賦、concentration神性True Sight buff（BC(level)=0.5+0.05×(level-1)）。
+- 一般技能finalCooldown=(cdBase??cooldown()) / (1+max(0, stats.haste + mod.cd + buffValue("haste")/100 + 特定技能adrenaline/100))，無盡模式再乘endless.cdMult。1點介面急速=0.01內部值，裝備、runItems、全域被動／天賦的haste相加；技能專屬mod.cd只對該技能加算。
+- p_cd冷卻藥水與b_cd冷卻祝福都haste+=amount；Increase SP Recovery每級+0.06，Increase AGI每級+0.04，Madness Canceller每級+0.06。AGI另外以dH=(1/.6-1)/99≈0.006734每點加入haste。不要把顯示的急速點數直接當冷卻減免百分比。
+- 施法急速castHaste是另一個數值：finalCastTime將stats.castHaste、技能mod.cast與castHaste buff加算，原生oC再以1/(1+castHaste)乘上DEX造成的施法縮短；不等於haste冷卻縮短。
+
+## 卡片掉落核對（2026-11-16）
+
+目前 main-BNOcv2PN.hzcd62bfc7.js：killEnemy 基礎一般怪1e-4（0.01%）、mini/MVP皆.001（0.1%），需Nh有卡片映射；劇情及尚有同group存活頭目時不判定。乘RO_LC(difficulty,boss)，不讀角色discovery、LUK、等級差或elite作額外倍率；菁英5倍僅在角色經驗那行。
+
+- RO_LCF.G：一般怪 Mc×V^-0.45；Mc的難度部份上限6，V依count/events超過原始上限（count=3、events=2）的怪物量修正。不可把難度部份6當最終每怪固定6倍。
+- 王卡Bc以六項難度的幾何平均GM對BOSS_CARD [[5,20],[10,50],[20,75]]做ln內插，且不低於舊倍率。六項全1/全10/全20，單隻頭目有卡映射時分別0.1%/5%/7.5%；GM<=5時走舊倍率，不能直接把表格節點5解讀為20倍；不能只看單個滑桿或把畫面總倍率等同GM。
+- 卡片判定在mobLoot裝備上限迴圈外；滿100件裝備仍可掉卡。周目RO_CARDLAP只改卡片ID（改/改²），不改掉率。判定沒有直接隊伍人數乘項；組隊增加怪物量、個人取得仍需看隊伍分配。

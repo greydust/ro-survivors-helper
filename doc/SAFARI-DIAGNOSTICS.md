@@ -18,6 +18,10 @@
 - 選卡與按鈕的pointer/touch/click事件是否進入觀察點、是否走到bubble觀察點，以及defaultPrevented。沒有bubble紀錄只代表未到達該觀察點，不等於已識別是哪個監聽器攔截。
 - picker的hidden／closing／asking／chosen與卡片數，遊戲state／pendingLevelUps及簡單的每秒狀態變化；長時間主執行緒停頓只能在執行恢復後記錄。
 - 助手版本與Safari使用者代理。沒有擷取聊天、帳號資料或一般畫面文字；不會上傳紀錄。
+- `currentUI` 與最近12筆 `uiHistory`：每秒檢查 HUD、Buff 欄、角色資料按鈕／面板、怪物統計／明細、選卡視窗及小地圖是否存在，記錄位置尺寸、可視範圍交集、隱藏祖先與自身 computed style。可見元件另記錄中心點命中的元件；pointer-events:none 或診斷視窗本身也可能影響命中，不能單憑此欄斷定被遮擋。
+- 小地圖記錄怪物潮範圍開關、設定選項是否建立、地圖尺寸／有效生成距離、canvas尺寸，以及掛接數、最近繪製嘗試／成功時間與次數。`disabled` 代表開關關閉，`geometry-unavailable` 代表繪製時缺少必要地圖／裁切／角色資料；開啟但零嘗試則需查小地圖繪製掛接。繪製成功只代表已呼叫畫圈流程，不保證畫布在畫面上可見。
+
+調查功能沒出現時，先進遠征停留數秒，再開「Safari 診斷」複製本次紀錄。若要查範圍圈，先開啟「顯示怪物潮第一圈範圍」。開啟診斷視窗後會影響中心命中，`uiHistory` 會保留開啟前的介面狀態。不會補回舊版未記錄的資料。
 
 輸入監聽全部為passive，未呼叫preventDefault、stopPropagation、stopImmediatePropagation，也不代為click或包裝遊戲的原生卡片回呼。診斷面板自己的按鈕只操作本機顯示與剪貼簿。
 
