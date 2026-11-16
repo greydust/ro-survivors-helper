@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.9
+// @version      1.9.10
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.9'};
+  window[runtimeKey]={version:'1.9.10'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -329,7 +329,7 @@
   let menu, toast, job = null, scheduled = false;
   const manualCards = new WeakSet();
   const victoryCollected = new WeakSet();
-  const fastHooked = new WeakSet();
+  const fastHooked = new WeakMap();
   let activeGame = null;
   let skillDefs = null;
   let gameCatalog = null;
@@ -1051,13 +1051,16 @@
   function installFastChoice(game) {
     installHordeCount(game);
     if(game)activeGame=game;
-    if (!game || !game.events || fastHooked.has(game)) return;
-    fastHooked.add(game);
+    if (!game || !game.events) return;
+    let installed=fastHooked.get(game);
+    if(!installed){installed=new Map();fastHooked.set(game,installed);}
     activeGame = game;
     for (const [event, kind, method] of [['onLevelUp', 'skill', 'choose'], ['onChest', 'item', 'chooseChest']]) {
+      const previous=installed.get(event);
+      if(previous?.events===game.events&&previous.wrapper===game.events[event])continue;
       const original = game.events[event];
       if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
-      game.events[event] = function(cards, ...args) {
+      const wrapper=function(cards, ...args) {
         // With no rule for this picker, preserve the native path exactly.
         if(!rules.some(rule=>rule.kind===kind))return Reflect.apply(original,this,[cards,...args]);
         const selected = fastChoice(game, cards, kind);
@@ -1087,6 +1090,8 @@
           }
         });
       };
+      game.events[event]=wrapper;
+      installed.set(event,{events:game.events,wrapper});
     }
   }
 
@@ -1148,7 +1153,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.9');
+      console.info('[RO助手] 即時自選已啟用 v1.9.10');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1281,6 +1286,7 @@
       if(!el.isConnected||!sameSlot(rule,el)||iconOf(el)!==rule.icon){closeMenu();notify('項目已變更，請重新長按或按右鍵設定');return;}
       rules = rules.filter(r => !sameSlot(r, el));
       if (!enabled) rules.push(rule);
+      installFastChoice(activeGame);
       closeMenu(); scan();
       notify(`${rule.name}：已${enabled ? '關閉' : '開啟'}自動選擇`);
     };

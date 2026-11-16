@@ -122,3 +122,9 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - 審查確認：助手 click 的 preventDefault/stopImmediatePropagation 僅用於長按後同一技能格，#pk-cards/#pk-bar 已排除；另有只針對離線主城按鈕的攔截。原生 onChest/onLevelUp 原本在沒有任何自選規則時仍經過判斷及 metadata 註記；現無對應規則直接 Reflect.apply 原事件，保留 this／參數／回傳，不改卡片。
 - 移除未啟用自選時在卡片 pointerdown 隱藏原生 skill-tip／關閉自選選單的處理。卡片不是長按目標，直接返回；只有已有待執行自選 job 時，碰原生卡片才停止該 job，不阻擋事件。新測試連續三次原生寶箱，驗證卡片 HTML、onclick、touch/pointer/click 及提示可見狀態不被助手改動。
 - 尚未證明整個 Safari 問題的根因；這次是根據「無自選就不介入」縮減干預，而非新增 click 補救。
+
+## 直接自選掛載恢復
+
+- `installFastChoice` 原先用 game WeakSet 一次性跳過，若首次呼叫時事件回呼尚未存在，或之後遊戲重建 events／更換回呼，直接自選無法再安裝，只剩 DOM 後備流程。改為 WeakMap 按事件記錄 events 與 wrapper，在每次 tick 檢查目前回呼；未變不重包，後補／被替換才重新掛載。
+- 使用者按助手的自選設定按鈕時立即檢查掛載。命中時仍呼叫原遊戲 choose／chooseChest，不建立 picker；未開該類自選維持直接透傳，替換確認維持原生視窗。沒有新增卡片點擊攔截或恢復手機隱藏整個 picker 的做法。
+- 測試涵蓋手機連續三組技能／寶箱皆無視窗、未命中回原生、道具替換回原生，以及回呼延後建立、events 重建、單一回呼更新和重複 tick 不疊加。

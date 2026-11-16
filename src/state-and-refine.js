@@ -4,7 +4,7 @@
   let menu, toast, job = null, scheduled = false;
   const manualCards = new WeakSet();
   const victoryCollected = new WeakSet();
-  const fastHooked = new WeakSet();
+  const fastHooked = new WeakMap();
   let activeGame = null;
   let skillDefs = null;
   let gameCatalog = null;
