@@ -1,9 +1,14 @@
   const MINIMAP_MAGNET_KEY='greydust.ro.hide-minimap-magnets.v1';
   const HORDE_RING_KEY='greydust.ro.show-horde-ring.v1';
   let hideMinimapMagnets=false;
-  let showHordeRing=false;
+  let showHordeRing=true;
   try{hideMinimapMagnets=localStorage.getItem(MINIMAP_MAGNET_KEY)==='true';}catch{}
-  try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)==='true';}catch{}
+  try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)!=='false';}catch{}
+  function setHordeRingEnabled(value){
+    showHordeRing=!!value;
+    try{localStorage.setItem(HORDE_RING_KEY,String(showHordeRing));}catch{notify('設定無法保存，目前只在本分頁有效');}
+    updateMinimapOption();
+  }
   function hordeRingGeometry(game,image,crop){
     if(!game?.player||!game.map||!image||!crop)return null;
     const [sx,sy,sw,sh,dx,dy,dw,dh]=crop;
@@ -97,7 +102,7 @@
       const text=document.createElement('span'),title=document.createElement('b'),hint=document.createElement('small');
       title.textContent='顯示怪物潮第一圈範圍';hint.textContent='青色實線為基礎半徑，虛線為第一圈隨機距離上限；不代表地形允許出生';text.append(title,hint);
       const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=showHordeRing;checkbox.setAttribute('data-ro-show-horde-ring','');
-      checkbox.onchange=()=>{showHordeRing=checkbox.checked;try{localStorage.setItem(HORDE_RING_KEY,String(showHordeRing));}catch{notify('設定無法保存，目前只在本分頁有效');}};
+      checkbox.onchange=()=>setHordeRingEnabled(checkbox.checked);
       const toggle=document.createElement('i');toggle.className='opt-switch';label.append(text,checkbox,toggle);magnetRow.after(label);
     }
     const ringInput=document.querySelector('[data-ro-show-horde-ring]');if(ringInput)ringInput.checked=showHordeRing;

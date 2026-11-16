@@ -24,13 +24,13 @@ const current='greydust.ro.safari-diagnostics.current.v1',previous='greydust.ro.
  }
  console.log('PASS diagnostics only activate in Safari');
  const ui=setup();let report=ui.api.get().getLog().currentUI;
- assert.equal(report.hasGame,false);assert.equal(report.characterButton.exists,false);assert.equal(report.monsters.exists,false);assert.equal(report.minimap.enabled,false);
+ assert.equal(report.hasGame,false);assert.equal(report.characterButton.exists,false);assert.equal(report.monsters.exists,false);assert.equal(report.minimap.enabled,true);
  ui.document.body.insertAdjacentHTML('beforeend','<div id="buffs"></div><button id="ro-character-details-toggle"></button><section id="ro-horde-hud" hidden><div data-monster-counts hidden></div></section><div id="minimap"><canvas width="200" height="180"></canvas></div>');
  const character=ui.document.querySelector('#ro-character-details-toggle');
  ui.document.querySelector('#minimap canvas').width=200;
  character.getBoundingClientRect=()=>({left:500,top:20,right:600,bottom:50,width:100,height:30});
  ui.api.setGame({state:'playing',stats:{},map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900});
- ui.api.setRing(true);ui.tick(1000);report=ui.api.get().getLog().currentUI;
+ ui.api.setRing(true);report=ui.api.get().getLog().currentUI;
  assert.equal(report.hasStats,true);assert.equal(report.characterButton.intersectsViewport,false);assert.equal(report.monsters.hidden,true);
  assert(report.monsterList.hiddenAncestors.some(row=>row.element.includes('ro-horde-hud')));assert.equal(report.minimap.geometry.reach,900);assert.equal(report.minimap.canvasWidth,200);
  character.getBoundingClientRect=()=>({left:10,top:20,right:110,bottom:50,width:100,height:30});
@@ -42,6 +42,7 @@ const current='greydust.ro.safari-diagnostics.current.v1',previous='greydust.ro.
  ui.api.paintHordeRing(ctx,{width:512,height:512},[0,0,512,512,0,0,200,200]);report=ui.api.get().getLog().currentUI;
  assert.equal(report.minimap.trace.patched,1);assert.equal(report.minimap.trace.drawn,1);assert.equal(report.minimap.trace.lastReason,null);
  ui.api.setRing(false);ui.api.paintHordeRing(ctx,null,null);assert.equal(ui.api.get().getLog().currentUI.minimap.trace.lastReason,'disabled');
+ ui.api.setGame(null);
  for(let i=0;i<20;i++){ui.api.setRing(i%2===0);ui.tick(1000);}
  assert.equal(ui.api.get().getLog().uiHistory.length,12);assert(JSON.parse(ui.storage.get(current)).currentUI);
  console.log('PASS UI diagnostics identify missing, hidden, offscreen, covered elements and minimap draw availability');

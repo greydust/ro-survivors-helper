@@ -853,6 +853,18 @@ test('mobile horde HUD stays outside scaled HUD, docks below feed and preserves 
   e.document.querySelector('#picker').classList.remove('hidden');e.api.updateHordeHud(game,true);assert(panel.hidden);
   e.document.querySelector('#picker').classList.add('hidden');e.api.updateHordeHud(game,true);assert(!panel.hidden);assert.equal(e.document.querySelector('#ro-horde-hud'),panel);
 });
+test('mobile battle overlays recover without native ticks and expose working detail and ring controls',()=>{
+ const e=setup();vm.runInContext('innerWidth=402;innerHeight=714',e.vmContext);
+ e.document.body.insertAdjacentHTML('beforeend','<div id="hud" style="zoom:2"><div id="buffs"></div></div>');
+ e.document.querySelector('#buffs').getBoundingClientRect=()=>({left:600,bottom:900});
+ e.api.setActiveGame({state:'playing',hp:10,stats:{maxHp:20},enemies:[]});e.tick(250);
+ const character=e.document.querySelector('#ro-character-details-toggle');assert.equal(character.parentElement,e.document.body);
+ assert.equal(character.style.left,'292px');assert.equal(character.style.top,'666px');
+ let panel=e.document.querySelector('#ro-horde-hud');assert(panel);panel.querySelector('[data-battle-controls] button').click();assert(e.document.querySelector('#ro-character-details'));
+ const ring=panel.querySelector('[data-horde-ring-toggle]');assert.equal(ring.textContent,'範圍圈：開');ring.click();assert.equal(ring.textContent,'範圍圈：關');assert.equal(e.storage.get('greydust.ro.show-horde-ring.v1'),'false');
+ panel.remove();e.tick(250);panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.querySelector('[data-horde-ring-toggle]').textContent,'範圍圈：關');
+ e.document.querySelector('#hud').classList.add('hidden');e.tick(250);assert(!e.document.querySelector('#ro-horde-hud'));assert(!e.document.querySelector('#ro-character-details-toggle'));
+});
 test('mobile chest cards and replacement confirmation retain native taps after a held slot',()=>{
   const e=setup(),slot=touchSlot(e,'item');pointer(e,slot,'pointerdown');e.tick(550);pointer(e,slot,'pointerup');
   const cards=picker(e,[['生命藥水','potion.png','普通'],['其他','other.png','稀有']],'item');
@@ -876,7 +888,7 @@ test('horde circle option is directly below hide minimap magnets and persists',(
   assert.equal(e.storage.get('greydust.ro.show-horde-ring.v1'),'true');
 });
 test('minimap draws ring only after native player marker and only when enabled',()=>{
-  const e=setup();const calls=[];const ctx={beginPath(){},arc(){},stroke(){},fillRect(){},drawImage(){},rotate(){},restore(){},save(){},setTransform(){},setLineDash(){},ellipse(...args){calls.push(args);}};
+  const e=setup();e.api.setShowRing(false);const calls=[];const ctx={beginPath(){},arc(){},stroke(){},fillRect(){},drawImage(){},rotate(){},restore(){},save(){},setTransform(){},setLineDash(){},ellipse(...args){calls.push(args);}};
   e.api.patchMinimapContext(ctx);e.api.setActiveGame({map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900});
   ctx.drawImage({naturalWidth:512,naturalHeight:512},0,0,512,512,0,0,200,200);ctx.rotate(0);ctx.restore();assert.equal(calls.length,0);
   e.api.setShowRing(true);ctx.rotate(0);ctx.restore();assert.equal(calls.length,2);assert.equal(calls[0][0],100);assert.equal(calls[0][2],990/6400*200);

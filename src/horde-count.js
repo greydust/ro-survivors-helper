@@ -99,8 +99,8 @@
   function updateHordeHud(game=activeGame,force=false){
     const hud=document.querySelector('#hud');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
-    if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
+    if(panel&&!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     if(!panel){
       panel=document.createElement('section');panel.id='ro-horde-hud';panel.setAttribute('aria-label','怪物潮與場上怪物');
       const progress=document.createElement('div');progress.dataset.hordeProgress='';
@@ -110,10 +110,19 @@
       const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
       const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
+      const controls=document.createElement('div');controls.dataset.battleControls='';
+      const character=document.createElement('button');character.type='button';character.textContent='角色資料';
+      character.onclick=()=>{if(characterDetails)closeCharacterDetails();else openCharacterDetails();};
+      const ring=document.createElement('button');ring.type='button';ring.dataset.hordeRingToggle='';
+      ring.onclick=()=>{setHordeRingEnabled(!showHordeRing);updateHordeHud(activeGame,true);};
+      controls.append(character,ring);
+      header.append(progress,toggle);panel.append(header,total,list,controls);document.body.append(panel);
     }
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
+    const ringButton=panel.querySelector('[data-horde-ring-toggle]'),ringLabel='範圍圈：'+(showHordeRing?'開':'關');
+    if(ringButton.textContent!==ringLabel)ringButton.textContent=ringLabel;
+    if(ringButton.getAttribute('aria-pressed')!==String(showHordeRing))ringButton.setAttribute('aria-pressed',String(showHordeRing));
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     // Position against the visible viewport, independent of temporary loot rows.
     const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);

@@ -1,4 +1,4 @@
-// RO 倖存者助手 1.9.13 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+// RO 倖存者助手 1.9.14 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
 (() => {
   'use strict';
   // Console and userscript installs share one instance per page.
@@ -7,7 +7,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.13'};
+  window[runtimeKey]={version:'1.9.14'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -68,9 +68,14 @@
   const MINIMAP_MAGNET_KEY='greydust.ro.hide-minimap-magnets.v1';
   const HORDE_RING_KEY='greydust.ro.show-horde-ring.v1';
   let hideMinimapMagnets=false;
-  let showHordeRing=false;
+  let showHordeRing=true;
   try{hideMinimapMagnets=localStorage.getItem(MINIMAP_MAGNET_KEY)==='true';}catch{}
-  try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)==='true';}catch{}
+  try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)!=='false';}catch{}
+  function setHordeRingEnabled(value){
+    showHordeRing=!!value;
+    try{localStorage.setItem(HORDE_RING_KEY,String(showHordeRing));}catch{notify('設定無法保存，目前只在本分頁有效');}
+    updateMinimapOption();
+  }
   function hordeRingGeometry(game,image,crop){
     if(!game?.player||!game.map||!image||!crop)return null;
     const [sx,sy,sw,sh,dx,dy,dw,dh]=crop;
@@ -164,7 +169,7 @@
       const text=document.createElement('span'),title=document.createElement('b'),hint=document.createElement('small');
       title.textContent='顯示怪物潮第一圈範圍';hint.textContent='青色實線為基礎半徑，虛線為第一圈隨機距離上限；不代表地形允許出生';text.append(title,hint);
       const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=showHordeRing;checkbox.setAttribute('data-ro-show-horde-ring','');
-      checkbox.onchange=()=>{showHordeRing=checkbox.checked;try{localStorage.setItem(HORDE_RING_KEY,String(showHordeRing));}catch{notify('設定無法保存，目前只在本分頁有效');}};
+      checkbox.onchange=()=>setHordeRingEnabled(checkbox.checked);
       const toggle=document.createElement('i');toggle.className='opt-switch';label.append(text,checkbox,toggle);magnetRow.after(label);
     }
     const ringInput=document.querySelector('[data-ro-show-horde-ring]');if(ringInput)ringInput.checked=showHordeRing;
@@ -271,8 +276,8 @@
   function updateHordeHud(game=activeGame,force=false){
     const hud=document.querySelector('#hud');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'){clearHordeHud();return;}
-    if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
+    if(panel&&!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     if(!panel){
       panel=document.createElement('section');panel.id='ro-horde-hud';panel.setAttribute('aria-label','怪物潮與場上怪物');
       const progress=document.createElement('div');progress.dataset.hordeProgress='';
@@ -282,10 +287,19 @@
       const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
       const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
+      const controls=document.createElement('div');controls.dataset.battleControls='';
+      const character=document.createElement('button');character.type='button';character.textContent='角色資料';
+      character.onclick=()=>{if(characterDetails)closeCharacterDetails();else openCharacterDetails();};
+      const ring=document.createElement('button');ring.type='button';ring.dataset.hordeRingToggle='';
+      ring.onclick=()=>{setHordeRingEnabled(!showHordeRing);updateHordeHud(activeGame,true);};
+      controls.append(character,ring);
+      header.append(progress,toggle);panel.append(header,total,list,controls);document.body.append(panel);
     }
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
+    const ringButton=panel.querySelector('[data-horde-ring-toggle]'),ringLabel='範圍圈：'+(showHordeRing?'開':'關');
+    if(ringButton.textContent!==ringLabel)ringButton.textContent=ringLabel;
+    if(ringButton.getAttribute('aria-pressed')!==String(showHordeRing))ringButton.setAttribute('aria-pressed',String(showHordeRing));
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     // Position against the visible viewport, independent of temporary loot rows.
     const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);
@@ -619,10 +633,14 @@
     if(!button){
       button=document.createElement('button');button.id='ro-character-details-toggle';button.type='button';
       button.textContent='角色詳細資料';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ro-character-details');
-      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};hud.append(button);
+      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};document.body.append(button);
     }
     if(typeof buffs.getBoundingClientRect==='function'){
-      const rect=buffs.getBoundingClientRect();button.style.left=rect.left+'px';button.style.top=(rect.bottom+6)+'px';
+      const rect=buffs.getBoundingClientRect(),view=helperViewport();
+      const left=Math.max(view.left+8,Math.min(rect.left,view.left+view.width-110))+'px';
+      const top=Math.max(view.top+8,Math.min(rect.bottom+6,view.top+view.height-48))+'px';
+      if(button.style.left!==left)button.style.left=left;
+      if(button.style.top!==top)button.style.top=top;
     }
     if(!characterDetails)return;
     const populate=(target,rows)=>{
@@ -1305,7 +1323,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.13');
+      console.info('[RO助手] 即時自選已啟用 v1.9.14');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1583,6 +1601,7 @@
       #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
       @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
       #ro-character-details-toggle{position:fixed;z-index:30;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
+      #ro-horde-hud [data-battle-controls]{display:flex;gap:4px;margin-top:5px;pointer-events:auto}#ro-horde-hud [data-battle-controls] button{flex:1;min-width:0;padding:4px 2px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:4px;font:inherit;touch-action:manipulation;pointer-events:auto}
       #ro-character-details{position:fixed;left:12px;top:20vh;width:min(420px,calc(100vw - 24px));max-height:70vh;overflow:auto;box-sizing:border-box;z-index:2147483646;padding:12px;border:1px solid #738ab4;border-radius:8px;background:#172238f5;color:#e8eef8;font:13px sans-serif;pointer-events:auto;box-shadow:0 6px 24px #0009}
       #ro-character-details header{display:flex;justify-content:space-between;align-items:center;gap:8px}#ro-character-details button{cursor:pointer;padding:4px 10px}#ro-character-details p{font-size:12px;color:#b9c8e4;line-height:1.5}
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
@@ -1611,6 +1630,9 @@
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
       html.touch #skillbar,html.touch #runitems{pointer-events:auto}
+      /* Touch has no hover cursor: keep the native choice hit area stationary. */
+      html.touch #picker .pk-card:hover,html.touch #picker .pk-card:focus-visible{transform:none!important}
+      html.touch #picker .pk-card{touch-action:manipulation}
       #ro-safari-diagnostics-open{position:fixed;left:max(6px,env(safe-area-inset-left));bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483647;pointer-events:auto;min-height:32px;padding:5px 8px;border:1px solid #8b9cb5;border-radius:6px;background:#172238;color:#fff;font:12px sans-serif}
       #ro-safari-diagnostics{position:fixed;inset:8px;inset:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));z-index:2147483647;box-sizing:border-box;background:#142033;color:#fff;border:1px solid #8b9cb5;border-radius:8px;padding:12px;overflow:auto;pointer-events:auto;font:14px/1.4 sans-serif}
       #ro-safari-diagnostics button,#ro-safari-diagnostics select{min-height:40px;font-size:16px;margin:3px;padding:6px}
@@ -1718,6 +1740,15 @@
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
     scan();
     installGameHooks();
+    // Recover overlays independently of native ticks and DOM observer timing.
+    function refreshBattleOverlays(){
+      if(activeGame){
+        runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
+        runHelperHook(activeGame,'角色資料',updateCharacterDetails);
+      }
+      setTimeout(refreshBattleOverlays,250)?.unref?.();
+    }
+    setTimeout(refreshBattleOverlays,250)?.unref?.();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();

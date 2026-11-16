@@ -19,6 +19,7 @@
       #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
       @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
       #ro-character-details-toggle{position:fixed;z-index:30;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
+      #ro-horde-hud [data-battle-controls]{display:flex;gap:4px;margin-top:5px;pointer-events:auto}#ro-horde-hud [data-battle-controls] button{flex:1;min-width:0;padding:4px 2px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:4px;font:inherit;touch-action:manipulation;pointer-events:auto}
       #ro-character-details{position:fixed;left:12px;top:20vh;width:min(420px,calc(100vw - 24px));max-height:70vh;overflow:auto;box-sizing:border-box;z-index:2147483646;padding:12px;border:1px solid #738ab4;border-radius:8px;background:#172238f5;color:#e8eef8;font:13px sans-serif;pointer-events:auto;box-shadow:0 6px 24px #0009}
       #ro-character-details header{display:flex;justify-content:space-between;align-items:center;gap:8px}#ro-character-details button{cursor:pointer;padding:4px 10px}#ro-character-details p{font-size:12px;color:#b9c8e4;line-height:1.5}
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
@@ -47,6 +48,9 @@
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
       html.touch #skillbar,html.touch #runitems{pointer-events:auto}
+      /* Touch has no hover cursor: keep the native choice hit area stationary. */
+      html.touch #picker .pk-card:hover,html.touch #picker .pk-card:focus-visible{transform:none!important}
+      html.touch #picker .pk-card{touch-action:manipulation}
       #ro-safari-diagnostics-open{position:fixed;left:max(6px,env(safe-area-inset-left));bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483647;pointer-events:auto;min-height:32px;padding:5px 8px;border:1px solid #8b9cb5;border-radius:6px;background:#172238;color:#fff;font:12px sans-serif}
       #ro-safari-diagnostics{position:fixed;inset:8px;inset:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));z-index:2147483647;box-sizing:border-box;background:#142033;color:#fff;border:1px solid #8b9cb5;border-radius:8px;padding:12px;overflow:auto;pointer-events:auto;font:14px/1.4 sans-serif}
       #ro-safari-diagnostics button,#ro-safari-diagnostics select{min-height:40px;font-size:16px;margin:3px;padding:6px}
@@ -154,6 +158,15 @@
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
     scan();
     installGameHooks();
+    // Recover overlays independently of native ticks and DOM observer timing.
+    function refreshBattleOverlays(){
+      if(activeGame){
+        runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
+        runHelperHook(activeGame,'角色資料',updateCharacterDetails);
+      }
+      setTimeout(refreshBattleOverlays,250)?.unref?.();
+    }
+    setTimeout(refreshBattleOverlays,250)?.unref?.();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();

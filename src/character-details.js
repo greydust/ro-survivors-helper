@@ -42,10 +42,14 @@
     if(!button){
       button=document.createElement('button');button.id='ro-character-details-toggle';button.type='button';
       button.textContent='角色詳細資料';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ro-character-details');
-      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};hud.append(button);
+      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};document.body.append(button);
     }
     if(typeof buffs.getBoundingClientRect==='function'){
-      const rect=buffs.getBoundingClientRect();button.style.left=rect.left+'px';button.style.top=(rect.bottom+6)+'px';
+      const rect=buffs.getBoundingClientRect(),view=helperViewport();
+      const left=Math.max(view.left+8,Math.min(rect.left,view.left+view.width-110))+'px';
+      const top=Math.max(view.top+8,Math.min(rect.bottom+6,view.top+view.height-48))+'px';
+      if(button.style.left!==left)button.style.left=left;
+      if(button.style.top!==top)button.style.top=top;
     }
     if(!characterDetails)return;
     const populate=(target,rows)=>{
