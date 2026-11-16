@@ -46,7 +46,9 @@
       #ro-ap-menu button:hover{background:#3b5f88}
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
 
+      html.touch #skillbar,html.touch #runitems{pointer-events:auto}
       @media(pointer:coarse){
+        #skillbar,#runitems{pointer-events:auto}
         #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
         #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
         #ro-horde-hud [data-monster-toggle]{min-width:28px;min-height:28px}
@@ -89,8 +91,11 @@
     document.addEventListener('pointermove',moveLongPress,true);
     document.addEventListener('pointerup',endLongPress,true);
     document.addEventListener('pointercancel',endLongPress,true);
-    document.addEventListener('touchend',event=>{if(suppressHeldEvent(event))heldUntil=performance.now()+800;}, {capture:true,passive:false});
-    for(const type of ['click','mousedown','mouseup','auxclick'])document.addEventListener(type,suppressHeldEvent,true);
+    document.addEventListener('touchstart',startTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchmove',moveTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchend',finishTouchPress,{capture:true,passive:true});
+    document.addEventListener('touchcancel',finishTouchPress,{capture:true,passive:true});
+    document.addEventListener('click',suppressHeldEvent,true);
     document.addEventListener('scroll',cancelLongPress,true);
     window.addEventListener('blur',clearLongPress);
     window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});

@@ -106,3 +106,12 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - 手機／橫向窄高螢幕寬度132px、固定右下、預設折疊，保留原生 #lu-feed 裝備文字區在上；橫向 .land 通知往上留出140px空間。數量更新依怪物 ID 重用 DOM 列，只改名字或數字，避免高頻重建／重新排序造成閃動。
 - #pk-cards 與 #pk-bar 的 pointerdown 清除長按殘留、關閉助手選單／原生技能提示，保留原生 click 與替換確認流程；若手動碰到待自選的卡片，停止該次自動選取。測試涵蓋長按物品後再點寶箱卡片、確認替換、面板與通知高度變動及 picker 顯隱。
 - 此次沒有手機實機重現；修正針對已確認的縮放座標與圖層風險及觸控隔離，不應宣稱寶箱問題已經實機驗證解決。
+
+## Safari 長按與選卡修正
+
+- 已確認遊戲 CSS 的 #hud 為 pointer-events:none，只有 html:not(.touch) 才為 #skillbar/#runitems 開啟 pointer-events:auto；這直接解釋「一般戰鬥介面長按無效，選卡介面能長按」。助手為 html.touch 與 coarse pointer 的技能／道具列開啟接收觸控。
+- Safari 追加 passive Touch Events，與 Pointer Events 視為同一手勢，避免一個手指被誤認為多指而取消；touchmove/cancel 仍取消長按。放開事件不再 preventDefault／stopPropagation，僅短暫阻擋同格 click/contextmenu，移除 Infinity 狀態避免漏掉 release 後永久攔截。觸控開啟選單時不再強制 focus。
+- 手機 DOM 自選不再用 data-ro-ap-hidden 隱藏整個 picker；保留卡片可見可點，自選仍在原生解鎖後嘗試，手動觸碰卡片立即取消該次自選並讓原生接手。桌面原隱藏選卡流程保留。此項是針對偶發不可點的保守處理，尚未在 Safari 實機重現與驗證。
+- 回歸測試包含 touch-only、pointer/touch 同時出現、失去 release 的有限攔截時間，以及技能／寶箱手動點選不中斷。以上新行為取代前述「攔截 release／相容滑鼠事件」策略。
+
+- 使用者補充：Safari 1.9.7 發作時整個介面按下有視覺反應但動作不執行，切換分頁無法恢復。此描述尚不能證明是長按攔截；避免宣稱已定位整頁卡死原因。助手 start/tick 的各個更新獨立捕捉錯誤，單一面板例外不再傳回原生遊戲迴圈，其他助手動作繼續；同類錯誤每個遊戲實例僅記錄一次，保留可診斷資訊。

@@ -20,7 +20,7 @@ function setup(bundle=source) {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(bundle.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(bundle.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, helperTick, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -105,7 +105,7 @@ test('touch hold opens skill/item settings, suppresses release click and permits
     const e=setup(),slot=touchSlot(e,kind);pointer(e,slot,'pointerdown');e.tick(549);assert(!e.document.querySelector('#ro-ap-menu'));
     e.tick(1);assert(e.document.querySelector('#ro-ap-menu'));assert.equal(e.api.getRules().length,0);
     // Even a continued hold must not expire the release suppression.
-    e.tick(3000);const release=pointer(e,slot,'pointerup');assert(release.defaultPrevented);
+    e.tick(3000);const release=pointer(e,slot,'pointerup');assert(!release.defaultPrevented);
     const click=pointer(e,slot,'click');assert(click.defaultPrevented);
     e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,1);assert.equal(e.api.getRules()[0].kind,kind);
     pointer(e,slot,'pointerdown');e.tick(550);assert.equal(e.document.querySelector('#ro-ap-menu button').textContent,'關閉自動選擇');
@@ -153,6 +153,46 @@ test('mobile menu respects visible viewport and dropdown stays above the softwar
 test('held menu refuses to configure a slot replaced before confirmation',()=>{
   const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(550);pointer(e,slot,'pointerup');slot.dataset.skill='other';
   e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,0);assert(!e.document.querySelector('#ro-ap-menu'));
+});
+function safariTouch(e,slot,type,values={}){
+ const event=new e.window.Event(type,{bubbles:true,cancelable:true});const point={identifier:7,clientX:100,clientY:100,...values};
+ Object.assign(event,{touches:type==='touchend'||type==='touchcancel'?[]:[point],changedTouches:[point]});slot.dispatchEvent(event);return event;
+}
+test('Safari touch-only input opens battle bar settings without preventing touch release',()=>{
+ const e=setup(),slot=touchSlot(e);e.document.documentElement.classList.add('touch');
+ assert(!safariTouch(e,slot,'touchstart').defaultPrevented);e.tick(550);assert(e.document.querySelector('#ro-ap-menu'));
+ assert(!safariTouch(e,slot,'touchend').defaultPrevented);assert(pointer(e,slot,'click').defaultPrevented);
+ e.document.querySelector('#ro-ap-menu button').click();assert.equal(e.api.getRules().length,1);
+ safariTouch(e,slot,'touchstart');safariTouch(e,slot,'touchmove',{clientX:130});e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+ safariTouch(e,slot,'touchstart');safariTouch(e,slot,'touchcancel');e.tick(600);assert(!e.document.querySelector('#ro-ap-menu'));
+});
+test('Safari combined pointer and touch events create one hold and lost release expires',()=>{
+ const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');safariTouch(e,slot,'touchstart');e.tick(550);
+ const menu=e.document.querySelector('#ro-ap-menu');assert(menu);assert(!pointer(e,slot,'pointerup').defaultPrevented);assert(!safariTouch(e,slot,'touchend').defaultPrevented);
+ assert.equal(e.document.querySelector('#ro-ap-menu'),menu);
+ safariTouch(e,slot,'touchstart');pointer(e,slot,'pointerdown');e.tick(550);assert(e.document.querySelector('#ro-ap-menu'));
+ e.tick(1201);assert(!pointer(e,slot,'click').defaultPrevented,'a lost release must never leave an infinite click interceptor');
+});
+test('Safari auto selection keeps choices visible and a manual tap cancels pending automation',()=>{
+ for(const kind of ['skill','item']){
+  const e=setup();e.document.documentElement.classList.add('touch');e.api.setRules([rule(kind,'A','a.png')]);
+  const cards=picker(e,[['A','a.png','稀有'],['B','b.png','普通'],['C','c.png','普通']],kind);let picks=0;cards[1].onclick=()=>picks++;
+  e.api.scan();assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+  assert(!safariTouch(e,cards[1],'touchstart').defaultPrevented);assert(!safariTouch(e,cards[1],'touchend').defaultPrevented);assert(!pointer(e,cards[1],'click').defaultPrevented);assert.equal(picks,1);
+  e.tick(6000);assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));assert.equal(picks,1);
+ }
+});
+test('held touch cannot cancel unrelated native buttons or release events',()=>{
+ const e=setup(),slot=touchSlot(e);pointer(e,slot,'pointerdown');e.tick(550);
+ e.document.body.insertAdjacentHTML('beforeend','<button id="native-settings">遊戲設定</button>');const native=e.document.querySelector('#native-settings');let clicks=0;native.onclick=()=>clicks++;
+ assert(!pointer(e,native,'pointerup').defaultPrevented);assert(!safariTouch(e,native,'touchend').defaultPrevented);assert(!pointer(e,native,'click').defaultPrevented);assert.equal(clicks,1);
+});
+test('HUD rendering failure cannot escape native game tick or stop other helper actions',()=>{
+ const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');let calls=0;
+ e.document.querySelector('#loot-rolls').getBoundingClientRect=()=>{throw new Error('simulated mobile layout failure');};
+ const game={state:'playing',lootUntil:1,player:{dead:false},enemies:[],vacuum(){calls++;}};
+ assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
+ e.tick(300);assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
 });
 test('Escape restores current choice and prevents immediate reselection',()=>{
   const e=setup();e.api.setRules([rule('skill','A','a.png')]);
