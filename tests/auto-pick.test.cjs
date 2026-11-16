@@ -842,29 +842,40 @@ test('desktop horde HUD stays bottom-right as loot appears and fits ten monster 
  feed.innerHTML='<div>新裝備掉落</div>';e.api.updateHordeHud(game,true);assert.deepEqual(position(),['auto','12px','12px','340px']);
  feed.remove();e.api.updateHordeHud(game,true);assert.equal(e.document.querySelector('#ro-horde-hud'),panel);assert.deepEqual(position(),['auto','12px','12px','340px']);
 });
-test('mobile horde HUD stays outside scaled HUD, docks below feed and preserves changing count rows',()=>{
+test('mobile horde HUD stays outside scaled HUD, docks top-left and preserves changing count rows',()=>{
   const e=setup();vm.runInContext('innerWidth=640;innerHeight=360',e.vmContext);
   e.document.body.insertAdjacentHTML('beforeend','<div id="hud" style="zoom:2"><div id="lu-feed" class="land"></div></div>');
   const feed=e.document.querySelector('#lu-feed');let bottom=200;feed.getBoundingClientRect=()=>({width:180,height:90,right:632,bottom});
   const game={state:'playing',enemies:[{def:{id:'poring'},hp:10},{def:{id:'poring'},hp:10}]};e.api.setActiveGame(game);e.api.updateHordeHud(game,true);
   const panel=e.document.querySelector('#ro-horde-hud'),list=panel.querySelector('[data-monster-counts]'),row=list.firstElementChild;
-  assert.equal(panel.parentElement,e.document.body);assert.equal(panel.style.width,'132px');assert.equal(panel.style.bottom,'8px');assert.equal(panel.style.top,'auto');assert(list.hidden);
-  game.enemies[0].hp=0;bottom=290;e.api.updateHordeHud(game,true);assert.equal(list.firstElementChild,row);assert.equal(row.lastElementChild.textContent,'1');assert.equal(panel.style.bottom,'8px');
+  assert.equal(panel.parentElement,e.document.body);assert.equal(panel.style.width,'132px');assert.equal(panel.style.bottom,'auto');assert.equal(panel.style.left,'8px');assert.equal(panel.style.top,'112px');assert(list.hidden);
+  game.enemies[0].hp=0;bottom=290;e.api.updateHordeHud(game,true);assert.equal(list.firstElementChild,row);assert.equal(row.lastElementChild.textContent,'1');assert.equal(panel.style.bottom,'auto');
   e.document.querySelector('#picker').classList.remove('hidden');e.api.updateHordeHud(game,true);assert(panel.hidden);
   e.document.querySelector('#picker').classList.add('hidden');e.api.updateHordeHud(game,true);assert(!panel.hidden);assert.equal(e.document.querySelector('#ro-horde-hud'),panel);
 });
-test('mobile battle overlays recover without native ticks and expose working detail and ring controls',()=>{
+test('mobile battle overlays recover without native ticks and have no duplicate controls',()=>{
  const e=setup();vm.runInContext('innerWidth=402;innerHeight=714',e.vmContext);
  e.document.body.insertAdjacentHTML('beforeend','<div id="hud" style="zoom:2"><div id="buffs"></div></div>');
  e.document.querySelector('#buffs').getBoundingClientRect=()=>({left:600,bottom:900});
  e.api.setActiveGame({state:'playing',hp:10,stats:{maxHp:20},enemies:[]});e.tick(250);
  const character=e.document.querySelector('#ro-character-details-toggle');assert.equal(character.parentElement,e.document.body);
  assert.equal(character.style.left,'292px');assert.equal(character.style.top,'666px');
- let panel=e.document.querySelector('#ro-horde-hud');assert(panel);panel.querySelector('[data-battle-controls] button').click();assert(e.document.querySelector('#ro-character-details'));
- const ring=panel.querySelector('[data-horde-ring-toggle]');assert.equal(ring.textContent,'範圍圈：開');ring.click();assert.equal(ring.textContent,'範圍圈：關');assert.equal(e.storage.get('greydust.ro.show-horde-ring.v1'),'false');
- panel.remove();e.tick(250);panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert.equal(panel.querySelector('[data-horde-ring-toggle]').textContent,'範圍圈：關');
+ let panel=e.document.querySelector('#ro-horde-hud');assert(panel);assert(!panel.querySelector('[data-battle-controls]'));assert(!panel.querySelector('[data-horde-ring-toggle]'));
+ character.click();assert(e.document.querySelector('#ro-character-details'));
+ panel.remove();e.tick(250);panel=e.document.querySelector('#ro-horde-hud');assert(panel);
  e.document.querySelector('#hud').classList.add('hidden');e.tick(250);assert(!e.document.querySelector('#ro-horde-hud'));assert(!e.document.querySelector('#ro-character-details-toggle'));
 });
+test('mobile monster panel follows character button and remains below native overlays',()=>{
+ const e=setup();vm.runInContext('innerWidth=402;innerHeight=714',e.vmContext);
+ e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div><div id="pause" class="overlay hidden"></div>');
+ e.document.querySelector('#buffs').getBoundingClientRect=()=>({left:8,bottom:108});
+ e.api.setActiveGame({state:'playing',stats:{maxHp:20},hp:10,enemies:[]});e.tick(500);
+ const button=e.document.querySelector('#ro-character-details-toggle'),panel=e.document.querySelector('#ro-horde-hud');
+ assert.equal(button.style.top,'114px');assert.equal(panel.style.top,'156px');assert.equal(panel.style.left,'8px');assert.equal(panel.style.bottom,'auto');assert.equal(panel.style.right,'auto');
+ assert(!panel.querySelector('[data-battle-controls]'));assert(panel.querySelector('[data-monster-toggle]'));
+ e.document.querySelector('#buffs').getBoundingClientRect=()=>({left:8,bottom:140});e.tick(500);assert.equal(panel.style.top,'188px');
+});
+
 test('ordinary battle taps pause background layout updates through native click and then resume',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend','<div id="hud"><div id="buffs"></div></div><button id="native-action">Action</button>');
  const game={state:'playing',hp:10,stats:{maxHp:20},enemies:[]};e.api.setActiveGame(game);e.tick(250);

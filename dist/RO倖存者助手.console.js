@@ -1,4 +1,4 @@
-// RO 倖存者助手 1.9.16 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+// RO 倖存者助手 2.0.0 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
 (() => {
   'use strict';
   // Console and userscript installs share one instance per page.
@@ -7,7 +7,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'1.9.16'};
+  window[runtimeKey]={version:'2.0.0'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -292,26 +292,24 @@
       const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
       const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      const controls=document.createElement('div');controls.dataset.battleControls='';
-      const character=document.createElement('button');character.type='button';character.textContent='角色資料';
-      character.onclick=()=>{if(characterDetails)closeCharacterDetails();else openCharacterDetails();};
-      const ring=document.createElement('button');ring.type='button';ring.dataset.hordeRingToggle='';
-      ring.onclick=()=>{setHordeRingEnabled(!showHordeRing);updateHordeHud(activeGame,true);};
-      controls.append(character,ring);
-      header.append(progress,toggle);panel.append(header,total,list,controls);document.body.append(panel);
+      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
     }
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
-    const ringButton=panel.querySelector('[data-horde-ring-toggle]'),ringLabel='範圍圈：'+(showHordeRing?'開':'關');
-    if(ringButton.textContent!==ringLabel)ringButton.textContent=ringLabel;
-    if(ringButton.getAttribute('aria-pressed')!==String(showHordeRing))ringButton.setAttribute('aria-pressed',String(showHordeRing));
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     // Position against the visible viewport, independent of temporary loot rows.
     const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);
     const right=Math.max(inset,Math.round(innerWidth-view.left-view.width+inset));
     const bottom=Math.max(inset,Math.round(innerHeight-view.top-view.height+inset));
     const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.min(340,Math.max(80,view.height-24));
-    for(const [key,value] of Object.entries({top:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
+    const button=document.querySelector('#ro-character-details-toggle'),buffs=document.querySelector('#buffs');
+    const anchorTop=parseFloat(button?.style.top),anchorLeft=parseFloat(button?.style.left);
+    const fallback=buffs?.getBoundingClientRect?.();
+    const top=Math.max(view.top+8,Math.min((Number.isFinite(anchorTop)?anchorTop: fallback?.bottom??view.top+70)+42,view.top+view.height-64));
+    const left=Math.max(view.left+8,Math.min(Number.isFinite(anchorLeft)?anchorLeft:8,view.left+view.width-width-8));
+    const position=compact?{top:top+'px',left:left+'px',right:'auto',bottom:'auto',width:width+'px',maxHeight:Math.min(maxHeight,Math.max(48,view.top+view.height-top-8))+'px'}
+      :{top:'auto',left:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'};
+    for(const [key,value] of Object.entries(position))if(panel.style[key]!==value)panel.style[key]=value;
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
     if(counter.textContent!==text)counter.textContent=text;
@@ -1336,7 +1334,7 @@
         runHelperHook(game,'自動選擇',()=>installFastChoice(game));
       });
       hooks.tick.push(helperTick);
-      console.info('[RO助手] 即時自選已啟用 v1.9.16');
+      console.info('[RO助手] 即時自選已啟用 v2.0.0');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1622,8 +1620,7 @@
       #ro-unwanted-dialog .ro-detail-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}#ro-unwanted-dialog .ro-detail-list{max-height:55vh;overflow:auto}#ro-unwanted-dialog .ro-detail-list-row{display:flex;align-items:center}#ro-unwanted-dialog .ro-detail-list-row button:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#ro-unwanted-dialog .ro-detail-list-row button.active{background:#b9e5d1}#ro-unwanted-dialog .ro-detail-list-row button:not(:first-child){flex:none;padding:4px}
       #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
       @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
-      #ro-character-details-toggle{position:fixed;z-index:30;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
-      #ro-horde-hud [data-battle-controls]{display:flex;gap:4px;margin-top:5px;pointer-events:auto}#ro-horde-hud [data-battle-controls] button{flex:1;min-width:0;padding:4px 2px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:4px;font:inherit;touch-action:manipulation;pointer-events:auto}
+      #ro-character-details-toggle{position:fixed;z-index:8;pointer-events:auto;padding:5px 9px;border:1px solid #738ab4;border-radius:5px;background:#172238ed;color:#e8eef8;font:12px sans-serif;cursor:pointer}
       #ro-character-details{position:fixed;left:12px;top:20vh;width:min(420px,calc(100vw - 24px));max-height:70vh;overflow:auto;box-sizing:border-box;z-index:2147483646;padding:12px;border:1px solid #738ab4;border-radius:8px;background:#172238f5;color:#e8eef8;font:13px sans-serif;pointer-events:auto;box-shadow:0 6px 24px #0009}
       #ro-character-details header{display:flex;justify-content:space-between;align-items:center;gap:8px}#ro-character-details button{cursor:pointer;padding:4px 10px}#ro-character-details p{font-size:12px;color:#b9c8e4;line-height:1.5}
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}

@@ -115,26 +115,24 @@
       const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
       const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      const controls=document.createElement('div');controls.dataset.battleControls='';
-      const character=document.createElement('button');character.type='button';character.textContent='角色資料';
-      character.onclick=()=>{if(characterDetails)closeCharacterDetails();else openCharacterDetails();};
-      const ring=document.createElement('button');ring.type='button';ring.dataset.hordeRingToggle='';
-      ring.onclick=()=>{setHordeRingEnabled(!showHordeRing);updateHordeHud(activeGame,true);};
-      controls.append(character,ring);
-      header.append(progress,toggle);panel.append(header,total,list,controls);document.body.append(panel);
+      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
     }
     const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
     if(panel.hidden!==!!covered)panel.hidden=!!covered;
-    const ringButton=panel.querySelector('[data-horde-ring-toggle]'),ringLabel='範圍圈：'+(showHordeRing?'開':'關');
-    if(ringButton.textContent!==ringLabel)ringButton.textContent=ringLabel;
-    if(ringButton.getAttribute('aria-pressed')!==String(showHordeRing))ringButton.setAttribute('aria-pressed',String(showHordeRing));
     const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     // Position against the visible viewport, independent of temporary loot rows.
     const inset=compact?8:12,width=Math.min(compact?132:180,view.width-24);
     const right=Math.max(inset,Math.round(innerWidth-view.left-view.width+inset));
     const bottom=Math.max(inset,Math.round(innerHeight-view.top-view.height+inset));
     const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.min(340,Math.max(80,view.height-24));
-    for(const [key,value] of Object.entries({top:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
+    const button=document.querySelector('#ro-character-details-toggle'),buffs=document.querySelector('#buffs');
+    const anchorTop=parseFloat(button?.style.top),anchorLeft=parseFloat(button?.style.left);
+    const fallback=buffs?.getBoundingClientRect?.();
+    const top=Math.max(view.top+8,Math.min((Number.isFinite(anchorTop)?anchorTop: fallback?.bottom??view.top+70)+42,view.top+view.height-64));
+    const left=Math.max(view.left+8,Math.min(Number.isFinite(anchorLeft)?anchorLeft:8,view.left+view.width-width-8));
+    const position=compact?{top:top+'px',left:left+'px',right:'auto',bottom:'auto',width:width+'px',maxHeight:Math.min(maxHeight,Math.max(48,view.top+view.height-top-8))+'px'}
+      :{top:'auto',left:'auto',bottom:bottom+'px',right:right+'px',width:width+'px',maxHeight:maxHeight+'px'};
+    for(const [key,value] of Object.entries(position))if(panel.style[key]!==value)panel.style[key]=value;
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
     if(counter.textContent!==text)counter.textContent=text;
