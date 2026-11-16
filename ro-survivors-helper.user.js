@@ -2,8 +2,8 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.4
-// @description  右鍵自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
+// @version      1.9.5
+// @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
 // @grant        none
@@ -284,7 +284,7 @@
       header.append(progress,toggle);panel.append(header,total,list);hud.append(panel);
     }
     if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
+      const rect=loot.getBoundingClientRect(),width=innerWidth<=700?150:180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
       for(const [key,value] of Object.entries({top:top+'px',right:Math.max(8,innerWidth-(rect.right||innerWidth-12))+'px',width:Math.min(width,innerWidth-24)+'px',maxHeight:Math.max(80,innerHeight-top-16)+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     }
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
@@ -566,19 +566,19 @@
     const summary=document.createElement('summary'),list=document.createElement('div');list.className='ro-filter-multi-list';details.append(summary,list);
     const position=()=>{
       if(!details.open||typeof summary.getBoundingClientRect!=='function')return;
-      const r=summary.getBoundingClientRect(),width=Math.min(320,innerWidth-24);
-      const below=innerHeight-r.bottom-12,above=r.top-12,up=below<160&&above>below;
-      list.style.width=width+'px';list.style.left=Math.max(12,Math.min(r.left,innerWidth-width-12))+'px';
+      const r=summary.getBoundingClientRect(),view=helperViewport(),width=Math.min(320,view.width-24);
+      const below=view.top+view.height-r.bottom-12,above=r.top-view.top-12,up=below<160&&above>below;
+      list.style.width=width+'px';list.style.left=Math.max(view.left+12,Math.min(r.left,view.left+view.width-width-12))+'px';
       list.style.maxHeight=Math.max(60,Math.min(280,up?above:below))+'px';
       list.style.top=up?'auto':(r.bottom+4)+'px';list.style.bottom=up?(innerHeight-r.top+4)+'px':'auto';
     };
-    const unlisten=()=>{document.removeEventListener('scroll',position,true);window.removeEventListener('resize',position);document.removeEventListener('pointerdown',outside,true);};
+    const unlisten=()=>{document.removeEventListener('scroll',position,true);window.removeEventListener('resize',position);window.visualViewport?.removeEventListener('resize',position);window.visualViewport?.removeEventListener('scroll',position);document.removeEventListener('pointerdown',outside,true);};
     const outside=event=>{if(!details.contains(event.target))details.closeMenu();};
     details.closeMenu=()=>{details.open=false;unlisten();};
     details.ontoggle=()=>{
       unlisten();if(!details.open)return;
       filterDialog?.querySelectorAll('.ro-filter-multi').forEach(menu=>{if(menu!==details)menu.closeMenu?.();});
-      position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);document.addEventListener('pointerdown',outside,true);
+      position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);document.addEventListener('pointerdown',outside,true);
     };
     let selected=selections(value).map(String);
     const refresh=()=>{const names=options.filter(([id])=>selected.includes(String(id))).map(([,name])=>name.split(' ｜ ')[0]);summary.textContent=names.length?names.join('、')+'（OR）':placeholder;};
@@ -858,23 +858,45 @@
       &&JSON.stringify(s.bosses.map(b=>b.id).sort())===JSON.stringify(bosses));
     return candidates.length===1?{id:candidates[0][0],script:candidates[0][1]}:null;
   }
+  function stageMonsterLevel(id,selected,lap){
+    const monsters=gameCatalog?.bj,base=monsters?.[id]?.level;
+    if(!Number.isFinite(base))return null;
+    if(lap<=1)return base;
+    // Native RO_LAPAVG/RO_LAPK: time-weighted pool mean, rounded difference
+    // from the last eligible stage. Both later laps use the same level offset.
+    const eligible=['prontera','sewer','sunken','byalan','payon','payon_cave','orcs','pyramid','maze'];
+    if(!selected||!eligible.includes(selected.id))return null;
+    const average=script=>{
+      let sum=0,total=0;
+      for(const wave of script?.waves||[]){
+        const pool=(wave.pool||[]).map(key=>monsters[key]).filter(Boolean),duration=Math.max(0,(wave.to||0)-(wave.from||0));
+        if(!pool.length||!duration)continue;
+        sum+=duration*pool.reduce((n,m)=>n+(m.level||0),0)/pool.length;total+=duration;
+      }
+      return total?sum/total:null;
+    };
+    const current=average(selected.script),last=average(gameCatalog?.ca?.maze);
+    return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
+  }
   function updateStageSpawnSchedule(){
     const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs');
     if(!mobs)return;
     detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
+    const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
     if(!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
     for(const mob of mobs.querySelectorAll('[data-mob]')){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
       const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
-      const signature=JSON.stringify([name,times]);
+      const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
       if(mob.dataset.roScheduleSignature===signature&&mob.querySelector('[data-ro-mob-time]'))continue;
       mob.dataset.roScheduleSignature=signature;mob.classList.add('ro-timed-mob');
       mob.querySelector('[data-ro-mob-time]')?.remove();
       const caption=document.createElement('span');caption.dataset.roMobTime='';
       caption.title='可隨機生成的時段，非固定出生時間。依最後頭目預定出場時間截斷；若頭目出生延遲，實際停刷也可能延後。';
       const label=document.createElement('b');label.textContent=name;caption.append(label);
+      const levelLine=document.createElement('span');levelLine.dataset.roMobLevel='';levelLine.textContent='等級 '+(level??'—');levelLine.title='計算經驗衰減使用的怪物等級（含目前周目修正）';caption.append(levelLine);
       for(const time of times){const line=document.createElement('small');line.textContent=time;caption.append(line);}
       mob.append(caption);
     }
@@ -1086,7 +1108,7 @@
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.4');
+      console.info('[RO助手] 即時自選已啟用 v1.9.5');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1115,7 +1137,7 @@
   function identity(el) {
     const kind = el.hasAttribute('data-skill') ? 'skill' : 'item';
     const itemId = kind === 'item' ? activeGame?.runItems?.slots.get(el.dataset.item)?.item : undefined;
-    return { kind, id: kind === 'skill' ? el.dataset.skill : el.dataset.item, itemId, icon: iconOf(el), name: tipName(el) };
+    return { kind, id: kind === 'skill' ? el.dataset.skill : el.dataset.item, itemId, icon: iconOf(el), name: tipName(el) || (kind==='skill'?cleanName((activeGame?.skillDef?.(el.dataset.skill)||skillDefs?.[el.dataset.skill])?.name):'') };
   }
   function sameSlot(rule, el) {
     const skill = el.hasAttribute('data-skill');
@@ -1130,6 +1152,45 @@
     notify.timer = setTimeout(() => toast.remove(), 2400);
   }
   function closeMenu() { menu?.remove(); menu = null; }
+  function helperViewport(){
+    const view=window.visualViewport;
+    return {left:view?.offsetLeft||0,top:view?.offsetTop||0,width:view?.width||innerWidth,height:view?.height||innerHeight};
+  }
+  let longPress=null,heldSlot=null,heldUntil=0;
+  function cancelLongPress(){clearTimeout(longPress?.timer);longPress=null;}
+  function clearLongPress(){cancelLongPress();heldSlot=null;heldUntil=0;}
+  function slotOf(target){return target instanceof Element?target.closest(SLOT):null;}
+  function suppressHeldEvent(event){
+    if(!heldSlot||performance.now()>heldUntil||slotOf(event.target)!==heldSlot)return false;
+    event.preventDefault();event.stopImmediatePropagation();return true;
+  }
+  function beginLongPress(event){
+    // A second finger cancels the gesture; ordinary taps and scrolling stay native.
+    if(longPress){cancelLongPress();return;}
+    if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
+    heldSlot=null;
+    const slot=slotOf(event.target);if(!slot||slot.classList.contains('empty'))return;
+    const press={slot,pointerId:event.pointerId,x:event.clientX,y:event.clientY,id:slot.dataset.skill??slot.dataset.item,icon:iconOf(slot)};
+    longPress=press;
+    press.timer=setTimeout(()=>{
+      if(longPress!==press||!slot.isConnected||slot.classList.contains('empty')||(slot.dataset.skill??slot.dataset.item)!==press.id||iconOf(slot)!==press.icon){cancelLongPress();return;}
+      longPress=null;heldSlot=slot;heldUntil=Infinity;
+      context({target:slot,clientX:press.x,clientY:press.y,preventDefault(){},stopImmediatePropagation(){}});
+    },550);
+  }
+  function moveLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId&&Math.hypot(event.clientX-longPress.x,event.clientY-longPress.y)>10)cancelLongPress();
+  }
+  function endLongPress(event){
+    if(longPress&&event.pointerId===longPress.pointerId)cancelLongPress();
+    if(suppressHeldEvent(event))heldUntil=performance.now()+800;
+  }
+  function touchContext(event){
+    if(suppressHeldEvent(event))return;
+    // Some mobile browsers dispatch contextmenu before the 550ms timer.
+    if(longPress&&slotOf(event.target)===longPress.slot){heldSlot=longPress.slot;heldUntil=Infinity;cancelLongPress();}
+    context(event);
+  }
   function context(event) {
     const el = event.target instanceof Element ? event.target.closest(SLOT) : null;
     if (!el || el.classList.contains('empty')) return;
@@ -1137,8 +1198,9 @@
     event.stopImmediatePropagation();
     closeMenu();
     const rule = identity(el);
+    if(heldSlot===el)el.closest('#skillbar, #lu-sockets, #runitems')?.dispatchEvent(new MouseEvent('mouseleave'));
     // Do not guess when a tooltip is missing or the site's DOM has changed.
-    if (!rule.icon || !rule.name) { notify('無法辨識此項目；請先將滑鼠移到圖示上再按右鍵'); return; }
+    if (!rule.icon || !rule.name) { notify('無法辨識此項目；請關閉提示後，重新長按或按右鍵'); return; }
     const enabled = rules.some(r => sameSlot(r, el));
     menu = document.createElement('div');
     menu.id = 'ro-ap-menu';
@@ -1150,16 +1212,18 @@
     button.setAttribute('role', 'menuitem');
     button.textContent = enabled ? '關閉自動選擇' : '開啟自動選擇';
     button.onclick = () => {
+      if(!el.isConnected||!sameSlot(rule,el)||iconOf(el)!==rule.icon){closeMenu();notify('項目已變更，請重新長按或按右鍵設定');return;}
       rules = rules.filter(r => !sameSlot(r, el));
       if (!enabled) rules.push(rule);
       closeMenu(); scan();
       notify(`${rule.name}：已${enabled ? '關閉' : '開啟'}自動選擇`);
     };
-    menu.append(title, button);
+    const close=document.createElement('button');close.type='button';close.textContent='取消';close.setAttribute('role','menuitem');close.onclick=closeMenu;
+    menu.append(title, button,close);
     document.body.append(menu);
-    const box = menu.getBoundingClientRect();
-    menu.style.left = Math.max(8, Math.min(event.clientX, innerWidth - box.width - 8)) + 'px';
-    menu.style.top = Math.max(8, Math.min(event.clientY, innerHeight - box.height - 8)) + 'px';
+    const box = menu.getBoundingClientRect(),view=helperViewport();
+    menu.style.left = Math.max(view.left+8, Math.min(event.clientX, view.left+view.width - box.width - 8)) + 'px';
+    menu.style.top = Math.max(view.top+8, Math.min(event.clientY, view.top+view.height - box.height - 8)) + 'px';
     button.focus({ preventScroll: true });
   }
   function rank(card) {
@@ -1200,6 +1264,7 @@
     document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
   }
   function resetRun() {
+    clearLongPress();
     clearHordeHud();
     closeCharacterDetails();
     activeGame=null;
@@ -1278,7 +1343,7 @@
     style.textContent = `
       #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:12;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:auto}
       #ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
-      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
+      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-level]{font-size:12px;color:#b9c8e4}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
       #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
       #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
       #ro-unwanted-dialog .ro-equipment-filter>.ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button,#ro-unwanted-dialog .ro-gear-tabs button,#ro-unwanted-dialog .ro-gear-settings{background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
@@ -1319,9 +1384,57 @@
       #ro-ap-menu button{display:block;width:100%;padding:10px 14px;color:#fff;background:#2c4365;border:0;border-radius:5px;text-align:left;cursor:pointer;font:inherit}
       #ro-ap-menu button:hover{background:#3b5f88}
       #ro-ap-toast{position:fixed;left:50%;top:16%;transform:translateX(-50%);z-index:2147483647;max-width:85vw;background:#172238ed;color:#d8ffe9;border:1px solid #65edb1;border-radius:8px;padding:10px 16px;font:14px sans-serif;pointer-events:none}
+
+      @media(pointer:coarse){
+        #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+        #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
+        #ro-horde-hud [data-monster-toggle]{min-width:36px;min-height:36px}
+        #ro-character-details-toggle{min-height:36px}
+        #ro-unwanted-dialog input,#ro-unwanted-dialog select{font-size:16px}
+      }
+      @media(max-width:700px),(pointer:coarse) and (max-height:500px){
+        #ro-unwanted-dialog{padding:6px;padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom));box-sizing:border-box}
+        #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{width:100%;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+        #ro-unwanted-dialog .ro-gear-card{padding:8px}
+        #ro-unwanted-dialog .ro-gear-card header{flex-wrap:wrap;gap:4px}
+        #ro-unwanted-dialog .ro-gear-card header b{flex:1;min-width:90px}
+        #ro-unwanted-dialog select.ro-gear-filter-select{flex:0 0 100%;width:100%;margin:4px 0 0}
+        #ro-unwanted-dialog .ro-gear-tabs{flex-wrap:nowrap;overflow-x:auto;padding:4px 0;overscroll-behavior-x:contain}
+        #ro-unwanted-dialog .ro-gear-tabs button{flex:none;white-space:nowrap;margin:0}
+        #ro-unwanted-dialog .ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button{margin:2px;padding:6px 8px}
+        #ro-unwanted-dialog .ro-manage-details{margin-left:2px!important}
+        #ro-unwanted-dialog .ro-gear-detail-backdrop{position:fixed;padding:6px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-detail-panel{width:100%;box-sizing:border-box;max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr);gap:10px}
+        #ro-unwanted-dialog .ro-detail-list{max-height:140px}
+        #ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 82px;font-size:12px}
+        #ro-unwanted-dialog .ro-filter-multi{margin:4px 0;flex:1;min-width:0}
+        #ro-unwanted-dialog .ro-gear-skill input[type=number]{width:72px;box-sizing:border-box}
+        #ro-unwanted-dialog .ro-gear-tier span{min-width:0;overflow-wrap:anywhere}
+        #ro-ap-menu{box-sizing:border-box;min-width:0;width:240px;max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);overflow:auto}
+        #ro-ap-menu button+button{margin-top:6px}
+        #ro-character-details{left:max(6px,env(safe-area-inset-left));top:max(6px,env(safe-area-inset-top));width:calc(100vw - 12px);max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
+        #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{gap:8px}
+        #ro-character-details [data-character-stats] span,#ro-character-details [data-character-raw] span{min-width:0;overflow-wrap:anywhere}
+        #ro-horde-hud{font-size:11px;padding:5px 6px}#ro-horde-hud [data-horde-progress]{font-size:12px}
+        #ro-ap-toast{box-sizing:border-box;max-width:calc(100vw - 20px);font-size:13px;padding:8px 10px}
+        .stg-mobs .ro-timed-mob{min-width:90px;max-width:130px;padding:5px}
+      }
     `;
     document.head.append(style);
-    document.addEventListener('contextmenu', context, true);
+    document.addEventListener('contextmenu', touchContext, true);
+    document.addEventListener('pointerdown',beginLongPress,true);
+    document.addEventListener('pointermove',moveLongPress,true);
+    document.addEventListener('pointerup',endLongPress,true);
+    document.addEventListener('pointercancel',endLongPress,true);
+    document.addEventListener('touchend',event=>{if(suppressHeldEvent(event))heldUntil=performance.now()+800;}, {capture:true,passive:false});
+    for(const type of ['click','mousedown','mouseup','auxclick'])document.addEventListener(type,suppressHeldEvent,true);
+    document.addEventListener('scroll',cancelLongPress,true);
+    window.addEventListener('blur',clearLongPress);
+    window.addEventListener('resize',()=>{cancelLongPress();closeMenu();closeFilterMenus();});
+    window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){clearLongPress();closeMenu();}});
     document.addEventListener('click',event=>{
       if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
         event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
@@ -1364,7 +1477,7 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
-        return el?.closest('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
+        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
