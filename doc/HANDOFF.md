@@ -115,3 +115,10 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - 回歸測試包含 touch-only、pointer/touch 同時出現、失去 release 的有限攔截時間，以及技能／寶箱手動點選不中斷。以上新行為取代前述「攔截 release／相容滑鼠事件」策略。
 
 - 使用者補充：Safari 1.9.7 發作時整個介面按下有視覺反應但動作不執行，切換分頁無法恢復。此描述尚不能證明是長按攔截；避免宣稱已定位整頁卡死原因。助手 start/tick 的各個更新獨立捕捉錯誤，單一面板例外不再傳回原生遊戲迴圈，其他助手動作繼續；同類錯誤每個遊戲實例僅記錄一次，保留可診斷資訊。
+
+## 選卡事件攔截審查
+
+- 使用者確認 Safari 1.9.8 完全未啟用自選時，第二次同道具升級的寶箱也可能有按下／放大效果卻不選取。不可僅憑此認定 Safari 漏發 click，亦不可用新增代點擊處理當成已定位修正；本次曾嘗試的 touchend→button.click 橋接已完全撤回，未發佈。
+- 審查確認：助手 click 的 preventDefault/stopImmediatePropagation 僅用於長按後同一技能格，#pk-cards/#pk-bar 已排除；另有只針對離線主城按鈕的攔截。原生 onChest/onLevelUp 原本在沒有任何自選規則時仍經過判斷及 metadata 註記；現無對應規則直接 Reflect.apply 原事件，保留 this／參數／回傳，不改卡片。
+- 移除未啟用自選時在卡片 pointerdown 隱藏原生 skill-tip／關閉自選選單的處理。卡片不是長按目標，直接返回；只有已有待執行自選 job 時，碰原生卡片才停止該 job，不阻擋事件。新測試連續三次原生寶箱，驗證卡片 HTML、onclick、touch/pointer/click 及提示可見狀態不被助手改動。
+- 尚未證明整個 Safari 問題的根因；這次是根據「無自選就不介入」縮減干預，而非新增 click 補救。

@@ -194,6 +194,21 @@ test('HUD rendering failure cannot escape native game tick or stop other helper 
  assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
  e.tick(300);assert.doesNotThrow(()=>e.api.helperTick(game));assert.equal(calls,1);
 });
+test('without auto rules consecutive native chests retain callback, markup and touch events',()=>{
+ const e=setup();e.document.documentElement.classList.add('touch');let opens=0,picks=0;
+ const game={events:{onChest(cards,cost){assert.equal(this,game.events);assert.equal(cost,25);opens++;const buttons=picker(e,[['生命藥水 +'+opens,'p.png','普通']],'item');buttons[0].onclick=()=>picks++;return buttons[0];}},chooseChest(){throw Error('no automatic choice expected');}};
+ e.api.installFastChoice(game);
+ for(let i=0;i<3;i++){
+  const cards=[{slot:'potion',item:'hp',quality:0}],button=game.events.onChest(cards,25),callback=button.onclick,markup=e.document.querySelector('#pk-cards').innerHTML;
+  e.document.querySelector('#skill-tip').className='';e.api.scan();
+  for(const type of ['pointerdown','pointerup'])assert(!pointer(e,button,type).defaultPrevented);
+  for(const type of ['touchstart','touchend'])assert(!safariTouch(e,button,type).defaultPrevented);
+  assert.equal(e.document.querySelector('#pk-cards').innerHTML,markup);assert.equal(button.onclick,callback);assert.equal(button.dataset.roApKind,undefined);
+  assert.equal(e.document.querySelector('#skill-tip').className,'');assert(!e.document.querySelector('#picker').hasAttribute('data-ro-ap-hidden'));
+  assert(!pointer(e,button,'click').defaultPrevented);assert.equal(picks,i+1);
+ }
+ assert.equal(opens,3);
+});
 test('Escape restores current choice and prevents immediate reselection',()=>{
   const e=setup();e.api.setRules([rule('skill','A','a.png')]);
   const c=picker(e,[['A','a.png','稀有'],['C','c.png','普通'],['D','d.png','傳說']]);
@@ -798,7 +813,7 @@ test('mobile chest cards and replacement confirmation retain native taps after a
   const nativeSlot=cards[0].closest('.pk-slot');nativeSlot.insertAdjacentHTML('beforeend','<div class="pk-back"><button data-yes>確認替換</button><button data-no>取消</button></div>');
   let picks=0,confirmed=0;cards[0].onclick=()=>{picks++;nativeSlot.classList.add('asking');};const confirm=nativeSlot.querySelector('[data-yes]');confirm.onclick=()=>confirmed++;
   assert(!pointer(e,cards[0],'pointerdown').defaultPrevented);assert(!pointer(e,cards[0],'pointerup').defaultPrevented);pointer(e,cards[0],'click');assert.equal(picks,1);
-  assert(!e.document.querySelector('#ro-ap-menu'));assert(e.document.querySelector('#skill-tip').classList.contains('hidden'));
+  assert(!e.document.querySelector('#ro-ap-menu'));
   assert(!pointer(e,confirm,'pointerdown').defaultPrevented);assert(!pointer(e,confirm,'pointerup').defaultPrevented);pointer(e,confirm,'click');assert.equal(confirmed,1);
 });
 test('horde circle maps world position and radius to exact minimap crop',()=>{
