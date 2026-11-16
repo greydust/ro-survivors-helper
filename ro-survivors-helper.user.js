@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      1.9.5
+// @version      1.9.7
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -12,6 +12,13 @@
 
 (() => {
   'use strict';
+  // Console and userscript installs share one instance per page.
+  if(new URL(location.href).origin!=='https://ro.hans-webgametw.com'){
+    console.warn('[RO助手] 請在 RO 倖存者遊戲頁面執行');return;
+  }
+  const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
+  if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
+  window[runtimeKey]={version:'1.9.7'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -269,7 +276,7 @@
   }
   function clearHordeHud(){document.querySelector('#ro-horde-hud')?.remove();nextHordeHudAt=0;}
   function updateHordeHud(game=activeGame,force=false){
-    const hud=document.querySelector('#hud'),loot=document.querySelector('#loot-rolls');
+    const hud=document.querySelector('#hud'),loot=document.querySelector('#lu-feed')||document.querySelector('#loot-rolls');
     if(!game||!hud||hud.classList.contains('hidden')||game.state==='over'||!loot){clearHordeHud();return;}
     if(!force&&performance.now()<nextHordeHudAt)return;nextHordeHudAt=performance.now()+250;
     let panel=document.querySelector('#ro-horde-hud');
@@ -279,13 +286,23 @@
       const total=document.createElement('div');total.dataset.monsterTotal='';
       const list=document.createElement('div');list.dataset.monsterCounts='';list.id='ro-field-monsters';
       const header=document.createElement('div');header.dataset.monsterHeader='';
-      const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent='−';toggle.setAttribute('aria-label','折疊怪物明細');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',list.id);
+      const compact=innerWidth<=720||innerHeight<=500;if(compact)list.hidden=true;
+      const toggle=document.createElement('button');toggle.type='button';toggle.dataset.monsterToggle='';toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-controls',list.id);
       toggle.onclick=()=>{list.hidden=!list.hidden;toggle.textContent=list.hidden?'+':'−';toggle.setAttribute('aria-expanded',String(!list.hidden));toggle.setAttribute('aria-label',list.hidden?'展開怪物明細':'折疊怪物明細');};
-      header.append(progress,toggle);panel.append(header,total,list);hud.append(panel);
+      header.append(progress,toggle);panel.append(header,total,list);document.body.append(panel);
     }
+    const picker=document.querySelector('#picker'),covered=picker&&!picker.classList.contains('hidden');
+    if(panel.hidden!==!!covered)panel.hidden=!!covered;
+    const compact=innerWidth<=720||innerHeight<=500,view=helperViewport();
     if(typeof loot.getBoundingClientRect==='function'){
-      const rect=loot.getBoundingClientRect(),width=innerWidth<=700?150:180,top=Math.max(12,Math.min((rect.width||rect.height?rect.bottom:innerHeight*.34)+8,innerHeight-100));
-      for(const [key,value] of Object.entries({top:top+'px',right:Math.max(8,innerWidth-(rect.right||innerWidth-12))+'px',width:Math.min(width,innerWidth-24)+'px',maxHeight:Math.max(80,innerHeight-top-16)+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
+      const rect=loot.getBoundingClientRect(),width=Math.min(compact?132:180,view.width-24);
+      const right=Math.max(8,Math.round(innerWidth-(rect.width?rect.right:view.left+view.width-8)));
+      // Body-level positioning avoids the native HUD's zoom/transform. On phones
+      // reserve a small strip below the pickup feed instead of chasing each row.
+      const maxHeight=compact?Math.min(110,Math.max(64,view.height*.25)):Math.max(80,view.height*.45);
+      const anchor=rect.width&&rect.height?rect.bottom:view.top+view.height-(compact?92:150);
+      const top=Math.round(Math.max(view.top+8,Math.min(anchor+4,view.top+view.height-(compact?72:100)-8)));
+      for(const [key,value] of Object.entries({top:compact?'auto':top+'px',bottom:compact?Math.max(8,Math.round(innerHeight-view.top-view.height+8))+'px':'auto',right:right+'px',width:width+'px',maxHeight:(compact?maxHeight:Math.min(maxHeight,view.top+view.height-top-8))+'px'}))if(panel.style[key]!==value)panel.style[key]=value;
     }
     const progress=hordeProgress(game),counter=panel.querySelector('[data-horde-progress]');
     const text=progress&&!progress.expired?'怪物潮('+progress.actual+'/'+(progress.theoretical??'?')+')':'怪物潮(-/-)';
@@ -296,11 +313,15 @@
     if(counter.title!==title)counter.title=title;
     const counts=fieldMonsterCounts(game),total=panel.querySelector('[data-monster-total]'),totalText='場上怪物：'+counts.reduce((sum,row)=>sum+row.count,0)+' / '+(fieldMonsterLimit(game)??'—');
     if(total.textContent!==totalText)total.textContent=totalText;
-    const list=panel.querySelector('[data-monster-counts]'),signature=JSON.stringify(counts);
-    if(list.dataset.signature!==signature){
-      list.dataset.signature=signature;list.replaceChildren();
-      for(const row of counts){const line=document.createElement('div'),name=document.createElement('span'),number=document.createElement('b');name.textContent=row.name;number.textContent=String(row.count);line.append(name,number);list.append(line);}
+    const list=panel.querySelector('[data-monster-counts]');
+    const existing=new Map([...list.children].map(line=>[line.dataset.monsterId,line])),present=new Set();
+    for(const row of counts){
+      present.add(row.id);let line=existing.get(row.id);
+      if(!line){line=document.createElement('div');line.dataset.monsterId=row.id;line.append(document.createElement('span'),document.createElement('b'));list.append(line);}
+      if(line.firstElementChild.textContent!==row.name)line.firstElementChild.textContent=row.name;
+      if(line.lastElementChild.textContent!==String(row.count))line.lastElementChild.textContent=String(row.count);
     }
+    for(const [id,line] of existing)if(!present.has(id))line.remove();
   }
   const SLOT = '#skillbar .skill-slot[data-skill], #runitems .run-slot[data-item], #lu-sockets .skill-slot[data-skill], #lu-sockets .run-slot[data-item]';
   const COLORS = ['#9aa6c4', '#3ddc5a', '#2f7bff', '#a040ff', '#ff9a2e'];
@@ -879,14 +900,14 @@
     return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
   }
   function updateStageSpawnSchedule(){
-    const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs');
-    if(!mobs)return;
+    const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs'),bosses=detail?.querySelector('.stg-bosses');
+    if(!detail||(!mobs&&!bosses))return;
     detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
     const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
-    if(!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
-    for(const mob of mobs.querySelectorAll('[data-mob]')){
+    if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
+    for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
       const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
       const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
@@ -899,6 +920,12 @@
       const levelLine=document.createElement('span');levelLine.dataset.roMobLevel='';levelLine.textContent='等級 '+(level??'—');levelLine.title='計算經驗衰減使用的怪物等級（含目前周目修正）';caption.append(levelLine);
       for(const time of times){const line=document.createElement('small');line.textContent=time;caption.append(line);}
       mob.append(caption);
+    }
+    for(const boss of bosses?.querySelectorAll('[data-mob]')||[]){
+      const level=stageMonsterLevel(boss.dataset.mob,selected,lap),text='等級 '+(level??'—');
+      let line=boss.querySelector('[data-ro-mob-level]');
+      if(!line){line=document.createElement('span');line.dataset.roMobLevel='';line.title='計算經驗衰減使用的怪物等級（含目前周目修正）';const name=boss.querySelector('b');if(name)name.after(line);else boss.append(line);}
+      if(line.textContent!==text)line.textContent=text;
     }
   }
   function smithCategory(definition) {
@@ -1108,7 +1135,7 @@
         try { victoryMagnet(game); }
         catch (error) { console.warn('[RO助手] 勝利磁鐵失敗', error); }
       });
-      console.info('[RO助手] 即時自選已啟用 v1.9.5');
+      console.info('[RO助手] 即時自選已啟用 v1.9.7');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -1165,6 +1192,12 @@
     event.preventDefault();event.stopImmediatePropagation();return true;
   }
   function beginLongPress(event){
+    // Never reinterpret native picker taps, including chest replacement confirms.
+    if(event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
+      clearLongPress();closeMenu();document.querySelector('#skill-tip')?.classList.add('hidden');
+      if(job){document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();}
+      return;
+    }
     // A second finger cancels the gesture; ordinary taps and scrolling stay native.
     if(longPress){cancelLongPress();return;}
     if(!['touch','pen'].includes(event.pointerType)||event.isPrimary===false||event.button>0)return;
@@ -1341,9 +1374,9 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
-      #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:12;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:auto}
-      #ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
-      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}.ro-timed-mob [data-ro-mob-level]{font-size:12px;color:#b9c8e4}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
+      #ro-horde-hud{position:fixed;right:12px;top:34%;width:180px;max-width:calc(100vw - 24px);z-index:8;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:none}
+      #ro-horde-hud[hidden]{display:none!important}#ro-horde-hud [data-monster-toggle]{pointer-events:auto;touch-action:manipulation}#ro-horde-hud [data-monster-counts]{pointer-events:auto}#ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
+      .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}#stg-detail [data-ro-mob-level]{display:block;width:fit-content;max-width:100%;box-sizing:border-box;font-size:12px;font-weight:700;line-height:1.5;color:#ffe08a;background:#20304c;border:1px solid #a18442;border-radius:4px;padding:1px 6px}#stg-detail .stg-boss [data-ro-mob-level]{margin:3px auto}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
       #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
       #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
       #ro-unwanted-dialog .ro-equipment-filter>.ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button,#ro-unwanted-dialog .ro-gear-tabs button,#ro-unwanted-dialog .ro-gear-settings{background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
@@ -1388,7 +1421,7 @@
       @media(pointer:coarse){
         #skillbar .skill-slot[data-skill],#runitems .run-slot[data-item],#lu-sockets .skill-slot[data-skill],#lu-sockets .run-slot[data-item]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
         #ro-ap-menu button,#ro-unwanted-dialog button,#ro-unwanted-dialog summary,#ro-character-details button{min-height:44px;touch-action:manipulation}
-        #ro-horde-hud [data-monster-toggle]{min-width:36px;min-height:36px}
+        #ro-horde-hud [data-monster-toggle]{min-width:28px;min-height:28px}
         #ro-character-details-toggle{min-height:36px}
         #ro-unwanted-dialog input,#ro-unwanted-dialog select{font-size:16px}
       }
@@ -1417,7 +1450,7 @@
         #ro-character-details{left:max(6px,env(safe-area-inset-left));top:max(6px,env(safe-area-inset-top));width:calc(100vw - 12px);max-height:calc(100dvh - 12px);padding:10px;overscroll-behavior:contain}
         #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{gap:8px}
         #ro-character-details [data-character-stats] span,#ro-character-details [data-character-raw] span{min-width:0;overflow-wrap:anywhere}
-        #ro-horde-hud{font-size:11px;padding:5px 6px}#ro-horde-hud [data-horde-progress]{font-size:12px}
+        #lu-feed.land{bottom:calc(max(6px,env(safe-area-inset-bottom)) + 140px)!important}#ro-horde-hud{font-size:10px;padding:4px 5px}#ro-horde-hud [data-monster-total]{margin-top:3px;padding-top:3px}#ro-horde-hud [data-horde-progress]{font-size:11px}
         #ro-ap-toast{box-sizing:border-box;max-width:calc(100vw - 20px);font-size:13px;padding:8px 10px}
         .stg-mobs .ro-timed-mob{min-width:90px;max-width:130px;padding:5px}
       }
