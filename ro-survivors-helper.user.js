@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.6
+// @version      2.1.7
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.6'};
+  window[runtimeKey]={version:'2.1.7'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1100,7 +1100,7 @@
     document.querySelector('#ro-character-details-toggle')?.setAttribute('aria-expanded','true');
     const refresh=()=>{updateCharacterDetails();if(characterDetails)characterDetailsTimer=setTimeout(refresh,250);};refresh();
   }
-  const statCapFields=['damageReduction','flee','areaMult','reachMult','speedMult'];
+  const statCapFields=['damageReduction','flee'];
   const statCapValues=new WeakMap(),statCapPanels=new WeakSet(),statCapHandlers=new WeakMap(),statCapAttempts=new WeakSet();
   let statCapCapture=null;
   function captureUncappedStats(stats){
@@ -1159,11 +1159,15 @@
       const normalize=text=>(text||'').replace(/[\s（）()]/g,'');
       const label=normalize(row.querySelector('span')?.textContent),key=Object.keys(statCapLabels).find(field=>statCapLabels[field].some(text=>normalize(text)===label)),value=row.querySelector('b');
       if(!key||!value||!Number.isFinite(values.raw[key]))continue;
+      // Only show overflow actually lost to a hard cap, not diminishing returns.
+      if(!['damageReduction','flee','critChance'].includes(key)||!(values.raw[key]>values.effective[key]+1e-9)){
+        value.querySelector('[data-ro-stat-raw]')?.remove();continue;
+      }
       if(key==='critChance'&&values.raw[key]>1){const node=value.firstChild,text=statCapText(key,values.effective[key]);if(node?.nodeType===3&&node.textContent!==text)node.textContent=text;}
       let note=value.querySelector('[data-ro-stat-raw]');
       if(!note){note=document.createElement('span');note.dataset.roStatRaw=key;value.append(note);}
       const text=' ('+statCapText(key,values.raw[key])+')';if(note.textContent!==text)note.textContent=text;
-      note.title=key==='critChance'?'括號為面板原始爆擊率；單次判定最多 100%，未包含戰鬥 buff／技能額外爆率':'括號為封頂或遞減前的原始加總值';
+      note.title=key==='critChance'?'括號為面板原始爆擊率；單次判定最多 100%，未包含戰鬥 buff／技能額外爆率':'括號為硬上限截斷前的原始加總值';
     }
   }
   function updateStatCapDisplay(){
@@ -2421,7 +2425,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.6');
+      console.info('[RO助手] 即時自選已啟用 v2.1.7');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
