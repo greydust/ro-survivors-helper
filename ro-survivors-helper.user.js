@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.5
+// @version      2.1.6
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.5'};
+  window[runtimeKey]={version:'2.1.6'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1156,7 +1156,8 @@
   function paintStatCaps(panel){
     const values=statCapValues.get(panel);if(!values)return;
     for(const row of panel.querySelectorAll('.stat-chip')){
-      const label=row.querySelector('span')?.textContent.trim(),key=Object.keys(statCapLabels).find(field=>statCapLabels[field].includes(label)),value=row.querySelector('b');
+      const normalize=text=>(text||'').replace(/[\s（）()]/g,'');
+      const label=normalize(row.querySelector('span')?.textContent),key=Object.keys(statCapLabels).find(field=>statCapLabels[field].some(text=>normalize(text)===label)),value=row.querySelector('b');
       if(!key||!value||!Number.isFinite(values.raw[key]))continue;
       if(key==='critChance'&&values.raw[key]>1){const node=value.firstChild,text=statCapText(key,values.effective[key]);if(node?.nodeType===3&&node.textContent!==text)node.textContent=text;}
       let note=value.querySelector('[data-ro-stat-raw]');
@@ -1180,16 +1181,17 @@
       }});
       statCapPanels.add(panel);
     }
-    for(const button of character.querySelectorAll('.tab-btn')){
+    for(const button of character.querySelectorAll('.tab-btn, .equip-slot')){
       const original=button.onclick;if(typeof original!=='function'||statCapHandlers.get(button)===original)continue;
       const wrapped=function(...args){return withStatCapCapture(()=>Reflect.apply(original,this,args));};
       button.onclick=wrapped;statCapHandlers.set(button,wrapped);
     }
-    // A native equip/save redraw may happen asynchronously, outside a tab click.
-    // Redraw only the already-selected stats tab to obtain fresh display data.
+    // Tabs only toggle visibility. Re-selecting the already-selected equipment
+    // slot invokes native I(), which redraws the stats without equipping gear.
     const selected=character.querySelector('.tab-btn.active[data-tab="stats"]');
-    if(selected&&!statCapValues.has(panel)&&!statCapAttempts.has(panel)&&typeof selected.onclick==='function'){
-      statCapAttempts.add(panel);try{selected.onclick();}catch(error){console.debug('[RO助手] 封頂前屬性讀取失敗，保留原生顯示',error);}
+    const redraw=character.querySelector('.equip-slot.sel[data-slot]');
+    if(selected&&redraw&&!statCapValues.has(panel)&&!statCapAttempts.has(panel)&&typeof redraw.onclick==='function'){
+      statCapAttempts.add(panel);try{redraw.onclick();}catch(error){console.debug('[RO助手] 封頂前屬性讀取失敗，保留原生顯示',error);}
     }
     paintStatCaps(panel);
   }
@@ -2419,7 +2421,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.5');
+      console.info('[RO助手] 即時自選已啟用 v2.1.6');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
