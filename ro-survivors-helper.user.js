@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.2
+// @version      2.1.3
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.2'};
+  window[runtimeKey]={version:'2.1.3'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -359,14 +359,14 @@
         if(game.fxLayer&&effectOpacity&&battleSettings&&battleSetOption){
           if(battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
           const visit=node=>{
-            const source=state.nodes.get(node);if(source){restore.push([node,node.alpha]);node.alpha*=factor(source);return;}
+            const source=state.nodes.get(node);if(source){const value=factor(source);restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;return;}
             for(const child of node.children||[])visit(child);
           };
           visit(game.fxLayer);
-          for(const node of [game.wings?.s,game.wings?.feathers])if(node){restore.push([node,node.alpha]);node.alpha*=factor('self');}
+          for(const node of [game.wings?.s,game.wings?.feathers])if(node){const value=factor('self');restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;}
         }
         return Reflect.apply(original,receiver,args);
-      }finally{for(const [node,alpha] of restore)if(!node.destroyed)node.alpha=alpha;}
+      }finally{for(const [node,alpha,visible] of restore)if(!node.destroyed){node.alpha=alpha;node.visible=visible;}}
     }
     wrap(game.app?.renderer,'render',original=>function(...args){return draw2D(original,this,args);});
     state.observePeers=()=>{
@@ -2207,8 +2207,10 @@
   }
 
   function installFastChoice(game) {
-    if(typeof installBattleVisualPreferences==='function')installBattleVisualPreferences(game);
     installPickupHelpers(game);
+    // Pickup recognition must inspect the native dropPickup before the visual
+    // owner wrapper is installed around it.
+    if(typeof installBattleVisualPreferences==='function')installBattleVisualPreferences(game);
     installHordeCount(game);
     if(game)activeGame=game;
     if (!game || !game.events) return;
@@ -2321,7 +2323,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.2');
+      console.info('[RO助手] 即時自選已啟用 v2.1.3');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
