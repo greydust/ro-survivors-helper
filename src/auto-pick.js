@@ -97,6 +97,7 @@
   }
   function helperTick(game){
     runHelperHook(game,'FPS',()=>updateFpsDisplay(game));
+    runHelperHook(game,'戰鬥天氣',()=>installWeatherEffects(game));
     runHelperHook(game,'自動選擇',()=>installFastChoice(game));
     runHelperHook(game,'怪物統計',()=>updateHordeHud(game));
     runHelperHook(game,'角色資料',()=>{if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}});
@@ -130,7 +131,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.2');
+      console.info('[RO助手] 即時自選已啟用 v2.0.3');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');

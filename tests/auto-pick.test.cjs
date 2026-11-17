@@ -546,7 +546,7 @@ test('catalog merchant batch selection uses the original selection Set and resto
   assert.deepEqual([...selection],['low']);assert.equal(sells(),0);assert.equal(JSON.parse,parse);assert.equal(Set.prototype.has,has);
 });
 test('catalog metadata has Chinese drop sources without cached library bonuses',()=>{
-  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,201);
+  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,300);
   for(const r of catalog){assert(r.tiers.length);for(const source of r.sources)assert(/[\u4e00-\u9fff]/.test(source.monster));}
   assert(catalog.every(r=>!Object.hasOwn(r,'bonuses')));
   const c=e.api.emptyEquipmentFilter();const group=e.api.equipmentGroups().find(g=>g.name==='長戟');

@@ -1,7 +1,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const native=JSON.parse(fs.readFileSync('tests/fixtures/pickups-native.json','utf8'));
 const context=vm.createContext({localStorage:{getItem:()=>null},activeGame:null,Math,Number,Reflect,Set,WeakMap,WeakSet});
-vm.runInContext(fs.readFileSync('src/pickups.js','utf8')+`;globalThis.api={installPickupHelpers,patchPickupVisual,patchPickupWorld,patchBeamVisual,setUnlimited:v=>unlimitedMagnets=v,installMagnetLimitOption,pickupMetrics};`,context);
+vm.runInContext(fs.readFileSync('src/weather.js','utf8')+fs.readFileSync('src/pickups.js','utf8')+`;globalThis.api={installPickupHelpers,patchPickupVisual,patchPickupWorld,patchBeamVisual,setUnlimited:v=>unlimitedMagnets=v,installMagnetLimitOption,pickupMetrics};`,context);
 vm.runInContext(`
 let ops={position:0,sin:0,scale:0,height:0};const St=x=>(ops.sin++,Math.sin(x));
 const O={play(){}},c=x=>x,tr=Math.pow,re=()=>.5;
@@ -58,10 +58,11 @@ console.log('Magnet limit: default cap, opt-in unlimited, toggle restoration and
  const callbacks=new Map(),saved=new Map();let frameId=0;
  window.requestAnimationFrame=fn=>{callbacks.set(++frameId,fn);return frameId;};window.cancelAnimationFrame=id=>callbacks.delete(id);
  const ctx=vm.createContext({window,document,activeGame:null,notify(){},localStorage:{getItem:key=>key==='greydust.ro.optimize-hidden-pickups.v1'?'false':null,setItem:(key,value)=>saved.set(key,value)},element:(tag,text)=>{const node=document.createElement(tag);node.textContent=text;return node;}});
- vm.runInContext(fs.readFileSync('src/pickups.js','utf8')+';globalThis.ui={updatePickupOptions,updateFpsDisplay,pickupDiagnostics};',ctx);
+ vm.runInContext(fs.readFileSync('src/weather.js','utf8')+fs.readFileSync('src/pickups.js','utf8')+';globalThis.ui={updatePickupOptions,updateFpsDisplay,pickupDiagnostics};',ctx);
  ctx.ui.updatePickupOptions();ctx.ui.updatePickupOptions();
  assert.equal(document.querySelectorAll('[data-ro-pickup-option="show-fps"]').length,1);
  assert.equal(document.querySelector('[data-ro-pickup-option="magnet-chests"]'),null);assert.equal(document.querySelector('[data-ro-pickup-option="hidden-pickup-fx"]'),null);assert.equal(ctx.ui.pickupDiagnostics().optimizeHiddenPickups,true,'old disabled setting cannot disable optimization');
+ const weather=document.querySelector('[data-ro-pickup-option="hide-weather"]');assert(weather);weather.checked=true;weather.onchange();assert.equal(saved.get('greydust.ro.hide-battle-weather.v1'),'true');
  const option=document.querySelector('[data-ro-pickup-option="show-fps"]');option.checked=true;option.onchange();assert.equal(saved.get('greydust.ro.show-fps.v1'),'true');
  const game={state:'playing'};ctx.ui.updateFpsDisplay(game);ctx.ui.updateFpsDisplay(game);assert.equal(callbacks.size,1,'one animation sampler');
  const frame=now=>{const [id,fn]=callbacks.entries().next().value;callbacks.delete(id);fn(now);};

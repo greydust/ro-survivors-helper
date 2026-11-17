@@ -67,7 +67,8 @@
     pickupWorlds.add(world);
   }
   function installPickupHelpers(game){
-    if(!game||pickupHelpers.has(game))return;
+    if(!game)return;
+    if(pickupHelpers.has(game))return;
     for(const item of game.pickups||[]){patchPickupVisual(Object.getPrototypeOf(item));patchBeamVisual(item.beam);}
     patchPickupWorld(game.world3d);pickupHelpers.set(game,true);
     installMagnetLimitOption(game);
@@ -93,6 +94,7 @@
     let previous=anchor;
     for(const [key,title,hint,value,set] of [
       ['unlimited-magnets','解除磁鐵數量上限','解除地上同時最多三個磁鐵的限制；掉落機率不變。',unlimitedMagnets,checked=>{unlimitedMagnets=checked;return UNLIMITED_MAGNETS_KEY;}],
+      ['hide-weather','隱藏戰鬥天氣','停用戶外雨滴、閃電、天氣霧色及其動畫與環境音，室內光影維持原樣。',hideBattleWeather,checked=>{hideBattleWeather=checked;installWeatherEffects(weatherGame);return HIDE_WEATHER_KEY;}],
       ['show-fps','顯示 FPS','在戰鬥畫面左下角顯示畫面更新率。',showFps,checked=>{showFps=checked;updateFpsDisplay(fpsGame);return FPS_KEY;}]
     ]){
       let input=document.querySelector('[data-ro-pickup-option="'+key+'"]');

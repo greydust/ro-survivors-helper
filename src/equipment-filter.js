@@ -140,7 +140,7 @@
       const sources=element('ul');
       const locations=new Map();
       for(const record of group.records)for(const source of record.sources){
-        const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster);
+        const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster+(source.rare?'（稀有）':''));
       }
       for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
       sources.append(element('li',Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>['二','三','四','五','六'][i]+'周目 T'+(equipmentBaseMaxTier()+i+1)).join('、')+'：同上關卡與怪物（依遊戲多周目規則）'));

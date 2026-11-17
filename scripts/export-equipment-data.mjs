@@ -7,7 +7,7 @@ import {parseHTML} from 'linkedom';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const input=process.argv[2];
-if(!input)throw Error('Usage: node scripts/export-equipment-data.mjs <core file> <core URL> [main file] [main URL]');
+if(!input)throw Error('Usage: node scripts/export-equipment-data.mjs <core file> <core URL> [main file] [main URL] [manifest file]');
 const raw=fs.readFileSync(input,'utf8');
 const start=raw.lastIndexOf('export{'),end=raw.indexOf('};',start);
 if(start<0||end<0)throw Error('Public module export list not found');
@@ -27,6 +27,13 @@ const catalog=sandbox.catalog;
 for(const value of Object.values(catalog))if(value&&typeof value==='object'&&typeof value.lang==='string')value.lang='zh-TW';
 const definitions=Object.values(catalog).find(value=>value?.[1101]?.slot==='weapon'&&value?.[2254]?.slot==='head_top');
 if(!definitions||typeof catalog.bs!=='function')throw Error('Actual equipment definitions/Tier adapter unavailable');
+let manifest=null;
+if(process.argv[6]){
+ manifest=JSON.parse(fs.readFileSync(process.argv[6],'utf8'));
+ const assets=Object.values(catalog).find(value=>value?.icons?.get&&value?.itemTextures?.get);
+ if(!assets||typeof catalog.bp!=='function'||typeof catalog.ff!=='function')throw Error('Localized item/monster names unavailable');
+ assets.manifest=manifest;
+}
 // Optional main module supplies stage tiers and the published lap configuration.
 let lapConfig=null,mainSourceSha256=null;
 if(process.argv[4]){
@@ -35,27 +42,33 @@ if(process.argv[4]){
  lapConfig=JSON.parse(main.match(/var RO_LAPC=(\{[^;]+\});/)[1]);
  const stagesText=main.match(/const xe=(\[.*?\]);/s)[1];
  const stages=vm.runInNewContext(stagesText,{yo:()=>({})},{timeout:1000});
- const stageNames={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林'};
+ const stageNames={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林',xmas:'聖誕節',louyang:'元宵節'};
  const monsterText=fs.readFileSync(path.join(root,'src/monster-names.js'),'utf8');
  const monsters=JSON.parse(monsterText.match(/const MONSTER_NAMES = (\{.*\});/s)[1]);
  const previous=JSON.parse(fs.readFileSync(path.join(root,'src/equipment-catalog.js'),'utf8').match(/const EQUIPMENT_CATALOG = (\[.*\]);/s)[1]);
  const names=new Map(previous.map(record=>[record.id,record.name]));
  const records=new Map();
  for(const stage of stages){
-  if(stage.special)continue;
   const stageName=stageNames[stage.id];if(!stageName)throw Error('Unknown stage; supply its Chinese name before exporting');
   const script=catalog.ca?.[stage.id];if(!script)throw Error('Stage scripts unavailable');
   const enemies=[...new Set(script.waves.flatMap(wave=>wave.pool))].map(id=>({id,boss:false}));
   enemies.push(...script.bosses.map(boss=>({id:boss.id,boss:true})));
+  if(script.rare?.id)enemies.push({id:script.rare.id,boss:true,rare:true});
   for(const enemy of enemies)for(const drop of catalog.cb?.[enemy.id]||[]){
    const def=definitions[drop.id];if(!def||def.secret||def.starter)continue;
-   if(!records.has(drop.id))records.set(drop.id,{id:drop.id,name:names.get(drop.id)||def.name,slot:def.slot,wtype:def.wtype||'',icon:'https://ro.hans-webgametw.com/assets/items/'+drop.id+'.png',tiers:[],sources:[]});
+   if(!monsters[enemy.id])monsters[enemy.id]=catalog.ff?.(catalog.bj[enemy.id]?.name||enemy.id)||enemy.id;
+   if(/[A-Za-z]/.test(monsters[enemy.id]))throw Error('Missing Chinese monster name: '+enemy.id);
+   const name=manifest?catalog.bp(drop.id,''):names.get(drop.id)||def.name;
+   if(!name||name==='#'+drop.id)throw Error('Missing equipment name: '+drop.id);
+   const icon=manifest?.items?.[drop.id]?.icon;
+   if(!records.has(drop.id))records.set(drop.id,{id:drop.id,name,slot:def.slot,wtype:def.wtype||'',icon:icon?new URL(icon,'https://ro.hans-webgametw.com/assets/').href:'https://ro.hans-webgametw.com/assets/items/'+drop.id+'.png',tiers:[],sources:[]});
    const record=records.get(drop.id);if(!record.tiers.includes(stage.tier))record.tiers.push(stage.tier);
-   record.sources.push({tier:stage.tier,stage:stageName,monster:monsters[enemy.id]||catalog.bj[enemy.id]?.name||enemy.id,boss:enemy.boss});
+   record.sources.push({tier:stage.tier,stage:stageName,monster:monsters[enemy.id],boss:enemy.boss,...enemy.rare?{rare:true}:{}});
   }
  }
  for(const record of previous)if(record.sources.some(source=>source.monster==='關卡獎勵')&&definitions[record.id]&&!records.has(record.id))records.set(record.id,record);
  if([...records.values()].some(record=>!record.name))throw Error('New equipment needs a Chinese name before export');
+ fs.writeFileSync(path.join(root,'src/monster-names.js'),'  // Chinese names from the current public game translation catalog.\n  const MONSTER_NAMES = '+JSON.stringify(monsters)+';\n');
  fs.writeFileSync(path.join(root,'src/equipment-catalog.js'),'  // Generated from current public stage drop tables.\n  const EQUIPMENT_CATALOG = '+JSON.stringify([...records.values()])+';\n');
 }
 const twoHand=Object.values(catalog).find(value=>typeof value?.has==='function'&&value.has('양손검')&&value.has('활'));
@@ -73,7 +86,7 @@ bundle=bundle.replace(/\}\)\(\);\s*$/,`smithDefs=definitions;gameCatalog=catalog
  }))};})();`);
 vm.runInContext(bundle,helper,{timeout:15000,filename:'helper-equipment-export.js'});
 const data={updatedAt:new Date().toISOString().slice(0,10),source:process.argv[3]||'https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzf296bcc4.js',
- ...(lapConfig?{lapConfig,mainSource:process.argv[5]||null,mainSourceSha256}:{}),sourceSha256:crypto.createHash('sha256').update(raw).digest('hex'),...helper.equipmentSnapshot};
+ ...(manifest?{manifestSource:'https://ro.hans-webgametw.com/assets/manifest.json',manifestSha256:crypto.createHash('sha256').update(fs.readFileSync(process.argv[6])).digest('hex')} :{}),...(lapConfig?{lapConfig,mainSource:process.argv[5]||null,mainSourceSha256}:{}),sourceSha256:crypto.createHash('sha256').update(raw).digest('hex'),...helper.equipmentSnapshot};
 if(lapConfig&&(data.maxTier!==lapConfig.tierMax||data.lapCount!==lapConfig.max))throw Error('Helper lap/Tier settings differ from the current game');
 if(data.records.some(record=>record.tiers.some(row=>!Array.isArray(row.bonuses))))throw Error('Actual equipment bonuses missing; snapshot not written');
 fs.writeFileSync(path.join(root,'doc/equipment/data.json'),JSON.stringify(data,null,2)+'\n');

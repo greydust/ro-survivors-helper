@@ -39,7 +39,7 @@
       for(const source of record.sources){
         const key=source.stage+'\0'+source.tier;
         if(!sources.has(key))sources.set(key,{stage:source.stage,tier:source.tier,monsters:new Set()});
-        sources.get(key).monsters.add((source.boss?'👑 ':'')+source.monster);
+        sources.get(key).monsters.add((source.boss?'👑 ':'')+source.monster+(source.rare?'（稀有）':''));
       }
       for(const source of sources.values()){
         const line=document.createElement('li'),stage=document.createElement('b');stage.textContent=source.stage+' T'+source.tier;
