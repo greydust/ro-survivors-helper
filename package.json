@@ -6,10 +6,11 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:equipment": "node scripts/build-equipment-page.mjs",
-    "test": "npm run build && npm run build:equipment && node tests/auto-pick.test.cjs && node tests/stage-observer.test.cjs && node tests/stage-levels.test.cjs && node tests/safari-diagnostics.test.cjs && node tests/inventory.test.cjs && node tests/equipment-page.test.cjs && node tests/pickups.test.cjs && node tests/weather.test.cjs",
+    "test": "npm run build && npm run build:equipment && node tests/auto-pick.test.cjs && node tests/stage-observer.test.cjs && node tests/stage-levels.test.cjs && node tests/safari-diagnostics.test.cjs && node tests/inventory.test.cjs && node tests/equipment-page.test.cjs && npm run build:cards && node tests/card-page.test.cjs && node tests/pickups.test.cjs && node tests/weather.test.cjs",
     "test:publish": "npm run build && node tests/publish-greasyfork.test.mjs",
     "check:greasyfork": "npm run build && node scripts/publish-greasyfork.mjs --dry-run",
-    "publish:greasyfork": "npm test && node scripts/push-greasyfork.mjs"
+    "publish:greasyfork": "npm test && node scripts/push-greasyfork.mjs",
+    "build:cards": "node scripts/build-card-page.mjs"
   },
   "engines": {
     "node": ">=20"

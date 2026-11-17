@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RO 倖存者｜各部位卡片總覽</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0c1423;color:#e5edf8;font:15px/1.65 system-ui,"Microsoft JhengHei",sans-serif}main{max-width:1400px;margin:auto;padding:30px 20px}h1{font-size:30px;margin:0 0 8px;color:#fff}header p{color:#adbed7;max-width:1000px;margin:7px 0}a{color:#8bcfff}.eyebrow{color:#b9e5d1;font-size:12px;letter-spacing:.12em}.toolbar{position:sticky;top:0;background:#0c1423f5;padding:12px 0 8px;z-index:5}.controls{display:grid;grid-template-columns:minmax(180px,1fr) 180px 190px;gap:12px}label{font-size:12px;color:#adbed7}input,select{display:block;width:100%;margin-top:4px;padding:11px 12px;background:#18263b;color:#fff;border:1px solid #455873;border-radius:8px;font:15px system-ui,sans-serif}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 6px}button{background:#1a2940;color:#dce8fa;border:1px solid #415573;padding:7px 12px;border-radius:7px;cursor:pointer;font:inherit}button.active{background:#b9e5d1;color:#12332c;border-color:#b9e5d1}button small{opacity:.75;margin-left:5px}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #8bcfff;outline-offset:2px}#result{font-size:13px;color:#b9e5d1;margin:7px 0}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:14px;margin-top:12px}.card{padding:16px;background:#152238;border:1px solid #415573;border-radius:10px;min-width:0}.card header{display:flex;justify-content:space-between;gap:12px;align-items:start}.card h2{font-size:17px;line-height:1.5;margin:0;color:#fff}.meta{font-size:12px;color:#adbed7;margin:4px 0 10px}.score{color:#b9e5d1;white-space:nowrap;font-size:12px}.score b{font-size:26px;line-height:1.2;display:block;text-align:right}.card table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}.card th{color:#9eb1cb;font-size:11px;font-weight:500;text-align:left;padding:5px 4px}.card th:first-child{width:56px}.card th:nth-child(2){width:48px}.card td{border-top:1px solid #2d405c;vertical-align:top;padding:7px 4px;overflow-wrap:anywhere}.card td:nth-child(2){color:#b9e5d1;font-variant-numeric:tabular-nums;font-weight:700}.card tr.selected{background:#b9e5d10b}.bonus{display:block}.sources{font-size:12px;color:#adbed7;margin:12px 0 0}.empty-result{grid-column:1/-1;padding:30px;text-align:center;color:#adbed7}.note{font-size:12px;color:#9eb1cb}.notice{padding:10px 14px;border-left:3px solid #b9e5d1;background:#152238;margin:16px 0}footer{margin-top:25px;padding-top:14px;border-top:1px solid #2d405c;font-size:12px;color:#9eb1cb}[hidden]{display:none!important}@media(max-width:650px){main{padding:18px 12px}.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.controls label:first-child{grid-column:1/-1}.tabs{flex-wrap:nowrap;overflow-x:auto}.tabs button{flex:none;white-space:nowrap}h1{font-size:26px}button{padding:7px 10px}.toolbar{position:relative}.card{padding:13px}}
+</style>
+</head>
+<body><main>
+<header>
+<div class="eyebrow">RO SURVIVORS · CARD ATLAS</div>
+<h1>各部位卡片總覽</h1>
+<p>按插卡部位查找，每張卡一次比較各版本 GS 與能力。選擇職業與排序版本，卡片會依 GS 由高至低排列。</p>
+<p><a href="../equipment/index.html">裝備總覽 ↗</a></p>
+<div class="notice note" id="version-note"></div>
+<p class="note">GS 為單張卡片的原生評分，會隨職業權重改變；能力列出卡片原始加成，實際效果仍受遊戲上限影響。頭部為原生插卡分類。</p>
+</header>
+<div class="toolbar">
+<div class="controls">
+<label>搜尋卡片、能力或關卡<input id="search" type="search" placeholder="例如：元宵節、減傷、波利、4195…"></label>
+<label>GS 計分職業<select id="job" aria-label="GS 計分職業"></select></label>
+<label>依此版本 GS 排序<select id="sort-version" aria-label="排序版本"></select></label>
+</div>
+<nav id="categories" class="tabs" aria-label="插卡部位"></nav>
+<div id="result" role="status" aria-live="polite"></div>
+</div>
+<section id="cards" class="grid" aria-label="卡片清單"></section>
+<footer><span id="snapshot-note"></span> · <a href="https://ro.hans-webgametw.com/" target="_blank" rel="noopener">遊戲來源</a> · <a id="data-source" target="_blank" rel="noopener">卡片模組</a> · <a id="score-source" target="_blank" rel="noopener">評分模組</a>。本頁可離線使用，遊戲更新後需重新產生快照。卡片資料權利屬原權利人。</footer>
+</main>
+<script id="card-data" type="application/json"><!--CARD_DATA--></script>
+<script><!--CARD_SCRIPT--></script>
+</body></html>
