@@ -18,6 +18,19 @@ assert(document.querySelector('#version-note').textContent.includes('第六周�
 const job=document.querySelector('#job'),version=document.querySelector('#sort-version'),search=document.querySelector('#search');
 for(const [slot] of data.slots){document.querySelector('[data-category="'+slot+'"]').click();assert.equal(cards().length,data.records.filter(c=>c.slot===slot).length);assert(cards().every(c=>data.records.find(r=>r.id===Number(c.dataset.cardId)).slot===slot));sorted();}
 document.querySelector('[data-category="all"]').click();
+assert.equal(document.querySelectorAll('[data-monster-type]').length,3);
+for(const type of ['mob','boss']){
+ document.querySelector('[data-monster-type="'+type+'"]').click();
+ const expected=data.records.filter(c=>type==='boss'?!!c.boss:!c.boss);
+ assert.deepEqual(cards().map(c=>Number(c.dataset.cardId)).sort((a,b)=>a-b),expected.map(c=>c.id).sort((a,b)=>a-b));sorted();
+ assert.equal(document.querySelector('[data-monster-type="'+type+'"]').getAttribute('aria-pressed'),'true');
+ if(type==='boss')for(const kind of ['mini','mvp'])assert(expected.some(c=>c.boss===kind));
+}
+search.value='元宵節';search.oninput();document.querySelector('[data-category="weapon"]').click();
+assert.deepEqual(cards().map(c=>Number(c.dataset.cardId)).sort((a,b)=>a-b),data.records.filter(c=>c.boss&&c.slot==='weapon'&&c.sources.some(s=>s.stage==='元宵節')).map(c=>c.id).sort((a,b)=>a-b));sorted();
+assert.equal(document.querySelector('[data-category="weapon"] small').textContent,String(cards().length));
+assert.equal(document.querySelector('[data-monster-type="boss"]').getAttribute('aria-pressed'),'true');
+search.value='';search.oninput();document.querySelector('[data-monster-type="all"]').click();document.querySelector('[data-category="all"]').click();assert.equal(cards().length,133);
 for(const id of ['swordsman','mage','archer','arch_bishop']){job.value=id;job.onchange();for(const lap of [1,4,6]){version.value=String(lap);version.onchange();sorted();for(const card of cards()){const record=data.records.find(r=>r.id===Number(card.dataset.cardId));assert.equal(Number(card.dataset.score),record.versions.find(v=>v.lap===lap).scores[id]);}}}
 search.value='元宵節';search.oninput();assert(cards().length>5);assert(cards().every(c=>c.textContent.includes('元宵節')));
 document.querySelector('[data-category="garment"]').click();assert(cards().every(c=>data.records.find(r=>r.id===Number(c.dataset.cardId)).slot==='garment'));assert(search.value==='元宵節');
