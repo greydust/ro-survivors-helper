@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.0
+// @version      2.1.1
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.0'};
+  window[runtimeKey]={version:'2.1.1'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -255,6 +255,10 @@
     // The native master becomes 100%; the three independent controls replace it.
     if(battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
     anchor.hidden=true;
+    // The game's .opt-row display rule overrides the browser's [hidden] style.
+    // Keep the native control mounted for its handlers, but never interactive.
+    anchor.style.setProperty('display','none','important');
+    native.disabled=true;
     let previous=anchor;
     for(const [key,title] of [['enemy','敵人特效透明度'],['teammate','隊友特效透明度'],['self','自身特效透明度']]){
       let row=document.querySelector('[data-ro-effect-opacity="'+key+'"]');
@@ -2305,7 +2309,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.0');
+      console.info('[RO助手] 即時自選已啟用 v2.1.1');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
