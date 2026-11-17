@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.3
+// @version      2.1.4
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.3'};
+  window[runtimeKey]={version:'2.1.4'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -317,6 +317,9 @@
     });
     const world=game.world3d;
     wrap(game.fxLayer,'addChild',original=>function(...nodes){if(state.source)for(const node of nodes)tag(node,state.source);return Reflect.apply(original,this,nodes);});
+    // Persistent fields (Loki's Veil, Volcano, Deluge) insert a separate
+    // Graphics at index 0 and return an empty view to addFx.
+    wrap(game.fxLayer,'addChildAt',original=>function(node,index,...rest){if(state.source)tag(node,state.source);return Reflect.apply(original,this,[node,index,...rest]);});
     wrap(world,'addBeam',original=>function(...args){return scoped('environment',()=>Reflect.apply(original,this,args));});
     for(const method of ['addZone','addGroundSprite','addWave','add3D','addCylinder','addFireWave','addFirePatch','addFireball'])wrap(world,method,original=>function(...args){
       const source=state.source||'self',start=this.cylinders?.length||0;
@@ -370,7 +373,7 @@
     }
     wrap(game.app?.renderer,'render',original=>function(...args){return draw2D(original,this,args);});
     state.observePeers=()=>{
-      for(const weapon of game.weapons||[])wrap(weapon,'update',original=>function(...args){return scoped('self',()=>Reflect.apply(original,this,args));});
+      for(const weapon of game.weapons||[])for(const method of ['update','fire','onLowHp','onPlayerHit'])wrap(weapon,method,original=>function(...args){return scoped('self',()=>Reflect.apply(original,this,args));});
       for(const mate of game.coop?.mates?.values?.()||[])wrap(mate.ghost,'play',original=>function(...args){return scoped('teammate',()=>Reflect.apply(original,this,args));});
     };
     state.observePeers();
@@ -2323,7 +2326,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.3');
+      console.info('[RO助手] 即時自選已啟用 v2.1.4');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
