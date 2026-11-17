@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.1.1
+// @version      2.1.2
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.1.1'};
+  window[runtimeKey]={version:'2.1.2'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -291,8 +291,13 @@
       const original=object[key];try{Object.defineProperty(object,key,{configurable:true,writable:true,enumerable:descriptor?.enumerable??false,value:make(original)});keys.add(key);}catch{}
     }
     function tag(node,source){if(node&&source!=='environment'&&!state.nodes.has(node))state.nodes.set(node,source);}
+    function tagEffectMeshes(effect,source){
+      if(!effect||source==='environment')return;
+      const scene=game.world3d.scene;
+      for(const node of [effect.mesh,effect.group,effect.points,effect.ring])if(node&&(node.parent===scene||scene?.children?.includes(node))){tag(node,source);if(!state.roots.has(node))state.roots.set(node,source);}
+    }
     function tagEffect(effect,source){
-      if(!effect)return;tag(effect.view,source);
+      if(!effect)return;tag(effect.view,source);tagEffectMeshes(effect,source);
       wrap(effect,'update',original=>function(...args){return scoped(source,()=>Reflect.apply(original,this,args));});
     }
     for(const method of ['updateEnemies','netBossCast','enemyArrow','groundWarning','endlessShot'])wrap(game,method,original=>function(...args){return scoped('enemy',()=>Reflect.apply(original,this,args));});
@@ -301,10 +306,17 @@
     wrap(game,'addFx',original=>function(effect,...rest){tagEffect(effect,owner(this));return Reflect.apply(original,this,[effect,...rest]);});
     wrap(game,'addProjectile',original=>function(projectile,...rest){
       const source=projectile?.ghost?'teammate':owner(this);tag(projectile?.view,source);
-      if(projectile)wrap(projectile,'hitFx',originalHit=>function(...args){return scoped(source,()=>Reflect.apply(originalHit,this,args));});
+      if(projectile){
+        tagEffectMeshes(projectile.model,source);
+        // Native arrow models create muzzle flashes/particles on their first
+        // update, after the weapon's fire/update scope has already returned.
+        wrap(projectile.model,'update',originalUpdate=>function(...args){return scoped(source,()=>Reflect.apply(originalUpdate,this,args));});
+        for(const target of [projectile,projectile.hitOpts])wrap(target,'hitFx',originalHit=>function(...args){return scoped(source,()=>{const effect=Reflect.apply(originalHit,this,args);tagEffect(effect,source);return effect;});});
+      }
       return scoped(source,()=>Reflect.apply(original,this,[projectile,...rest]));
     });
     const world=game.world3d;
+    wrap(game.fxLayer,'addChild',original=>function(...nodes){if(state.source)for(const node of nodes)tag(node,state.source);return Reflect.apply(original,this,nodes);});
     wrap(world,'addBeam',original=>function(...args){return scoped('environment',()=>Reflect.apply(original,this,args));});
     for(const method of ['addZone','addGroundSprite','addWave','add3D','addCylinder','addFireWave','addFirePatch','addFireball'])wrap(world,method,original=>function(...args){
       const source=state.source||'self',start=this.cylinders?.length||0;
@@ -2309,7 +2321,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.1.1');
+      console.info('[RO助手] 即時自選已啟用 v2.1.2');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
