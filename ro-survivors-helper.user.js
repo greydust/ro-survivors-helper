@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.0.6
+// @version      2.1.0
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.0.6'};
+  window[runtimeKey]={version:'2.1.0'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -220,6 +220,147 @@
     uniforms.envTint.value.set(1,1,1);uniforms.fogAmount.value=0;uniforms.playerLight.value=0;
     atmosphere.world.renderer.setClearColor(727603);
   }
+  const SPEED_PREFERENCE_KEY='greydust.ro.battle-speed-2x.v1',EFFECT_OPACITY_KEY='greydust.ro.effect-opacity.v1';
+  let preferredDoubleSpeed=false,effectOpacity=null,battleSettings=null,battleSetOption=null;
+  try{preferredDoubleSpeed=localStorage.getItem(SPEED_PREFERENCE_KEY)==='true';}catch{}
+  try{const value=JSON.parse(localStorage.getItem(EFFECT_OPACITY_KEY)||'null');if(value&&['enemy','teammate','self'].every(key=>Number.isFinite(value[key])&&value[key]>=0&&value[key]<=1))effectOpacity=value;}catch{}
+  const speedApis=new WeakSet(),battleVisualGames=new WeakMap();
+  function installSpeedPreference(){
+    const api=window.__RO_SPD;if(!api||speedApis.has(api)||!['k','set','state'].every(key=>typeof api[key]==='function'))return;
+    const original=api.k;let lastGame=null;
+    api.k=function(game,coop,delta,base,...rest){
+      const fresh=game!==lastGame;lastGame=game;
+      const result=Reflect.apply(original,this,[game,coop,delta,base,...rest]),state=api.state();
+      if(fresh&&state.shown&&base===1&&preferredDoubleSpeed&&!state.on){
+        api.set(true);
+        // The first native call reset this run to 1x, so it did not count delta.
+        return Reflect.apply(original,this,[game,coop,delta,base,...rest]);
+      }
+      if(state.shown&&base===1&&preferredDoubleSpeed!==!!state.on){preferredDoubleSpeed=!!state.on;try{localStorage.setItem(SPEED_PREFERENCE_KEY,String(preferredDoubleSpeed));}catch{}}
+      return result;
+    };
+    speedApis.add(api);
+  }
+  function initializeBattleSettings(module){
+    battleSettings=Object.values(module||{}).find(value=>value&&typeof value==='object'&&typeof value.fxOpacity==='number'&&typeof value.fxQuality==='string'&&typeof value.damageNumbers==='boolean')||null;
+    battleSetOption=Object.values(module||{}).find(value=>typeof value==='function'&&/Object\.assign\(/.test(Function.prototype.toString.call(value))&&/localStorage\.setItem/.test(Function.prototype.toString.call(value))&&/\.fxQuality/.test(Function.prototype.toString.call(value))&&/\.resolution/.test(Function.prototype.toString.call(value)))||null;
+    if(battleSettings&&!effectOpacity){const initial=Math.max(0,Math.min(1,battleSettings.fxOpacity));effectOpacity={enemy:initial,teammate:initial,self:initial};saveEffectOpacity();}
+    if(battleSettings&&battleSetOption&&battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
+  }
+  function saveEffectOpacity(){try{localStorage.setItem(EFFECT_OPACITY_KEY,JSON.stringify(effectOpacity));}catch{notify('設定無法保存，目前只在本分頁有效');}}
+  function updateBattlePreferenceOptions(){
+    installSpeedPreference();
+    const native=document.querySelector('input[data-pct="fxOpacity"]'),anchor=native?.closest('.opt-row');
+    if(!anchor||!battleSettings||!battleSetOption||!effectOpacity)return;
+    // The native master becomes 100%; the three independent controls replace it.
+    if(battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
+    anchor.hidden=true;
+    let previous=anchor;
+    for(const [key,title] of [['enemy','敵人特效透明度'],['teammate','隊友特效透明度'],['self','自身特效透明度']]){
+      let row=document.querySelector('[data-ro-effect-opacity="'+key+'"]');
+      if(!row){
+        row=document.createElement('div');row.className='opt-row opt-range';row.dataset.roEffectOpacity=key;
+        const text=document.createElement('span'),heading=document.createElement('b'),hint=document.createElement('small');heading.textContent=title;hint.textContent='0% 完全隱藏；傷害、命中與技能運算照常';text.append(heading,hint);
+        const input=document.createElement('input');input.type='range';input.min='0';input.max='100';input.step='5';input.setAttribute('aria-label',title);
+        const output=document.createElement('output');
+        input.oninput=()=>{effectOpacity[key]=Math.max(0,Math.min(100,Number(input.value)))/100;output.textContent=Math.round(effectOpacity[key]*100)+'%';saveEffectOpacity();};
+        row.append(text,input,output);
+      }
+      if(previous.nextElementSibling!==row)previous.after(row);previous=row;
+      const input=row.querySelector('input'),output=row.querySelector('output'),value=Math.round(effectOpacity[key]*100);
+      if(input.value!==String(value))input.value=String(value);if(output.textContent!==value+'%')output.textContent=value+'%';
+    }
+  }
+  function installBattleVisualPreferences(game){
+    installSpeedPreference();
+    if(!game||!game.world3d)return;
+    let state=battleVisualGames.get(game);
+    if(state){state.observePeers();return;}
+    state={source:null,nodes:new WeakMap(),roots:new Map(),patched:new WeakMap(),materials:new WeakMap()};battleVisualGames.set(game,state);
+    const factor=source=>effectOpacity?.[source]??1;
+    const owner=receiver=>state.source||(receiver?.player&&receiver.player!==game.player?'teammate':'self');
+    function scoped(source,action){const old=state.source;state.source=source;try{return action();}finally{state.source=old;}}
+    function wrap(object,key,make){
+      if(!object||typeof object[key]!=='function')return;
+      let keys=state.patched.get(object);if(!keys){keys=new Set();state.patched.set(object,keys);}if(keys.has(key))return;
+      const descriptor=Object.getOwnPropertyDescriptor(object,key);if(descriptor&&(!descriptor.configurable||descriptor.get||descriptor.set))return;
+      const original=object[key];try{Object.defineProperty(object,key,{configurable:true,writable:true,enumerable:descriptor?.enumerable??false,value:make(original)});keys.add(key);}catch{}
+    }
+    function tag(node,source){if(node&&source!=='environment'&&!state.nodes.has(node))state.nodes.set(node,source);}
+    function tagEffect(effect,source){
+      if(!effect)return;tag(effect.view,source);
+      wrap(effect,'update',original=>function(...args){return scoped(source,()=>Reflect.apply(original,this,args));});
+    }
+    for(const method of ['updateEnemies','netBossCast','enemyArrow','groundWarning','endlessShot'])wrap(game,method,original=>function(...args){return scoped('enemy',()=>Reflect.apply(original,this,args));});
+    for(const method of ['updateMapFires','dropPickup'])wrap(game,method,original=>function(...args){return scoped('environment',()=>Reflect.apply(original,this,args));});
+    wrap(game,'schedule',original=>function(delay,callback,...rest){const source=owner(this);return Reflect.apply(original,this,[delay,typeof callback==='function'?function(...args){return scoped(source,()=>Reflect.apply(callback,this,args));}:callback,...rest]);});
+    wrap(game,'addFx',original=>function(effect,...rest){tagEffect(effect,owner(this));return Reflect.apply(original,this,[effect,...rest]);});
+    wrap(game,'addProjectile',original=>function(projectile,...rest){
+      const source=projectile?.ghost?'teammate':owner(this);tag(projectile?.view,source);
+      if(projectile)wrap(projectile,'hitFx',originalHit=>function(...args){return scoped(source,()=>Reflect.apply(originalHit,this,args));});
+      return scoped(source,()=>Reflect.apply(original,this,[projectile,...rest]));
+    });
+    const world=game.world3d;
+    wrap(world,'addBeam',original=>function(...args){return scoped('environment',()=>Reflect.apply(original,this,args));});
+    for(const method of ['addZone','addGroundSprite','addWave','add3D','addCylinder','addFireWave','addFirePatch','addFireball'])wrap(world,method,original=>function(...args){
+      const source=state.source||'self',start=this.cylinders?.length||0;
+      return scoped(source,()=>{const result=Reflect.apply(original,this,args);for(const effect of (this.cylinders||[]).slice(start))wrap(effect,'update',update=>function(...values){return scoped(source,()=>Reflect.apply(update,this,values));});return result;});
+    });
+    wrap(world.scene,'add',original=>function(...nodes){
+      if(state.source&&state.source!=='environment')for(const node of nodes){tag(node,state.source);state.roots.set(node,state.source);}
+      return Reflect.apply(original,this,nodes);
+    });
+    wrap(world.scene,'remove',original=>function(...nodes){for(const node of nodes)state.roots.delete(node);return Reflect.apply(original,this,nodes);});
+    function patchMaterial(material,source){
+      if(!material||state.materials.has(material)||typeof material.onBeforeCompile!=='function')return;
+      const uniform={value:factor(source)},original=material.onBeforeCompile,cacheKey=material.customProgramCacheKey;
+      material.onBeforeCompile=function(shader,...args){
+        Reflect.apply(original,this,[shader,...args]);
+        const end=shader.fragmentShader?.lastIndexOf('}');if(!(end>=0))return;
+        shader.uniforms.roEffectOpacity=uniform;
+        const multiply=material.premultipliedAlpha||(material.blending===5&&material.blendSrc===201)?'gl_FragColor *= roEffectOpacity;':'gl_FragColor.a *= roEffectOpacity;';
+        shader.fragmentShader='uniform float roEffectOpacity;\n'+shader.fragmentShader.slice(0,end)+multiply+'\n'+shader.fragmentShader.slice(end);
+      };
+      material.customProgramCacheKey=function(){return (typeof cacheKey==='function'?Reflect.apply(cacheKey,this,[]):'')+'|ro-effect-opacity-v1';};
+      material.needsUpdate=true;state.materials.set(material,uniform);
+    }
+    wrap(world.renderer,'render',original=>function(...args){
+      const restore=[],seen=new Set();
+      try{
+        for(const [root,source] of state.roots){
+          if(!root.parent&&Array.isArray(world.scene?.children)&&!world.scene.children.includes(root)){state.roots.delete(root);continue;}
+          const value=factor(source);
+          if(value===0){restore.push([root,root.visible]);root.visible=false;}
+          const visit=node=>{for(const material of Array.isArray(node.material)?node.material:node.material?[node.material]:[]){patchMaterial(material,source);const uniform=state.materials.get(material);if(uniform&&!seen.has(uniform)){seen.add(uniform);uniform.value=value;}}};
+          if(typeof root.traverse==='function')root.traverse(visit);else visit(root);
+        }
+        return Reflect.apply(original,this,args);
+      }finally{for(const [root,visible] of restore)root.visible=visible;}
+    });
+    function draw2D(original,receiver,args){
+      const restore=[];
+      try{
+        if(game.fxLayer&&effectOpacity&&battleSettings&&battleSetOption){
+          if(battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
+          const visit=node=>{
+            const source=state.nodes.get(node);if(source){restore.push([node,node.alpha]);node.alpha*=factor(source);return;}
+            for(const child of node.children||[])visit(child);
+          };
+          visit(game.fxLayer);
+          for(const node of [game.wings?.s,game.wings?.feathers])if(node){restore.push([node,node.alpha]);node.alpha*=factor('self');}
+        }
+        return Reflect.apply(original,receiver,args);
+      }finally{for(const [node,alpha] of restore)if(!node.destroyed)node.alpha=alpha;}
+    }
+    wrap(game.app?.renderer,'render',original=>function(...args){return draw2D(original,this,args);});
+    state.observePeers=()=>{
+      for(const weapon of game.weapons||[])wrap(weapon,'update',original=>function(...args){return scoped('self',()=>Reflect.apply(original,this,args));});
+      for(const mate of game.coop?.mates?.values?.()||[])wrap(mate.ghost,'play',original=>function(...args){return scoped('teammate',()=>Reflect.apply(original,this,args));});
+    };
+    state.observePeers();
+    for(const effect of game.fx||[])tagEffect(effect,'self');
+    for(const projectile of game.projectiles||[])tag(projectile.view,projectile.ghost?'teammate':'self');
+  }
   const FPS_KEY='greydust.ro.show-fps.v1';
   const optimizeHiddenPickups=true;
   let showFps=false,fpsFrame=null,fpsStart=null,fpsFrames=0,fpsGame=null,fpsLabel=null;
@@ -228,7 +369,7 @@
   let unlimitedMagnets=false,magnetLimitReady=false;
   try{unlimitedMagnets=localStorage.getItem(UNLIMITED_MAGNETS_KEY)==='true';}catch{}
   const pickupHelpers=new WeakMap(),pickupVisualPrototypes=new WeakSet(),beamVisuals=new WeakSet(),pickupWorlds=new WeakSet();
-  const pickupMetrics={visualCallsSkipped:0,beamCallsSkipped:0,beamPositionsSkipped:0,pickupVisualReady:false,beamVisualReady:false};
+  const pickupMetrics={visualCallsSkipped:0,beamCallsSkipped:0,beamPositionsSkipped:0,stationaryBeamPositionsSkipped:0,pickupVisualReady:false,beamVisualReady:false};
   const compactFunction=fn=>Function.prototype.toString.call(fn).replace(/\s+/g,'').replace(/\b0\./g,'.');
   function knownPickupVisual(fn){
     if(typeof fn!=='function')return false;
@@ -279,9 +420,19 @@
     if(typeof position==='function'){
       const source=compactFunction(position),args=source.match(/^setBeam\(([\w$]+),([\w$]+),([\w$]+)\)/);
       if(args&&source===`setBeam(${args[1]},${args[2]},${args[3]}){${args[1]}.group.position.set(${args[2]},this.heightAt(${args[2]},${args[3]}),${args[3]})}`){
-        world.setBeam=function(beam,...rest){
-          if(optimizeHiddenPickups&&beam?.group?.visible===false){pickupMetrics.beamPositionsSkipped++;return;}
-          return Reflect.apply(position,this,[beam,...rest]);
+        const positions=new WeakMap();
+        world.setBeam=function(beam,x,y,...rest){
+          if(optimizeHiddenPickups&&beam?.group?.visible===false){positions.delete(beam);pickupMetrics.beamPositionsSkipped++;return;}
+          const point=beam?.group?.position,map=this.map,altitude=map?.altitude,heights=altitude?.heights||map?.heights,previous=beam&&positions.get(beam);
+          // Altars can change height in place; leave their native sampling intact.
+          const cacheable=point&&Number.isFinite(x)&&Number.isFinite(y)&&!this.altar&&!rest.length;
+          if(cacheable&&previous&&previous.x===x&&previous.y===y&&previous.map===map&&previous.altitude===altitude&&previous.heights===heights&&previous.scale===this.hScale&&previous.heightAt===this.heightAt&&previous.point===point&&previous.px===point.x&&previous.py===point.y&&previous.pz===point.z){
+            pickupMetrics.stationaryBeamPositionsSkipped++;return;
+          }
+          const result=Reflect.apply(position,this,[beam,x,y,...rest]);
+          if(cacheable)positions.set(beam,{x,y,map,altitude,heights,scale:this.hScale,heightAt:this.heightAt,point,px:point.x,py:point.y,pz:point.z});
+          else if(beam)positions.delete(beam);
+          return result;
         };
       }
     }
@@ -329,6 +480,7 @@
       }
       if(input.checked!==value)input.checked=value;previous=input.closest('label');
     }
+    if(typeof updatePerformanceOption==='function')updatePerformanceOption();
   }
   function pickupDiagnostics(){return {unlimitedMagnets,magnetLimitReady,optimizeHiddenPickups,count:activeGame?.pickups?.length??0,...pickupMetrics};}
 
@@ -607,7 +759,7 @@
     const panel=document.querySelector('#starforge'),go=document.querySelector('#sf-go');
     const selected=document.querySelector('#sf-list .cand.sel[data-uid]');
     const ladder=document.querySelector('#sf-detail .ref-ladder');
-    if(!panel||panel.classList.contains('hidden')||!go||!selected||!ladder||!panel.querySelector('[data-sft="star"].active'))return null;
+    if(!panel||panel.classList.contains('hidden')||!go||!selected||selected.hasAttribute('data-ro-star-filtered')||!ladder||!panel.querySelector('[data-sft="star"].active'))return null;
     return {go,uid:selected.dataset.uid,level:ladder.querySelectorAll(':scope > .done').length,max:ladder.children.length,
       message:document.querySelector('#sf-detail .sf-msg')?.textContent||''};
   }
@@ -1681,6 +1833,8 @@
   }
   const smithScoreRows = new WeakSet();
   const starScoreData = new WeakMap(), starScoreHooks = new WeakSet();
+  const starFilterItems=new WeakMap();
+  let starFilterPanel=null,starFilterCategory='all';
   let restoreStarScoreMap = null;
   function armStarScoreRender() {
     if (restoreStarScoreMap) return;
@@ -1706,7 +1860,7 @@
         } catch { /* An unavailable base preview must not interrupt native rendering. */ }
       }
       const list = document.querySelector('#sf-list');
-      if (list) starScoreData.set(list, scores);
+      if (list) {starScoreData.set(list, scores);starFilterItems.set(list,new Map(this.map(item=>[item.uid,item.itemId])));}
       return Reflect.apply(original, this, [callback, thisArg]);
     };
     restoreStarScoreMap = restore;
@@ -1804,6 +1958,7 @@
     try { all.click(); } finally { smith.switching = false; }
   }
   function updateSmith() {
+    updateStarforgeFilters();
     updateAutoStar();
     updateStarforgeBaseScores();
     updateAutoRefine();
@@ -1875,6 +2030,145 @@
     } else empty?.remove();
   }
 
+  function updateStarforgeFilters(selectVisible=true){
+    const panel=document.querySelector('#starforge'),list=panel?.querySelector('#sf-list'),top=panel?.querySelector('.sf-top');
+    if(!panel||panel.classList.contains('hidden')){starFilterPanel=null;starFilterCategory='all';return;}
+    if(!list||!top)return;
+    if(starFilterPanel!==panel){starFilterPanel=panel;starFilterCategory='all';}
+    let filters=panel.querySelector('[data-ro-star-filters]');
+    if(!filters){
+      filters=document.createElement('div');filters.dataset.roStarFilters='';filters.style.cssText='display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px';filters.setAttribute('aria-label','升星與洗鍊部位過濾');
+      for(const [id,label] of inventoryCategories){
+        const button=document.createElement('button');button.type='button';button.className='inv-chip';button.dataset.roStarCategory=id;
+        const text=document.createElement('span'),count=document.createElement('small');text.textContent=label;button.append(text,document.createTextNode(' '),count);
+        button.onclick=()=>{if(autoStar.active)stopAutoStar('已切換部位，連續升星停止');starFilterCategory=id;updateStarforgeFilters();};filters.append(button);
+      }
+      top.after(filters);
+    }
+    const items=starFilterItems.get(list),rows=[...list.querySelectorAll('.cand[data-uid]')];
+    const categories=new Map(rows.map(row=>{const id=items?.get(row.dataset.uid),definition=id!==undefined?smithDefs?.[id]:smithDefinition(row);return [row,smithCategory(definition)];}));
+    for(const button of filters.querySelectorAll('button')){
+      const key=button.dataset.roStarCategory,count=key==='all'?rows.length:rows.filter(row=>categories.get(row)===key).length;
+      button.classList.toggle('active',key===starFilterCategory);button.setAttribute('aria-pressed',String(key===starFilterCategory));
+      const small=button.querySelector('small');if(small.textContent!==String(count))small.textContent=String(count);
+    }
+    for(const row of rows){const hide=starFilterCategory!=='all'&&categories.get(row)!==starFilterCategory;if(row.hasAttribute('data-ro-star-filtered')!==hide)row.toggleAttribute('data-ro-star-filtered',hide);}
+    const visible=rows.filter(row=>!row.hasAttribute('data-ro-star-filtered')),selected=rows.find(row=>row.classList.contains('sel'));
+    for(const node of [panel.querySelector('#sf-detail'),panel.querySelector('#sf-go'),panel.querySelector('#ro-auto-star')])if(node)node.hidden=visible.length===0;
+    let empty=list.querySelector('[data-ro-star-empty]');
+    if(!visible.length&&rows.length){if(!empty){empty=document.createElement('div');empty.className='empty-note';empty.dataset.roStarEmpty='';empty.textContent='此部位沒有可加工的裝備';list.append(empty);}}else empty?.remove();
+    // Use the native selection handler, which also clears its confirmation state.
+    if(selectVisible&&selected?.hasAttribute('data-ro-star-filtered')&&visible[0]&&typeof visible[0].onclick==='function'){visible[0].click();updateStarforgeFilters(false);}
+  }
+
+  const performanceLabels={pickups:'拾取更新（含移動、動畫與收集）',enemies:'怪物更新',grid:'怪物空間索引',skills:'技能更新',effects:'投射物與技能效果',visuals:'特效與傷害數字',other:'其餘遊戲更新／助手',render:'3D 繪圖 CPU 提交'};
+  let performanceSession=null,lastPerformanceReport=null;
+  const performanceMethods={updatePickups:'pickups',updateEnemies:'enemies',rebuildGrid:'grid',updateProjectiles:'effects',updateHolyTrails:'effects',updateFireRings:'effects',updatePulls:'effects',updateBastion:'effects',updateYggdrasil:'effects',updateBuffAuras:'effects',updateFxList:'visuals'};
+  function performancePercentile(values,fraction){if(!values.length)return null;const sorted=[...values].sort((a,b)=>a-b);return sorted[Math.max(0,Math.ceil(sorted.length*fraction)-1)];}
+  function startPerformanceMeasurement(seconds=15){
+    if(performanceSession)return {ok:false,error:'已有量測正在進行'};
+    const game=activeGame;
+    if(!game||typeof game.step!=='function')return {ok:false,error:'請先進入一場遊戲，再啟動量測'};
+    seconds=Number(seconds);if(!Number.isFinite(seconds)||seconds<1||seconds>60)return {ok:false,error:'量測秒數須為 1～60'};
+    const session={game,seconds,phase:'waiting',createdAt:performance.now(),startedAt:null,endedAt:null,records:[],stack:[],stats:new Map(),missing:[],weapons:new WeakSet(),counts:{},frames:[],lastFrame:null,frameId:null,timer:null,waitTimer:null};
+    performanceSession=session;
+    function begin(){
+      if(session.startedAt!==null)return;
+      session.startedAt=performance.now();session.phase='recording';clearTimeout(session.waitTimer);
+      session.timer=setTimeout(()=>stopPerformanceMeasurement('completed'),seconds*1000);
+    }
+    function wrap(object,key,category,name=key){
+      if(!object||typeof object[key]!=='function'){session.missing.push(name);return;}
+      const descriptor=Object.getOwnPropertyDescriptor(object,key),original=object[key];
+      if(descriptor&&(!descriptor.configurable||descriptor.get||descriptor.set)){session.missing.push(name);return;}
+      const stat={name,category,calls:0,totalMs:0,selfMs:0,maxMs:0,samples:[]};
+      const wrapper=function(...args){
+        if(performanceSession!==session||game.state!=='playing'||document.hidden)return Reflect.apply(original,this,args);
+        begin();
+        if(category==='step'){
+          for(const weapon of game.weapons||[])if(weapon&&!session.weapons.has(weapon)){session.weapons.add(weapon);wrap(weapon,'update','skills','weapon:'+session.weaponsCount++);}
+          for(const key of ['pickups','enemies','projectiles','fx','numbers','weapons']){const value=game[key]?.length;if(Number.isFinite(value)){const count=session.counts[key]||{samples:0,total:0,max:0};count.samples++;count.total+=value;count.max=Math.max(count.max,value);session.counts[key]=count;}}
+        }
+        const frame={start:performance.now(),children:0};session.stack.push(frame);
+        try{return Reflect.apply(original,this,args);}
+        finally{
+          const elapsed=Math.max(0,performance.now()-frame.start);session.stack.pop();
+          const parent=session.stack[session.stack.length-1];if(parent)parent.children+=elapsed;
+          stat.calls++;stat.totalMs+=elapsed;stat.selfMs+=Math.max(0,elapsed-frame.children);stat.maxMs=Math.max(stat.maxMs,elapsed);
+          if(stat.samples.length<4096)stat.samples.push(elapsed);else stat.samples[(stat.calls-1)%4096]=elapsed;
+        }
+      };
+      try{Object.defineProperty(object,key,{configurable:true,enumerable:descriptor?.enumerable??false,writable:true,value:wrapper});}
+      catch{session.missing.push(name);return;}
+      session.stats.set(name,stat);session.records.push({object,key,descriptor,wrapper});
+    }
+    session.weaponsCount=0;
+    wrap(game,'step','step');
+    if(!session.stats.has('step')){performanceSession=null;return {ok:false,error:'無法安全包裝目前遊戲的 step 方法'};}
+    for(const [method,category] of Object.entries(performanceMethods))wrap(game,method,category);
+    wrap(game.world3d,'render','render','world3d.render');
+    function sampleFrame(now){
+      if(performanceSession!==session)return;
+      if(session.phase==='recording'&&game.state==='playing'&&!document.hidden){if(session.lastFrame!==null&&session.frames.length<8192)session.frames.push(now-session.lastFrame);session.lastFrame=now;}
+      else session.lastFrame=null;
+      session.frameId=window.requestAnimationFrame?.(sampleFrame)??null;
+    }
+    session.frameId=window.requestAnimationFrame?.(sampleFrame)??null;
+    session.waitTimer=setTimeout(()=>stopPerformanceMeasurement('no-playing-scene'),120000);
+    return {ok:true,phase:'waiting',seconds};
+  }
+  function stopPerformanceMeasurement(reason='manual'){
+    const session=performanceSession;if(!session)return lastPerformanceReport;
+    performanceSession=null;session.endedAt=performance.now();clearTimeout(session.timer);clearTimeout(session.waitTimer);
+    if(session.frameId!==null)window.cancelAnimationFrame?.(session.frameId);
+    for(const {object,key,descriptor,wrapper} of session.records.reverse())if(object[key]===wrapper){if(descriptor)Object.defineProperty(object,key,descriptor);else delete object[key];}
+    const methods=[...session.stats.values()].map(({samples,...stat})=>({...stat,meanMs:stat.calls?stat.totalMs/stat.calls:null,p95Ms:performancePercentile(samples,.95),sampleCount:samples.length}));
+    const step=methods.find(row=>row.category==='step'),steps=step?.calls||0;
+    const categories=Object.entries(performanceLabels).map(([key,label])=>{
+      const rows=methods.filter(row=>row.category===key),selfMs=key==='other'?(step?.selfMs||0):rows.reduce((sum,row)=>sum+row.selfMs,0);
+      return {key,label,calls:key==='other'?steps:rows.reduce((sum,row)=>sum+row.calls,0),selfMs,msPerGameStep:steps&&key!=='render'?selfMs/steps:null,percentOfGameStep:step?.totalMs&&key!=='render'?100*selfMs/step.totalMs:null};
+    });
+    const frameSum=session.frames.reduce((sum,value)=>sum+value,0);
+    lastPerformanceReport={format:1,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
+      categories,methods,counts:Object.fromEntries(Object.entries(session.counts).map(([key,value])=>[key,{mean:value.total/value.samples,max:value.max}])),missing:session.missing,
+      frames:{samples:session.frames.length,fps:frameSum?session.frames.length*1000/frameSum:null,p95IntervalMs:performancePercentile(session.frames,.95)},
+      notes:['同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未包裝的技能 hook、地圖／玩家／助手等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。']};
+    return lastPerformanceReport;
+  }
+  function performanceMeasurementState(){return {phase:performanceSession?.phase||'idle',seconds:performanceSession?.seconds??null,hasReport:!!lastPerformanceReport};}
+  function updatePerformanceOption(){
+    const anchor=document.querySelector('[data-ro-pickup-option="show-fps"]')?.closest('label');if(!anchor||document.querySelector('#ro-performance-start'))return;
+    const row=document.createElement('div');row.className='opt-row';
+    const label=document.createElement('span');label.textContent='戰鬥效能量測';
+    const start=document.createElement('button');start.id='ro-performance-start';start.type='button';start.textContent='量測 15 秒';
+    const view=document.createElement('button');view.type='button';view.textContent='查看報告';view.onclick=openPerformanceReport;
+    const status=document.createElement('small');status.setAttribute('role','status');
+    start.onclick=()=>{
+      if(performanceSession){stopPerformanceMeasurement();status.textContent='量測已停止';start.textContent='量測 15 秒';openPerformanceReport();return;}
+      const result=startPerformanceMeasurement();if(!result.ok){status.textContent=result.error;return;}
+      start.textContent='停止量測';status.textContent='回到戰鬥後開始，15 秒後自動完成';
+      function refresh(){
+        if(!row.isConnected)return;
+        if(performanceSession){status.textContent=performanceSession.phase==='waiting'?'等待回到戰鬥…':'量測中，請維持平常遊玩方式';setTimeout(refresh,500);}
+        else{status.textContent='量測已結束，可查看報告';start.textContent='量測 15 秒';}
+      }
+      setTimeout(refresh,500);
+    };
+    row.append(label,start,view,status);anchor.after(row);
+  }
+  function openPerformanceReport(){
+    document.querySelector('#ro-performance-report')?.remove();
+    const panel=document.createElement('section');panel.id='ro-performance-report';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','戰鬥效能量測報告');
+    panel.style.cssText='position:fixed;inset:5%;z-index:2147483647;overflow:auto;padding:16px;background:#101b2b;color:#eef;border:1px solid #789;border-radius:8px;font:14px/1.5 sans-serif';
+    const title=document.createElement('h3');title.textContent='戰鬥效能量測報告';
+    const note=document.createElement('p');note.textContent=performanceSession?'量測尚未結束，以下是上次完成的報告。':lastPerformanceReport?'以下為同步 CPU 耗時；資料僅留在本分頁，不會上傳。':'尚無報告，請在遊戲選項按「量測 15 秒」，再回到戰鬥。';
+    const summary=document.createElement('pre');summary.style.whiteSpace='pre-wrap';
+    if(lastPerformanceReport)summary.textContent=lastPerformanceReport.categories.map(row=>row.key==='render'?`${row.label}：總計 ${row.selfMs.toFixed(2)} ms`:`${row.label}：${row.msPerGameStep===null?'無樣本':row.msPerGameStep.toFixed(3)+' ms／遊戲步'}${row.percentOfGameStep===null?'':'（'+row.percentOfGameStep.toFixed(1)+'%）'}`).join('\n');
+    const text=document.createElement('textarea');text.readOnly=true;text.setAttribute('aria-label','效能報告 JSON');text.style.cssText='display:block;width:100%;height:35vh;box-sizing:border-box';text.value=lastPerformanceReport?JSON.stringify(lastPerformanceReport,null,2):'';
+    const copy=document.createElement('button');copy.textContent='複製報告';copy.onclick=async()=>{try{if(!window.navigator?.clipboard?.writeText)throw Error('clipboard unavailable');await window.navigator.clipboard.writeText(text.value);note.textContent='已複製，可貼回對話分析。';}catch{text.focus();text.select?.();note.textContent='請手動複製下方已選取的報告。';}};
+    const close=document.createElement('button');close.textContent='關閉';close.onclick=()=>panel.remove();panel.append(title,note,summary,copy,close,text);document.body.append(panel);
+  }
+  window[runtimeKey].profile={start:startPerformanceMeasurement,stop:stopPerformanceMeasurement,state:performanceMeasurementState,report:()=>lastPerformanceReport};
   function pickerIsOpen(){
     const picker=document.querySelector('#picker');
     return !!picker&&!picker.classList.contains('hidden');
@@ -1897,6 +2191,7 @@
   }
 
   function installFastChoice(game) {
+    if(typeof installBattleVisualPreferences==='function')installBattleVisualPreferences(game);
     installPickupHelpers(game);
     installHordeCount(game);
     if(game)activeGame=game;
@@ -1973,6 +2268,7 @@
     }
   }
   function helperTick(game){
+    if(typeof performanceSession!=='undefined'&&performanceSession&&(performanceSession.game!==game||game.state==='over'))stopPerformanceMeasurement(performanceSession.game!==game?'game-changed':'game-over');
     runHelperHook(game,'FPS',()=>updateFpsDisplay(game));
     runHelperHook(game,'戰鬥天氣',()=>installWeatherEffects(game));
     runHelperHook(game,'自動選擇',()=>installFastChoice(game));
@@ -1988,6 +2284,7 @@
     try {
       const module = await import(new URL(link.getAttribute('href'), location.href).href);
       gameCatalog=module;
+      initializeBattleSettings(module);
       installPickupVisualHooks(module);
       updateStageSpawnSchedule();
       smithDefs = Object.values(module).find(value => value && typeof value === 'object'
@@ -2008,7 +2305,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.6');
+      console.info('[RO助手] 即時自選已啟用 v2.1.0');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -2217,6 +2514,7 @@
       updateOfflineUI();
       updateMinimapOption();
       updatePickupOptions();
+      updateBattlePreferenceOptions();
       updateSmith();
       updateMerchant();
       updateInventoryViews();
@@ -2305,6 +2603,7 @@
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
       [data-ro-ap-enabled]{outline:2px solid #65edb1!important;outline-offset:2px}
       #smith-list [data-ro-smith-filtered]{display:none!important}
+      #sf-list [data-ro-star-filtered]{display:none!important}
       [data-ro-inventory-categories]{display:contents}#cp-inv-filters [hidden],#ks-filt [hidden]{display:none!important}[data-ro-inventory-subtypes]{display:flex;gap:4px;flex:0 0 100%;order:1;min-width:0;max-width:100%;overflow-x:auto;flex-wrap:nowrap;margin:4px 0 8px}[data-ro-inventory-subtypes] button{flex:none;white-space:nowrap}[data-ro-gear-details]{font-size:11px;line-height:1.5;white-space:normal;overflow-wrap:anywhere;color:var(--ro-text,#24304f)}#cp-eq-list .cand-info{min-width:0}#cp-eq-list .cand-side{flex:none}[data-ro-card-preview]{font-size:12px;line-height:1.5;padding-top:6px}[data-ro-gs-preview]{display:block;font-size:10px}
       #smith-filters{flex-wrap:wrap}
       #ro-auto-refine,#ro-auto-star{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
