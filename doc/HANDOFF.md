@@ -145,3 +145,10 @@ JSON.parse 與 Set.has，原樣回傳並在 finally 還原，以讀取裝備並�
 - current.v1保存80筆輸入/狀態與12筆錯誤、堆疊截斷；同步保存click／release／error的capture資料，後續150ms批次保存派送結果。錯誤同源同訊息2秒去重。刷新時只將包含輸入／錯誤的舊current搬到previous，空白重載不覆蓋有用的previous。
 - 左下Safari診斷按鈕可查看本次/上次、剪貼簿與唯讀textarea手動選取；?rodiag=1開頁直接顯示上次內容，避免故障時依賴遊戲onclick。若localStorage不可用顯示保存限制，不能承諾硬凍結或儲存被清除後仍可恢復。
 - 測試覆蓋Safari限制、事件不被取消、錯誤與有界保存、跨頁恢復、空白刷新保留舊紀錄、自動/手動複製及儲存失敗。LinkeDOM的window.navigator由Proxy getter提供預設Chrome UA，測試須額外以Proxy覆蓋navigator，直接defineProperty不會改變讀值。
+
+
+### 六周目怪物等級查核（2026-11-16）
+
+目前 main-BNOcv2PN.hz9861d82d.js 的 RO_LAPK 對二至六周目使用相同 lv 修正：一般關卡以迷宮森林與目前關卡的時間加權怪物平均等級之差四捨五入，最低 0。血量、傷害的周目成長不能直接當等級成長。prt_castle 為 storyOnly，原生維持一周目等級；xmas/louyang 繼承最後一般關卡的修正，其等級差為 0，應顯示基礎等級，而非未知。stageMonsterLevel 已補上這些分支；未知怪物或無法辨識的關卡仍不猜測。
+
+tests/fixtures/stage-level-native.json 保存目前公開方法與怪物／關卡資料，tests/stage-levels.test.cjs 對 12 關、一至六周目共 912 個案例逐筆比對原生結果，並驗證劇情與節慶關卡的一般怪／頭目等級 UI。

@@ -48,9 +48,13 @@
     if(!Number.isFinite(base))return null;
     if(lap<=1)return base;
     // Native RO_LAPAVG/RO_LAPK: time-weighted pool mean, rounded difference
-    // from the last eligible stage. Both later laps use the same level offset.
+    // from the last eligible stage. Laps 2–6 use the same level offset.
     const eligible=['prontera','sewer','sunken','byalan','payon','payon_cave','orcs','pyramid','maze'];
-    if(!selected||!eligible.includes(selected.id))return null;
+    if(!selected)return null;
+    // RO_LAPOF keeps story-only stages at lap 1. Special stages inherit
+    // the last regular stage's correction, whose level offset is zero.
+    if(selected.script?.storyOnly||['prt_castle','xmas','louyang'].includes(selected.id))return base;
+    if(!eligible.includes(selected.id))return null;
     const average=script=>{
       let sum=0,total=0;
       for(const wave of script?.waves||[]){

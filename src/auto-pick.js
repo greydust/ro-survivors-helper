@@ -20,6 +20,7 @@
   }
 
   function installFastChoice(game) {
+    installPickupHelpers(game);
     installHordeCount(game);
     if(game)activeGame=game;
     if (!game || !game.events) return;
@@ -95,6 +96,7 @@
     }
   }
   function helperTick(game){
+    runHelperHook(game,'FPS',()=>updateFpsDisplay(game));
     runHelperHook(game,'自動選擇',()=>installFastChoice(game));
     runHelperHook(game,'怪物統計',()=>updateHordeHud(game));
     runHelperHook(game,'角色資料',()=>{if(performance.now()>=nextCharacterDetailsAt){nextCharacterDetailsAt=performance.now()+250;updateCharacterDetails();}});
@@ -108,6 +110,7 @@
     try {
       const module = await import(new URL(link.getAttribute('href'), location.href).href);
       gameCatalog=module;
+      installPickupVisualHooks(module);
       updateStageSpawnSchedule();
       smithDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value[1101]?.slot === 'weapon' && value[2254]?.slot === 'head_top') || null;
@@ -127,7 +130,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.1');
+      console.info('[RO助手] 即時自選已啟用 v2.0.2');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -335,6 +338,7 @@
       updateCharacterDetails();
       updateOfflineUI();
       updateMinimapOption();
+      updatePickupOptions();
       updateSmith();
       updateMerchant();
       updateInventoryViews();

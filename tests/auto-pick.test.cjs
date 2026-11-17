@@ -424,22 +424,25 @@ test('catalog excludes selected rarities and all low tiers across categories',()
   assert(!e.api.isUnwantedEquipment(c,gearItem({quality:4})));
   e.api.excludeEquipmentTiers(c,2);assert(c.disabledTiers['1202:1']);assert(c.disabledTiers['2102:2']);assert(!c.disabledTiers['1163:3']);
 });
-test('multi-lap gear exposes T4 and T5, bulk exclusions stop below highest and persist',()=>{
+test('multi-lap gear exposes T4 through T8, bulk exclusions stop below highest and persist',()=>{
   const e=catalogEnv(),seen=[];
   e.api.setSmithData({1202:{slot:'weapon',wtype:'단검',bonuses:[]}},{manifest:{items:{}}});
   e.api.setGameCatalog({bs:(id,tier)=>{seen.push(tier);return [{text:()=>`實際 T${tier} 屬性`}];}});
   e.api.openFilter();
   const card=e.document.querySelector('[data-gear-id="1202"]');
-  assert.deepEqual([...card.querySelectorAll('[data-gear-tier]')].map(b=>b.dataset.gearTier),['1','4','5']);
-  assert(card.textContent.includes('實際 T4 屬性'));assert(card.textContent.includes('實際 T5 屬性'));assert(seen.includes(5));
-  assert.deepEqual([...e.document.querySelectorAll('[data-exclude-tier]')].map(b=>b.dataset.excludeTier),['1','2','3','4']);
-  e.document.querySelector('[data-exclude-tier="4"]').click();
+  assert.deepEqual([...card.querySelectorAll('[data-gear-tier]')].map(b=>b.dataset.gearTier),['1','4','5','6','7','8']);
+  assert(card.textContent.includes('實際 T4 屬性'));assert(card.textContent.includes('實際 T5 屬性'));assert(seen.includes(8));assert(card.textContent.includes('六周目 T8'));
+  assert.deepEqual([...e.document.querySelectorAll('[data-exclude-tier-select] option')].map(b=>b.value),['1','2','3','4','5','6','7']);
+  const cutoff=e.document.querySelector('[data-exclude-tier-select]');cutoff.querySelector('[value="7"]').selected=true;cutoff.onchange();
+  assert(!e.api.getFilterDraft().disabledTiers['1163:7'],'selecting a cutoff does not apply changes');
+  e.document.querySelector('[data-exclude-tier-apply]').click();
+  assert.equal(e.document.querySelectorAll('[data-exclude-tier-apply]').length,1);assert.equal(e.document.querySelector('[data-exclude-tier-select]').value,'7');
   const draft=e.api.getFilterDraft();assert(e.api.validEquipmentFilter(draft));
-  assert(e.api.isUnwantedEquipment(draft,gearItem({tier:4})));assert(!e.api.isUnwantedEquipment(draft,gearItem({tier:5})));
-  assert(draft.disabledTiers['1163:3']);assert(draft.disabledTiers['1163:4']);assert(!draft.disabledTiers['1163:5']);
-  e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="5"]').click();
-  e.document.querySelector('[data-filter-save]').click();assert(e.api.isUnwantedEquipment(e.api.getFilterStore(),gearItem({tier:5})));
-  e.api.openFilter();assert.equal(e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="5"]').getAttribute('aria-pressed'),'false');
+  assert(e.api.isUnwantedEquipment(draft,gearItem({tier:4})));assert(!e.api.isUnwantedEquipment(draft,gearItem({tier:8})));
+  assert(draft.disabledTiers['1163:3']);assert(draft.disabledTiers['1163:4']);assert(draft.disabledTiers['1163:7']);assert(!draft.disabledTiers['1163:8']);
+  e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="8"]').click();
+  e.document.querySelector('[data-filter-save]').click();assert(e.api.isUnwantedEquipment(e.api.getFilterStore(),gearItem({tier:8})));
+  e.api.openFilter();assert.equal(e.document.querySelector('[data-gear-id="1202"] [data-gear-tier="8"]').getAttribute('aria-pressed'),'false');
 });
 test('catalog primary conditions are OR within a field, AND across fields and require distinct affixes',()=>{
   const e=catalogEnv(),c=e.api.emptyEquipmentFilter();setDetail(c,1202,gearSettings({first:['str','agi'],second:['luk','dex']}));
@@ -468,7 +471,7 @@ test('catalog UI has handedness tabs, Chinese monster names, explicit tiers, bul
   const card=d.querySelector('[data-gear-id="1202"]');assert(card);assert(card.textContent.includes('波利'));assert(card.textContent.includes('T1'));
   card.querySelector('[data-gear-tier="1"]').click();assert(e.api.getFilterDraft().disabledTiers['1202:1']);
   assert(!e.api.getFilterStore().disabledTiers['1202:1']);
-  [...d.querySelectorAll('button')].find(b=>b.textContent==='過濾T2以下').click();
+  d.querySelector('[data-exclude-tier-select] [value="2"]').selected=true;d.querySelector('[data-exclude-tier-apply]').click();
   assert(e.api.getFilterDraft().disabledTiers['2102:2']);
   d.querySelector('[data-gear-slot="twohand"]').click();assert(d.querySelector('.ro-gear-card [data-gear-tier="3"]'));
   e.api.closeFilter();assert(!e.api.getFilterStore().disabledTiers['1202:1']);assert.equal(d.querySelector('#ro-unwanted-dialog'),null);

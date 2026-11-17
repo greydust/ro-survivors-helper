@@ -56,7 +56,7 @@
         geometry={hasPlayer:!!game?.player,hasMap:!!game?.map,mapWidth:game?.map?.width??null,mapHeight:game?.map?.height??null,reach:Number.isFinite(reach)?reach:null};
       }catch(error){geometryError=trim(error?.message,200);}
       return {at:Math.round(performance.now()),viewport:{width:innerWidth,height:innerHeight,visual:window.visualViewport?{width:window.visualViewport.width,height:window.visualViewport.height,left:window.visualViewport.offsetLeft,top:window.visualViewport.offsetTop,scale:window.visualViewport.scale}:null},
-        touchClass:document.documentElement.classList.contains('touch'),hasGame:!!game,hasStats:!!game?.stats,gameState:game?.state??null,
+        touchClass:document.documentElement.classList.contains('touch'),hasGame:!!game,hasStats:!!game?.stats,gameState:game?.state??null,pickups:pickupDiagnostics(),
         diagnosticDialogOpen:!!document.querySelector('#ro-safari-diagnostics'),hud:elementState('#hud'),buffs:elementState('#buffs'),
         characterButton:elementState('#ro-character-details-toggle'),characterPanel:elementState('#ro-character-details'),
         monsters:elementState('#ro-horde-hud'),monsterList:elementState('#ro-horde-hud [data-monster-counts]'),picker:elementState('#picker'),
@@ -68,7 +68,7 @@
       try{
         const ui=uiSnapshot();log.currentUI=ui;
         // Drawing counters change every frame; only keep layout/availability transitions in history.
-        const stable={...ui,at:0,minimap:{...ui.minimap,trace:{patched:minimapTrace.patched,everAttempted:minimapTrace.attempts>0,everDrawn:minimapTrace.drawn>0,lastReason:minimapTrace.lastReason}}};
+        const stable={...ui,at:0,pickups:{unlimitedMagnets:ui.pickups.unlimitedMagnets,magnetLimitReady:ui.pickups.magnetLimitReady,optimizeHiddenPickups:ui.pickups.optimizeHiddenPickups,pickupVisualReady:ui.pickups.pickupVisualReady,beamVisualReady:ui.pickups.beamVisualReady},minimap:{...ui.minimap,trace:{patched:minimapTrace.patched,everAttempted:minimapTrace.attempts>0,everDrawn:minimapTrace.drawn>0,lastReason:minimapTrace.lastReason}}};
         const signature=JSON.stringify(stable);
         if(signature!==lastUiSignature){lastUiSignature=signature;log.uiHistory.push(ui);if(log.uiHistory.length>12)log.uiHistory.shift();scheduleSave();}
       }catch(error){log.uiDiagnosticError=trim(error?.message,300);}

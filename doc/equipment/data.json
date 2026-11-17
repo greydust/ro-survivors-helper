@@ -1,7 +1,47 @@
 {
   "updatedAt": "2026-11-16",
-  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzf296bcc4.js",
-  "sourceSha256": "bbd94da1e882e1a4e33f83ad3b0a1bfb7d5a79aff17fa5a580cd44945c8c33bc",
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hza20e91d9.js",
+  "lapConfig": {
+    "stages": null,
+    "max": 6,
+    "curve": {
+      "hp": 181.01933598375618,
+      "dmg": 22.91765149399039,
+      "gs": 4.976041599504569
+    },
+    "suffix": [
+      "",
+      "・改",
+      "・改²",
+      "・改³",
+      "・改⁴",
+      "・改⁵"
+    ],
+    "label": [
+      "一周目",
+      "二周目",
+      "三周目",
+      "四周目",
+      "五周目",
+      "六周目"
+    ],
+    "tierMax": 8,
+    "cardStep": 1000000,
+    "cardMult": [
+      1,
+      1.5,
+      2,
+      2.5,
+      3,
+      3.5
+    ],
+    "cardNoScale": [
+      4144
+    ]
+  },
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz9861d82d.js",
+  "mainSourceSha256": "7b88e4c80a8f57c484467a086e875479baad4d667e2ab3e86b1d2749ebd6d74d",
+  "sourceSha256": "f6f9ddd85063be4f1896289a5de9623b2a40b19c3d4301070c8e5a808cb7289b",
   "slots": [
     [
       "onehand",
@@ -126,7 +166,8 @@
       "其他"
     ]
   ],
-  "maxTier": 5,
+  "maxTier": 8,
+  "lapCount": 6,
   "records": [
     {
       "id": 1202,
@@ -151,6 +192,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -192,6 +251,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -252,6 +329,24 @@
           "bonuses": [
             "★ +5 LUK"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
         }
       ],
       "sources": [
@@ -286,6 +381,24 @@
           "tier": 5,
           "bonuses": [
             "★ 命中時 +5% 暈眩"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時 +6% 暈眩"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時 +7% 暈眩"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時 +8% 暈眩"
           ]
         }
       ],
@@ -322,6 +435,24 @@
           "bonuses": [
             "★ +5 詠唱速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
         }
       ],
       "sources": [
@@ -356,6 +487,24 @@
           "tier": 5,
           "bonuses": [
             "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -397,6 +546,24 @@
           "tier": 5,
           "bonuses": [
             "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
           ]
         }
       ],
@@ -463,6 +630,24 @@
           "bonuses": [
             "★ +15% 投射物速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 投射物速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 投射物速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 投射物速度"
+          ]
         }
       ],
       "sources": [
@@ -504,6 +689,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -538,6 +741,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -580,6 +801,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -621,6 +860,24 @@
           "bonuses": [
             "★ +5% Flee"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
         }
       ],
       "sources": [
@@ -655,6 +912,24 @@
           "tier": 5,
           "bonuses": [
             "★ +10% 近戰距離"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +12% 近戰距離"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +14% 近戰距離"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +16% 近戰距離"
           ]
         }
       ],
@@ -691,6 +966,24 @@
           "bonuses": [
             "★ +5% 移動速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
         }
       ],
       "sources": [
@@ -725,6 +1018,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
           ]
         }
       ],
@@ -761,6 +1072,24 @@
           "bonuses": [
             "★ +15% 拾取範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 拾取範圍"
+          ]
         }
       ],
       "sources": [
@@ -795,6 +1124,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 投射物速度"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 投射物速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 投射物速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 投射物速度"
           ]
         }
       ],
@@ -831,6 +1178,24 @@
           "bonuses": [
             "★ 急速 +5"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
         }
       ],
       "sources": [
@@ -865,6 +1230,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -901,6 +1284,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -935,6 +1336,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
           ]
         }
       ],
@@ -976,6 +1395,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -1024,6 +1461,24 @@
           "bonuses": [
             "★ +5 LUK"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
         }
       ],
       "sources": [
@@ -1058,6 +1513,24 @@
           "tier": 5,
           "bonuses": [
             "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -1094,6 +1567,24 @@
           "bonuses": [
             "★ +5 LUK"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
         }
       ],
       "sources": [
@@ -1128,6 +1619,24 @@
           "tier": 5,
           "bonuses": [
             "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
           ]
         }
       ],
@@ -1170,6 +1679,24 @@
           "bonuses": [
             "★ +0.5 HP/秒"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
         }
       ],
       "sources": [
@@ -1204,6 +1731,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -1240,6 +1785,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -1274,6 +1837,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -1310,6 +1891,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -1344,6 +1943,24 @@
           "tier": 5,
           "bonuses": [
             "★ 命中時 +5% 暈眩"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時 +6% 暈眩"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時 +7% 暈眩"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時 +8% 暈眩"
           ]
         }
       ],
@@ -1380,6 +1997,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -1414,6 +2049,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
           ]
         }
       ],
@@ -1450,6 +2103,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -1485,6 +2156,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -1519,6 +2208,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -1567,6 +2274,24 @@
           "bonuses": [
             "★ +25 最大 HP"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
         }
       ],
       "sources": [
@@ -1613,6 +2338,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% Flee"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
           ]
         }
       ],
@@ -1661,6 +2404,24 @@
           "bonuses": [
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -1699,6 +2460,27 @@
             "★ +2 護甲",
             "★ +15% Zeny"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲",
+            "★ +18% Zeny"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲",
+            "★ +21% Zeny"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲",
+            "★ +24% Zeny"
+          ]
         }
       ],
       "sources": [
@@ -1733,6 +2515,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% Zeny"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% Zeny"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% Zeny"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% Zeny"
           ]
         }
       ],
@@ -1769,6 +2569,24 @@
           "bonuses": [
             "★ +0.5 HP/秒"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
         }
       ],
       "sources": [
@@ -1803,6 +2621,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -1839,6 +2675,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -1873,6 +2727,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -1915,6 +2787,24 @@
           "bonuses": [
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -1956,6 +2846,24 @@
           "bonuses": [
             "★ +5% Flee"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
         }
       ],
       "sources": [
@@ -1990,6 +2898,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 詠唱速度"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
           ]
         }
       ],
@@ -2032,6 +2958,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -2073,6 +3017,24 @@
           "bonuses": [
             "★ +25 最大 HP"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
         }
       ],
       "sources": [
@@ -2108,6 +3070,24 @@
           "bonuses": [
             "★ +5% 範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
         }
       ],
       "sources": [
@@ -2142,6 +3122,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
           ]
         }
       ],
@@ -2189,6 +3187,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 AGI"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
           ]
         }
       ],
@@ -2249,6 +3265,24 @@
           "bonuses": [
             "★ +5 AGI"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
         }
       ],
       "sources": [
@@ -2302,6 +3336,24 @@
           "bonuses": [
             "★ +5% Flee"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
         }
       ],
       "sources": [
@@ -2354,6 +3406,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -2414,6 +3484,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -2455,6 +3543,24 @@
           "bonuses": [
             "★ 急速 +5"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
         }
       ],
       "sources": [
@@ -2489,6 +3595,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 移動速度"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
           ]
         }
       ],
@@ -2525,6 +3649,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -2559,6 +3701,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 VIT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
           ]
         }
       ],
@@ -2598,6 +3758,27 @@
             "★ +5 STR",
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -2633,6 +3814,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -2667,6 +3866,24 @@
           "tier": 5,
           "bonuses": [
             "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -2708,6 +3925,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -2762,6 +3997,24 @@
           "bonuses": [
             "★ +5 AGI"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
         }
       ],
       "sources": [
@@ -2808,6 +4061,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -2856,6 +4127,24 @@
           "bonuses": [
             "★ +5 VIT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
+          ]
         }
       ],
       "sources": [
@@ -2903,6 +4192,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -2944,6 +4251,24 @@
           "bonuses": [
             "★ +5 VIT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
+          ]
         }
       ],
       "sources": [
@@ -2978,6 +4303,24 @@
           "tier": 5,
           "bonuses": [
             "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -3020,6 +4363,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -3061,6 +4422,24 @@
           "bonuses": [
             "★ +25 最大 HP"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
         }
       ],
       "sources": [
@@ -3095,6 +4474,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% Flee"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
           ]
         }
       ],
@@ -3137,6 +4534,24 @@
           "bonuses": [
             "★ +10% 近戰距離"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +12% 近戰距離"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +14% 近戰距離"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +16% 近戰距離"
+          ]
         }
       ],
       "sources": [
@@ -3171,6 +4586,24 @@
           "tier": 5,
           "bonuses": [
             "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -3207,6 +4640,24 @@
           "bonuses": [
             "★ +5% 移動速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
         }
       ],
       "sources": [
@@ -3241,6 +4692,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -3277,6 +4746,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -3311,6 +4798,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -3347,6 +4852,24 @@
           "bonuses": [
             "★ 命中時 +5% 暈眩"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時 +6% 暈眩"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時 +7% 暈眩"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時 +8% 暈眩"
+          ]
         }
       ],
       "sources": [
@@ -3381,6 +4904,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
           ]
         }
       ],
@@ -3417,6 +4958,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -3451,6 +5010,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
           ]
         }
       ],
@@ -3496,6 +5073,27 @@
             "★ +5 AGI",
             "★ +5 LUK"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI",
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI",
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI",
+            "★ +8 LUK"
+          ]
         }
       ],
       "sources": [
@@ -3531,6 +5129,24 @@
           "bonuses": [
             "★ +0.5 HP/秒"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
         }
       ],
       "sources": [
@@ -3565,6 +5181,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -3606,6 +5240,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
           ]
         }
       ],
@@ -3660,6 +5312,24 @@
           "bonuses": [
             "★ +5 DEX"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
         }
       ],
       "sources": [
@@ -3700,6 +5370,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -3742,6 +5430,24 @@
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
         }
       ],
       "sources": [
@@ -3777,6 +5483,24 @@
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
         }
       ],
       "sources": [
@@ -3811,6 +5535,24 @@
           "tier": 5,
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
           ]
         }
       ],
@@ -3852,6 +5594,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -3899,6 +5659,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
           ]
         }
       ],
@@ -3965,6 +5743,24 @@
           "bonuses": [
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -4012,6 +5808,24 @@
           "bonuses": [
             "★ +15% 低 HP 時傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 低 HP 時傷害"
+          ]
         }
       ],
       "sources": [
@@ -4058,6 +5872,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
           ]
         }
       ],
@@ -4112,6 +5944,24 @@
           "bonuses": [
             "★ +5 DEX"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
         }
       ],
       "sources": [
@@ -4158,6 +6008,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -4206,6 +6074,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -4247,6 +6133,24 @@
           "bonuses": [
             "★ +5% 移動速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
         }
       ],
       "sources": [
@@ -4281,6 +6185,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 移動速度"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
           ]
         }
       ],
@@ -4317,6 +6239,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -4351,6 +6291,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 AGI"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
           ]
         }
       ],
@@ -4387,6 +6345,24 @@
           "bonuses": [
             "★ +5 VIT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
+          ]
         }
       ],
       "sources": [
@@ -4421,6 +6397,24 @@
           "tier": 5,
           "bonuses": [
             "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
           ]
         }
       ],
@@ -4457,6 +6451,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -4492,6 +6504,24 @@
           "bonuses": [
             "★ +25% 肉類回復量"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40% 肉類回復量"
+          ]
         }
       ],
       "sources": [
@@ -4526,6 +6556,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -4568,6 +6616,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -4609,6 +6675,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -4649,6 +6733,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
           ]
         }
       ],
@@ -4697,6 +6799,24 @@
           "bonuses": [
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -4737,6 +6857,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -4779,6 +6917,24 @@
           "bonuses": [
             "★ +0.5 HP/秒"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
         }
       ],
       "sources": [
@@ -4813,6 +6969,24 @@
           "tier": 5,
           "bonuses": [
             "★ +10% 近戰距離"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +12% 近戰距離"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +14% 近戰距離"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +16% 近戰距離"
           ]
         }
       ],
@@ -4859,6 +7033,27 @@
             "★ +5 INT",
             "★ +5 DEX"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 DEX"
+          ]
         }
       ],
       "sources": [
@@ -4900,6 +7095,24 @@
           "bonuses": [
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -4932,6 +7145,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -4992,6 +7217,24 @@
           "bonuses": [
             "★ +25 最大 HP"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
         }
       ],
       "sources": [
@@ -5036,6 +7279,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5087,6 +7342,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5145,6 +7412,18 @@
         {
           "tier": 5,
           "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
+          "bonuses": []
         }
       ],
       "sources": [
@@ -5181,50 +7460,6 @@
       ]
     },
     {
-      "id": 22847,
-      "name": "普隆德拉巡邏徽章",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/22847.png",
-      "tiers": [
-        {
-          "tier": 2,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 受到傷害",
-            "+5% 傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 受到傷害",
-            "+5% 傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 受到傷害",
-            "+5% 傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 2,
-          "stage": "普隆德拉城",
-          "monster": "關卡獎勵",
-          "boss": false
-        }
-      ]
-    },
-    {
       "id": 1452,
       "name": "彎刃長矛",
       "slot": "twohand",
@@ -5241,6 +7476,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5282,6 +7529,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5330,6 +7589,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -5365,6 +7642,24 @@
           "bonuses": [
             "★ +5 DEX"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
         }
       ],
       "sources": [
@@ -5393,6 +7688,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5441,6 +7748,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -5476,6 +7801,24 @@
           "bonuses": [
             "★ +25 最大 HP"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
         }
       ],
       "sources": [
@@ -5504,6 +7847,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -5540,6 +7895,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -5574,6 +7947,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -5610,6 +8001,24 @@
           "bonuses": [
             "★ +5% 範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
         }
       ],
       "sources": [
@@ -5644,6 +8053,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
           ]
         }
       ],
@@ -5680,6 +8107,24 @@
           "bonuses": [
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -5714,6 +8159,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
           ]
         }
       ],
@@ -5750,6 +8213,24 @@
           "bonuses": [
             "★ +5% 範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
         }
       ],
       "sources": [
@@ -5784,6 +8265,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
           ]
         }
       ],
@@ -5820,6 +8319,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -5854,6 +8371,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
           ]
         }
       ],
@@ -5890,6 +8425,24 @@
           "bonuses": [
             "★ 急速 +5"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
         }
       ],
       "sources": [
@@ -5924,6 +8477,24 @@
           "tier": 5,
           "bonuses": [
             "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
           ]
         }
       ],
@@ -5960,6 +8531,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -5994,6 +8583,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -6030,6 +8637,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -6065,6 +8690,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -6099,6 +8742,24 @@
           "tier": 5,
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
           ]
         }
       ],
@@ -6138,6 +8799,27 @@
             "★ +5 STR",
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -6176,6 +8858,27 @@
             "★ +5 STR",
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -6211,6 +8914,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -6239,6 +8960,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -6274,6 +9007,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -6316,6 +9061,24 @@
           "bonuses": [
             "★ +5% Flee"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
         }
       ],
       "sources": [
@@ -6344,6 +9107,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -6392,6 +9167,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -6420,6 +9213,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -6456,6 +9261,24 @@
           "bonuses": [
             "★ +5 詠唱速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
         }
       ],
       "sources": [
@@ -6490,6 +9313,24 @@
           "tier": 5,
           "bonuses": [
             "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
           ]
         }
       ],
@@ -6526,6 +9367,24 @@
           "bonuses": [
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -6554,6 +9413,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -6590,6 +9461,24 @@
           "bonuses": [
             "★ +5 STR"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
         }
       ],
       "sources": [
@@ -6624,6 +9513,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -6660,6 +9567,24 @@
           "bonuses": [
             "★ 急速 +5"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
         }
       ],
       "sources": [
@@ -6694,6 +9619,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
           ]
         }
       ],
@@ -6730,6 +9673,24 @@
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
         }
       ],
       "sources": [
@@ -6764,6 +9725,24 @@
           "tier": 5,
           "bonuses": [
             "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
           ]
         }
       ],
@@ -6800,6 +9779,24 @@
           "bonuses": [
             "★ +5 AGI"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
         }
       ],
       "sources": [
@@ -6834,6 +9831,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
           ]
         }
       ],
@@ -6870,6 +9885,24 @@
           "bonuses": [
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -6904,6 +9937,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 低 HP 時傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 低 HP 時傷害"
           ]
         }
       ],
@@ -6940,6 +9991,24 @@
           "bonuses": [
             "★ +5% 範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
         }
       ],
       "sources": [
@@ -6974,6 +10043,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -7010,6 +10097,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -7044,6 +10149,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
           ]
         }
       ],
@@ -7083,6 +10206,27 @@
             "★ +5 INT",
             "★ -5% 受到傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ -8% 受到傷害"
+          ]
         }
       ],
       "sources": [
@@ -7118,6 +10262,24 @@
           "bonuses": [
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -7146,6 +10308,18 @@
         },
         {
           "tier": 5,
+          "bonuses": []
+        },
+        {
+          "tier": 6,
+          "bonuses": []
+        },
+        {
+          "tier": 7,
+          "bonuses": []
+        },
+        {
+          "tier": 8,
           "bonuses": []
         }
       ],
@@ -7182,6 +10356,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -7216,6 +10408,24 @@
           "tier": 5,
           "bonuses": [
             "★ 命中時 +5% 暈眩"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時 +6% 暈眩"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時 +7% 暈眩"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時 +8% 暈眩"
           ]
         }
       ],
@@ -7252,6 +10462,24 @@
           "bonuses": [
             "★ +5 INT"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
         }
       ],
       "sources": [
@@ -7287,6 +10515,24 @@
           "bonuses": [
             "★ 急速 +5"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
         }
       ],
       "sources": [
@@ -7321,6 +10567,24 @@
           "tier": 5,
           "bonuses": [
             "★ +15% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 拾取範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 拾取範圍"
           ]
         }
       ],
@@ -7360,6 +10624,27 @@
             "★ +5% 移動速度",
             "★ +2 護甲"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度",
+            "★ +3.2 護甲"
+          ]
         }
       ],
       "sources": [
@@ -7394,6 +10679,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -7430,6 +10733,24 @@
           "bonuses": [
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -7464,6 +10785,24 @@
           "tier": 5,
           "bonuses": [
             "★ 命中時 +5% 暈眩"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時 +6% 暈眩"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時 +7% 暈眩"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時 +8% 暈眩"
           ]
         }
       ],
@@ -7500,6 +10839,24 @@
           "bonuses": [
             "★ +5% 範圍"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
         }
       ],
       "sources": [
@@ -7534,6 +10891,24 @@
           "tier": 5,
           "bonuses": [
             "★ -5% 受到傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 受到傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 受到傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 受到傷害"
           ]
         }
       ],
@@ -7570,6 +10945,24 @@
           "bonuses": [
             "★ +5% 移動速度"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
         }
       ],
       "sources": [
@@ -7604,6 +10997,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -7643,6 +11054,27 @@
             "★ +5% 範圍",
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -7677,6 +11109,24 @@
           "tier": 5,
           "bonuses": [
             "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
           ]
         }
       ],
@@ -7716,6 +11166,27 @@
             "★ +5% 爆擊",
             "★ +15% 爆擊傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊",
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊",
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊",
+            "★ +24% 爆擊傷害"
+          ]
         }
       ],
       "sources": [
@@ -7754,6 +11225,27 @@
             "★ +5 STR",
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -7788,6 +11280,24 @@
           "tier": 5,
           "bonuses": [
             "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -7824,6 +11334,24 @@
           "bonuses": [
             "★ +5% 爆擊"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
         }
       ],
       "sources": [
@@ -7859,6 +11387,24 @@
           "bonuses": [
             "★ +15% 對頭目與不死系傷害"
           ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
         }
       ],
       "sources": [
@@ -7867,6 +11413,77 @@
           "stage": "迷宮森林",
           "monster": "巴風特",
           "boss": true
+        }
+      ]
+    },
+    {
+      "id": 22847,
+      "name": "普隆德拉巡邏徽章",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/22847.png",
+      "tiers": [
+        {
+          "tier": 2,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "最大 HP +8%",
+            "+3 護甲",
+            "-5% 受到傷害",
+            "+5% 傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 2,
+          "stage": "普隆德拉城",
+          "monster": "關卡獎勵",
+          "boss": false
         }
       ]
     }

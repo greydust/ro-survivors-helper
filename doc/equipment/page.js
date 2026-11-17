@@ -45,6 +45,7 @@
         const line=document.createElement('li'),stage=document.createElement('b');stage.textContent=source.stage+' T'+source.tier;
         line.append(stage,document.createTextNode('：'+[...source.monsters].join('、')));list.append(line);
       }
+      const laps=document.createElement('li');laps.textContent='二周目 T4、三周目 T5、四周目 T6、五周目 T7、六周目 T8：同上關卡與怪物';list.append(laps);
       card.append(list);grid.append(card);
     }
     if(!records.length){const note=document.createElement('p');note.className='empty-result';note.textContent='沒有符合的裝備，請換個分類或關鍵字。';grid.append(note);}

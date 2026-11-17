@@ -20,7 +20,10 @@ input.value='波利';input.oninput();assert(document.querySelectorAll('.gear').l
 input.value='no such equipment 980981';input.oninput();assert(document.querySelector('.empty-result'));
 const catalog=JSON.parse(fs.readFileSync(path.join(__dirname,'../src/equipment-catalog.js'),'utf8').match(/const EQUIPMENT_CATALOG = (\[.*\]);/s)[1]);
 assert.deepEqual(data.records.map(record=>record.id).sort((a,b)=>a-b),catalog.map(record=>record.id).sort((a,b)=>a-b));
-assert(data.records.every(record=>record.tiers.some(row=>row.tier===4)&&record.tiers.some(row=>row.tier===5)));
+assert.equal(data.maxTier,8);assert.equal(data.lapCount,6);assert.equal(data.lapConfig.max,6);
+assert(data.records.every(record=>[4,5,6,7,8].every(tier=>record.tiers.some(row=>row.tier===tier))));
+const dagger=data.records.find(record=>record.id===1202);assert(dagger.tiers.find(row=>row.tier===8).bonuses.includes('★ 急速 +8'));
+assert(document.body.textContent.includes('六周目 T8'));
 assert(data.records.every(record=>record.sources.every(source=>!/[A-Za-z]/.test(source.monster))));
 assert(!html.includes('import('));assert(!html.includes('fetch('));
-console.log('PASS static equipment page shares filter catalog, actual bonuses, Chinese sources and T4/T5; categories, subtypes and search work offline');
+console.log('PASS static equipment page shares filter catalog, actual bonuses, Chinese sources and T4–T8; categories, subtypes and search work offline');

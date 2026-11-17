@@ -1,0 +1,2000 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz9861d82d.js",
+  "lapConfig": {
+    "stages": null,
+    "max": 6,
+    "curve": {
+      "hp": 181.01933598375618,
+      "dmg": 22.91765149399039,
+      "gs": 4.976041599504569
+    },
+    "suffix": [
+      "",
+      "・改",
+      "・改²",
+      "・改³",
+      "・改⁴",
+      "・改⁵"
+    ],
+    "label": [
+      "一周目",
+      "二周目",
+      "三周目",
+      "四周目",
+      "五周目",
+      "六周目"
+    ],
+    "tierMax": 8,
+    "cardStep": 1000000,
+    "cardMult": [
+      1,
+      1.5,
+      2,
+      2.5,
+      3,
+      3.5
+    ],
+    "cardNoScale": [
+      4144
+    ]
+  },
+  "stages": [
+    {
+      "id": "prontera",
+      "name": "Campos de Prontera",
+      "place": "Al sur de Prontera",
+      "levels": "1–8",
+      "tier": 1,
+      "gsMin": 0,
+      "map": "prt_fild08"
+    },
+    {
+      "id": "sewer",
+      "name": "Alcantarillas de Prontera",
+      "place": "Bajo las calles de Prontera",
+      "levels": "9–12",
+      "tier": 1,
+      "gsMin": 20,
+      "map": "prt_sewer"
+    },
+    {
+      "id": "sunken",
+      "name": "Barco hundido",
+      "place": "Costa de Alberta",
+      "levels": "13–15",
+      "tier": 1,
+      "gsMin": 40,
+      "story": "sunken_story",
+      "map": "sunken_deck"
+    },
+    {
+      "id": "byalan",
+      "name": "Isla de Byalan",
+      "place": "Mazmorra de Izlude",
+      "levels": "16–20",
+      "tier": 2,
+      "gsMin": 110,
+      "map": "byalan"
+    },
+    {
+      "id": "payon",
+      "name": "Bosque de Payon",
+      "place": "Alrededores de Payon",
+      "levels": "21–25",
+      "tier": 2,
+      "gsMin": 135,
+      "map": "pay_fild08"
+    },
+    {
+      "id": "payon_cave",
+      "name": "Cueva de Payon",
+      "place": "Bajo las montañas de Payon",
+      "levels": "26–30",
+      "tier": 2,
+      "gsMin": 165,
+      "map": "payon_cave"
+    },
+    {
+      "id": "prt_castle",
+      "name": "Castillo de Prontera",
+      "place": "Sala del trono",
+      "levels": "31–35",
+      "tier": 2,
+      "gsMin": 185,
+      "jobLvMin": 50,
+      "map": "prt_throne",
+      "storyOnly": true
+    },
+    {
+      "id": "orcs",
+      "name": "Aldea orca",
+      "place": "Campos de Geffen",
+      "levels": "31–40",
+      "tier": 3,
+      "gsMin": 400,
+      "map": "gef_fild10"
+    },
+    {
+      "id": "pyramid",
+      "name": "Pirámides de Morroc",
+      "place": "Desierto de Morroc",
+      "levels": "41–50",
+      "tier": 3,
+      "gsMin": 650,
+      "map": "moc_pryd04"
+    },
+    {
+      "id": "maze",
+      "name": "Bosque laberinto",
+      "place": "Al norte de Prontera",
+      "levels": "51–60",
+      "tier": 3,
+      "gsMin": 900,
+      "map": "prt_maze02"
+    },
+    {
+      "id": "xmas",
+      "name": "Navidad",
+      "place": "Lutie",
+      "levels": "61–65",
+      "tier": 3,
+      "special": true,
+      "gsMin": 900,
+      "map": "xmas"
+    },
+    {
+      "id": "louyang",
+      "name": "Festival de los Faroles",
+      "place": "Louyang",
+      "levels": "61–70",
+      "tier": 3,
+      "special": true,
+      "gsMin": 900,
+      "map": "louyang"
+    }
+  ],
+  "functions": "function RO_LAPST(sid){try{const s=xe.find(x=>x.id===sid);return!!s&&!!s.map&&!s.storyOnly&&(!RO_LAPC.stages||RO_LAPC.stages.includes(sid))}catch{return!1}}function RO_LAPOF(g){try{if(!g||g.endless||!RO_LAPST(g.stageId))return 1;const v=Math.floor(+((g.difficulty||{}).lap)||1);return Math.max(1,Math.min(RO_LAPC.max,v))}catch{return 1}}var RO_LAPSEL=null;function RO_LAPSET(st,d){try{RO_LAPSEL={stage:st,lap:RO_LAPOF({stageId:st,difficulty:d})}}catch{}}function RO_LAPNOW(st){try{const g=typeof F!=\"undefined\"?F:null;if(g&&g.stageId===st&&!g.endless)return RO_LAPOF(g);return RO_LAPSEL&&RO_LAPSEL.stage===st?RO_LAPSEL.lap:1}catch{return 1}}var RO_LAPKC={};function RO_LAPAVG(sid){const w=(tt[sid]||{}).waves||[];let h=0,d=0,x=0,l=0,t=0;for(const v of w){const p=(v.pool||[]).map(i=>_e[i]).filter(Boolean),u=Math.max(0,(v.to||0)-(v.from||0));if(!p.length||!u)continue;h+=u*p.reduce((a,m)=>a+(m.hp||0),0)/p.length;d+=u*p.reduce((a,m)=>a+(m.damage||0),0)/p.length;x+=u*p.reduce((a,m)=>a+(m.exp||0),0)/p.length;l+=u*p.reduce((a,m)=>a+(m.level||0),0)/p.length;t+=u}return t?{hp:h/t,dmg:d/t,exp:x/t,lv:l/t}:null}function RO_LAPLIST(){return xe.filter(s=>RO_LAPST(s.id)&&!s.special)}function RO_LAPK(sid,n){const key=sid+\"|\"+n;if(RO_LAPKC[key])return RO_LAPKC[key];const L=RO_LAPLIST(),R=L[L.length-1],k=L.findIndex(s=>s.id===sid);let o={hp:1,damage:1,exp:1,lv:0,gs:0,jobCap:void 0};if(k<0&&R&&R.id!==sid&&(xe.find(s=>s.id===sid)||{}).special&&RO_LAPST(sid))return RO_LAPKC[key]=RO_LAPK(R.id,n);try{const A=RO_LAPAVG(sid),B=R&&RO_LAPAVG(R.id);if(n>1&&A&&B&&k>=0){const P=L.length,f=((n-2)*P+k+1)/(P*(RO_LAPC.max-1)),cv=RO_LAPC.curve;o={hp:Math.max(1,B.hp*Math.pow(cv.hp,f)/Math.max(1,A.hp)),damage:Math.max(1,B.dmg*Math.pow(cv.dmg,f)/Math.max(1,A.dmg)),exp:Math.max(1,B.exp/Math.max(.1,A.exp)),lv:Math.max(0,Math.round(B.lv-A.lv)),gs:Math.ceil((R.gsMin||0)*Math.pow(cv.gs,f)),jobCap:(tt[R.id]||{}).jobCap}}}catch(e){console.error(\"[laps]\",e)}return RO_LAPKC[key]=o}",
+  "scripts": {
+    "prontera": {
+      "map": "prt_fild08",
+      "runLength": 900,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "eclipse"
+        },
+        {
+          "t": 300,
+          "id": "toad"
+        },
+        {
+          "t": 450,
+          "id": "dragon_fly"
+        },
+        {
+          "t": 600,
+          "id": "vocal"
+        },
+        {
+          "t": 720,
+          "id": "mastering"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "poring",
+            "lunatic",
+            "fabre",
+            "poring",
+            "lunatic",
+            "fabre",
+            "pupa"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "peco_egg",
+            "chonchon"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 300,
+          "pool": [
+            "drops",
+            "picky",
+            "roda_frog",
+            "condor",
+            "savage_babe"
+          ]
+        },
+        {
+          "from": 300,
+          "to": 420,
+          "pool": [
+            "condor",
+            "savage_babe",
+            "creamy",
+            "hornet",
+            "mandragora"
+          ]
+        },
+        {
+          "from": 420,
+          "to": 600,
+          "pool": [
+            "creamy",
+            "hornet",
+            "mandragora",
+            "baby_desert_wolf",
+            "rocker"
+          ]
+        },
+        {
+          "from": 600,
+          "to": 720,
+          "pool": [
+            "hornet",
+            "creamy",
+            "baby_desert_wolf",
+            "rocker"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 900,
+          "pool": [
+            "creamy",
+            "baby_desert_wolf",
+            "rocker",
+            "hornet",
+            "mandragora"
+          ]
+        }
+      ]
+    },
+    "sewer": {
+      "map": "prt_sewer",
+      "runLength": 660,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "tarou_bite"
+        },
+        {
+          "t": 180,
+          "id": "tarou_plague"
+        },
+        {
+          "t": 180,
+          "id": "tarou_burrow"
+        },
+        {
+          "t": 480,
+          "id": "golden_thief_bug"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou"
+          ]
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou",
+            "thief_bug_egg"
+          ]
+        },
+        {
+          "from": 150,
+          "to": 270,
+          "pool": [
+            "tarou",
+            "plankton",
+            "drainliar",
+            "thief_bug"
+          ]
+        },
+        {
+          "from": 270,
+          "to": 390,
+          "pool": [
+            "drainliar",
+            "thief_bug_female",
+            "plankton",
+            "tarou"
+          ]
+        },
+        {
+          "from": 390,
+          "to": 660,
+          "pool": [
+            "thief_bug_female",
+            "cramp",
+            "drainliar",
+            "plankton"
+          ]
+        }
+      ]
+    },
+    "sunken": {
+      "map": "sunken_deck",
+      "runLength": 780,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "penomena"
+        },
+        {
+          "t": 600,
+          "id": "drake"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "kukre",
+            "marina"
+          ]
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "kukre",
+            "marina",
+            "hydra",
+            "whisper"
+          ]
+        },
+        {
+          "from": 150,
+          "to": 240,
+          "pool": [
+            "marina",
+            "hydra",
+            "whisper",
+            "sword_fish"
+          ]
+        },
+        {
+          "from": 240,
+          "to": 330,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 780,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel",
+            "hydra"
+          ]
+        }
+      ]
+    },
+    "byalan": {
+      "map": "byalan",
+      "runLength": 900,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "deviace"
+        },
+        {
+          "t": 360,
+          "id": "strouf"
+        },
+        {
+          "t": 540,
+          "id": "king_dramoh"
+        },
+        {
+          "t": 720,
+          "id": "kraken"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "vadon",
+            "cornutus"
+          ]
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "vadon",
+            "cornutus",
+            "marse"
+          ]
+        },
+        {
+          "from": 150,
+          "to": 270,
+          "pool": [
+            "cornutus",
+            "marse",
+            "obeaune",
+            "marine_sphere"
+          ]
+        },
+        {
+          "from": 270,
+          "to": 420,
+          "pool": [
+            "marse",
+            "obeaune",
+            "phen",
+            "marine_sphere"
+          ]
+        },
+        {
+          "from": 420,
+          "to": 600,
+          "pool": [
+            "obeaune",
+            "phen",
+            "merman",
+            "marine_sphere"
+          ]
+        },
+        {
+          "from": 600,
+          "to": 900,
+          "pool": [
+            "phen",
+            "merman",
+            "obeaune",
+            "marse"
+          ]
+        }
+      ]
+    },
+    "payon": {
+      "map": "pay_fild08",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "angeling"
+        },
+        {
+          "t": 360,
+          "id": "deviling"
+        },
+        {
+          "t": 600,
+          "id": "vagabond_wolf"
+        },
+        {
+          "t": 840,
+          "id": "eddga"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 85,
+          "pool": [
+            "spore",
+            "willow",
+            "poporing"
+          ]
+        },
+        {
+          "from": 85,
+          "to": 170,
+          "pool": [
+            "spore",
+            "willow",
+            "poporing",
+            "snake",
+            "worm_tail"
+          ]
+        },
+        {
+          "from": 170,
+          "to": 285,
+          "pool": [
+            "poporing",
+            "snake",
+            "worm_tail",
+            "poison_spore",
+            "smokie"
+          ]
+        },
+        {
+          "from": 285,
+          "to": 395,
+          "pool": [
+            "worm_tail",
+            "poison_spore",
+            "smokie",
+            "wolf",
+            "elder_willow"
+          ]
+        },
+        {
+          "from": 395,
+          "to": 565,
+          "pool": [
+            "smokie",
+            "wolf",
+            "elder_willow",
+            "dragon_tail",
+            "bigfoot"
+          ]
+        },
+        {
+          "from": 565,
+          "to": 735,
+          "pool": [
+            "wolf",
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi"
+          ]
+        },
+        {
+          "from": 735,
+          "to": 1020,
+          "pool": [
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi",
+            "nine_tail"
+          ]
+        }
+      ]
+    },
+    "payon_cave": {
+      "map": "payon_cave",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 360,
+          "id": "cat_o_nine_tail"
+        },
+        {
+          "t": 600,
+          "id": "hyegun"
+        },
+        {
+          "t": 840,
+          "id": "moonlight"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing",
+            "skel_archer"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "skeleton",
+            "skel_archer",
+            "zombie",
+            "skel_soldier"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "skel_soldier",
+            "skel_archer",
+            "munak",
+            "bon_gun"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "munak",
+            "bon_gun",
+            "sohee",
+            "horong"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "sohee",
+            "horong",
+            "nine_tail",
+            "bon_gun",
+            "munak"
+          ]
+        }
+      ]
+    },
+    "prt_castle": {
+      "map": "prt_throne",
+      "storyOnly": true,
+      "runLength": 90,
+      "bosses": [
+        {
+          "t": 90,
+          "id": "high_orc"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 30,
+          "pool": [
+            "orc_warrior"
+          ]
+        },
+        {
+          "from": 30,
+          "to": 60,
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ]
+        },
+        {
+          "from": 60,
+          "to": 90,
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ]
+        }
+      ]
+    },
+    "orcs": {
+      "map": "gef_fild10",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "goblin_leader"
+        },
+        {
+          "t": 360,
+          "id": "kobold_leader"
+        },
+        {
+          "t": 600,
+          "id": "high_orc"
+        },
+        {
+          "t": 840,
+          "id": "orc_hero"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby",
+            "goblin_archer"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "kobold",
+            "wolf",
+            "orc_warrior",
+            "goblin_archer"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "goblin"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie",
+            "kobold",
+            "wolf"
+          ]
+        }
+      ]
+    },
+    "pyramid": {
+      "map": "moc_pryd04",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "ancient_mummy"
+        },
+        {
+          "t": 600,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 840,
+          "id": "osiris"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie",
+            "verit",
+            "skeleton"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "verit",
+            "mummy",
+            "orc_skeleton"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "mummy",
+            "orc_skeleton",
+            "skel_archer",
+            "matyr"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "mummy",
+            "isis",
+            "orc_skeleton",
+            "skel_soldier",
+            "matyr"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "isis",
+            "matyr",
+            "minorous",
+            "mummy",
+            "skel_archer"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "minorous",
+            "isis",
+            "matyr",
+            "mummy",
+            "orc_skeleton",
+            "verit"
+          ]
+        }
+      ]
+    },
+    "maze": {
+      "map": "prt_maze02",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "leib_olmai"
+        },
+        {
+          "t": 360,
+          "id": "sasquatch"
+        },
+        {
+          "t": 600,
+          "id": "deviling"
+        },
+        {
+          "t": 840,
+          "id": "baphomet"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "hunter_fly",
+            "side_winder"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "hunter_fly",
+            "side_winder",
+            "argiope"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "side_winder",
+            "argiope",
+            "baphomet_jr"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "argiope",
+            "baphomet_jr",
+            "killer_mantis",
+            "hunter_fly"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "baphomet_jr",
+            "killer_mantis",
+            "side_winder",
+            "argiope"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "killer_mantis",
+            "baphomet_jr",
+            "argiope",
+            "hunter_fly",
+            "side_winder"
+          ]
+        }
+      ]
+    },
+    "xmas": {
+      "map": "xmas",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "gazeti"
+        },
+        {
+          "t": 300,
+          "id": "ice_titan"
+        },
+        {
+          "t": 450,
+          "id": "baby_hatii"
+        },
+        {
+          "t": 600,
+          "id": "freezer"
+        },
+        {
+          "t": 720,
+          "id": "stormy_knight"
+        },
+        {
+          "t": 720,
+          "id": "hatii"
+        },
+        {
+          "t": 840,
+          "id": "antonio"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "christmas_goblin",
+            "cookie"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "christmas_goblin",
+            "cookie",
+            "christmas_cookie"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "cookie",
+            "christmas_cookie",
+            "cruiser",
+            "myst_case"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "christmas_cookie",
+            "cruiser",
+            "myst_case",
+            "siroma"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "myst_case",
+            "siroma",
+            "teddy_bear",
+            "cruiser"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "teddy_bear",
+            "snowier",
+            "siroma",
+            "myst_case",
+            "cruiser"
+          ]
+        }
+      ]
+    },
+    "louyang": {
+      "map": "louyang",
+      "runLength": 1020,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "zhu_po_long"
+        },
+        {
+          "t": 300,
+          "id": "enchanted_peach_tree"
+        },
+        {
+          "t": 450,
+          "id": "wanderer"
+        },
+        {
+          "t": 600,
+          "id": "wooden_golem"
+        },
+        {
+          "t": 720,
+          "id": "dumpling_child"
+        },
+        {
+          "t": 720,
+          "id": "spring_rabbit"
+        },
+        {
+          "t": 840,
+          "id": "white_lady"
+        }
+      ],
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "leaf_cat",
+            "the_paper"
+          ]
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "leaf_cat",
+            "the_paper",
+            "kapha"
+          ]
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "the_paper",
+            "kapha",
+            "green_maiden",
+            "stone_shooter"
+          ]
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "kapha",
+            "green_maiden",
+            "stone_shooter",
+            "iron_fist"
+          ]
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "green_maiden",
+            "iron_fist",
+            "stone_shooter",
+            "leaf_cat"
+          ]
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "iron_fist",
+            "green_maiden",
+            "kapha",
+            "stone_shooter",
+            "the_paper"
+          ]
+        }
+      ]
+    }
+  },
+  "monsters": {
+    "poring": {
+      "level": 1,
+      "hp": 30,
+      "damage": 3,
+      "exp": 1
+    },
+    "lunatic": {
+      "level": 1,
+      "hp": 25,
+      "damage": 3,
+      "exp": 1
+    },
+    "fabre": {
+      "level": 2,
+      "hp": 35,
+      "damage": 4,
+      "exp": 1
+    },
+    "pupa": {
+      "level": 2,
+      "hp": 60,
+      "damage": 0,
+      "exp": 2
+    },
+    "drops": {
+      "level": 2,
+      "hp": 45,
+      "damage": 5,
+      "exp": 2
+    },
+    "picky": {
+      "level": 3,
+      "hp": 40,
+      "damage": 4,
+      "exp": 2
+    },
+    "roda_frog": {
+      "level": 3,
+      "hp": 55,
+      "damage": 5,
+      "exp": 2
+    },
+    "peco_egg": {
+      "level": 3,
+      "hp": 90,
+      "damage": 0,
+      "exp": 3
+    },
+    "condor": {
+      "level": 4,
+      "hp": 65,
+      "damage": 6,
+      "exp": 3
+    },
+    "savage_babe": {
+      "level": 4,
+      "hp": 75,
+      "damage": 7,
+      "exp": 3
+    },
+    "creamy": {
+      "level": 5,
+      "hp": 80,
+      "damage": 7,
+      "exp": 3
+    },
+    "hornet": {
+      "level": 5,
+      "hp": 70,
+      "damage": 7,
+      "exp": 3
+    },
+    "mandragora": {
+      "level": 6,
+      "hp": 160,
+      "damage": 10,
+      "exp": 4
+    },
+    "baby_desert_wolf": {
+      "level": 7,
+      "hp": 150,
+      "damage": 11,
+      "exp": 5
+    },
+    "rocker": {
+      "level": 8,
+      "hp": 200,
+      "damage": 13,
+      "exp": 6
+    },
+    "eclipse": {
+      "level": 3,
+      "hp": 3400,
+      "damage": 18,
+      "exp": 110
+    },
+    "toad": {
+      "level": 4,
+      "hp": 4600,
+      "damage": 20,
+      "exp": 135
+    },
+    "dragon_fly": {
+      "level": 5,
+      "hp": 5600,
+      "damage": 22,
+      "exp": 150
+    },
+    "vocal": {
+      "level": 7,
+      "hp": 7500,
+      "damage": 25,
+      "exp": 180
+    },
+    "mastering": {
+      "level": 8,
+      "hp": 52000,
+      "damage": 44,
+      "exp": 700
+    },
+    "thief_bug_egg": {
+      "level": 9,
+      "hp": 195,
+      "damage": 0,
+      "exp": 5
+    },
+    "familiar": {
+      "level": 9,
+      "hp": 225,
+      "damage": 9,
+      "exp": 4
+    },
+    "thief_bug": {
+      "level": 9,
+      "hp": 255,
+      "damage": 10,
+      "exp": 4
+    },
+    "tarou": {
+      "level": 10,
+      "hp": 285,
+      "damage": 10,
+      "exp": 5
+    },
+    "plankton": {
+      "level": 10,
+      "hp": 330,
+      "damage": 11,
+      "exp": 5
+    },
+    "drainliar": {
+      "level": 11,
+      "hp": 300,
+      "damage": 11,
+      "exp": 6
+    },
+    "thief_bug_female": {
+      "level": 11,
+      "hp": 345,
+      "damage": 12,
+      "exp": 6
+    },
+    "cramp": {
+      "level": 12,
+      "hp": 390,
+      "damage": 13,
+      "exp": 7
+    },
+    "tarou_bite": {
+      "level": 10,
+      "hp": 5500,
+      "damage": 23,
+      "exp": 120
+    },
+    "tarou_plague": {
+      "level": 10,
+      "hp": 5500,
+      "damage": 21,
+      "exp": 120
+    },
+    "tarou_burrow": {
+      "level": 10,
+      "hp": 5500,
+      "damage": 23,
+      "exp": 120
+    },
+    "golden_thief_bug": {
+      "level": 12,
+      "hp": 58000,
+      "damage": 47,
+      "exp": 750
+    },
+    "chonchon": {
+      "level": 1,
+      "hp": 30,
+      "damage": 4,
+      "exp": 2
+    },
+    "goblin": {
+      "level": 31,
+      "hp": 3600,
+      "damage": 33,
+      "exp": 19
+    },
+    "kobold": {
+      "level": 32,
+      "hp": 3900,
+      "damage": 35,
+      "exp": 20
+    },
+    "orc_skeleton": {
+      "level": 41,
+      "hp": 4800,
+      "damage": 41,
+      "exp": 24
+    },
+    "ghostring": {
+      "level": 13,
+      "hp": 28000,
+      "damage": 24,
+      "exp": 180
+    },
+    "orc_hero": {
+      "level": 40,
+      "hp": 1300000,
+      "damage": 88,
+      "exp": 1600
+    },
+    "osiris": {
+      "level": 50,
+      "hp": 1700000,
+      "damage": 96,
+      "exp": 1900
+    },
+    "baphomet": {
+      "level": 60,
+      "hp": 2200000,
+      "damage": 105,
+      "exp": 2300
+    },
+    "orc_baby": {
+      "level": 30,
+      "hp": 3200,
+      "damage": 30,
+      "exp": 17
+    },
+    "goblin_archer": {
+      "level": 33,
+      "hp": 3300,
+      "damage": 31,
+      "exp": 20
+    },
+    "orc_archer": {
+      "level": 36,
+      "hp": 3800,
+      "damage": 34,
+      "exp": 22
+    },
+    "orc_zombie": {
+      "level": 37,
+      "hp": 4600,
+      "damage": 38,
+      "exp": 23
+    },
+    "goblin_leader": {
+      "level": 38,
+      "hp": 210000,
+      "damage": 58,
+      "exp": 650
+    },
+    "kobold_leader": {
+      "level": 39,
+      "hp": 230000,
+      "damage": 60,
+      "exp": 700
+    },
+    "verit": {
+      "level": 43,
+      "hp": 4600,
+      "damage": 42,
+      "exp": 25
+    },
+    "mummy": {
+      "level": 44,
+      "hp": 5400,
+      "damage": 44,
+      "exp": 26
+    },
+    "matyr": {
+      "level": 45,
+      "hp": 4400,
+      "damage": 44,
+      "exp": 26
+    },
+    "isis": {
+      "level": 46,
+      "hp": 5600,
+      "damage": 47,
+      "exp": 28
+    },
+    "minorous": {
+      "level": 48,
+      "hp": 6200,
+      "damage": 50,
+      "exp": 30
+    },
+    "ancient_mummy": {
+      "level": 49,
+      "hp": 270000,
+      "damage": 70,
+      "exp": 850
+    },
+    "hunter_fly": {
+      "level": 52,
+      "hp": 5200,
+      "damage": 50,
+      "exp": 30
+    },
+    "side_winder": {
+      "level": 53,
+      "hp": 6400,
+      "damage": 54,
+      "exp": 32
+    },
+    "argiope": {
+      "level": 54,
+      "hp": 7600,
+      "damage": 55,
+      "exp": 34
+    },
+    "baphomet_jr": {
+      "level": 55,
+      "hp": 6000,
+      "damage": 56,
+      "exp": 33
+    },
+    "killer_mantis": {
+      "level": 56,
+      "hp": 7200,
+      "damage": 60,
+      "exp": 35
+    },
+    "leib_olmai": {
+      "level": 58,
+      "hp": 340000,
+      "damage": 78,
+      "exp": 1000
+    },
+    "sasquatch": {
+      "level": 59,
+      "hp": 380000,
+      "damage": 82,
+      "exp": 1100
+    },
+    "leaf_cat": {
+      "level": 61,
+      "hp": 6600,
+      "damage": 81,
+      "exp": 38
+    },
+    "the_paper": {
+      "level": 61,
+      "hp": 7000,
+      "damage": 84,
+      "exp": 38
+    },
+    "kapha": {
+      "level": 63,
+      "hp": 8710,
+      "damage": 90,
+      "exp": 40
+    },
+    "green_maiden": {
+      "level": 66,
+      "hp": 8710,
+      "damage": 96,
+      "exp": 43
+    },
+    "stone_shooter": {
+      "level": 68,
+      "hp": 7920,
+      "damage": 90,
+      "exp": 43
+    },
+    "iron_fist": {
+      "level": 70,
+      "hp": 11350,
+      "damage": 108,
+      "exp": 48
+    },
+    "zhu_po_long": {
+      "level": 63,
+      "hp": 214500,
+      "damage": 107,
+      "exp": 1075
+    },
+    "enchanted_peach_tree": {
+      "level": 66,
+      "hp": 232380,
+      "damage": 116,
+      "exp": 1290
+    },
+    "wanderer": {
+      "level": 68,
+      "hp": 250250,
+      "damage": 138,
+      "exp": 1505
+    },
+    "wooden_golem": {
+      "level": 70,
+      "hp": 268130,
+      "damage": 116,
+      "exp": 1720
+    },
+    "dumpling_child": {
+      "level": 70,
+      "hp": 286000,
+      "damage": 134,
+      "exp": 968
+    },
+    "spring_rabbit": {
+      "level": 70,
+      "hp": 286000,
+      "damage": 125,
+      "exp": 968
+    },
+    "white_lady": {
+      "level": 70,
+      "hp": 2292000,
+      "damage": 153,
+      "exp": 2754
+    },
+    "evil_snake_lord": {
+      "level": 70,
+      "hp": 4775000,
+      "damage": 184,
+      "exp": 3978
+    },
+    "christmas_goblin": {
+      "level": 61,
+      "hp": 5850,
+      "damage": 52,
+      "exp": 32
+    },
+    "cookie": {
+      "level": 61,
+      "hp": 6060,
+      "damage": 55,
+      "exp": 32
+    },
+    "christmas_cookie": {
+      "level": 62,
+      "hp": 6690,
+      "damage": 58,
+      "exp": 35
+    },
+    "cruiser": {
+      "level": 63,
+      "hp": 6690,
+      "damage": 59,
+      "exp": 36
+    },
+    "myst_case": {
+      "level": 63,
+      "hp": 8150,
+      "damage": 63,
+      "exp": 38
+    },
+    "siroma": {
+      "level": 64,
+      "hp": 7320,
+      "damage": 65,
+      "exp": 39
+    },
+    "teddy_bear": {
+      "level": 65,
+      "hp": 8780,
+      "damage": 69,
+      "exp": 42
+    },
+    "snowier": {
+      "level": 65,
+      "hp": 10870,
+      "damage": 76,
+      "exp": 45
+    },
+    "gazeti": {
+      "level": 62,
+      "hp": 330000,
+      "damage": 78,
+      "exp": 950
+    },
+    "ice_titan": {
+      "level": 63,
+      "hp": 370000,
+      "damage": 82,
+      "exp": 1050
+    },
+    "baby_hatii": {
+      "level": 63,
+      "hp": 390000,
+      "damage": 84,
+      "exp": 1100
+    },
+    "freezer": {
+      "level": 64,
+      "hp": 410000,
+      "damage": 86,
+      "exp": 1150
+    },
+    "stormy_knight": {
+      "level": 65,
+      "hp": 460000,
+      "damage": 92,
+      "exp": 1300
+    },
+    "hatii": {
+      "level": 65,
+      "hp": 460000,
+      "damage": 92,
+      "exp": 1300
+    },
+    "antonio": {
+      "level": 65,
+      "hp": 2510000,
+      "damage": 110,
+      "exp": 2520
+    },
+    "kukre": {
+      "level": 13,
+      "hp": 560,
+      "damage": 9,
+      "exp": 4
+    },
+    "marina": {
+      "level": 13,
+      "hp": 620,
+      "damage": 10,
+      "exp": 4
+    },
+    "hydra": {
+      "level": 14,
+      "hp": 680,
+      "damage": 12,
+      "exp": 5
+    },
+    "whisper": {
+      "level": 14,
+      "hp": 590,
+      "damage": 13,
+      "exp": 6
+    },
+    "penomena": {
+      "level": 15,
+      "hp": 28000,
+      "damage": 29,
+      "exp": 240
+    },
+    "sword_fish": {
+      "level": 14,
+      "hp": 740,
+      "damage": 18,
+      "exp": 8
+    },
+    "pirate_skel": {
+      "level": 14,
+      "hp": 800,
+      "damage": 20,
+      "exp": 9
+    },
+    "drake": {
+      "level": 15,
+      "hp": 180000,
+      "damage": 49,
+      "exp": 800
+    },
+    "vadon": {
+      "level": 16,
+      "hp": 820,
+      "damage": 12,
+      "exp": 6
+    },
+    "cornutus": {
+      "level": 16,
+      "hp": 900,
+      "damage": 12,
+      "exp": 6
+    },
+    "marse": {
+      "level": 17,
+      "hp": 860,
+      "damage": 13,
+      "exp": 6
+    },
+    "phen": {
+      "level": 18,
+      "hp": 1100,
+      "damage": 15,
+      "exp": 7
+    },
+    "obeaune": {
+      "level": 18,
+      "hp": 1200,
+      "damage": 15,
+      "exp": 7
+    },
+    "marine_sphere": {
+      "level": 19,
+      "hp": 950,
+      "damage": 16,
+      "exp": 7
+    },
+    "merman": {
+      "level": 20,
+      "hp": 1400,
+      "damage": 18,
+      "exp": 9
+    },
+    "kraken_leg": {
+      "level": 20,
+      "hp": 9000,
+      "damage": 22,
+      "exp": 20
+    },
+    "deviace": {
+      "level": 17,
+      "hp": 30000,
+      "damage": 30,
+      "exp": 210
+    },
+    "strouf": {
+      "level": 19,
+      "hp": 50000,
+      "damage": 35,
+      "exp": 280
+    },
+    "king_dramoh": {
+      "level": 20,
+      "hp": 80000,
+      "damage": 40,
+      "exp": 400
+    },
+    "kraken": {
+      "level": 20,
+      "hp": 280000,
+      "damage": 62,
+      "exp": 1000
+    },
+    "spore": {
+      "level": 21,
+      "hp": 830,
+      "damage": 12,
+      "exp": 6
+    },
+    "willow": {
+      "level": 21,
+      "hp": 860,
+      "damage": 12,
+      "exp": 6
+    },
+    "poporing": {
+      "level": 21,
+      "hp": 840,
+      "damage": 13,
+      "exp": 6
+    },
+    "snake": {
+      "level": 22,
+      "hp": 1200,
+      "damage": 15,
+      "exp": 7
+    },
+    "worm_tail": {
+      "level": 22,
+      "hp": 1250,
+      "damage": 15,
+      "exp": 7
+    },
+    "poison_spore": {
+      "level": 22,
+      "hp": 1300,
+      "damage": 16,
+      "exp": 8
+    },
+    "smokie": {
+      "level": 23,
+      "hp": 1350,
+      "damage": 17,
+      "exp": 8
+    },
+    "wolf": {
+      "level": 23,
+      "hp": 1400,
+      "damage": 18,
+      "exp": 9
+    },
+    "elder_willow": {
+      "level": 23,
+      "hp": 1650,
+      "damage": 20,
+      "exp": 10
+    },
+    "dragon_tail": {
+      "level": 24,
+      "hp": 1450,
+      "damage": 21,
+      "exp": 10
+    },
+    "bigfoot": {
+      "level": 24,
+      "hp": 2000,
+      "damage": 24,
+      "exp": 12
+    },
+    "greatest_general": {
+      "level": 24,
+      "hp": 2200,
+      "damage": 22,
+      "exp": 12
+    },
+    "dokebi": {
+      "level": 25,
+      "hp": 1900,
+      "damage": 25,
+      "exp": 13
+    },
+    "nine_tail": {
+      "level": 25,
+      "hp": 2100,
+      "damage": 27,
+      "exp": 14
+    },
+    "angeling": {
+      "level": 22,
+      "hp": 35100,
+      "damage": 30,
+      "exp": 220
+    },
+    "deviling": {
+      "level": 23,
+      "hp": 58500,
+      "damage": 36,
+      "exp": 300
+    },
+    "vagabond_wolf": {
+      "level": 24,
+      "hp": 93600,
+      "damage": 42,
+      "exp": 430
+    },
+    "eddga": {
+      "level": 25,
+      "hp": 338000,
+      "damage": 72,
+      "exp": 1100
+    },
+    "zombie": {
+      "level": 26,
+      "hp": 2875,
+      "damage": 28,
+      "exp": 15
+    },
+    "skeleton": {
+      "level": 26,
+      "hp": 2760,
+      "damage": 28,
+      "exp": 15
+    },
+    "skel_archer": {
+      "level": 27,
+      "hp": 2640,
+      "damage": 26,
+      "exp": 16
+    },
+    "skel_soldier": {
+      "level": 27,
+      "hp": 3385,
+      "damage": 31,
+      "exp": 17
+    },
+    "munak": {
+      "level": 28,
+      "hp": 3540,
+      "damage": 32,
+      "exp": 18
+    },
+    "bon_gun": {
+      "level": 28,
+      "hp": 3265,
+      "damage": 33,
+      "exp": 18
+    },
+    "sohee": {
+      "level": 29,
+      "hp": 3775,
+      "damage": 34,
+      "exp": 19
+    },
+    "horong": {
+      "level": 30,
+      "hp": 1890,
+      "damage": 30,
+      "exp": 16
+    },
+    "skeleton_general": {
+      "level": 27,
+      "hp": 71250,
+      "damage": 46,
+      "exp": 480
+    },
+    "cat_o_nine_tail": {
+      "level": 28,
+      "hp": 112500,
+      "damage": 52,
+      "exp": 600
+    },
+    "hyegun": {
+      "level": 29,
+      "hp": 150000,
+      "damage": 58,
+      "exp": 700
+    },
+    "moonlight": {
+      "level": 30,
+      "hp": 1000000,
+      "damage": 80,
+      "exp": 1400
+    },
+    "orc_warrior": {
+      "level": 31,
+      "hp": 3900,
+      "damage": 36,
+      "exp": 20
+    },
+    "orc_lady": {
+      "level": 32,
+      "hp": 3500,
+      "damage": 34,
+      "exp": 20
+    },
+    "high_orc": {
+      "level": 35,
+      "hp": 190000,
+      "damage": 62,
+      "exp": 800
+    }
+  }
+}
