@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.0.3
+// @version      2.0.4
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.0.3'};
+  window[runtimeKey]={version:'2.0.4'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1598,6 +1598,57 @@
     smithPathCache.set(path, result);
     return result;
   }
+  const smithScoreRows = new WeakSet();
+  let smithScoring = false;
+  function updateSmithBaseScores(list, filters) {
+    const rows = [...list.querySelectorAll('.cand[data-uid]')];
+    if (smithScoring || !rows.some(row => !smithScoreRows.has(row))) return;
+    const redraw = filters.querySelector('[data-f].active') || filters.querySelector('[data-f="all"]');
+    if (typeof redraw?.onclick !== 'function') return;
+    const original = Array.prototype.filter, scores = new Map(), enhanced = new Set();
+    smithScoring = true;
+    const render = () => {
+      const switching = smith.switching;
+      smith.switching = true;
+      try { redraw.onclick(); } finally { smith.switching = switching; }
+    };
+    try {
+      // Only substitute display copies during this synchronous native redraw.
+      // The game's own scorer retains the current job, quality, Tier and affixes.
+      Array.prototype.filter = function(...args) {
+        const result = Reflect.apply(original, this, args);
+        if (!gearArray(this)) return result;
+        return result.map(item => {
+          if (item.refine > 0 || item.star > 0 || item.cards.some(Boolean)) enhanced.add(item.uid);
+          return {...item, refine: 0, star: 0, cards: item.cards.map(() => null)};
+        });
+      };
+      render();
+      for (const row of list.querySelectorAll('.cand[data-uid]')) {
+        const text = row.querySelector('.gs b')?.textContent;
+        if (enhanced.has(row.dataset.uid) && text && Number.isFinite(Number(text.replaceAll(',', '')))) scores.set(row.dataset.uid, text);
+      }
+    } finally {
+      Array.prototype.filter = original;
+      try { render(); } finally { smithScoring = false; }
+    }
+    for (const row of list.querySelectorAll('.cand[data-uid]')) {
+      smithScoreRows.add(row);
+      appendSmithBaseScore(row, scores.get(row.dataset.uid));
+    }
+    const selected = list.querySelector('.cand.sel')?.dataset.uid;
+    appendSmithBaseScore(document.querySelector('#smith-detail'), scores.get(selected));
+  }
+  function appendSmithBaseScore(root, score) {
+    const node = root?.querySelector('.gs b');
+    const existing = root?.querySelector('[data-ro-smith-base-gs]');
+    if (!node || score === undefined) { existing?.remove(); return; }
+    const label = existing || document.createElement('span');
+    label.dataset.roSmithBaseGs = '';
+    label.title = '原始 GS（無精煉、升星、插卡）';
+    if (label.textContent !== ' (' + score + ')') label.textContent = ' (' + score + ')';
+    if (!existing) node.after(label);
+  }
   function nativeSmithAll() {
     const all = document.querySelector('#smith-filters [data-f="all"]');
     if (!all) return;
@@ -1619,6 +1670,7 @@
       // and locked pieces exactly as permitted by the game's original filter.
       nativeSmithAll();
     }
+    updateSmithBaseScores(list, filters);
     filters.querySelectorAll('[data-f]').forEach(button => {
       if (smithNativeButtons.has(button)) return;
       const original = button.onclick;
@@ -1806,7 +1858,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.3');
+      console.info('[RO助手] 即時自選已啟用 v2.0.4');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
