@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.0.4
+// @version      2.0.5
 // @description  右鍵或手機長按設定自動選擇技能／道具，每關重設；勝利後觸發一次全圖磁鐵拾取。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.0.4'};
+  window[runtimeKey]={version:'2.0.5'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1599,6 +1599,71 @@
     return result;
   }
   const smithScoreRows = new WeakSet();
+  const starScoreData = new WeakMap(), starScoreHooks = new WeakSet();
+  let restoreStarScoreMap = null;
+  function armStarScoreRender() {
+    if (restoreStarScoreMap) return;
+    const original = Array.prototype.map;
+    const restore = () => {
+      if (Array.prototype.map === wrapped) Array.prototype.map = original;
+      if (restoreStarScoreMap === restore) restoreStarScoreMap = null;
+    };
+    const wrapped = function(callback, thisArg) {
+      // Verified native starforge list renderer; restore before invoking any
+      // renderer so nested card/bonus maps use the untouched native method.
+      if (callback?.name !== 'row' || !gearArray(this)) return Reflect.apply(original, this, [callback, thisArg]);
+      restore();
+      const scores = new Map();
+      for (const item of this) {
+        if (!(item.refine > 0 || item.star > 0 || item.cards.some(Boolean))) continue;
+        try {
+          const base = {...item, refine: 0, star: 0, cards: item.cards.map(() => null)};
+          const holder = document.createElement('div');
+          holder.innerHTML = Reflect.apply(callback, thisArg, [base]);
+          const score = holder.querySelector('.gs b')?.textContent;
+          if (score && Number.isFinite(Number(score.replaceAll(',', '')))) scores.set(item.uid, score);
+        } catch { /* An unavailable base preview must not interrupt native rendering. */ }
+      }
+      const list = document.querySelector('#sf-list');
+      if (list) starScoreData.set(list, scores);
+      return Reflect.apply(original, this, [callback, thisArg]);
+    };
+    restoreStarScoreMap = restore;
+    Array.prototype.map = wrapped;
+    // Empty lists or an upstream render exception must also release the hook.
+    queueMicrotask(restore);
+  }
+  function updateStarforgeBaseScores() {
+    const open = document.querySelector('#smith-star');
+    if (open && !starScoreHooks.has(open) && typeof open.onclick === 'function') {
+      const original = open.onclick;
+      open.onclick = function(...args) {
+        armStarScoreRender();
+        try { return Reflect.apply(original, this, args); }
+        finally { restoreStarScoreMap?.(); updateStarforgeBaseScores(); }
+      };
+      starScoreHooks.add(open);
+    }
+    const mats = document.querySelector('#sf-mats');
+    if (mats && !starScoreHooks.has(mats)) {
+      let proto = Object.getPrototypeOf(mats), descriptor;
+      while (proto && !descriptor) { descriptor = Object.getOwnPropertyDescriptor(proto, 'innerHTML'); proto = Object.getPrototypeOf(proto); }
+      if (descriptor?.get && descriptor?.set) {
+        Object.defineProperty(mats, 'innerHTML', {
+          configurable: true,
+          get() { return descriptor.get.call(this); },
+          set(value) { descriptor.set.call(this, value); armStarScoreRender(); }
+        });
+        starScoreHooks.add(mats);
+      }
+    }
+    const panel = document.querySelector('#starforge'), list = document.querySelector('#sf-list');
+    if (!panel || panel.classList.contains('hidden') || !list) return;
+    const scores = starScoreData.get(list);
+    if (!scores) return;
+    for (const row of list.querySelectorAll('.cand[data-uid]')) appendSmithBaseScore(row, scores.get(row.dataset.uid));
+    appendSmithBaseScore(document.querySelector('#sf-detail'), scores.get(list.querySelector('.cand.sel')?.dataset.uid));
+  }
   let smithScoring = false;
   function updateSmithBaseScores(list, filters) {
     const rows = [...list.querySelectorAll('.cand[data-uid]')];
@@ -1644,8 +1709,10 @@
     const existing = root?.querySelector('[data-ro-smith-base-gs]');
     if (!node || score === undefined) { existing?.remove(); return; }
     const label = existing || document.createElement('span');
-    label.dataset.roSmithBaseGs = '';
-    label.title = '原始 GS（無精煉、升星、插卡）';
+    if (!existing) {
+      label.dataset.roSmithBaseGs = '';
+      label.title = '原始 GS（無精煉、升星、插卡）';
+    }
     if (label.textContent !== ' (' + score + ')') label.textContent = ' (' + score + ')';
     if (!existing) node.after(label);
   }
@@ -1656,6 +1723,7 @@
     try { all.click(); } finally { smith.switching = false; }
   }
   function updateSmith() {
+    updateStarforgeBaseScores();
     updateAutoRefine();
     const panel = document.querySelector('#smith');
     const filters = document.querySelector('#smith-filters');
@@ -1858,7 +1926,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.4');
+      console.info('[RO助手] 即時自選已啟用 v2.0.5');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -2280,7 +2348,7 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
-        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
+        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
