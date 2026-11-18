@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.2
+// @version      2.2.3
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.2'};
+  window[runtimeKey]={version:'2.2.3'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -379,6 +379,39 @@
     state.observePeers();
     for(const effect of game.fx||[])tagEffect(effect,'self');
     for(const projectile of game.projectiles||[])tag(projectile.view,projectile.ghost?'teammate':'self');
+  }
+  const DEITY_SWAP_KEY='greydust.ro.deity-swap-enabled.v1';
+  let deitySwapEnabled=true;
+  try{deitySwapEnabled=localStorage.getItem(DEITY_SWAP_KEY)!=='false';}catch{}
+  const deitySwapGames=new WeakSet();
+  function installDeitySwapPreference(game){
+    if(!game||deitySwapGames.has(game)||typeof game.chestOpts!=='function')return;
+    const original=game.chestOpts;
+    game.chestOpts=function(...args){
+      const options=Reflect.apply(original,this,args);
+      // Reuse the native locked-perk mode without changing perk ranks, saves,
+      // existing offers, refresh charges, or the native roll/selection methods.
+      return deitySwapEnabled||!options?.swap?options:{...options,swap:false};
+    };
+    deitySwapGames.add(game);
+  }
+  function updateDeitySwapPreferenceUI(){
+    const root=document.querySelector('#chr-perks');if(!root)return;
+    const names=new Set(['神格切換','Deity cambiante','Shifting Deity','Divindade Mutável']);
+    const row=[...root.querySelectorAll('.chr-perk')].find(node=>node.querySelector('[data-perk="deity"]')||names.has(node.querySelector('.chr-info > b')?.textContent.trim()));
+    if(!row)return;
+    const unlocked=!!row.querySelector('.chr-pips i.on');
+    let label=row.querySelector('[data-ro-deity-swap]');
+    if(!unlocked){label?.remove();return;}
+    if(!label){
+      label=document.createElement('label');label.dataset.roDeitySwap='';label.className='opt-check';label.style.cssText='display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px';
+      const input=document.createElement('input');input.type='checkbox';input.setAttribute('role','switch');input.setAttribute('aria-label','允許切換神格');
+      input.onchange=()=>{deitySwapEnabled=input.checked;try{localStorage.setItem(DEITY_SWAP_KEY,String(deitySwapEnabled));}catch{notify('神格切換偏好無法保存；本頁仍可使用');}};
+      const track=document.createElement('i');track.className='opt-switch';track.setAttribute('aria-hidden','true');label.append(input,track);
+      const completed=row.querySelector(':scope > .chr-maxed');
+      if(completed)completed.replaceWith(label);else row.append(label);
+    }
+    const input=label.querySelector('input');input.checked=deitySwapEnabled;
   }
   const FPS_KEY='greydust.ro.show-fps.v1';
   const optimizeHiddenPickups=true;
@@ -2811,6 +2844,7 @@
   }
 
   function installFastChoice(game) {
+    installDeitySwapPreference(game);
     installPickupHelpers(game);
     // Pickup recognition must inspect the native dropPickup before the visual
     // owner wrapper is installed around it.
@@ -2933,7 +2967,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.2');
+      console.info('[RO助手] 即時自選已啟用 v2.2.3');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3147,6 +3181,7 @@
       updateMinimapOption();
       updatePickupOptions();
       updateBattlePreferenceOptions();
+      updateDeitySwapPreferenceUI();
       updateSmith();
       updateMerchant();
       updateInventoryViews();
@@ -3212,6 +3247,12 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #chronicle{box-sizing:border-box}
+      #chronicle>.chronicle-window{box-sizing:border-box;width:min(900px,calc((100vw - max(8px,env(safe-area-inset-left)) - max(8px,env(safe-area-inset-right)))/var(--ui,1)));max-height:calc((100vh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));max-height:calc((100dvh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));display:flex;flex-direction:column;min-height:0}
+      #chronicle>.chronicle-window>.ro-title,#chronicle>.chronicle-window>.btn-row{flex:none}
+      #chronicle>.chronicle-window>.ro-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+      #chronicle #chr-perks{height:auto;min-height:0;flex:none}
+      #chronicle #chr-perks .chr-list{flex:none;overflow:visible;scrollbar-gutter:auto}
       #ro-safari-diagnostics-open{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-safari-diagnostics-open[hidden],#ro-safari-diagnostics[hidden]{display:none!important}
       #ro-advanced-choice[data-ro-draggable]{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-advanced-choice[hidden],#ro-advanced-choice-dialog[hidden]{display:none!important}
       #ro-advanced-choice{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:40;padding:10px 16px;border:1px solid #718dbb;border-radius:8px;background:#233b61;color:#fff;font:600 15px sans-serif;cursor:pointer}
@@ -3382,6 +3423,7 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
+        if(el?.closest('#chr-perks'))return true;
         if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
         if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
         return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
