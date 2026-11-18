@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.5
+// @version      2.2.6
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.5'};
+  window[runtimeKey]={version:'2.2.6'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1958,6 +1958,42 @@
   const smithItemIds = new Map();
   const smithScoreCache = new Map(),smithRowHooks=new WeakSet();
   const starScoreData = new WeakMap(), starScoreHooks = new WeakSet();
+  const starGainData = new WeakMap();
+  function smithLevelGains(item, field, score) {
+    const cache = new Map();
+    return count => {
+      if (!cache.has(count)) cache.set(count, Array.from({length: count}, (_, index) => {
+        const next = score({...item, [field]: index + 1});
+        return Number.isFinite(next) ? next : undefined;
+      }));
+      return cache.get(count);
+    };
+  }
+  function paintSmithGain(detail, gain) {
+    const targets = [...(detail?.querySelector('.ref-ladder')?.children || [])];
+    if (gain === undefined || !targets.length) {
+      detail?.querySelectorAll('[data-ro-gs-gain]').forEach(node => node.remove());
+      return;
+    }
+    let values;
+    try { values = gain(targets.length); } catch { return; }
+    const currentText = detail.querySelector('.gs b')?.textContent;
+    const current = currentText?.trim() ? Number(currentText.replaceAll(',', '')) : NaN;
+    const level = targets.filter(target => target.classList.contains('done')).length;
+    for (const [index, target] of targets.entries()) {
+      const value = values[index] === undefined ? undefined : values[index] - current;
+      let preview = target.querySelector('[data-ro-gs-gain]');
+      if (index < level || value === undefined || !Number.isFinite(value)) { preview?.remove(); continue; }
+      if (!preview) {
+        preview = document.createElement('small'); preview.dataset.roGsGain = '';
+        preview.style.cssText = 'display:block;font-size:10px;font-weight:700;line-height:1.3;letter-spacing:-0.3px;color:#183b70;background:#eef3ff;border-radius:3px;white-space:nowrap;margin-top:3px';
+        preview.title = '升到此級後，相較目前這件裝備的 GS 差額';
+        target.append(preview);
+      }
+      const text = 'GS ' + (value >= 0 ? '+' : '') + value.toLocaleString('zh-TW');
+      if (preview.textContent !== text) preview.textContent = text;
+    }
+  }
   const starFilterItems=new WeakMap();
   let starFilterPanel=null,starFilterCategory='all';
   let restoreStarScoreMap = null;
@@ -1973,8 +2009,19 @@
       // renderer so nested card/bonus maps use the untouched native method.
       if (callback?.name !== 'row' || !gearArray(this)) return Reflect.apply(original, this, [callback, thisArg]);
       restore();
-      const scores = new Map();
+      const scores = new Map(), gains = new Map();
       for (const item of this) {
+        try {
+          // Reuse the native scorer with display copies, retaining refinement,
+          // cards, quality, Tier, affixes and the current character's weights.
+          const score = copy => {
+            const holder = document.createElement('div');
+            holder.innerHTML = Reflect.apply(callback, thisArg, [copy]);
+            const value = holder.querySelector('.gs b')?.textContent;
+            return value?.trim() ? Number(value.replaceAll(',', '')) : NaN;
+          };
+          gains.set(item.uid, smithLevelGains(item, 'star', score));
+        } catch { /* Optional previews must not interrupt native rendering. */ }
         if (!(item.refine > 0 || item.star > 0 || item.cards.some(Boolean))) continue;
         try {
           const base = {...item, refine: 0, star: 0, cards: item.cards.map(() => null)};
@@ -1985,7 +2032,7 @@
         } catch { /* An unavailable base preview must not interrupt native rendering. */ }
       }
       const list = document.querySelector('#sf-list');
-      if (list) {starScoreData.set(list, scores);starFilterItems.set(list,new Map(this.map(item=>[item.uid,item.itemId])));}
+      if (list) {starScoreData.set(list, scores);starGainData.set(list, gains);starFilterItems.set(list,new Map(this.map(item=>[item.uid,item.itemId])));}
       return Reflect.apply(original, this, [callback, thisArg]);
     };
     restoreStarScoreMap = restore;
@@ -2024,6 +2071,9 @@
     if (!scores) return;
     for (const row of list.querySelectorAll('.cand[data-uid]')) appendSmithBaseScore(row, scores.get(row.dataset.uid));
     appendSmithBaseScore(document.querySelector('#sf-detail'), scores.get(list.querySelector('.cand.sel')?.dataset.uid));
+    const detail = document.querySelector('#sf-detail');
+    const gain = starGainData.get(list)?.get(list.querySelector('.cand.sel')?.dataset.uid);
+    paintSmithGain(detail, gain);
   }
   let smithScoring = false;
   function updateSmithBaseScores(list, filters) {
@@ -2042,7 +2092,7 @@
     }
     const redraw = filters.querySelector('[data-f].active') || filters.querySelector('[data-f="all"]');
     if (typeof redraw?.onclick !== 'function') return;
-    const original = Array.prototype.filter, scores = new Map(), enhanced = new Set();
+    const original = Array.prototype.filter, originalMap = Array.prototype.map, scores = new Map(), enhanced = new Set(), items = new Map(), gains = new Map();
     smithScoring = true;
     const render = () => {
       const switching = smith.switching;
@@ -2050,12 +2100,29 @@
       try { redraw.onclick(); } finally { smith.switching = switching; }
     };
     try {
+      Array.prototype.map = function(callback, thisArg) {
+        const result = Reflect.apply(originalMap, this, [callback, thisArg]);
+        if (!gearArray(this) || !result.every(value => typeof value === 'string' && value.includes('cand'))) return result;
+        for (const copy of this) {
+          const item = items.get(copy.uid); if (!item) continue;
+          try {
+            const score = value => {
+              const holder = document.createElement('div');
+              holder.innerHTML = Reflect.apply(callback, thisArg, [value, 0, this]);
+              const text = holder.querySelector('.gs b')?.textContent;
+              return text?.trim() ? Number(text.replaceAll(',', '')) : NaN;
+            };
+            gains.set(item.uid, smithLevelGains(item, 'refine', score));
+          } catch { /* Unknown native renderers leave the preview unavailable. */ }
+        }
+        return result;
+      };
       // Only substitute display copies during this synchronous native redraw.
       // The game's own scorer retains the current job, quality, Tier and affixes.
       Array.prototype.filter = function(...args) {
         const result = Reflect.apply(original, this, args);
         if (!gearArray(this)) return result;
-        for (const item of this) smithItemIds.set(item.uid, item.itemId);
+        for (const item of this) { smithItemIds.set(item.uid, item.itemId); if (!items.has(item.uid)) items.set(item.uid, item); }
         return result.map(item => {
           if (item.refine > 0 || item.star > 0 || item.cards.some(Boolean)) enhanced.add(item.uid);
           return {...item, refine: 0, star: 0, cards: item.cards.map(() => null)};
@@ -2068,11 +2135,12 @@
       }
     } finally {
       Array.prototype.filter = original;
+      Array.prototype.map = originalMap;
       try { render(); } finally { smithScoring = false; }
     }
     for (const row of list.querySelectorAll('.cand[data-uid]')) {
       smithScoreRows.add(row);
-      smithScoreCache.set(row.dataset.uid,{current:currentScore(row),base:scores.get(row.dataset.uid)});
+      smithScoreCache.set(row.dataset.uid,{current:currentScore(row),base:scores.get(row.dataset.uid),gain:gains.get(row.dataset.uid)});
       appendSmithBaseScore(row, scores.get(row.dataset.uid));
     }
     const selected = list.querySelector('.cand.sel')?.dataset.uid;
@@ -2115,6 +2183,7 @@
       if (!filters.querySelector('[data-f="all"].active')) nativeSmithAll();
     }
     updateSmithBaseScores(list, filters);
+    paintSmithGain(document.querySelector('#smith-detail'), smithScoreCache.get(list.querySelector('.cand.sel')?.dataset.uid)?.gain);
     filters.querySelectorAll('[data-f]').forEach(button => {
       if (smithNativeButtons.has(button)) return;
       const original = button.onclick;
@@ -2990,7 +3059,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.5');
+      console.info('[RO助手] 即時自選已啟用 v2.2.6');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
