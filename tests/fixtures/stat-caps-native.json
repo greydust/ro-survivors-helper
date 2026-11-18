@@ -1,0 +1,7 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzcc4d908b.js",
+  "lobbyStats": "function Hk(a){const e=es(dr(a));return Uh(a).applyStats(e),Zm(e,be(a.promotion??a.job).rank),e.damageReduction=Math.min(.6,e.damageReduction),e.flee=Math.min(.5,e.flee),dw(e),e.maxHp=Math.max(30,Math.round(e.maxHp)),e}",
+  "diminishing": "const kH=2,g0=t=>{const e=t-1;return e>0?1+e/(1+e/kH):t};function t9(t){t.areaMult=g0(t.areaMult),t.reachMult=g0(t.reachMult),t.speedMult=g0(t.speedMult)}",
+  "slotHandler": "()=>{Bt=ne.dataset.slot,j=C=null,I()}",
+  "tabHandler": "()=>wg(S.dataset.tab)"
+}

@@ -2,6 +2,24 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #chronicle{box-sizing:border-box}
+      #chronicle>.chronicle-window{box-sizing:border-box;width:min(900px,calc((100vw - max(8px,env(safe-area-inset-left)) - max(8px,env(safe-area-inset-right)))/var(--ui,1)));max-height:calc((100vh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));max-height:calc((100dvh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));display:flex;flex-direction:column;min-height:0}
+      #chronicle>.chronicle-window>.ro-title,#chronicle>.chronicle-window>.btn-row{flex:none}
+      #chronicle>.chronicle-window>.ro-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+      #chronicle #chr-perks{height:auto;min-height:0;flex:none}
+      #chronicle #chr-perks .chr-list{flex:none;overflow:visible;scrollbar-gutter:auto}
+      #ro-safari-diagnostics-open{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-safari-diagnostics-open[hidden],#ro-safari-diagnostics[hidden]{display:none!important}
+      #ro-advanced-choice[data-ro-draggable]{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-advanced-choice[hidden],#ro-advanced-choice-dialog[hidden]{display:none!important}
+      #ro-advanced-choice{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:40;padding:10px 16px;border:1px solid #718dbb;border-radius:8px;background:#233b61;color:#fff;font:600 15px sans-serif;cursor:pointer}
+      #ro-advanced-choice-dialog{position:fixed;inset:4vh max(8px,calc((100vw - 960px)/2));z-index:10000;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;padding:18px;background:#142238;color:#edf4ff;border:1px solid #819bc4;border-radius:12px;box-shadow:0 0 0 100vmax #0009;font:14px/1.6 sans-serif}
+      #ro-advanced-choice-dialog header{display:flex;justify-content:space-between;align-items:center;font-size:20px}
+      #ro-advanced-choice-dialog button,#ro-advanced-choice-dialog select,#ro-advanced-choice-dialog input[type=search]{padding:6px;margin:3px;background:#263d60;color:#fff;border:1px solid #7892ba;border-radius:5px;max-width:100%;box-sizing:border-box}
+      #ro-advanced-choice-dialog button:disabled{opacity:.4}#ro-advanced-choice-dialog button{cursor:pointer}#ro-advanced-choice-dialog input[type=checkbox]{accent-color:#82b6ff}
+      #ro-advanced-choice-dialog section{margin-top:12px;padding-top:8px;border-top:1px solid #456080}#ro-advanced-choice-dialog label{display:inline-block;margin:4px 10px 4px 0}
+      #ro-advanced-choice-dialog .ro-ac-table{max-height:38vh;overflow:auto;border:1px solid #456080;margin-top:8px}
+      #ro-advanced-choice-dialog .ro-ac-row{display:grid;grid-template-columns:minmax(120px,1fr) 110px 110px;align-items:center;gap:6px;padding:3px 8px;border-bottom:1px solid #304764}
+      #ro-advanced-choice-dialog [hidden]{display:none!important}#ro-advanced-choice-dialog .ro-ac-priority{border-bottom:1px solid #304764;padding:5px 0}
+      @media(max-width:500px){#ro-advanced-choice-dialog{padding:10px;inset:8px}#ro-advanced-choice-dialog .ro-ac-row{grid-template-columns:minmax(90px,1fr) 78px 78px;gap:2px;padding:3px}#ro-advanced-choice-dialog select{width:auto;min-width:0}}
       #ro-horde-hud{position:fixed;right:12px;top:auto;bottom:12px;width:180px;max-width:calc(100vw - 24px);z-index:8;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:none}
       #ro-horde-hud[hidden]{display:none!important}#ro-horde-hud [data-monster-toggle]{pointer-events:auto;touch-action:manipulation}#ro-horde-hud [data-monster-counts]{pointer-events:auto}#ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
       .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}#stg-detail [data-ro-mob-level]{display:block;width:fit-content;max-width:100%;box-sizing:border-box;font-size:12px;font-weight:700;line-height:1.5;color:#ffe08a;background:#20304c;border:1px solid #a18442;border-radius:4px;padding:1px 6px}#stg-detail .stg-boss [data-ro-mob-level]{margin:3px auto}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
@@ -27,10 +45,12 @@
       #ro-character-details [data-character-stats]>div,#ro-character-details [data-character-raw]>div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #738ab433}#ro-character-details b{white-space:nowrap;font-variant-numeric:tabular-nums}#ro-character-details summary{cursor:pointer;margin-top:12px}#ro-character-details [data-character-raw]{overflow-wrap:anywhere}
       [data-ro-ap-enabled]{outline:2px solid #65edb1!important;outline-offset:2px}
       #smith-list [data-ro-smith-filtered]{display:none!important}
+      #sf-list [data-ro-star-filtered]{display:none!important}
       [data-ro-inventory-categories]{display:contents}#cp-inv-filters [hidden],#ks-filt [hidden]{display:none!important}[data-ro-inventory-subtypes]{display:flex;gap:4px;flex:0 0 100%;order:1;min-width:0;max-width:100%;overflow-x:auto;flex-wrap:nowrap;margin:4px 0 8px}[data-ro-inventory-subtypes] button{flex:none;white-space:nowrap}[data-ro-gear-details]{font-size:11px;line-height:1.5;white-space:normal;overflow-wrap:anywhere;color:var(--ro-text,#24304f)}#cp-eq-list .cand-info{min-width:0}#cp-eq-list .cand-side{flex:none}[data-ro-card-preview]{font-size:12px;line-height:1.5;padding-top:6px}[data-ro-gs-preview]{display:block;font-size:10px}
       #smith-filters{flex-wrap:wrap}
-      #ro-auto-refine{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
-      #ro-auto-refine-target{padding:6px;border:1px solid #a0aec7;border-radius:4px;font:inherit}
+      #ro-auto-refine,#ro-auto-star{display:inline-flex;align-items:center;gap:6px;margin-right:8px;flex-wrap:wrap}
+      #ro-auto-star[hidden]{display:none!important}
+      #ro-auto-refine-target,#ro-auto-star-target{padding:6px;border:1px solid #a0aec7;border-radius:4px;font:inherit}
       #ro-unwanted-dialog{position:fixed;inset:0;z-index:2147483647;background:#0009;display:flex;align-items:center;justify-content:center;padding:16px;font:14px sans-serif;color:#172238}
       #ro-unwanted-dialog .ro-filter-panel{background:#f5f7fc;border:2px solid #738ab4;border-radius:10px;padding:18px;width:min(1440px,96vw);max-width:100%;max-height:90vh;overflow:auto;box-sizing:border-box}
       #ro-unwanted-dialog h3{margin:0 0 10px}#ro-unwanted-dialog p{line-height:1.5}
@@ -95,6 +115,9 @@
     `;
     document.head.append(style);
     safariDiagnostics?.mount();
+    document.addEventListener('pointerdown',advancedManualInput,true);
+    document.addEventListener('touchstart',advancedManualInput,{capture:true,passive:true});
+    window.addEventListener('keydown',advancedManualInput,true);
     document.addEventListener('contextmenu', touchContext, true);
     document.addEventListener('pointerdown',beginLongPress,true);
     document.addEventListener('pointermove',moveLongPress,true);
@@ -111,6 +134,8 @@
     window.visualViewport?.addEventListener('resize',()=>{cancelLongPress();closeMenu();});
     document.addEventListener('visibilitychange',()=>{if(document.hidden){touchUiActive=false;clearLongPress();closeMenu();}});
     document.addEventListener('click',event=>{
+      if(autoStar.active&&!autoStar.clicking&&event.target instanceof Element&&
+        (event.target.closest('#sf-close, #starforge [data-sft], #sf-go')||event.composedPath().some(node=>node.id==='sf-list')))stopAutoStar();
       if(keepOffline&&event.target instanceof Element&&event.target.closest('#lobby-online')){
         event.preventDefault();event.stopImmediatePropagation();notify('保持離線遊玩已開啟；可到選項 → 遊戲關閉');return;
       }
@@ -129,6 +154,7 @@
         return;
       }
       if (e.key === 'Escape') {
+        if(autoStar.active)stopAutoStar();
         if(autoRefine.active)stopAutoRefine();
         closeMenu();
         if (job) {
@@ -152,10 +178,13 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
-        return el?.closest('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
+        if(el?.closest('#chr-perks'))return true;
+        if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
+        if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
+        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
       });
       if (relevant) schedule();
-    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });
     scan();
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.

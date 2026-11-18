@@ -2,9 +2,18 @@
     const picker=document.querySelector('#picker');
     return !!picker&&!picker.classList.contains('hidden');
   }
-  let touchUiQuietUntil=0,touchUiActive=false;
+  let touchUiQuietUntil=0,touchUiActive=false,touchUiResumeTimer=null;
   function touchUiIsQuiet(){return touchUiActive||performance.now()<touchUiQuietUntil;}
-  function deferTouchUI(){touchUiQuietUntil=performance.now()+1000;}
+  function deferTouchUI(){
+    touchUiQuietUntil=performance.now()+1000;
+    clearTimeout(touchUiResumeTimer);
+    // A town overlay can finish opening during the touch quiet period, with
+    // no later DOM mutation or game tick. Resume the skipped scan explicitly.
+    touchUiResumeTimer=setTimeout(()=>{
+      touchUiResumeTimer=null;
+      if(!touchUiActive)schedule();
+    },1000);
+  }
   function fastChoice(game, cards, kind) {
     if (!Array.isArray(cards) || cards.length === 0) return null;
     let best = null;
@@ -20,13 +29,18 @@
   }
 
   function installFastChoice(game) {
+    installDeitySwapPreference(game);
     installPickupHelpers(game);
+    // Pickup recognition must inspect the native dropPickup before the visual
+    // owner wrapper is installed around it.
+    if(typeof installBattleVisualPreferences==='function')installBattleVisualPreferences(game);
     installHordeCount(game);
     if(game)activeGame=game;
     if (!game || !game.events) return;
     let installed=fastHooked.get(game);
     if(!installed){installed=new Map();fastHooked.set(game,installed);}
     activeGame = game;
+    installAdvancedChoiceMethods(game);
     for (const [event, kind, method] of [['onLevelUp', 'skill', 'choose'], ['onChest', 'item', 'chooseChest']]) {
       // Browser/extension bridges may return a fresh callable on each read.
       // Reference inequality is not evidence that the native callback changed.
@@ -34,6 +48,9 @@
       const original = game.events[event];
       if (typeof original !== 'function' || typeof game[method] !== 'function') continue;
       const wrapper=function(cards, ...args) {
+        if(advancedSettings.enabled){
+          const receiver=this;captureAdvancedChoice(game,cards,kind,offers=>Reflect.apply(original,receiver,[offers,...args]));return;
+        }
         // With no rule for this picker, preserve the native path exactly.
         if(!rules.some(rule=>rule.kind===kind))return Reflect.apply(original,this,[cards,...args]);
         const selected = fastChoice(game, cards, kind);
@@ -56,6 +73,7 @@
         // No picker DOM, entrance lock, or exit animation is created.
         queueMicrotask(() => {
           if (activeGame !== game || game.player?.dead || game.state === 'over') return;
+          if(advancedSettings.enabled){captureAdvancedChoice(game,cards,kind,offers=>original.call(game.events,offers,...args));return;}
           try { game[method](selected); }
           catch (error) {
             console.warn('[RO助手] 即時自選失敗，恢復手動選擇', error);
@@ -96,6 +114,7 @@
     }
   }
   function helperTick(game){
+    if(typeof performanceSession!=='undefined'&&performanceSession&&(performanceSession.game!==game||game.state==='over'))stopPerformanceMeasurement(performanceSession.game!==game?'game-changed':'game-over');
     runHelperHook(game,'FPS',()=>updateFpsDisplay(game));
     runHelperHook(game,'戰鬥天氣',()=>installWeatherEffects(game));
     runHelperHook(game,'自動選擇',()=>installFastChoice(game));
@@ -111,6 +130,7 @@
     try {
       const module = await import(new URL(link.getAttribute('href'), location.href).href);
       gameCatalog=module;
+      initializeBattleSettings(module);
       installPickupVisualHooks(module);
       updateStageSpawnSchedule();
       smithDefs = Object.values(module).find(value => value && typeof value === 'object'
@@ -122,6 +142,7 @@
       updateSmith();
       skillDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value.atk_sword?.kind === 'weapon' && value.bash?.kind === 'weapon') || null;
+      initializeAdvancedCatalog(module);
       const hooks = Object.values(module).find(value => value && typeof value === 'object'
         && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
       if (!hooks) throw new Error('找不到遊戲事件介面');
@@ -131,7 +152,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.0.3');
+      console.info('[RO助手] 即時自選已啟用 v2.2.5');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -320,6 +341,7 @@
     document.querySelector('#picker')?.removeAttribute('data-ro-ap-hidden');
   }
   function resetRun() {
+    resetAdvancedChoice();
     clearLongPress();
     clearHordeHud();
     closeCharacterDetails();
@@ -332,6 +354,9 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
+    safariDiagnostics?.updateUI();
+    updateAdvancedChoiceUI();
+    if(advancedSettings.enabled){cancel();if(advancedChoice&&!advancedChoice.manual&&!advancedTimer)queueAdvancedChoice();}
     // Native choice gestures must not trigger unrelated helper DOM refreshes.
     if(!pickerIsOpen()&&!touchUiIsQuiet()){
       updateHordeHud();
@@ -340,9 +365,12 @@
       updateOfflineUI();
       updateMinimapOption();
       updatePickupOptions();
+      updateBattlePreferenceOptions();
+      updateDeitySwapPreferenceUI();
       updateSmith();
       updateMerchant();
       updateInventoryViews();
+      updateStatCapDisplay();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {
       const enabled = rules.some(r => sameSlot(r, el));
@@ -351,6 +379,7 @@
     });
     }
     const picker = document.querySelector('#picker');
+    if(advancedSettings.enabled){cancel();return;}
     if (!picker || picker.classList.contains('hidden')) { cancel(); return; }
     if (picker.classList.contains('closing')) return;
     const cards = [...picker.querySelectorAll('#pk-cards .pk-card')];

@@ -28,12 +28,12 @@ assert(data.records.every(record=>record.sources.every(source=>!/[A-Za-z]/.test(
 assert(!html.includes('import('));assert(!html.includes('fetch('));
 console.log('PASS static equipment page shares filter catalog, actual bonuses, Chinese sources and T4–T8; categories, subtypes and search work offline');
 
-assert.equal(data.records.length,300);
-for(const [id,name,stage] of [[39001,'聖誕版海東劍','聖誕節'],[13435,'火靈之劍','元宵節'],[2527,'龍的呼吸','元宵節']]){
+assert.equal(data.records.length,320);
+for(const [id,name,stage] of [[39001,'聖誕版海東劍','聖誕節'],[5457,'玉兔頭飾','元宵節'],[5292,'龍的骷髏','元宵節']]){
  const record=data.records.find(row=>row.id===id);assert(record);assert.equal(record.name,name);assert(record.sources.some(source=>source.stage===stage));assert(record.tiers.some(row=>row.tier===8));
  input.value=name;input.oninput();assert(document.querySelector('.gear[data-item-id="'+id+'"]'));
 }
-const rare=data.records.find(row=>row.id===2527);assert(rare.sources.some(source=>source.rare&&source.monster==='墨蛇君'));assert(document.querySelector('.gear[data-item-id="2527"]').textContent.includes('稀有'));
+const rare=data.records.find(row=>row.id===5292);assert(rare.sources.some(source=>source.rare&&source.monster==='墨蛇君'));assert(document.querySelector('.gear[data-item-id="5292"]').textContent.includes('稀有'));
 assert.equal(data.records.find(row=>row.id===39001).icon,'https://ro.hans-webgametw.com/assets/items/1128.png');
-assert(data.records.find(row=>row.id===13030).tiers.find(row=>row.tier===8).bonuses.includes('★ +24% 對頭目與不死系傷害'));
+assert(data.records.find(row=>row.id===1559).tiers.find(row=>row.tier===8).bonuses.includes('★ +24% 對頭目與不死系傷害'));
 console.log('PASS expanded catalog includes official names, reused artwork, festival/rare sources and current T8 bonuses');

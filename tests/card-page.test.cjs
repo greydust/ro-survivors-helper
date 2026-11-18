@@ -36,8 +36,9 @@ search.value='元宵節';search.oninput();assert(cards().length>5);assert(cards(
 document.querySelector('[data-category="garment"]').click();assert(cards().every(c=>data.records.find(r=>r.id===Number(c.dataset.cardId)).slot==='garment'));assert(search.value==='元宵節');
 search.value='不存在的卡片999999';search.oninput();assert(document.querySelector('.empty-result'));
 const find=id=>data.records.find(c=>c.id===id),v=(id,lap)=>find(id).versions.find(v=>v.lap===lap);
-for(const [id,score] of [[4195,31],[4172,25],[4287,44],[4225,31],[4239,12]])assert.equal(v(id,4).scores.swordsman,score);
-assert(v(4287,4).bonuses.includes('+75 最大 HP'));assert(v(4195,4).bonuses.some(b=>b.includes('12.5%')));
+for(const [id,score] of [[4195,35],[4172,50],[4287,37],[4225,33],[4239,18]])assert.equal(v(id,4).scores.swordsman,score);
+assert.deepEqual(v(4287,4).bonuses,['-12.5% 承受傷害','+2.5% Flee']);assert(v(4195,4).bonuses.includes('-10% 承受傷害'));
+assert(data.records.find(c=>c.monster==='墨蛇君').sources.some(s=>s.stage==='元宵節'&&s.rare),'native intruder sources must be included');
 assert(find(4144).versions.every(row=>JSON.stringify(row.bonuses)===JSON.stringify(v(4144,1).bonuses)),'Osiris revival must not scale');
 assert(data.records.some(c=>c.versions.some(row=>row.scores.swordsman!==row.scores.mage)),'job scores must retain native weighting');
 assert(!html.includes('fetch(')&&!html.includes('import('));

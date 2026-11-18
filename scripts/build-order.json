@@ -3,11 +3,14 @@
   "offline.js",
   "minimap.js",
   "weather.js",
+  "battle-preferences.js",
+  "deity-preference.js",
   "pickups.js",
   "horde-count.js",
   "state-and-refine.js",
   "safari-diagnostics.js",
   "character-details.js",
+  "stat-caps.js",
   "equipment-catalog.js",
   "monster-names.js",
   "merchant-filter.js",
@@ -15,6 +18,8 @@
   "inventory.js",
   "stage-schedule.js",
   "smith.js",
+  "performance.js",
+  "advanced-choice.js",
   "auto-pick.js",
   "ui-and-startup.js"
 ]

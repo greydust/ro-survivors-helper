@@ -60,6 +60,8 @@
         diagnosticDialogOpen:!!document.querySelector('#ro-safari-diagnostics'),hud:elementState('#hud'),buffs:elementState('#buffs'),
         characterButton:elementState('#ro-character-details-toggle'),characterPanel:elementState('#ro-character-details'),
         monsters:elementState('#ro-horde-hud'),monsterList:elementState('#ro-horde-hud [data-monster-counts]'),picker:elementState('#picker'),
+        smith:{panel:elementState('#smith'),filters:elementState('[data-ro-smith-extra]'),auto:elementState('#ro-auto-refine'),definitionsReady:!!smithDefs,assetsReady:!!smithAssets?.manifest?.items,touchActive:touchUiActive,quiet:touchUiIsQuiet()},
+        starforge:{panel:elementState('#starforge'),filters:elementState('[data-ro-star-filters]'),auto:elementState('#ro-auto-star')},
         minimap:{element:elementState('#minimap'),canvas:elementState('#minimap canvas'),canvasWidth:canvas?.width??null,canvasHeight:canvas?.height??null,
           enabled:showHordeRing,option:elementState('[data-ro-show-horde-ring]'),optionChecked:document.querySelector('[data-ro-show-horde-ring]')?.checked??null,geometry,geometryError,trace:{...minimapTrace}}};
     }
@@ -129,8 +131,14 @@
     setTimeout(heartbeat,1000);record({kind:'start',state:snapshot()},true);
     function mount(){
       if(document.querySelector('#ro-safari-diagnostics-open'))return;
-      const button=document.createElement('button');button.id='ro-safari-diagnostics-open';button.type='button';button.textContent='Safari 診斷';button.onclick=()=>open(false);document.body.append(button);
+      const button=document.createElement('button');button.id='ro-safari-diagnostics-open';button.type='button';button.textContent='Safari 診斷';
+      button.title='點一下開啟診斷；長按後拖曳移動';installFloatingHelperDrag(button);button.onclick=()=>open(false);document.body.append(button);updateUI();
       if(new URL(location.href).searchParams.get('rodiag')==='1')open(true);
+    }
+    function updateUI(){
+      const button=document.querySelector('#ro-safari-diagnostics-open'),blocked=nativeGameWindowOpen();
+      if(button){if(button.hidden!==blocked)button.hidden=blocked;if(!blocked)placeFloatingHelperButton(button);}
+      if(dialog&&dialog.hidden!==blocked)dialog.hidden=blocked;
     }
     function open(preferPrevious){
       if(dialog){dialog.remove();dialog=null;}
@@ -150,9 +158,9 @@
       });
       button('選取全部',()=>{text.focus();text.select?.();text.setSelectionRange?.(0,text.value.length);status.textContent='也可長按文字選擇「複製」。';});
       button('更新本次紀錄',refresh);button('關閉',()=>{dialog.remove();dialog=null;});
-      dialog.append(title,note,select,actions,status,text);document.body.append(dialog);refresh();
+      dialog.append(title,note,select,actions,status,text);document.body.append(dialog);updateUI();refresh();
     }
-    return {mount,recordError,recordMinimap,getLog:()=>{sampleUI();return JSON.parse(JSON.stringify(log));}};
+    return {mount,updateUI,recordError,recordMinimap,getLog:()=>{sampleUI();return JSON.parse(JSON.stringify(log));}};
   }
   let safariDiagnostics=null;
   if(isSafariBrowser()){

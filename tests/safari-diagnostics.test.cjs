@@ -11,7 +11,7 @@ function setup({ua=safari,storage=new Map(),query='',failStorage=false,clipboard
   localStorage:{getItem:key=>{if(failStorage)throw Error('storage unavailable');return storage.get(key)||null;},setItem:(key,value)=>{if(failStorage)throw Error('storage unavailable');storage.set(key,value);}},
   MutationObserver:class{observe(){}},console,performance:{now:()=>now},innerWidth:390,innerHeight:844,
   queueMicrotask:fn=>microtasks.push(fn),setTimeout:(fn,delay)=>{const id=++next;timers.set(id,{at:now+delay,fn});return id;},clearTimeout:id=>timers.delete(id)});
- vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.diagnosticTest={isSafariBrowser,get:()=>safariDiagnostics,setGame:value=>activeGame=value,setRing:value=>showHordeRing=value,patchMinimapContext,paintHordeRing};})();'),context);
+ vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.diagnosticTest={refreshUI:scan,isSafariBrowser,get:()=>safariDiagnostics,setGame:value=>activeGame=value,setRing:value=>showHordeRing=value,patchMinimapContext,paintHordeRing};})();'),context);
  const flush=()=>{for(let i=0;microtasks.length;i++){assert(i<1000);microtasks.shift()();}};
  const tick=ms=>{const end=now+ms;for(;;){const due=[...timers].filter(([,v])=>v.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!due)break;timers.delete(due[0]);now=due[1].at;due[1].fn();flush();}now=end;flush();};
  return {window:browserWindow,document:window.document,api:context.diagnosticTest,storage,tick,flush};
@@ -23,6 +23,23 @@ const current='greydust.ro.safari-diagnostics.current.v1',previous='greydust.ro.
   const e=setup({ua});assert.equal(e.api.get(),null);assert.equal(e.storage.size,0);assert(!e.document.querySelector('#ro-safari-diagnostics-open'));
  }
  console.log('PASS diagnostics only activate in Safari');
+ {
+  const e=setup();e.document.body.classList.add('in-lobby');e.document.body.insertAdjacentHTML('beforeend','<div id="lobby-ui"></div>');e.api.refreshUI();
+  const floating=e.document.querySelector('#ro-safari-diagnostics-open'),choice=e.document.querySelector('#ro-advanced-choice');
+  const pointer=(node,type,x,y)=>{const event=new e.window.Event(type,{bubbles:true,cancelable:true});Object.assign(event,{pointerId:1,button:0,clientX:x,clientY:y});node.dispatchEvent(event);};
+  floating.getBoundingClientRect=()=>({left:6,top:800,width:100,height:32});
+  choice.getBoundingClientRect=()=>({left:270,top:780,width:100,height:44});
+  pointer(floating,'pointerdown',10,810);e.tick(300);pointer(floating,'pointermove',-100,1000);pointer(floating,'pointerup',-100,1000);
+  const release=new e.window.Event('click',{bubbles:true,cancelable:true});floating.dispatchEvent(release);assert(release.defaultPrevented);assert(!e.document.querySelector('#ro-safari-diagnostics'));
+  assert.equal(floating.style.left,'0px');assert.equal(floating.style.top,'812px');
+  pointer(choice,'pointerdown',280,790);e.tick(300);pointer(choice,'pointermove',200,400);pointer(choice,'pointerup',200,400);e.api.refreshUI();
+  assert.equal(choice.style.left,'190px');assert.equal(floating.style.left,'0px','each floating button keeps its own position');
+  pointer(floating,'pointerdown',10,810);pointer(floating,'pointerup',10,810);floating.click();assert(e.document.querySelector('#ro-safari-diagnostics'));e.api.refreshUI();assert(!floating.hidden,'own diagnostic dialog does not hide its button');
+  const native=e.document.createElement('div'),other=e.document.createElement('div');native.className=other.className='overlay';e.document.body.append(native,other);e.api.refreshUI();
+  assert(floating.hidden);assert(e.document.querySelector('#ro-safari-diagnostics').hidden);native.classList.add('hidden');e.api.refreshUI();assert(floating.hidden);
+  other.remove();e.api.refreshUI();assert(!floating.hidden);assert(!e.document.querySelector('#ro-safari-diagnostics').hidden);assert.equal(floating.style.left,'0px');
+  console.log('PASS Safari button hold/drag, independent positions, tap and native-window hide/restore');
+ }
  const ui=setup();let report=ui.api.get().getLog().currentUI;
  assert.equal(report.hasGame,false);assert.equal(report.characterButton.exists,false);assert.equal(report.monsters.exists,false);assert.equal(report.minimap.enabled,true);
  ui.document.body.insertAdjacentHTML('beforeend','<div id="buffs"></div><button id="ro-character-details-toggle"></button><section id="ro-horde-hud" hidden><div data-monster-counts hidden></div></section><div id="minimap"><canvas width="200" height="180"></canvas></div>');

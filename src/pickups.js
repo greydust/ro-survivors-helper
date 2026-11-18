@@ -6,7 +6,7 @@
   let unlimitedMagnets=false,magnetLimitReady=false;
   try{unlimitedMagnets=localStorage.getItem(UNLIMITED_MAGNETS_KEY)==='true';}catch{}
   const pickupHelpers=new WeakMap(),pickupVisualPrototypes=new WeakSet(),beamVisuals=new WeakSet(),pickupWorlds=new WeakSet();
-  const pickupMetrics={visualCallsSkipped:0,beamCallsSkipped:0,beamPositionsSkipped:0,pickupVisualReady:false,beamVisualReady:false};
+  const pickupMetrics={visualCallsSkipped:0,beamCallsSkipped:0,beamPositionsSkipped:0,stationaryBeamPositionsSkipped:0,pickupVisualReady:false,beamVisualReady:false};
   const compactFunction=fn=>Function.prototype.toString.call(fn).replace(/\s+/g,'').replace(/\b0\./g,'.');
   function knownPickupVisual(fn){
     if(typeof fn!=='function')return false;
@@ -57,9 +57,19 @@
     if(typeof position==='function'){
       const source=compactFunction(position),args=source.match(/^setBeam\(([\w$]+),([\w$]+),([\w$]+)\)/);
       if(args&&source===`setBeam(${args[1]},${args[2]},${args[3]}){${args[1]}.group.position.set(${args[2]},this.heightAt(${args[2]},${args[3]}),${args[3]})}`){
-        world.setBeam=function(beam,...rest){
-          if(optimizeHiddenPickups&&beam?.group?.visible===false){pickupMetrics.beamPositionsSkipped++;return;}
-          return Reflect.apply(position,this,[beam,...rest]);
+        const positions=new WeakMap();
+        world.setBeam=function(beam,x,y,...rest){
+          if(optimizeHiddenPickups&&beam?.group?.visible===false){positions.delete(beam);pickupMetrics.beamPositionsSkipped++;return;}
+          const point=beam?.group?.position,map=this.map,altitude=map?.altitude,heights=altitude?.heights||map?.heights,previous=beam&&positions.get(beam);
+          // Altars can change height in place; leave their native sampling intact.
+          const cacheable=point&&Number.isFinite(x)&&Number.isFinite(y)&&!this.altar&&!rest.length;
+          if(cacheable&&previous&&previous.x===x&&previous.y===y&&previous.map===map&&previous.altitude===altitude&&previous.heights===heights&&previous.scale===this.hScale&&previous.heightAt===this.heightAt&&previous.point===point&&previous.px===point.x&&previous.py===point.y&&previous.pz===point.z){
+            pickupMetrics.stationaryBeamPositionsSkipped++;return;
+          }
+          const result=Reflect.apply(position,this,[beam,x,y,...rest]);
+          if(cacheable)positions.set(beam,{x,y,map,altitude,heights,scale:this.hScale,heightAt:this.heightAt,point,px:point.x,py:point.y,pz:point.z});
+          else if(beam)positions.delete(beam);
+          return result;
         };
       }
     }
@@ -107,6 +117,7 @@
       }
       if(input.checked!==value)input.checked=value;previous=input.closest('label');
     }
+    if(typeof updatePerformanceOption==='function')updatePerformanceOption();
   }
   function pickupDiagnostics(){return {unlimitedMagnets,magnetLimitReady,optimizeHiddenPickups,count:activeGame?.pickups?.length??0,...pickupMetrics};}
 

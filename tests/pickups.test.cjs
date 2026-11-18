@@ -8,15 +8,17 @@ const O={play(){}},c=x=>x,tr=Math.pow,re=()=>.5;
 class Pickup {constructor(kind,x=1000){Object.assign(this,{kind,x,y:-20,value:7,bob:0,dead:false,magnet:false,vacuum:false,sprite:{},glow:{},view:{visible:false,position:{set(){ops.position++}},destroy(){this.destroyed=true}}});}${native.pickupUpdate}}
 class Beam {constructor(){this.age=0;this.group={visible:false,scale:{set(){ops.scale++}},position:{set(){ops.position++}}};this.mats=[{uniforms:{time:{value:0},alpha:{value:0}},userData:{alpha:.5}}];}${native.beamUpdate}}
 class World {constructor(){this.beams=new Set()}heightAt(){ops.height++;return 0}${native.setBeam}removeBeam(b){this.beams.delete(b)}}
+${native.chestMagnet}
 class Game {constructor(){Object.assign(this,{pickups:[],player:{x:0,y:0,dead:false},state:'playing',stats:{pickupRadius:40,potionMult:1,freeChest:0},zeny:100,chestMsgCd:0,chestsOpened:0,events:{onLoot(){},onChest(){}},world3d:new World(),xp:0});}buffValue(){return 0}chestCost(){return 50}rollChest(){return ['offer']}gainExp(v){this.xp+=v}healPlayer(v){this.healed=(this.healed||0)+v}${native.vacuum}${native.updatePickups}${native.collect}${native.tryOpenChest}${native.replicaPickups}${native.sweepPickups}}
 globalThis.test={Pickup,Beam,World,Game,ops,originalPickupUpdate:Pickup.prototype.update,originalBeamUpdate:Beam.prototype.update};`,context);
+context.RO_LU={block:()=>false};
 const {api,test:t}=context;
 {
  const g=new t.Game(),vacuum=g.vacuum,update=g.updatePickups;
  g.pickups=['chest','meat','magnet','exp'].map(k=>new t.Pickup(k));api.installPickupHelpers(g);
  assert.equal(g.vacuum,vacuum,'native magnet method remains untouched');assert.equal(g.updatePickups,update,'native pickup movement remains untouched');
  g.vacuum();assert.deepEqual(Array.from(g.pickups,p=>p.magnet),[false,false,false,true]);
- g.updatePickups(1);assert.equal(g.pickups.find(p=>p.kind==='chest').x,1000);
+ g.updatePickups(.1);assert(g.pickups.find(p=>p.kind==='chest').x<1000);
 }
 {
  const p=new t.Pickup('exp');t.ops.position=0;t.ops.sin=0;api.patchPickupVisual(t.Pickup.prototype);p.update(.1);p.update(.2);assert.equal(t.ops.position,0);assert.equal(t.ops.sin,0);p.view.visible=true;p.update(.1);assert(Math.abs(p.bob-1.6)<1e-9);assert.equal(t.ops.sin,2);
@@ -91,3 +93,14 @@ for(const patched of [false,true]){
  const full=new context.MergeGame();full.pickups=Array.from({length:1000},(_,i)=>new t.Pickup('gem_blue',i));if(patched)api.installPickupHelpers(full);full.dropGem(0,0,1);assert.equal(full.pickups.filter(p=>!p.dead).length,1000,'merging new drops does not compact an existing pile');
 }
 console.log('Current native merging with/without helper: XP >350, healing >=60, retained values and no retroactive compaction passed');
+{
+ // Exercise the real combined installer: visual ownership must not hide the
+ // native dropPickup fingerprint from the magnet-limit hook.
+ context.window={};context.fastHooked=new WeakMap();context.rules=[];context.installHordeCount=()=>{};
+ vm.runInContext(fs.readFileSync('src/deity-preference.js','utf8')+fs.readFileSync('src/battle-preferences.js','utf8')+fs.readFileSync('src/advanced-choice.js','utf8')+fs.readFileSync('src/auto-pick.js','utf8')+';globalThis.combinedInstall=installFastChoice;',context);
+ const g=new context.DropGame();api.setUnlimited(true);context.combinedInstall(g);
+ for(let i=0;i<6;i++)g.dropPickup('magnet',i,0,0);assert.equal(g.pickups.length,6,'visual preferences and unlimited magnets work together');
+ assert.equal(g.deterministic,false);api.setUnlimited(false);g.dropPickup('magnet',0,0,0);assert.equal(g.pickups.length,6,'switching off restores native cap with visual wrapper installed');
+ g.dropPickup('gem_blue',0,0,7);assert.equal(g.pickups.at(-1).kind,'gem_blue');assert.equal(g.pickups.at(-1).value,7);
+ console.log('Combined native installer: magnet fingerprint precedes visual ownership wrapping; toggle and other drops preserved');
+}

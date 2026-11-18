@@ -34,25 +34,13 @@
       return action();
     }finally{Array.prototype.filter=original;}
   }
-  function inventoryPreviewItem(candidate,current){
-    if(!candidate||!current||candidate.uid===current.uid||!Array.isArray(candidate.cards)||candidate.cards.some(Boolean))return null;
-    const cards=current.cards?.filter(Boolean)||[];
-    if(!cards.length)return null;
-    const count=Math.min(cards.length,candidate.cards.length);
-    return {item:{...candidate,cards:candidate.cards.map((_,index)=>index<count?cards[index]:null)},count,omitted:cards.length-count};
-  }
-  function withNativeCardPreview(action,uid,simulate=true){
-    const find=Array.prototype.find,filter=Array.prototype.filter;
+  const equipmentBaseScores=new Map();
+  function withEquipmentScoreCapture(action,uid){
+    const find=Array.prototype.find,filter=Array.prototype.filter,map=Array.prototype.map;
     const hasCurrent=!!document.querySelector('#cp-eq-current .eq-name');
     if(!hasCurrent)equipmentCurrentItem=null;
-    let inventory=null,current=null,preview=null;
+    let inventory=null,current=null;
     const isInventory=value=>gearArray(value)&&value.some(item=>item.uid===uid);
-    const substitute=item=>{
-      if(!simulate)return item;
-      if(item?.uid!==uid||!current)return item;
-      preview=inventoryPreviewItem(item,current);
-      return preview?.item||item;
-    };
     try{
       Array.prototype.find=function(...args){
         const result=Reflect.apply(find,this,args);
@@ -62,18 +50,34 @@
         // Native render reads the current slot before enumerating candidates.
         // A click may first look up the selected item to clear its "new" flag.
         if(hasCurrent&&!current&&result&&result.uid!==uid){current=result;equipmentCurrentItem=result;}
-        return substitute(result);
+        return result;
       };
       Array.prototype.filter=function(...args){
         const result=Reflect.apply(filter,this,args);
         if(!inventory&&isInventory(this))inventory=this;
         if(this!==inventory)return result;
         for(const item of this)inventoryItems.set(item.uid,item);
-        return result.map(substitute);
+        return result;
+      };
+      Array.prototype.map=function(callback,thisArg){
+        const result=Reflect.apply(map,this,[callback,thisArg]);
+        // Native candidate scorer returns {g: gear, s: score}. Reuse that
+        // closure for pristine copies, preserving job, Tier and affix weights.
+        if(gearArray(this)&&result.length===this.length&&result.every((row,index)=>row?.g===this[index]&&Number.isFinite(row.s))){
+          for(const item of [...this,...(current?[current]:[])]){
+            try{
+              const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
+              const scored=Reflect.apply(callback,thisArg,[base,0,this]);
+              if(scored?.g===base&&Number.isFinite(scored.s))equipmentBaseScores.set(item.uid,String(scored.s));
+            }catch{/* Unknown native scoring must leave the original display intact. */}
+          }
+        }
+        return result;
       };
       const result=action();
-      return {result,preview,current};
-    }finally{Array.prototype.find=find;Array.prototype.filter=filter;}
+      paintEquipmentBaseScores(uid);
+      return {result,current};
+    }finally{Array.prototype.find=find;Array.prototype.filter=filter;Array.prototype.map=map;}
   }
   function refinePreviewMultiplier(item){
     return 1+[.04,.04,.04,.04,.06,.06,.06,.12,.12,.12].slice(0,Math.max(0,Math.min(10,item.refine||0))).reduce((sum,value)=>sum+value,0);
@@ -103,62 +107,23 @@
     details.dataset.signature=signature;details.replaceChildren();
     for(const [label,text] of lines){const line=document.createElement('div');line.textContent=label+'：'+text;details.append(line);}
   }
-  function previewNotice(preview){
-    const comparison=document.querySelector('#cp-eq-cmp');if(!comparison)return;
-    comparison.querySelector('[data-ro-card-preview]')?.remove();
-    if(!preview)return;
-    const note=document.createElement('div');note.dataset.roCardPreview='';note.className='muted';
-    note.textContent=preview.count?'比較預覽：沿用目前裝備 '+preview.count+' 張卡片'+(preview.omitted?'（另有 '+preview.omitted+' 張因插槽不足未計入）':'')+'；實際換裝仍由遊戲確認。'
-      :'比較預覽：候選裝備沒有插槽，目前裝備的 '+preview.omitted+' 張卡片無法計入。';comparison.append(note);
-  }
   function nativeInventoryHandler(node,event){return inventoryNativeHandlers.get(node)?.[event]||node?.[event];}
-  const equipListSummaries=new WeakMap();
   const probedEquipRows=new WeakSet();
-  let equipPreviewRendering=false;
+  function appendEquipmentBaseScore(root,uid){
+    const gs=root?.querySelector('.gs'),score=equipmentBaseScores.get(uid);
+    if(!gs||score===undefined)return;
+    let note=gs.querySelector('[data-ro-equipment-base-gs]');
+    if(!note){note=document.createElement('span');note.dataset.roEquipmentBaseGs='';gs.querySelector('b')?.after(note);}
+    const text=' ('+score+')';if(note.textContent!==text)note.textContent=text;
+    if(note.title!=='基底 GS：不含卡片、精煉加值與星數；保留品質、Tier 與詞綴')note.title='基底 GS：不含卡片、精煉加值與星數；保留品質、Tier 與詞綴';
+  }
+  function paintEquipmentBaseScores(uid){
+    appendEquipmentBaseScore(document.querySelector('#cp-eq-current'),equipmentCurrentItem?.uid);
+    appendEquipmentBaseScore(document.querySelector('#cp-eq-cmp .cmp-head'),uid);
+  }
   function updateCandidateScores(list,rows){
-    if(equipPreviewRendering||!rows.length)return;
-    const summary=JSON.stringify(rows.map(row=>[row.dataset.uid,inventoryItems.get(row.dataset.uid)]))+'|'+document.querySelector('#cp-eq-current')?.textContent;
-    if(equipListSummaries.get(list)===summary)return;
-    equipPreviewRendering=true;
-    try{
-      const deltas=new Map();
-      for(const row of rows){
-        const item=inventoryItems.get(row.dataset.uid),baseNode=row.querySelector('.gs b');
-        if(!baseNode)continue;
-        if(row.dataset.roBaseGs===undefined)row.dataset.roBaseGs=baseNode.textContent;
-        const base=Number(row.dataset.roBaseGs);if(!Number.isFinite(base))continue;
-        if(!item||item.cards.some(Boolean)||!item.cards.length)continue;
-        const enter=nativeInventoryHandler(row,'onpointerenter');if(typeof enter!=='function')continue;
-        // At most one native preview per socket count; card GS is additive.
-        let delta=deltas.get(item.cards.length);
-        if(delta===undefined){
-          let rendered=withNativeCardPreview(()=>Reflect.apply(enter,row,[{pointerType:'mouse'}]),item.uid);
-          if(!rendered.current&&row.classList.contains('sel')&&!item.isNew){
-            const click=nativeInventoryHandler(row,'onclick');
-            if(typeof click==='function')rendered=withNativeCardPreview(()=>Reflect.apply(click,row,[]),item.uid);
-          }
-          const score=Number(document.querySelector('#cp-eq-cmp .cmp-head .gs b')?.textContent);
-          if(!rendered.preview||!Number.isFinite(score))continue;
-          delta=score-base;deltas.set(item.cards.length,delta);
-        }
-        const score=base+delta,currentScore=Number(document.querySelector('#cp-eq-current .gs b')?.textContent||0),difference=score-currentScore;
-        if(baseNode.textContent!==String(score))baseNode.textContent=String(score);
-        let arrow=row.querySelector('.gs i');
-        if(!difference)arrow?.remove();
-        else{
-          if(!arrow){arrow=document.createElement('i');row.querySelector('.gs').append(arrow);}
-          arrow.className=difference>0?'up':'down';arrow.textContent=(difference>0?'▲':'▼')+Math.abs(difference);
-        }
-        let label=row.querySelector('[data-ro-gs-preview]');
-        if(!label){label=document.createElement('small');label.dataset.roGsPreview='';label.textContent='同卡預覽';row.querySelector('.cand-side').append(label);}
-      }
-      const leave=nativeInventoryHandler(list,'onpointerleave'),selected=list.querySelector('.cand.sel')?.dataset.uid;
-      if(typeof leave==='function'){
-        if(selected){const result=withNativeCardPreview(()=>Reflect.apply(leave,list,[]),selected);previewNotice(result.preview||inventoryPreviewItem(inventoryItems.get(selected),equipmentCurrentItem));}
-        else{Reflect.apply(leave,list,[]);previewNotice(null);}
-      }
-      equipListSummaries.set(list,summary);
-    }finally{equipPreviewRendering=false;}
+    for(const row of rows)appendEquipmentBaseScore(row,row.dataset.uid);
+    appendEquipmentBaseScore(document.querySelector('#cp-eq-current'),equipmentCurrentItem?.uid);
   }
   function updateEquipCandidates(){
     const panel=document.querySelector('#charpanel'),list=document.querySelector('#cp-eq-list');
@@ -166,11 +131,10 @@
     const rows=[...list.querySelectorAll('.cand[data-uid]')];
     if(rows.length&&!probedEquipRows.has(rows[0])){
       probedEquipRows.add(rows[0]);
-      equipListSummaries.delete(list);
       const enter=nativeInventoryHandler(rows[0],'onpointerenter'),leave=list.onpointerleave;
-      if(typeof enter==='function')withNativeCardPreview(()=>Reflect.apply(enter,rows[0],[{pointerType:'mouse'}]),rows[0].dataset.uid);
+      if(typeof enter==='function')withEquipmentScoreCapture(()=>Reflect.apply(enter,rows[0],[{pointerType:'mouse'}]),rows[0].dataset.uid);
       const selectedItem=inventoryItems.get(rows[0].dataset.uid),click=nativeInventoryHandler(rows[0],'onclick');
-      if(rows[0].classList.contains('sel')&&selectedItem&&!selectedItem.isNew&&typeof click==='function')withNativeCardPreview(()=>Reflect.apply(click,rows[0],[]),selectedItem.uid);
+      if(rows[0].classList.contains('sel')&&selectedItem&&!selectedItem.isNew&&typeof click==='function')withEquipmentScoreCapture(()=>Reflect.apply(click,rows[0],[]),selectedItem.uid);
       if(typeof leave==='function')Reflect.apply(leave,list,[]);
     }
     for(const row of rows){
@@ -179,16 +143,12 @@
         inventoryNativeHandlers.set(row,{onpointerenter:enter,onclick:click});
         if(typeof enter==='function')row.onpointerenter=function(event){
           if(event.pointerType!=='mouse')return Reflect.apply(enter,this,[event]);
-          const result=withNativeCardPreview(()=>Reflect.apply(enter,this,[event]),row.dataset.uid);
-          previewNotice(result.preview);updateEquipCandidates();return result.result;
+          const result=withEquipmentScoreCapture(()=>Reflect.apply(enter,this,[event]),row.dataset.uid);
+          updateEquipCandidates();return result.result;
         };
         if(typeof click==='function')row.onclick=function(event){
           // Let the real selection clear its new flag/save normally first.
-          const result=withNativeCardPreview(()=>Reflect.apply(click,this,[event]),row.dataset.uid,false).result;
-          if(row.isConnected){
-            const rendered=withNativeCardPreview(()=>Reflect.apply(click,this,[event]),row.dataset.uid);
-            previewNotice(rendered.preview);
-          }
+          const result=withEquipmentScoreCapture(()=>Reflect.apply(click,this,[event]),row.dataset.uid).result;
           updateEquipCandidates();return result;
         };
       }
@@ -199,7 +159,7 @@
       list.onpointerleave=function(event){
         const uid=list.querySelector('.cand.sel')?.dataset.uid;
         if(!uid)return Reflect.apply(leave,this,[event]);
-        const result=withNativeCardPreview(()=>Reflect.apply(leave,this,[event]),uid);previewNotice(result.preview||inventoryPreviewItem(inventoryItems.get(uid),equipmentCurrentItem));return result.result;
+        const result=withEquipmentScoreCapture(()=>Reflect.apply(leave,this,[event]),uid);return result.result;
       };
       inventoryNativeHandlers.get(list).onpointerleaveWrapper=list.onpointerleave;
     }

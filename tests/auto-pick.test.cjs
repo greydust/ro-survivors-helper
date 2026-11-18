@@ -379,6 +379,107 @@ function smithFixture(e) {
   render();e.api.updateSmith();
   return {render, remove:id=>{inventory=inventory.filter(x=>x!==String(id));}};
 }
+test('Safari town touch resumes skipped smith and starforge controls without another mutation',()=>{
+ const e=setup();smithFixture(e);e.document.querySelector('[data-ro-smith-extra]').remove();
+ const d=e.document;d.documentElement.classList.add('touch');
+ d.body.insertAdjacentHTML('beforeend','<div id="starforge"><div class="sf-top"></div><div id="sf-list"><div class="cand" data-uid="star"><div class="ico"><img src="assets/items/2101.png"></div></div></div><div id="sf-detail"></div><button id="sf-go"></button></div>');
+ safariTouch(e,d.body,'touchstart');e.api.scan();
+ e.tick(1500);assert(!d.querySelector('[data-ro-smith-extra]'));assert(!d.querySelector('[data-ro-star-filters]'),'never refresh during an active gesture');
+ safariTouch(e,d.body,'touchend');e.api.scan();e.tick(999);
+ assert(!d.querySelector('[data-ro-smith-extra]'));
+ e.tick(1);assert.equal(d.querySelectorAll('[data-ro-smith-category]').length,7);
+ assert.equal(d.querySelector('[data-ro-star-category="shield"] small').textContent,'1');
+ const extras=d.querySelector('[data-ro-smith-extra]');
+ safariTouch(e,d.body,'touchstart');safariTouch(e,d.body,'touchcancel');e.tick(1000);
+ assert.equal(d.querySelector('[data-ro-smith-extra]'),extras,'cancelled touches recover without duplicate controls');
+});
+test('smith shows unmodified GS copies and preserves native equipment through redraws',()=>{
+  const e=setup();smithFixture(e);
+  e.document.querySelector('#smith').insertAdjacentHTML('beforeend','<div id="smith-detail"><span class="gs">GS <b>200</b></span></div>');
+  vm.runInContext(`
+    globalThis.smithGear=[
+      {uid:'refined',itemId:1101,refine:4,star:3,cards:[4001,null],tier:2,quality:4,affixes:[{stat:'str',value:3}]},
+      {uid:'plain',itemId:1101,refine:0,star:0,cards:[null]},
+      {uid:'star',itemId:1101,star:2,cards:[]},
+      {uid:'card',itemId:1101,cards:[4001]}
+    ];
+    globalThis.originalSmithFilter=Array.prototype.filter;
+    globalThis.drawSmith=()=>{
+      const items=smithGear.filter(x=>true);
+      document.querySelector('#smith-list').innerHTML=items.map(x=>'<div class="cand '+(x.uid==='refined'?'sel':'')+'" data-uid="'+x.uid+'"><div class="ico"><img src="assets/items/1101.png"></div><span class="gs">GS <b>'+(100+(x.tier||0)+(x.quality||0)+(x.affixes?.[0]?.value||0)+(x.refine||0)*10+(x.star||0)*5+x.cards.filter(Boolean).length*20)+'</b></span></div>').join('');
+    };
+    document.querySelector('#smith-filters [data-f="all"]').onclick=drawSmith;
+    drawSmith();
+  `,e.vmContext);
+  const before=vm.runInContext('JSON.stringify(smithGear)',e.vmContext);
+  e.api.updateSmith();
+  const score=uid=>e.document.querySelector('[data-uid="'+uid+'"] .gs');
+  assert.equal(score('refined').textContent,'GS 184 (109)');
+  assert.equal(score('plain').textContent,'GS 100');
+  assert.equal(score('star').textContent,'GS 110 (100)');
+  assert.equal(score('card').textContent,'GS 120 (100)');
+  assert.equal(e.document.querySelector('#smith-detail .gs').textContent,'GS 200 (109)');
+  const html=e.document.querySelector('#smith').innerHTML;
+  e.api.updateSmith();assert.equal(e.document.querySelector('#smith').innerHTML,html);
+  vm.runInContext('smithGear[0].refine=5;drawSmith()',e.vmContext);e.api.updateSmith();
+  assert.equal(score('refined').textContent,'GS 194 (109)');
+  assert.equal(e.document.querySelectorAll('#smith-detail [data-ro-smith-base-gs]').length,1);
+  vm.runInContext('smithGear[0].refine=4',e.vmContext);
+  assert.equal(vm.runInContext('JSON.stringify(smithGear)',e.vmContext),before);
+  assert(vm.runInContext('Array.prototype.filter===originalSmithFilter',e.vmContext));
+});
+test('smith categories use native item IDs when artwork is unavailable or shared',()=>{
+  const e=setup();smithFixture(e);
+  e.api.setSmithData({1101:{slot:'weapon',wtype:'검'},2101:{slot:'shield'}},null);
+  vm.runInContext(`
+    globalThis.smithGear=[{uid:'a',itemId:1101,cards:[]},{uid:'b',itemId:2101,cards:[]}];
+    globalThis.drawSmith=()=>{document.querySelector('#smith-list').innerHTML=smithGear.filter(x=>true).map(x=>'<div class="cand" data-uid="'+x.uid+'"><div class="ico"><img src="blob:shared"></div><span class="gs"><b>100</b></span></div>').join('');};
+    document.querySelector('#smith-filters [data-f="all"]').onclick=drawSmith;drawSmith();
+  `,e.vmContext);
+  const before=vm.runInContext('JSON.stringify(smithGear)',e.vmContext);e.api.updateSmith();
+  assert.equal(e.document.querySelector('[data-ro-smith-category="onehand"] small').textContent,'1');
+  assert.equal(e.document.querySelector('[data-ro-smith-category="shield"] small').textContent,'1');
+  e.document.querySelector('[data-ro-smith-category="shield"]').click();
+  assert(e.document.querySelector('[data-uid="a"]').hasAttribute('data-ro-smith-filtered'));
+  assert(!e.document.querySelector('[data-uid="b"]').hasAttribute('data-ro-smith-filtered'));
+  assert.equal(vm.runInContext('JSON.stringify(smithGear)',e.vmContext),before);
+});
+test('native starforge displays base GS without resetting selection, confirmation or result text',()=>{
+  const e=setup();smithFixture(e);
+  const native=JSON.parse(fs.readFileSync(path.join(root,'tests/fixtures/starforge-native.json'),'utf8'));
+  e.document.querySelector('#smith').insertAdjacentHTML('beforeend','<button id="smith-star">升星</button>');
+  vm.runInContext(`
+    globalThis.pendingStar=[];queueMicrotask=fn=>pendingStar.push(fn);
+    globalThis.starGear=[{uid:'s1',itemId:1101,star:5,refine:3,cards:[4001],quality:4,tier:2,affixes:[{stat:'str',value:3}]},{uid:'s2',itemId:1101,cards:[],quality:4,affixes:[{stat:'str',value:1}]}];
+    globalThis.starCalls=0;
+    globalThis.starNativeG={
+      C:{CSS:'',max:10,step:1.05,low:5,ore:{weapon:[1,2],armor:[3,4]},rore:{weapon:[5,6],armor:[5,6]},oreName:{},rfee:1},
+      ze:()=>({id:'c',inventory:starGear}),ye:()=>({1101:{slot:'weapon'}}),blocked:()=>new Set(),vis:()=>true,worn:()=>false,
+      gs:x=>100+(x.refine||0)*10+(x.star||0)*5+x.cards.filter(Boolean).length*20+(x.tier||0)+(x.affixes?.[0]?.value||0),
+      os:x=>x.uid,img:()=>'',qc:()=>'',ma:()=>({atk:0,matk:0,def:0}),go:()=>[],cn:()=>[],aff:()=>[],
+      et:()=>({materials:{1:100,2:100,5:100},kafra:100000}),ut:String,oe:()=>({4:{name:'傳說'}}),
+      ue:id=>document.getElementById(id).classList.remove('hidden'),ce:id=>document.getElementById(id).classList.add('hidden'),
+      rr:()=>true,wa:()=>{},snd:()=>{},uc:()=>{starCalls++;throw Error('must not send requests');}
+    };
+  `,e.vmContext);
+  vm.runInContext(native.runtime+'(starNativeG);RO_SF.smith("c");document.getElementById("smith-star").onclick=RO_SF.open;',e.vmContext);
+  e.api.updateSmith();e.document.querySelector('#smith-star').click();
+  const score=()=>e.document.querySelector('#sf-detail .gs').textContent;
+  assert.equal(score(),'GS 180 (105)');
+  assert.equal(e.document.querySelector('#sf-list [data-uid="s2"] .gs').textContent,'GS 101');
+  e.document.querySelector('#sf-go').click();e.api.updateSmith();
+  assert.equal(e.document.querySelector('#sf-go').textContent,'確定？再按一次');
+  assert.equal(score(),'GS 180 (105)');
+  const html=e.document.querySelector('#starforge').innerHTML;e.api.updateSmith();assert.equal(e.document.querySelector('#starforge').innerHTML,html);
+  assert.equal(vm.runInContext('starCalls',e.vmContext),0);
+  e.document.querySelector('#sf-list [data-uid="s2"]').click();e.api.updateSmith();
+  assert.equal(score(),'GS 101');
+  e.document.querySelector('#sf-list [data-uid="s1"]').click();e.api.updateSmith();assert.equal(score(),'GS 180 (105)');
+  e.document.querySelector('[data-sft="reroll"]').click();e.api.updateSmith();
+  e.document.querySelector('[data-aff="0"]').click();e.api.updateSmith();assert.equal(score(),'GS 180 (105)');
+  assert.equal(e.document.querySelectorAll('#sf-detail [data-ro-smith-base-gs]').length,1);
+  vm.runInContext('pendingStar.splice(0).forEach(fn=>fn())',e.vmContext);
+});
 test('smith adds all detailed categories and accurate counts from game definitions',()=>{
   const e=setup();smithFixture(e);
   assert.equal(e.document.querySelectorAll('[data-ro-smith-category]').length,7);
@@ -398,6 +499,20 @@ test('smith subfilter survives redraw and native All restores list',()=>{
   f.remove(1163);f.render();e.api.updateSmith();assert.equal(visible().length,1);
   assert.equal(e.document.querySelector('[data-ro-smith-category="twohand"] small').textContent,'1');
   e.document.querySelector('[data-f="all"]').click();e.api.updateSmith();assert.equal(visible().length,7);
+});
+test('smith detailed controls stay mounted and selection redraw reapplies filters synchronously',()=>{
+  const e=setup(),f=smithFixture(e),extras=e.document.querySelector('[data-ro-smith-extra]');
+  let redraws=0;
+  const row=e.document.querySelector('#smith-list .cand');
+  row.onclick=()=>{redraws++;f.render();};e.api.updateSmith();
+  const category=e.document.querySelector('[data-ro-smith-category="twohand"]');
+  category.click();assert.equal(e.document.querySelector('#smith-list .cand'),row,'subfilter must not redraw an already complete list');
+  row.click();assert.equal(redraws,1);
+  assert.equal(e.document.querySelector('[data-ro-smith-extra]'),extras,'native redraw must not remove helper controls');
+  assert.equal(e.document.querySelector('[data-ro-smith-category="twohand"]'),category,'touch target remains the same node');
+  assert(category.classList.contains('active'));
+  const visible=[...e.document.querySelectorAll('#smith-list .cand')].filter(row=>!row.hasAttribute('data-ro-smith-filtered'));
+  assert.equal(visible.length,2,'native equipment click keeps subfilter without waiting for observer');
 });
 test('smith reopening resets detailed filter and does not alter row handlers',()=>{
   const e=setup();smithFixture(e);let selected=0;
@@ -546,7 +661,7 @@ test('catalog merchant batch selection uses the original selection Set and resto
   assert.deepEqual([...selection],['low']);assert.equal(sells(),0);assert.equal(JSON.parse,parse);assert.equal(Set.prototype.has,has);
 });
 test('catalog metadata has Chinese drop sources without cached library bonuses',()=>{
-  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,300);
+  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,320);
   for(const r of catalog){assert(r.tiers.length);for(const source of r.sources)assert(/[\u4e00-\u9fff]/.test(source.monster));}
   assert(catalog.every(r=>!Object.hasOwn(r,'bonuses')));
   const c=e.api.emptyEquipmentFilter();const group=e.api.equipmentGroups().find(g=>g.name==='長戟');
@@ -932,5 +1047,12 @@ test('minimap draws ring only after native player marker and only when enabled',
   e.api.patchMinimapContext(ctx);e.api.setActiveGame({map:{width:100,height:100},player:{x:3200,y:3200},logicReach:()=>900});
   ctx.drawImage({naturalWidth:512,naturalHeight:512},0,0,512,512,0,0,200,200);ctx.rotate(0);ctx.restore();assert.equal(calls.length,0);
   e.api.setShowRing(true);ctx.rotate(0);ctx.restore();assert.equal(calls.length,2);assert.equal(calls[0][0],100);assert.equal(calls[0][2],990/6400*200);
+});
+test('removed minimap cache has no option or pickup accessor even with an old saved preference',()=>{
+  const e=setup();e.storage.set('greydust.ro.minimap-pickup-cache.v1','true');
+  e.document.body.insertAdjacentHTML('beforeend','<div id="pause"><label><input id="lu-p-hide"></label></div>');
+  e.api.scan();assert.equal(e.document.querySelector('[data-ro-pickup-option="minimap-pickup-cache"]'),null);
+  const game={pickups:[]};const descriptor=Object.getOwnPropertyDescriptor(game,'pickups');
+  e.api.installFastChoice(game);assert.deepEqual(Object.getOwnPropertyDescriptor(game,'pickups'),descriptor);
 });
 console.log(`${count} tests passed`);

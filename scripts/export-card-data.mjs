@@ -47,7 +47,7 @@ const stages={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sun
 const slots=[['weapon','武器'],['shield','盾牌'],['headgear','頭部'],['armor','護甲'],['garment','披肩'],['shoes','鞋子'],['accessory','飾品']];
 const records=Object.values(catalog.bT).filter(card=>!card.lap&&card.id<lapConfig.cardStep).map(base=>{
  const monster=catalog.bj[base.monster];if(!monster)throw Error('Unknown card monster '+base.monster);
- const sources=Object.entries(stages).filter(([id])=>{const stage=catalog.ca[id];return stage&&(stage.waves.some(w=>w.pool.includes(base.monster))||stage.bosses.some(b=>b.id===base.monster)||stage.rare?.id===base.monster);}).map(([id,name])=>({stage:name,boss:!!monster.boss,rare:catalog.ca[id].rare?.id===base.monster}));
+ const sources=Object.entries(stages).filter(([id])=>{const stage=catalog.ca[id];return stage&&(stage.waves.some(w=>w.pool.includes(base.monster))||stage.bosses.some(b=>b.id===base.monster)||[stage.rare,stage.intruder].some(s=>s?.id===base.monster));}).map(([id,name])=>({stage:name,boss:!!monster.boss,rare:[catalog.ca[id].rare,catalog.ca[id].intruder].some(s=>s?.id===base.monster)}));
  const versions=Array.from({length:lapConfig.max},(_,i)=>{const card=catalog.bT[base.id+lapConfig.cardStep*i];if(!card)throw Error('Missing native card version '+base.id+' lap '+(i+1));return {id:card.id,lap:i+1,label:i?'改'+(i===1?'':i):'普通版',bonuses:catalog.dr(card.bonuses),scores:Object.fromEntries(jobs.map(job=>[job.id,scoreContext.score(card,job.id)]))};}).reverse();
  return {id:base.id,name:catalog.ff(monster.name)+'卡片',monster:catalog.ff(monster.name),slot:base.compound,boss:monster.boss||null,sources,versions};
 });

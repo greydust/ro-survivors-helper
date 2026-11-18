@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-17",
-  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzd091984d.js",
+  "updatedAt": "2026-11-18",
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzd1f6294e.js",
   "manifestSource": "https://ro.hans-webgametw.com/assets/manifest.json",
-  "manifestSha256": "88426dcb03ebe49e343e9d205a86f3dea279e2f77b710b0b8210f8c3297ee5ea",
+  "manifestSha256": "63ccf8cb47f5f0464ea19c42c19c936e778fb5cbd4a53fdca98f49c9f1188e8b",
   "lapConfig": {
     "stages": null,
     "max": 6,
@@ -41,9 +41,9 @@
       4144
     ]
   },
-  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz70eb4bc4.js",
-  "mainSourceSha256": "04c76e491b5233343a86c3cb6253720265c4be55861060d0026024b79e883162",
-  "sourceSha256": "e7d5cc7589f621b6741fe95744160d45623c968803fadf9eb2893c8f3030ce5b",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz8a698f4b.js",
+  "mainSourceSha256": "ae5c55db64f34a62cdff8625ff33e92803f138b871ea238e65451c081d32a6eb",
+  "sourceSha256": "5397b153fe6e48c8518fccdfe76cb7c130a20b03d3a708a2e4633d8e7d791a77",
   "slots": [
     [
       "onehand",
@@ -370,37 +370,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ 命中時 +1% 暈眩"
+            "★ 命中時暈眩機率 +1%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -612,43 +612,43 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ +3% 投射物速度"
+            "★ 彈道速度 +3%"
           ]
         },
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 投射物速度"
+            "★ 彈道速度 +9%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 投射物速度"
+            "★ 彈道速度 +12%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 投射物速度"
+            "★ 彈道速度 +15%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 投射物速度"
+            "★ 彈道速度 +18%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 投射物速度"
+            "★ 彈道速度 +21%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 投射物速度"
+            "★ 彈道速度 +24%"
           ]
         }
       ],
@@ -730,37 +730,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -783,43 +783,43 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -1060,37 +1060,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ +3% 拾取範圍"
+            "★ +3% 撿取範圍"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 拾取範圍"
+            "★ +12% 撿取範圍"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 拾取範圍"
+            "★ +15% 撿取範圍"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 拾取範圍"
+            "★ +18% 撿取範圍"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 拾取範圍"
+            "★ +21% 撿取範圍"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 拾取範圍"
+            "★ +24% 撿取範圍"
           ]
         }
       ],
@@ -1113,37 +1113,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ +3% 投射物速度"
+            "★ 彈道速度 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 投射物速度"
+            "★ 彈道速度 +12%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 投射物速度"
+            "★ 彈道速度 +15%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 投射物速度"
+            "★ 彈道速度 +18%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 投射物速度"
+            "★ 彈道速度 +21%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 投射物速度"
+            "★ 彈道速度 +24%"
           ]
         }
       ],
@@ -1219,37 +1219,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -1272,37 +1272,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -1879,37 +1879,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -1932,37 +1932,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ 命中時 +1% 暈眩"
+            "★ 命中時暈眩機率 +1%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -2197,37 +2197,37 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -3389,43 +3389,43 @@
         {
           "tier": 1,
           "bonuses": [
-            "★ -1% 受到傷害"
+            "★ -1% 承受傷害"
           ]
         },
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -4787,37 +4787,37 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -4840,37 +4840,37 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ 命中時 +2% 暈眩"
+            "★ 命中時暈眩機率 +2%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -5170,37 +5170,37 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -5353,43 +5353,43 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 3,
           "bonuses": [
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -6227,37 +6227,37 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -6663,37 +6663,37 @@
         {
           "tier": 2,
           "bonuses": [
-            "★ -2% 受到傷害"
+            "★ -2% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -8902,37 +8902,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -9155,37 +9155,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -9355,37 +9355,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -10192,42 +10192,42 @@
           "tier": 3,
           "bonuses": [
             "★ +3 INT",
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
             "★ +4 INT",
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
             "★ +5 INT",
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
             "★ +6 INT",
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
             "★ +7 INT",
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
             "★ +8 INT",
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -10397,37 +10397,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ 命中時暈眩機率 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -10556,37 +10556,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 拾取範圍"
+            "★ +9% 撿取範圍"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 拾取範圍"
+            "★ +12% 撿取範圍"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 拾取範圍"
+            "★ +15% 撿取範圍"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 拾取範圍"
+            "★ +18% 撿取範圍"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 拾取範圍"
+            "★ +21% 撿取範圍"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 拾取範圍"
+            "★ +24% 撿取範圍"
           ]
         }
       ],
@@ -10774,37 +10774,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ 命中時暈眩機率 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -10880,37 +10880,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ -3% 受到傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ -4% 受到傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ -5% 受到傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ -6% 受到傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ -7% 受到傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ -8% 受到傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -11578,6 +11578,112 @@
       ]
     },
     {
+      "id": 1211,
+      "name": "德克短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1211.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "聖誕哥布靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5445,
+      "name": "小鬼棒棒糖",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5445.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +0.3 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "聖誕哥布靈",
+          "boss": false
+        }
+      ]
+    },
+    {
       "id": 39003,
       "name": "聖誕版刺針短劍",
       "slot": "onehand",
@@ -11724,6 +11830,112 @@
           "tier": 8,
           "bonuses": [
             "★ +40% 肉類回復量"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "綠餅人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5028,
+      "name": "蠟燭頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5028.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "綠餅人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2636,
+      "name": "聖誕金戒",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2636.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
           ]
         }
       ],
@@ -11896,6 +12108,112 @@
       ]
     },
     {
+      "id": 2637,
+      "name": "聖誕銀戒",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2637.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "甜餅人",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5197,
+      "name": "白色髮帶",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5197.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "甜餅人",
+          "boss": false
+        }
+      ]
+    },
+    {
       "id": 39019,
       "name": "聖誕版弓",
       "slot": "twohand",
@@ -11905,37 +12223,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 投射物速度"
+            "★ 彈道速度 +9%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 投射物速度"
+            "★ 彈道速度 +12%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 投射物速度"
+            "★ 彈道速度 +15%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 投射物速度"
+            "★ 彈道速度 +18%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 投射物速度"
+            "★ 彈道速度 +21%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 投射物速度"
+            "★ 彈道速度 +24%"
           ]
         }
       ],
@@ -12042,6 +12360,59 @@
           "tier": 8,
           "bonuses": [
             "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "玩具士兵",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2294,
+      "name": "星星髮夾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2294.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -12170,37 +12541,143 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ 命中時暈眩機率 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "邪惡禮盒",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5051,
+      "name": "貓貓鈴鐺",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5051.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +0.3 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "邪惡禮盒",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2749,
+      "name": "亞麻手套",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2749.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -12373,6 +12850,324 @@
       ]
     },
     {
+      "id": 5115,
+      "name": "時尚防寒帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5115.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "小雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 39009,
+      "name": "聖誕版巨人斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1387.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 命中時暈眩機率 +3%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時暈眩機率 +4%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時暈眩機率 +5%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 39031,
+      "name": "聖誕版鋼鐵鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2316.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5738,
+      "name": "雪人帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5738.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1819,
+      "name": "冰柱拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1819.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2550,
+      "name": "釣客圍巾",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2550.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% Flee"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% Flee"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% Flee"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "雪獸",
+          "boss": false
+        }
+      ]
+    },
+    {
       "id": 39021,
       "name": "聖誕版秘拳套 閃光",
       "slot": "onehand",
@@ -12532,46 +13327,46 @@
       ]
     },
     {
-      "id": 39009,
-      "name": "聖誕版巨人斧",
+      "id": 13106,
+      "name": "黃金勒克斯手槍",
       "slot": "twohand",
-      "wtype": "양손도끼",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1387.png",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13106.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ +3% 範圍"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ +4% 範圍"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ +5% 範圍"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ +6% 範圍"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ +7% 範圍"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ +8% 範圍"
           ]
         }
       ],
@@ -12579,17 +13374,17 @@
         {
           "tier": 3,
           "stage": "聖誕節",
-          "monster": "雪獸",
+          "monster": "玩偶熊",
           "boss": false
         }
       ]
     },
     {
-      "id": 39031,
-      "name": "聖誕版鋼鐵鎧甲",
-      "slot": "armor",
+      "id": 5059,
+      "name": "小熊帽",
+      "slot": "head_top",
       "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2316.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5059.png",
       "tiers": [
         {
           "tier": 3,
@@ -12632,60 +13427,7 @@
         {
           "tier": 3,
           "stage": "聖誕節",
-          "monster": "雪獸",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 5738,
-      "name": "雪人帽",
-      "slot": "head_top",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/5738.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +1.2 護甲"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +1.6 護甲"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +2 護甲"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +2.4 護甲"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +2.8 護甲"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +3.2 護甲"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "雪獸",
+          "monster": "玩偶熊",
           "boss": false
         }
       ]
@@ -12912,37 +13654,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 投射物速度"
+            "★ 彈道速度 +9%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 投射物速度"
+            "★ 彈道速度 +12%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 投射物速度"
+            "★ 彈道速度 +15%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 投射物速度"
+            "★ 彈道速度 +18%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 投射物速度"
+            "★ 彈道速度 +21%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 投射物速度"
+            "★ 彈道速度 +24%"
           ]
         }
       ],
@@ -12965,37 +13707,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 低 HP 時傷害"
+            "★ +3 LUK"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 低 HP 時傷害"
+            "★ +4 LUK"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 低 HP 時傷害"
+            "★ +5 LUK"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 低 HP 時傷害"
+            "★ +6 LUK"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 低 HP 時傷害"
+            "★ +7 LUK"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 低 HP 時傷害"
+            "★ +8 LUK"
           ]
         }
       ],
@@ -13022,635 +13764,46 @@
       ]
     },
     {
-      "id": 39008,
-      "name": "聖誕版毀滅之斧",
-      "slot": "twohand",
-      "wtype": "양손도끼",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1358.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 對頭目與不死系傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 對頭目與不死系傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 對頭目與不死系傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 對頭目與不死系傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 對頭目與不死系傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 對頭目與不死系傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39030,
-      "name": "聖誕版鋼鐵鎖子甲",
-      "slot": "armor",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2314.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +1.2 護甲"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +1.6 護甲"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +2 護甲"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +2.4 護甲"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +2.8 護甲"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +3.2 護甲"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39035,
-      "name": "聖誕版白金鋼盾",
-      "slot": "shield",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2122.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ -3% 受到傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ -4% 受到傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ -5% 受到傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ -6% 受到傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ -7% 受到傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ -8% 受到傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39038,
-      "name": "聖誕版重靴",
-      "slot": "shoes",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2411.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +15 最大 HP"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +20 最大 HP"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +25 最大 HP"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +30 最大 HP"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +35 最大 HP"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +40 最大 HP"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39033,
-      "name": "聖誕版長大衣",
-      "slot": "armor",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2310.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +0.3 HP/秒"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +0.4 HP/秒"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +0.5 HP/秒"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +0.6 HP/秒"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +0.7 HP/秒"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +0.8 HP/秒"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 2526,
-      "name": "龍鱗外套",
-      "slot": "garment",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2526.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +1.2 護甲"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +1.6 護甲"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +2 護甲"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +2.4 護甲"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +2.8 護甲"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +3.2 護甲"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰巨人",
-          "boss": true
-        },
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "機木人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39006,
-      "name": "聖誕版恰克蘭拳刃",
-      "slot": "twohand",
-      "wtype": "카타르",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1285.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 移動速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 移動速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 移動速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 移動速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 移動速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 移動速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "卡崙寶寶",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39020,
-      "name": "聖誕版龍爪拳套",
-      "slot": "onehand",
-      "wtype": "너클",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1809.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 爆擊傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "卡崙寶寶",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39010,
-      "name": "聖誕版長戟",
-      "slot": "onehand",
-      "wtype": "창",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1402.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 投射物速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 投射物速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 投射物速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 投射物速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 投射物速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 投射物速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "卡崙寶寶",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39025,
-      "name": "聖誕版流星鞭子",
-      "slot": "onehand",
-      "wtype": "채찍",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1957.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +9%"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +12%"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +15%"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +18%"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +21%"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +24%"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "卡崙寶寶",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39042,
-      "name": "聖誕版力量戒指",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2601.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3 STR"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4 STR"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5 STR"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6 STR"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7 STR"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8 STR"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "卡崙寶寶",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 1724,
-      "name": "天龍之翼",
+      "id": 1731,
+      "name": "冰凍之弓",
       "slot": "twohand",
       "wtype": "활",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1724.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1731.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 爆擊傷害"
+            "★ 命中時暈眩機率 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 爆擊傷害"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 爆擊傷害"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 爆擊傷害"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 爆擊傷害"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 爆擊傷害"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -13658,13 +13811,60 @@
         {
           "tier": 3,
           "stage": "聖誕節",
-          "monster": "卡崙寶寶",
+          "monster": "蓋俄斯提",
           "boss": true
-        },
+        }
+      ]
+    },
+    {
+      "id": 5111,
+      "name": "啤酒企鵝之帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5111.png",
+      "tiers": [
         {
           "tier": 3,
-          "stage": "元宵節",
-          "monster": "豬婆龍",
+          "bonuses": [
+            "★ +9% Zeny"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% Zeny"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% Zeny"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% Zeny"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% Zeny"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% Zeny"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "蓋俄斯提",
           "boss": true
         }
       ]
@@ -13679,37 +13879,37 @@
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ 命中時暈眩機率 +3%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 命中時暈眩機率 +4%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 命中時暈眩機率 +5%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 命中時暈眩機率 +6%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 命中時暈眩機率 +7%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 命中時暈眩機率 +8%"
           ]
         }
       ],
@@ -13935,46 +14135,46 @@
       ]
     },
     {
-      "id": 2322,
-      "name": "絲質外袍",
-      "slot": "armor",
+      "id": 2513,
+      "name": "薄紗圍巾",
+      "slot": "garment",
       "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2322.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2513.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3 詠唱速度"
+            "★ +3% Flee"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4 詠唱速度"
+            "★ +4% Flee"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5 詠唱速度"
+            "★ +5% Flee"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6 詠唱速度"
+            "★ +6% Flee"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7 詠唱速度"
+            "★ +7% Flee"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8 詠唱速度"
+            "★ +8% Flee"
           ]
         }
       ],
@@ -13989,157 +14189,63 @@
           "tier": 3,
           "stage": "元宵節",
           "monster": "猴桃木",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "小青",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "白素貞",
           "boss": true
         }
       ]
     },
     {
-      "id": 39002,
-      "name": "聖誕版十字巨劍",
-      "slot": "twohand",
-      "wtype": "양손검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1163.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 範圍"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 範圍"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 範圍"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 範圍"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 範圍"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 範圍"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰暴騎士",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39011,
-      "name": "聖誕版彎刃長矛",
-      "slot": "twohand",
-      "wtype": "양손창",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1452.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 範圍"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 範圍"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 範圍"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 範圍"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 範圍"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 範圍"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰暴騎士",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 39007,
-      "name": "聖誕版切削之斧",
+      "id": 1966,
+      "name": "冰劍鞭子",
       "slot": "onehand",
-      "wtype": "도끼",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1305.png",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1966.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3 STR"
+            "★ 中毒、燃燒與出血傷害 +9%"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4 STR"
+            "★ 中毒、燃燒與出血傷害 +12%"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5 STR"
+            "★ 中毒、燃燒與出血傷害 +15%"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6 STR"
+            "★ 中毒、燃燒與出血傷害 +18%"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7 STR"
+            "★ 中毒、燃燒與出血傷害 +21%"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8 STR"
+            "★ 中毒、燃燒與出血傷害 +24%"
           ]
         }
       ],
@@ -14147,123 +14253,17 @@
         {
           "tier": 3,
           "stage": "聖誕節",
-          "monster": "冰暴騎士",
+          "monster": "水靈龜",
           "boss": true
         }
       ]
     },
     {
-      "id": 39045,
-      "name": "聖誕版人面獅身帽",
-      "slot": "head_top",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/5053.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ -3% 受到傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ -4% 受到傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ -5% 受到傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ -6% 受到傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ -7% 受到傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ -8% 受到傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰暴騎士",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 5384,
-      "name": "雙絨球聖誕帽",
-      "slot": "head_top",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/5384.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ -3% 受到傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ -4% 受到傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ -5% 受到傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ -6% 受到傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ -7% 受到傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ -8% 受到傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "聖誕節",
-          "monster": "冰暴騎士",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 1166,
-      "name": "龍牙劍",
+      "id": 39008,
+      "name": "聖誕版毀滅之斧",
       "slot": "twohand",
-      "wtype": "양손검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1166.png",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1358.png",
       "tiers": [
         {
           "tier": 3,
@@ -14306,13 +14306,402 @@
         {
           "tier": 3,
           "stage": "聖誕節",
-          "monster": "冰暴騎士",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39030,
+      "name": "聖誕版鋼鐵鎖子甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2314.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +1.2 護甲"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +1.6 護甲"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +2 護甲"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39035,
+      "name": "聖誕版白金鋼盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2122.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39038,
+      "name": "聖誕版重靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2411.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39033,
+      "name": "聖誕版長大衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2310.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +0.3 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5042,
+      "name": "丸子頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5042.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
           "boss": true
         },
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "豬婆龍",
+          "monster": "群葉貓",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "春兔",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "紙妖",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "小青",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1646,
+      "name": "暴風雪法杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1646.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1275,
+      "name": "冰靈拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1275.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰巨人",
           "boss": true
         }
       ]
@@ -14583,46 +14972,46 @@
       ]
     },
     {
-      "id": 13030,
-      "name": "天龍短劍",
+      "id": 13015,
+      "name": "白骨劍",
       "slot": "onehand",
       "wtype": "단검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/13030.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13015.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 對頭目與不死系傷害"
+            "★ +3 INT"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 對頭目與不死系傷害"
+            "★ +4 INT"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 對頭目與不死系傷害"
+            "★ +5 INT"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 對頭目與不死系傷害"
+            "★ +6 INT"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 對頭目與不死系傷害"
+            "★ +7 INT"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 對頭目與不死系傷害"
+            "★ +8 INT"
           ]
         }
       ],
@@ -14636,9 +15025,516 @@
         {
           "tier": 3,
           "stage": "元宵節",
+          "monster": "邪骸浪人",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
           "monster": "墨蛇君",
           "boss": true,
           "rare": true
+        }
+      ]
+    },
+    {
+      "id": 1815,
+      "name": "卡崙的指甲",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1815.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%",
+            "★ 命中時暈眩機率 +3%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%",
+            "★ 命中時暈眩機率 +4%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%",
+            "★ 命中時暈眩機率 +5%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39006,
+      "name": "聖誕版恰克蘭拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1285.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 移動速度"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 移動速度"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 移動速度"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39020,
+      "name": "聖誕版龍爪拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1809.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +9% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +12% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +15% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 爆擊傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 爆擊傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39010,
+      "name": "聖誕版長戟",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1402.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 彈道速度 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 彈道速度 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 彈道速度 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39025,
+      "name": "聖誕版流星鞭子",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1957.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39042,
+      "name": "聖誕版力量戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2601.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13304,
+      "name": "風魔飛鏢 明淨",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13304.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "鐵蠍",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "釣魚河童",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "豬婆龍",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2284,
+      "name": "鹿角頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2284.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2664,
+      "name": "圍巾",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2664.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "卡崙寶寶",
+          "boss": true
         }
       ]
     },
@@ -14749,52 +15645,52 @@
       ]
     },
     {
-      "id": 13420,
-      "name": "紅蓮劍",
+      "id": 13009,
+      "name": "古錠劍",
       "slot": "onehand",
-      "wtype": "검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/13420.png",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13009.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3 STR",
-            "★ +3% 範圍"
+            "★ 中毒、燃燒與出血傷害 +9%",
+            "★ +3% 爆擊"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4 STR",
-            "★ +4% 範圍"
+            "★ 中毒、燃燒與出血傷害 +12%",
+            "★ +4% 爆擊"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5 STR",
-            "★ +5% 範圍"
+            "★ 中毒、燃燒與出血傷害 +15%",
+            "★ +5% 爆擊"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6 STR",
-            "★ +6% 範圍"
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6% 爆擊"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7 STR",
-            "★ +7% 範圍"
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7% 爆擊"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8 STR",
-            "★ +8% 範圍"
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8% 爆擊"
           ]
         }
       ],
@@ -14808,24 +15704,23 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "白素貞",
+          "monster": "紙妖",
           "boss": true
         },
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "墨蛇君",
-          "boss": true,
-          "rare": true
+          "monster": "白素貞",
+          "boss": true
         }
       ]
     },
     {
-      "id": 2708,
-      "name": "中國結",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2708.png",
+      "id": 1915,
+      "name": "孤獨的吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1915.png",
       "tiers": [
         {
           "tier": 3,
@@ -14874,52 +15769,64 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "元宵童子",
+          "monster": "石炮火樹",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "釣魚河童",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "紙妖",
           "boss": true
         }
       ]
     },
     {
-      "id": 2666,
-      "name": "希望之燈",
-      "slot": "acc",
+      "id": 5024,
+      "name": "蛋糕帽",
+      "slot": "head_top",
       "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2666.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5024.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3 STR"
+            "★ +15 最大 HP"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4 STR"
+            "★ +20 最大 HP"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5 STR"
+            "★ +25 最大 HP"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6 STR"
+            "★ +30 最大 HP"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7 STR"
+            "★ +35 最大 HP"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8 STR"
+            "★ +40 最大 HP"
           ]
         }
       ],
@@ -14933,17 +15840,378 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "春兔",
+          "monster": "元宵童子",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "猴桃木",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "機木人",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "小青",
           "boss": true
         }
       ]
     },
     {
-      "id": 2399,
-      "name": "暴躁龍內衣",
+      "id": 1471,
+      "name": "火靈之矛",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1471.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%",
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%",
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%",
+            "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "豬婆龍",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "墨蛇君",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 13005,
+      "name": "天使翅膀短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13005.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1720,
+      "name": "熾天使之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1720.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%",
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%",
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%",
+            "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2358,
+      "name": "天使禮服",
       "slot": "armor",
       "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2399.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2358.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2521,
+      "name": "天使的溫氣",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2521.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +0.3 HP/秒"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +0.4 HP/秒"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +0.5 HP/秒"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2743,
+      "name": "天使之戒",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2743.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5025,
+      "name": "天使頭盔",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5025.png",
       "tiers": [
         {
           "tier": 3,
@@ -14988,6 +16256,704 @@
           "stage": "聖誕節",
           "monster": "安東尼奧",
           "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5074,
+      "name": "天使翅膀耳飾",
+      "slot": "head_mid",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5074.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "安東尼奧",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 39002,
+      "name": "聖誕版十字巨劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1163.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 39011,
+      "name": "聖誕版彎刃長矛",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1452.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 範圍"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 範圍"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 範圍"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 39007,
+      "name": "聖誕版切削之斧",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1305.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 39045,
+      "name": "聖誕版人面獅身帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5053.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 5384,
+      "name": "雙絨球聖誕帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5384.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 1164,
+      "name": "名刀 不知火",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1164.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3% 爆擊",
+            "★ 急速 +3"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4% 爆擊",
+            "★ 急速 +4"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5% 爆擊",
+            "★ 急速 +5"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊",
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊",
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊",
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "邪骸浪人",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "白素貞",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1468,
+      "name": "風靈之矛",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1468.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%",
+            "★ 命中時暈眩機率 +3%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%",
+            "★ 命中時暈眩機率 +4%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%",
+            "★ 命中時暈眩機率 +5%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2111,
+      "name": "大天使之盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2111.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 VIT"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 VIT"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 VIT"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "聖誕節",
+          "monster": "冰暴騎士",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2270,
+      "name": "草葉",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2270.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "群葉貓",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "春兔",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "機木人",
+          "boss": true
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "邪骸浪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5030,
+      "name": "熊貓帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5030.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "群葉貓",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13008,
+      "name": "破刃劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13008.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 命中時暈眩機率 +3%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 命中時暈眩機率 +4%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 命中時暈眩機率 +5%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "元宵童子",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "石炮火樹",
+          "boss": false
+        },
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "釣魚河童",
+          "boss": false
         },
         {
           "tier": 3,
@@ -14998,594 +16964,117 @@
       ]
     },
     {
-      "id": 1213,
-      "name": "大駒短劍",
+      "id": 5457,
+      "name": "玉兔頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5457.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "元宵童子",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5226,
+      "name": "夢想升空竹蜻蜓",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5226.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 AGI"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 AGI"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 AGI"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "石炮火樹",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1523,
+      "name": "闇盲之錘",
       "slot": "onehand",
-      "wtype": "단검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1214.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 移動速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 移動速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 移動速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 移動速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 移動速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 移動速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "群葉貓",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2403,
-      "name": "長靴",
-      "slot": "shoes",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2404.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% Flee"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% Flee"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% Flee"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% Flee"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% Flee"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% Flee"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "群葉貓",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2625,
-      "name": "敏捷別針",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2605.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 移動速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 移動速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 移動速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 移動速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 移動速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 移動速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "群葉貓",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1209,
-      "name": "笨拙短劍",
-      "slot": "onehand",
-      "wtype": "단검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1207.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ 急速 +3"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ 急速 +4"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ 急速 +5"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ 急速 +6"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ 急速 +7"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ 急速 +8"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "紙妖",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2506,
-      "name": "斗篷",
-      "slot": "garment",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2505.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +15 最大 HP"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +20 最大 HP"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +25 最大 HP"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +30 最大 HP"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +35 最大 HP"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +40 最大 HP"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "紙妖",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2623,
-      "name": "項鍊",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2603.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +15 最大 HP"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +20 最大 HP"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +25 最大 HP"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +30 最大 HP"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +35 最大 HP"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +40 最大 HP"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "紙妖",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1461,
-      "name": "德瑞尹長戟",
-      "slot": "twohand",
-      "wtype": "양손창",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1460.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +0.3 HP/秒"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +0.4 HP/秒"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +0.5 HP/秒"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +0.6 HP/秒"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +0.7 HP/秒"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +0.8 HP/秒"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "釣魚河童",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1409,
-      "name": "步兵長矛",
-      "slot": "onehand",
-      "wtype": "창",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1408.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 投射物速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 投射物速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 投射物速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 投射物速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 投射物速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 投射物速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "釣魚河童",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2328,
-      "name": "木製鎧甲",
-      "slot": "armor",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2329.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +0.3 HP/秒"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +0.4 HP/秒"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +0.5 HP/秒"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +0.6 HP/秒"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +0.7 HP/秒"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +0.8 HP/秒"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "釣魚河童",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1612,
-      "name": "言靈魔杖",
-      "slot": "onehand",
-      "wtype": "롯드",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1610.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ 急速 +3"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ 急速 +4"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ 急速 +5"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ 急速 +6"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ 急速 +7"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ 急速 +8"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "小青",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2323,
-      "name": "聖職之袍",
-      "slot": "armor",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2324.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3 詠唱速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4 詠唱速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5 詠唱速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6 詠唱速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7 詠唱速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8 詠唱速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "小青",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2626,
-      "name": "念珠",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2608.png",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1523.png",
       "tiers": [
         {
           "tier": 3,
@@ -15628,211 +17117,58 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "小青",
+          "monster": "鐵蠍",
           "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1707,
-      "name": "克羅伊特弓",
-      "slot": "twohand",
-      "wtype": "활",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1708.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 投射物速度"
-          ]
         },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 投射物速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 投射物速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 投射物速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 投射物速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 投射物速度"
-          ]
-        }
-      ],
-      "sources": [
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "石炮火樹",
-          "boss": false
+          "monster": "機木人",
+          "boss": true
         }
       ]
     },
     {
-      "id": 1710,
-      "name": "十字弓",
-      "slot": "twohand",
-      "wtype": "활",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1711.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 移動速度"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 移動速度"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 移動速度"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 移動速度"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 移動速度"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 移動速度"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "石炮火樹",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2108,
-      "name": "鏡盾",
-      "slot": "shield",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2107.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +0.3 HP/秒"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +0.4 HP/秒"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +0.5 HP/秒"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +0.6 HP/秒"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +0.7 HP/秒"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +0.8 HP/秒"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "石炮火樹",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 1506,
-      "name": "鐵錘",
+      "id": 1802,
+      "name": "虎爪拳套",
       "slot": "onehand",
-      "wtype": "클럽",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1505.png",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1802.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ 命中時 +3% 暈眩"
+            "★ 急速 +3"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ 命中時 +4% 暈眩"
+            "★ 急速 +4"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ 命中時 +5% 暈眩"
+            "★ 急速 +5"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ 命中時 +6% 暈眩"
+            "★ 急速 +6"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ 命中時 +7% 暈眩"
+            "★ 急速 +7"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ 命中時 +8% 暈眩"
+            "★ 急速 +8"
           ]
         }
       ],
@@ -15846,11 +17182,170 @@
       ]
     },
     {
-      "id": 1352,
-      "name": "巨斧",
-      "slot": "twohand",
-      "wtype": "양손도끼",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1351.png",
+      "id": 5302,
+      "name": "蓮花帽子",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5302.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +15 最大 HP"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +20 最大 HP"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +25 最大 HP"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "釣魚河童",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5284,
+      "name": "睡蓮王冠",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5284.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 DEX"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 DEX"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 DEX"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "春兔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5152,
+      "name": "鳳冠",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5152.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "猴桃木",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5497,
+      "name": "虎王娃娃帽子",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5497.png",
       "tiers": [
         {
           "tier": 3,
@@ -15893,105 +17388,52 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "鐵蠍",
-          "boss": false
+          "monster": "機木人",
+          "boss": true
         }
       ]
     },
     {
-      "id": 2227,
-      "name": "無邊帽",
-      "slot": "head_top",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2226.png",
+      "id": 1810,
+      "name": "龍爪拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1810.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +15 最大 HP"
+            "★ +3 STR"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +20 最大 HP"
+            "★ +4 STR"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +25 最大 HP"
+            "★ +5 STR"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +30 最大 HP"
+            "★ +6 STR"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +35 最大 HP"
+            "★ +7 STR"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +40 最大 HP"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "鐵蠍",
-          "boss": false
-        }
-      ]
-    },
-    {
-      "id": 2553,
-      "name": "暴躁龍斗篷",
-      "slot": "garment",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2553.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% Flee"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% Flee"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% Flee"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% Flee"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% Flee"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% Flee"
+            "★ +8 STR"
           ]
         }
       ],
@@ -16005,46 +17447,46 @@
       ]
     },
     {
-      "id": 1663,
-      "name": "波爾多之杖",
-      "slot": "onehand",
-      "wtype": "롯드",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1648.png",
+      "id": 5531,
+      "name": "寶寶龍帽子",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5531.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3 詠唱速度"
+            "★ +3 DEX"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4 詠唱速度"
+            "★ +4 DEX"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5 詠唱速度"
+            "★ +5 DEX"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6 詠唱速度"
+            "★ +6 DEX"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7 詠唱速度"
+            "★ +7 DEX"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8 詠唱速度"
+            "★ +8 DEX"
           ]
         }
       ],
@@ -16052,52 +17494,52 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "猴桃木",
+          "monster": "豬婆龍",
           "boss": true
         }
       ]
     },
     {
-      "id": 1518,
-      "name": "尖刃鐵錘",
-      "slot": "onehand",
-      "wtype": "클럽",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1517.png",
+      "id": 5130,
+      "name": "獅子面具",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5130.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3% 爆擊"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4% 爆擊"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5% 爆擊"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6% 爆擊"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7% 爆擊"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8% 爆擊"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -16105,17 +17547,288 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "猴桃木",
+          "monster": "紙妖",
           "boss": true
         }
       ]
     },
     {
-      "id": 1118,
-      "name": "武士刀",
+      "id": 13006,
+      "name": "黑龍短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13006.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +9%"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +12%"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +15%"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "邪骸浪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5098,
+      "name": "老虎面具",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5098.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 STR"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 STR"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 STR"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "邪骸浪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2544,
+      "name": "三角狂獅獸之外皮",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2544.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ -3% 承受傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ -4% 承受傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ -5% 承受傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "小青",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1559,
+      "name": "天龍的遺產",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1559.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 INT",
+            "★ +9% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 INT",
+            "★ +12% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 INT",
+            "★ +15% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "白素貞",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2762,
+      "name": "龍騎兵之戒",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2762.png",
+      "tiers": [
+        {
+          "tier": 3,
+          "bonuses": [
+            "★ +3 LUK"
+          ]
+        },
+        {
+          "tier": 4,
+          "bonuses": [
+            "★ +4 LUK"
+          ]
+        },
+        {
+          "tier": 5,
+          "bonuses": [
+            "★ +5 LUK"
+          ]
+        },
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "tier": 3,
+          "stage": "元宵節",
+          "monster": "白素貞",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1474,
+      "name": "加野矛",
       "slot": "twohand",
-      "wtype": "양손검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1117.png",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1474.png",
       "tiers": [
         {
           "tier": 3,
@@ -16158,264 +17871,53 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "邪骸浪人",
-          "boss": true
+          "monster": "墨蛇君",
+          "boss": true,
+          "rare": true
         }
       ]
     },
     {
-      "id": 1218,
-      "name": "雙刃短劍",
-      "slot": "onehand",
-      "wtype": "단검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1216.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3 AGI"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4 AGI"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5 AGI"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6 AGI"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7 AGI"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8 AGI"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "邪骸浪人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 2359,
-      "name": "忍服 血櫻",
-      "slot": "armor",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2337.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% Flee"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% Flee"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% Flee"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% Flee"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% Flee"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% Flee"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "邪骸浪人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 13152,
-      "name": "風暴來福槍",
-      "slot": "twohand",
-      "wtype": "라이플",
-      "icon": "https://ro.hans-webgametw.com/assets/items/13151.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 爆擊傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 爆擊傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "機木人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 1221,
-      "name": "長柄短劍",
-      "slot": "onehand",
-      "wtype": "단검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1219.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3 STR"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4 STR"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5 STR"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6 STR"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7 STR"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8 STR"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "機木人",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 5167,
-      "name": "殭屍帽",
+      "id": 5292,
+      "name": "龍的骷髏",
       "slot": "head_top",
       "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2264.png",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5292.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +9% 低 HP 時傷害"
+            "★ -3% 承受傷害"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +12% 低 HP 時傷害"
+            "★ -4% 承受傷害"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +15% 低 HP 時傷害"
+            "★ -5% 承受傷害"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +18% 低 HP 時傷害"
+            "★ -6% 承受傷害"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +21% 低 HP 時傷害"
+            "★ -7% 承受傷害"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +24% 低 HP 時傷害"
+            "★ -8% 承受傷害"
           ]
         }
       ],
@@ -16423,317 +17925,53 @@
         {
           "tier": 3,
           "stage": "元宵節",
-          "monster": "元宵童子",
-          "boss": true
+          "monster": "墨蛇君",
+          "boss": true,
+          "rare": true
         }
       ]
     },
     {
-      "id": 20813,
-      "name": "生存斗篷",
-      "slot": "garment",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2509.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +0.3 HP/秒"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +0.4 HP/秒"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +0.5 HP/秒"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +0.6 HP/秒"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +0.7 HP/秒"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +0.8 HP/秒"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "元宵童子",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 1277,
-      "name": "火靈拳刃",
-      "slot": "twohand",
-      "wtype": "카타르",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1258.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +3% 爆擊"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +4% 爆擊"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +5% 爆擊"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +6% 爆擊"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +7% 爆擊"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +8% 爆擊"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "春兔",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 2715,
-      "name": "骷髏戒指",
-      "slot": "acc",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2609.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +9%"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +12%"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +15%"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +18%"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +21%"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ 中毒、燃燒與出血傷害 +24%"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "春兔",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 1479,
-      "name": "妖怪的槍",
-      "slot": "twohand",
-      "wtype": "양손창",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1477.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ +9% 低 HP 時傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ +12% 低 HP 時傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ +15% 低 HP 時傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ +18% 低 HP 時傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ +21% 低 HP 時傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ +24% 低 HP 時傷害"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "白素貞",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 13435,
-      "name": "火靈之劍",
+      "id": 1807,
+      "name": "升龍拳套",
       "slot": "onehand",
-      "wtype": "검",
-      "icon": "https://ro.hans-webgametw.com/assets/items/1133.png",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1807.png",
       "tiers": [
         {
           "tier": 3,
           "bonuses": [
-            "★ +3% 範圍"
+            "★ 急速 +3"
           ]
         },
         {
           "tier": 4,
           "bonuses": [
-            "★ +4% 範圍"
+            "★ 急速 +4"
           ]
         },
         {
           "tier": 5,
           "bonuses": [
-            "★ +5% 範圍"
+            "★ 急速 +5"
           ]
         },
         {
           "tier": 6,
           "bonuses": [
-            "★ +6% 範圍"
+            "★ 急速 +6"
           ]
         },
         {
           "tier": 7,
           "bonuses": [
-            "★ +7% 範圍"
+            "★ 急速 +7"
           ]
         },
         {
           "tier": 8,
           "bonuses": [
-            "★ +8% 範圍"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "tier": 3,
-          "stage": "元宵節",
-          "monster": "白素貞",
-          "boss": true
-        }
-      ]
-    },
-    {
-      "id": 2527,
-      "name": "龍的呼吸",
-      "slot": "garment",
-      "wtype": "unknown",
-      "icon": "https://ro.hans-webgametw.com/assets/items/2527.png",
-      "tiers": [
-        {
-          "tier": 3,
-          "bonuses": [
-            "★ -3% 受到傷害"
-          ]
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "★ -4% 受到傷害"
-          ]
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "★ -5% 受到傷害"
-          ]
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "★ -6% 受到傷害"
-          ]
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "★ -7% 受到傷害"
-          ]
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "★ -8% 受到傷害"
+            "★ 急速 +8"
           ]
         }
       ],
@@ -16759,7 +17997,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         },
@@ -16768,7 +18006,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         },
@@ -16777,7 +18015,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         },
@@ -16786,7 +18024,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         },
@@ -16795,7 +18033,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         },
@@ -16804,7 +18042,7 @@
           "bonuses": [
             "最大 HP +8%",
             "+3 護甲",
-            "-5% 受到傷害",
+            "-5% 承受傷害",
             "+5% 傷害"
           ]
         }

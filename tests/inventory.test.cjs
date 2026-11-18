@@ -11,7 +11,7 @@ function setup({realObserver=false}={}){
  const context=vm.createContext({window,document:window.document,Element:window.Element,MouseEvent:window.Event,URL,location:{href:'https://ro.hans-webgametw.com/'},
   localStorage:{getItem(){return null;},setItem(){}},MutationObserver:realObserver?CountingObserver:class{observe(){}},console,performance:{now:()=>2000},innerWidth:402,innerHeight:714,
   queueMicrotask:fn=>fn(),setTimeout:()=>1,clearTimeout(){}});
- vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.inventoryAPI={updateInventoryViews,updateEquipCandidates,withInventoryView,withNativeCardPreview,inventoryPreviewItem,inventoryBonusLines,setDefs:value=>smithDefs=value,setCatalog:value=>gameCatalog=value,setSkills:value=>skillDefs=value,prototypes:()=>[Array.prototype.find,Array.prototype.filter]};})();'),context);
+ vm.runInContext(source.replace(/\}\)\(\);\s*$/,'globalThis.inventoryAPI={updateInventoryViews,updateEquipCandidates,withInventoryView,withEquipmentScoreCapture,inventoryBonusLines,setDefs:value=>smithDefs=value,setCatalog:value=>gameCatalog=value,setSkills:value=>skillDefs=value,prototypes:()=>[Array.prototype.find,Array.prototype.filter,Array.prototype.map]};})();'),context);
  const defs={1:{slot:'weapon',wtype:'검',bonuses:[]},2:{slot:'weapon',wtype:'단검',bonuses:[]},3:{slot:'weapon',wtype:'양손검',bonuses:[]},4:{slot:'head_top',bonuses:[]},5:{slot:'head_mid',bonuses:[]},6:{slot:'head_low',bonuses:[]},7:{slot:'armor',bonuses:[]}};
  context.inventoryAPI.setDefs(defs);
  return {window,document:window.document,context,api:context.inventoryAPI,run:code=>vm.runInContext(code,context),observation,disconnect:()=>observers.forEach(observer=>observer.disconnect())};
@@ -72,7 +72,7 @@ function nativeComparison(e,{cards=[101,102],candidateCards=[null,null],newItem=
  globalThis.account={inventory:[{uid:'old',itemId:1,cards:fixtureOptions.cards,affixes:[],base:100},{uid:'new',itemId:2,cards:fixtureOptions.candidateCards,affixes:[],base:120,isNew:fixtureOptions.newItem},{uid:'shield',itemId:7,cards:[],affixes:[],base:10}],equipped:{weapon:'old',shield:'shield'}};
  globalThis.saves=0;globalThis.equips=0;
  const t=account,Bt='weapon',ue=id=>document.getElementById(id),u=id=>id?t.inventory.find(item=>item.uid===id):undefined;
- const cardScore=id=>id===101?30:50,p=item=>item.base+item.cards.reduce((sum,id)=>sum+(id?cardScore(id):0),0);
+ const cardScore=id=>id===101?30:50,p=item=>item.base+(item.refine||0)*10+(item.star||0)*20+item.cards.reduce((sum,id)=>sum+(id?cardScore(id):0),0);
  const qn=()=>true,_n=()=>true,J1=()=>false,zC=()=>['weapon'],RO_EQJ=()=>'',Qi=def=>!!def?.two,Uk=(ch,slot)=>ye[ch.inventory.find(item=>item.uid===ch.equipped[slot])?.itemId];
  ${native.equip}
  const R=ch=>({atk:Object.values(ch.equipped).reduce((sum,uid)=>{const item=ch.inventory.find(item=>item.uid===uid);return sum+(item?p(item):0);},0)});
@@ -98,43 +98,61 @@ function nativeComparison(e,{cards=[101,102],candidateCards=[null,null],newItem=
 {
  const e=setup();nativeComparison(e);const before=e.run('JSON.stringify(account)');
  e.api.updateEquipCandidates();
- assert.equal(e.document.querySelector('#cp-eq-list .gs b').textContent,'200');
+ assert.equal(e.document.querySelector('#cp-eq-list .gs b').textContent,'120');
+ assert.equal(e.document.querySelector('#cp-eq-list .gs i').textContent,'-60','native GS difference remains unchanged');
  e.document.querySelector('#cp-eq-list .cand').onpointerenter({pointerType:'mouse'});
- assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'200');
- assert(e.document.querySelector('#cp-eq-cmp .cmp-rows').textContent.includes('210'));
- assert(e.document.querySelector('[data-ro-card-preview]').textContent.includes('2 張'));
+ assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'120');
+ assert(e.document.querySelector('#cp-eq-cmp .cmp-rows').textContent.includes('130'));
+ assert.equal(e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]').textContent,' (100)');
+ assert.equal(e.document.querySelector('#cp-eq-cmp [data-ro-equipment-base-gs]').textContent,' (120)');
+ assert.equal(e.document.querySelector('#cp-eq-cmp .gs i').textContent,'-60');
+ assert(!e.document.querySelector('[data-ro-card-preview]'));
  assert.equal(e.run('JSON.stringify(account)'),before);assert.equal(e.run('saves'),0);
  e.document.querySelector('#cp-eq-list .cand-eq').click();assert.equal(e.run('equips'),1);assert.equal(e.run("account.equipped.weapon"),'new');assert.equal(e.run("account.inventory[1].cards.filter(Boolean).length"),0);
- console.log('PASS native GS and stat comparison use cloned cards while actual equip remains native and empty');
+ console.log('PASS native GS, arrows and stats remain unchanged; both sides display pristine GS');
 }
-for(const [candidateCards,expected,count] of [[[null],150,1],[[999,null],170,null],[[],120,null]]){
+{
+ const e=setup();nativeComparison(e);
+ e.run('account.inventory[0].refine=3;account.inventory[0].star=2;account.inventory[1].refine=5;account.inventory[1].star=1;');
+ const before=e.run('JSON.stringify(account)');e.api.updateEquipCandidates();
+ e.document.querySelector('#cp-eq-list .cand').click();
+ assert.equal(e.document.querySelector('#cp-eq-current .gs b').textContent,'250');
+ assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'190');
+ assert.equal(e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]').textContent,' (100)');
+ assert.equal(e.document.querySelector('#cp-eq-cmp [data-ro-equipment-base-gs]').textContent,' (120)');
+ assert.equal(e.document.querySelector('#cp-eq-cmp .gs i').textContent,'-60');
+ assert.equal(e.run('JSON.stringify(account)'),before);
+ console.log('PASS base GS excludes refine, stars and cards without changing real equipment');
+}
+for(const [candidateCards,expected,count] of [[[null],120,1],[[999,null],170,null],[[],120,null]]){
  const e=setup();nativeComparison(e,{candidateCards});const before=e.run('JSON.stringify(account)');e.api.updateEquipCandidates();
  e.document.querySelector('#cp-eq-list .cand').onpointerenter({pointerType:'mouse'});
  assert.equal(Number(e.document.querySelector('#cp-eq-cmp .gs b').textContent),expected);
- const note=e.document.querySelector('[data-ro-card-preview]');if(count)assert(note.textContent.includes('1 張因插槽不足'));else if(!candidateCards.length)assert(note.textContent.includes('沒有插槽'));else assert(!note);
+ assert(!e.document.querySelector('[data-ro-card-preview]'));
+ assert.equal(e.document.querySelector('#cp-eq-cmp [data-ro-equipment-base-gs]').textContent,' (120)');
  assert.equal(e.run('JSON.stringify(account)'),before);
 }
 console.log('PASS fewer sockets, existing cards and zero sockets follow native capacity without mutating data');
 {
  const e=setup();nativeComparison(e,{newItem:true});e.api.updateEquipCandidates();e.document.querySelector('#cp-eq-list .cand').click();
- assert.equal(e.run('saves'),1);assert.equal(e.run('equips'),0);assert.equal(e.run('account.inventory[1].cards[0]'),null);assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'200');
+ assert.equal(e.run('saves'),1);assert.equal(e.run('equips'),0);assert.equal(e.run('account.inventory[1].cards[0]'),null);assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'120');
  console.log('PASS selecting a new item preserves the single native save and does not transfer cards');
 }
 {
  const e=setup();nativeComparison(e,{newItem:true,rebuild:true});e.api.updateEquipCandidates();e.document.querySelector('#cp-eq-list .cand').click();
- assert.equal(e.run('saves'),1);assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'200');assert.equal(e.run('account.inventory[1].cards[0]'),null);
- console.log('PASS native new-item rerender retains same-card preview without another save');
+ assert.equal(e.run('saves'),1);assert.equal(e.document.querySelector('#cp-eq-cmp .gs b').textContent,'120');assert.equal(e.run('account.inventory[1].cards[0]'),null);
+ console.log('PASS native new-item rerender retains native comparison without another save');
 }
 {
  const e=setup();nativeComparison(e);e.run('account.inventory[1].itemId=3;');const before=e.run('JSON.stringify(account)');e.api.updateEquipCandidates();e.document.querySelector('#cp-eq-list .cand').onpointerenter({pointerType:'mouse'});
- assert(e.document.querySelector('.cmp-rows').textContent.includes('200'));assert(!e.document.querySelector('.cmp-rows').textContent.includes('210'));assert.equal(e.run('JSON.stringify(account)'),before);
+ assert(e.document.querySelector('.cmp-rows').textContent.includes('120'));assert(!e.document.querySelector('.cmp-rows').textContent.includes('130'));assert.equal(e.run('JSON.stringify(account)'),before);
  console.log('PASS native two-handed equip preview also removes shield contributions');
 }
 {
  const e=setup(),before=e.api.prototypes();
  assert.throws(()=>e.api.withInventoryView(()=>{throw Error('render failed');},{category:'all',type:''}),/render failed/);
- assert.throws(()=>e.api.withNativeCardPreview(()=>{throw Error('preview failed');},'new'),/preview failed/);
- const after=e.api.prototypes();assert.equal(after[0],before[0]);assert.equal(after[1],before[1]);
+ assert.throws(()=>e.api.withEquipmentScoreCapture(()=>{throw Error('preview failed');},'new'),/preview failed/);
+ const after=e.api.prototypes();assert.equal(after[0],before[0]);assert.equal(after[1],before[1]);assert.equal(after[2],before[2]);
  console.log('PASS synchronous read adapters restore native array methods after exceptions');
 }
 {

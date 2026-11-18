@@ -53,7 +53,7 @@ if(process.argv[4]){
   const script=catalog.ca?.[stage.id];if(!script)throw Error('Stage scripts unavailable');
   const enemies=[...new Set(script.waves.flatMap(wave=>wave.pool))].map(id=>({id,boss:false}));
   enemies.push(...script.bosses.map(boss=>({id:boss.id,boss:true})));
-  if(script.rare?.id)enemies.push({id:script.rare.id,boss:true,rare:true});
+  for(const special of [script.rare,script.intruder])if(special?.id&&!enemies.some(enemy=>enemy.id===special.id))enemies.push({id:special.id,boss:true,rare:true});
   for(const enemy of enemies)for(const drop of catalog.cb?.[enemy.id]||[]){
    const def=definitions[drop.id];if(!def||def.secret||def.starter)continue;
    if(!monsters[enemy.id])monsters[enemy.id]=catalog.ff?.(catalog.bj[enemy.id]?.name||enemy.id)||enemy.id;

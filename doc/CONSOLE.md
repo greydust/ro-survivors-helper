@@ -14,3 +14,5 @@
 「保持離線遊玩」只能攔截助手啟動後建立的主城 WebSocket；Console 注入前已存在的連線無法回頭追蹤或關閉。若需要開頁立即攔截，仍使用 Tampermonkey 的 document-start 載入方式。
 
 手機瀏覽器通常沒有可直接操作的開發者工具 Console；這個方法主要供桌面瀏覽器使用，並不是手機安裝腳本管理器的直接替代品。
+
+戰鬥耗時可直接用助手的「選項 → 遊戲 → 戰鬥效能量測」記錄，不必操作開發者工具。分類、報告欄位與 Console API 見 [PERFORMANCE.md](PERFORMANCE.md)。
