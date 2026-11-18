@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.6
+// @version      2.2.7
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.6'};
+  window[runtimeKey]={version:'2.2.7'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -2615,7 +2615,12 @@
         const match=upgrades.find(row=>row.rule.upgrade==='select'&&row.card.id===priority.skill&&(!priority.upgrades.length||advancedUpgradeIds(row.card).some(id=>priority.upgrades.includes(id))));
         if(match)return action('pick',match.index);
       }
-      const selected=upgrades.find(row=>row.rule.upgrade==='select')||upgrades.find(row=>row.rule.upgrade==='ignore');
+      // Detailed aspect selections also constrain the fallback. A legendary
+      // mixed upgrade must not make an unselected aspect eligible on later cards.
+      const selected=upgrades.find(row=>row.rule.upgrade==='select'&&(
+        !advancedSettings.priority.some(entry=>entry.skill===row.card.id)||
+        advancedSettings.priority.some(entry=>entry.skill===row.card.id&&(!entry.upgrades.length||advancedUpgradeIds(row.card).some(id=>entry.upgrades.includes(id))))
+      ))||upgrades.find(row=>row.rule.upgrade==='ignore');
       if(selected)return action('pick',selected.index);
       const potion=cards.findIndex(card=>card.id==='potion');
       return potion>=0?action('pick',potion):null;
@@ -3059,7 +3064,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.6');
+      console.info('[RO助手] 即時自選已啟用 v2.2.7');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
