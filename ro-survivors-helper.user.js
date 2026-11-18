@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.1
+// @version      2.2.2
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.1'};
+  window[runtimeKey]={version:'2.2.2'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -992,8 +992,14 @@
     setTimeout(heartbeat,1000);record({kind:'start',state:snapshot()},true);
     function mount(){
       if(document.querySelector('#ro-safari-diagnostics-open'))return;
-      const button=document.createElement('button');button.id='ro-safari-diagnostics-open';button.type='button';button.textContent='Safari 診斷';button.onclick=()=>open(false);document.body.append(button);
+      const button=document.createElement('button');button.id='ro-safari-diagnostics-open';button.type='button';button.textContent='Safari 診斷';
+      button.title='點一下開啟診斷；長按後拖曳移動';installFloatingHelperDrag(button);button.onclick=()=>open(false);document.body.append(button);updateUI();
       if(new URL(location.href).searchParams.get('rodiag')==='1')open(true);
+    }
+    function updateUI(){
+      const button=document.querySelector('#ro-safari-diagnostics-open'),blocked=nativeGameWindowOpen();
+      if(button){if(button.hidden!==blocked)button.hidden=blocked;if(!blocked)placeFloatingHelperButton(button);}
+      if(dialog&&dialog.hidden!==blocked)dialog.hidden=blocked;
     }
     function open(preferPrevious){
       if(dialog){dialog.remove();dialog=null;}
@@ -1013,9 +1019,9 @@
       });
       button('選取全部',()=>{text.focus();text.select?.();text.setSelectionRange?.(0,text.value.length);status.textContent='也可長按文字選擇「複製」。';});
       button('更新本次紀錄',refresh);button('關閉',()=>{dialog.remove();dialog=null;});
-      dialog.append(title,note,select,actions,status,text);document.body.append(dialog);refresh();
+      dialog.append(title,note,select,actions,status,text);document.body.append(dialog);updateUI();refresh();
     }
-    return {mount,recordError,recordMinimap,getLog:()=>{sampleUI();return JSON.parse(JSON.stringify(log));}};
+    return {mount,updateUI,recordError,recordMinimap,getLog:()=>{sampleUI();return JSON.parse(JSON.stringify(log));}};
   }
   let safariDiagnostics=null;
   if(isSafariBrowser()){
@@ -1910,6 +1916,7 @@
     return result;
   }
   const smithScoreRows = new WeakSet();
+  const smithScoreCache = new Map(),smithRowHooks=new WeakSet();
   const starScoreData = new WeakMap(), starScoreHooks = new WeakSet();
   const starFilterItems=new WeakMap();
   let starFilterPanel=null,starFilterCategory='all';
@@ -1981,6 +1988,14 @@
   function updateSmithBaseScores(list, filters) {
     const rows = [...list.querySelectorAll('.cand[data-uid]')];
     if (smithScoring || !rows.some(row => !smithScoreRows.has(row))) return;
+    // Native selection rebuilds rows without changing their GS. Reuse previews
+    // instead of clicking a native category and rebuilding the list again.
+    const currentScore=row=>[row.querySelector('.gs b')?.textContent,row.querySelector('.cand-info')?.textContent,row.querySelector('.ico img')?.getAttribute('src')].join('|');
+    if(rows.every(row=>smithScoreCache.has(row.dataset.uid)&&smithScoreCache.get(row.dataset.uid).current===currentScore(row))){
+      for(const row of rows){smithScoreRows.add(row);appendSmithBaseScore(row,smithScoreCache.get(row.dataset.uid).base);}
+      appendSmithBaseScore(document.querySelector('#smith-detail'),smithScoreCache.get(list.querySelector('.cand.sel')?.dataset.uid)?.base);
+      return;
+    }
     const redraw = filters.querySelector('[data-f].active') || filters.querySelector('[data-f="all"]');
     if (typeof redraw?.onclick !== 'function') return;
     const original = Array.prototype.filter, scores = new Map(), enhanced = new Set();
@@ -2012,6 +2027,7 @@
     }
     for (const row of list.querySelectorAll('.cand[data-uid]')) {
       smithScoreRows.add(row);
+      smithScoreCache.set(row.dataset.uid,{current:currentScore(row),base:scores.get(row.dataset.uid)});
       appendSmithBaseScore(row, scores.get(row.dataset.uid));
     }
     const selected = list.querySelector('.cand.sel')?.dataset.uid;
@@ -2044,7 +2060,7 @@
     const filters = document.querySelector('#smith-filters');
     const list = document.querySelector('#smith-list');
     if (!panel || panel.classList.contains('hidden') || !filters || !list || !smithDefs || !smithAssets?.manifest?.items) {
-      if (!panel || panel.classList.contains('hidden')) { smith.panel = null; smith.category = ''; smith.inventory = []; }
+      if (!panel || panel.classList.contains('hidden')) { smith.panel = null; smith.category = ''; smith.inventory = [];smithScoreCache.clear(); }
       return;
     }
     if (smith.panel !== panel) {
@@ -2067,23 +2083,25 @@
     if (filters.querySelector('[data-f="all"].active') || smith.category) {
       smith.inventory = rows.map(row => ({ uid: row.dataset.uid, category: smithCategory(smithDefinition(row)) }));
     }
-    let extras = filters.querySelector('[data-ro-smith-extra]');
+    // Keep helper controls outside the native innerHTML replacement target.
+    let extras = panel.querySelector('[data-ro-smith-extra]');
     if (!extras) {
       extras = document.createElement('span');
       extras.setAttribute('data-ro-smith-extra', '');
-      extras.style.display = 'contents';
+      extras.className='inv-filters';extras.setAttribute('aria-label','精煉細項分組');
       for (const [id, label] of SMITH_FILTERS) {
         const button = document.createElement('button');
         button.type = 'button'; button.className = 'inv-chip'; button.dataset.roSmithCategory = id;
         button.append(document.createTextNode(label + ' '), document.createElement('small'));
         button.onclick = () => {
+          const needsAll=!smith.category&&!filters.querySelector('[data-f="all"].active');
           smith.category = id;
-          nativeSmithAll();
+          if(needsAll)nativeSmithAll();
           updateSmith();
         };
         extras.append(button);
       }
-      filters.append(extras);
+      filters.after(extras);
     }
     for (const button of extras.querySelectorAll('button')) {
       const id = button.dataset.roSmithCategory;
@@ -2095,6 +2113,9 @@
     }
     if (smith.category) filters.querySelectorAll('[data-f].active').forEach(button => button.classList.remove('active'));
     rows.forEach(row => {
+      if(!smithRowHooks.has(row)&&typeof row.onclick==='function'){
+        const original=row.onclick;row.onclick=function(...args){try{return Reflect.apply(original,this,args);}finally{updateSmith();}};smithRowHooks.add(row);
+      }
       const category = smith.inventory.find(item => item.uid === row.dataset.uid)?.category;
       const hide = !!smith.category && category !== smith.category;
       row.toggleAttribute('data-ro-smith-filtered', hide);
@@ -2715,14 +2736,14 @@
       row.append(choices);root.append(row);
     }
   }
-  let advancedButtonPosition=null;
-  function placeAdvancedButton(button){
-    if(!advancedButtonPosition)return;
+  const floatingHelperPositions=new Map();
+  function placeFloatingHelperButton(button){
+    const position=floatingHelperPositions.get(button.id);if(!position)return;
     const view=helperViewport(),rect=button.getBoundingClientRect();
-    advancedButtonPosition={left:Math.max(view.left,Math.min(advancedButtonPosition.left,view.left+view.width-rect.width)),top:Math.max(view.top,Math.min(advancedButtonPosition.top,view.top+view.height-rect.height))};
-    Object.assign(button.style,{left:advancedButtonPosition.left+'px',top:advancedButtonPosition.top+'px',right:'auto',bottom:'auto'});
+    position.left=Math.max(view.left,Math.min(position.left,view.left+view.width-rect.width));position.top=Math.max(view.top,Math.min(position.top,view.top+view.height-rect.height));
+    Object.assign(button.style,{left:position.left+'px',top:position.top+'px',right:'auto',bottom:'auto'});
   }
-  function installAdvancedButtonDrag(button){
+  function installFloatingHelperDrag(button){
     let hold=null,suppressClick=false;
     const clear=()=>{if(hold)clearTimeout(hold.timer);hold=null;button.style.cursor='grab';};
     button.addEventListener('pointerdown',event=>{
@@ -2738,7 +2759,7 @@
       const dx=event.clientX-hold.x,dy=event.clientY-hold.y;
       if(!hold.dragging){if(Math.hypot(dx,dy)>10){suppressClick=true;clear();}return;}
       event.preventDefault();suppressClick=true;
-      advancedButtonPosition={left:hold.left+dx,top:hold.top+dy};placeAdvancedButton(button);
+      floatingHelperPositions.set(button.id,{left:hold.left+dx,top:hold.top+dy});placeFloatingHelperButton(button);
     });
     button.addEventListener('pointerup',event=>{if(hold?.id===event.pointerId){suppressClick=hold.dragging||suppressClick;clear();}});
     button.addEventListener('pointercancel',()=>{suppressClick=true;clear();});
@@ -2746,9 +2767,9 @@
     button.addEventListener('contextmenu',event=>event.preventDefault());
     button.addEventListener('click',event=>{if(suppressClick){event.preventDefault();event.stopImmediatePropagation();suppressClick=false;}},true);
   }
-  function advancedNativeWindowOpen(){
+  function nativeGameWindowOpen(){
     return [...document.querySelectorAll('.overlay,dialog[open],[role="dialog"]')].some(panel=>{
-      if(panel===advancedDialog||panel.closest('#ro-advanced-choice-dialog'))return false;
+      if(panel.closest('#ro-advanced-choice-dialog, #ro-safari-diagnostics'))return false;
       for(let node=panel;node instanceof Element;node=node.parentElement){
         if(node.hidden||node.classList.contains('hidden')||node.getAttribute('aria-hidden')==='true')return false;
         const style=window.getComputedStyle?.(node);
@@ -2761,12 +2782,12 @@
     const lobby=document.querySelector('#lobby-ui');let button=document.querySelector('#ro-advanced-choice');
     if(!lobby||lobby.classList.contains('hidden')||!document.body.classList.contains('in-lobby')){button?.remove();closeAdvancedDialog();return;}
     if(!button){button=advancedButton('自動選卡',()=>{if(advancedDialog)return;advancedScope=advancedCharacterScope(advancedReadCharacter());advancedDialog=document.createElement('section');advancedDialog.id='ro-advanced-choice-dialog';advancedDialog.setAttribute('role','dialog');advancedDialog.setAttribute('aria-modal','true');advancedDialog.setAttribute('aria-label','自動選卡設定');document.body.append(advancedDialog);renderAdvancedDialog();});button.id='ro-advanced-choice';document.body.append(button);}
-    if(!button.dataset.roDraggable){button.dataset.roDraggable='true';button.title='點一下開啟設定；長按後拖曳移動';installAdvancedButtonDrag(button);}
-    const blocked=advancedNativeWindowOpen();
+    if(!button.dataset.roDraggable){button.dataset.roDraggable='true';button.title='點一下開啟設定；長按後拖曳移動';installFloatingHelperDrag(button);}
+    const blocked=nativeGameWindowOpen();
     if(button.hidden!==blocked)button.hidden=blocked;
     if(advancedDialog&&advancedDialog.hidden!==blocked)advancedDialog.hidden=blocked;
     const text='自動選卡'+(advancedSettings.enabled?'：開':'：關');if(button.textContent!==text)button.textContent=text;
-    if(!blocked)placeAdvancedButton(button);
+    if(!blocked)placeFloatingHelperButton(button);
   }
   function pickerIsOpen(){
     const picker=document.querySelector('#picker');
@@ -2912,7 +2933,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.1');
+      console.info('[RO助手] 即時自選已啟用 v2.2.2');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3114,6 +3135,7 @@
     document.querySelectorAll('[data-ro-ap-enabled]').forEach(el => el.removeAttribute('data-ro-ap-enabled'));
   }
   function scan() {
+    safariDiagnostics?.updateUI();
     updateAdvancedChoiceUI();
     if(advancedSettings.enabled){cancel();if(advancedChoice&&!advancedChoice.manual&&!advancedTimer)queueAdvancedChoice();}
     // Native choice gestures must not trigger unrelated helper DOM refreshes.
@@ -3190,6 +3212,7 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #ro-safari-diagnostics-open{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-safari-diagnostics-open[hidden],#ro-safari-diagnostics[hidden]{display:none!important}
       #ro-advanced-choice[data-ro-draggable]{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-advanced-choice[hidden],#ro-advanced-choice-dialog[hidden]{display:none!important}
       #ro-advanced-choice{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:40;padding:10px 16px;border:1px solid #718dbb;border-radius:8px;background:#233b61;color:#fff;font:600 15px sans-serif;cursor:pointer}
       #ro-advanced-choice-dialog{position:fixed;inset:4vh max(8px,calc((100vw - 960px)/2));z-index:10000;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;padding:18px;background:#142238;color:#edf4ff;border:1px solid #819bc4;border-radius:12px;box-shadow:0 0 0 100vmax #0009;font:14px/1.6 sans-serif}
