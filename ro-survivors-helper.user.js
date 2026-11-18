@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.4
+// @version      2.2.5
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.4'};
+  window[runtimeKey]={version:'2.2.5'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -802,8 +802,9 @@
       select.replaceChildren();for(let value=1;value<=max;value++){const option=document.createElement('option');option.value=String(value);option.textContent='+'+value;if(value===autoRefine.target)option.selected=true;select.append(option);}
     }
     const label=autoRefine.active?'停止':'自動精煉至';if(button.textContent!==label)button.textContent=label;
-    button.disabled=!autoRefine.active&&(!state||go.disabled||autoRefine.target<=state.level);
-    select.disabled=autoRefine.active;
+    const disabled=!autoRefine.active&&(!state||go.disabled||autoRefine.target<=state.level);
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(select.disabled!==autoRefine.active)select.disabled=autoRefine.active;
   }
   let smithManifestItems = null;
   const autoStar={active:false,uid:null,target:4,timer:null,pending:null,clicking:false};
@@ -883,8 +884,9 @@
       select.replaceChildren();for(let value=1;value<=max;value++){const option=document.createElement('option');option.value=String(value);option.textContent='★'+value;if(value===autoStar.target)option.selected=true;select.append(option);}
     }
     const label=autoStar.active?'停止':'連續升星至';if(button.textContent!==label)button.textContent=label;
-    button.disabled=!autoStar.active&&(!state||go.disabled||autoStar.target<=state.level);
-    select.disabled=autoStar.active;
+    const disabled=!autoStar.active&&(!state||go.disabled||autoStar.target<=state.level);
+    if(button.disabled!==disabled)button.disabled=disabled;
+    if(select.disabled!==autoStar.active)select.disabled=autoStar.active;
   }
   const smithIconIndex = new Map(), smithPathCache = new Map();
   const SMITH_FILTERS = [
@@ -1992,6 +1994,7 @@
     queueMicrotask(restore);
   }
   function updateStarforgeBaseScores() {
+    if (isSafariBrowser()) return;
     const open = document.querySelector('#smith-star');
     if (open && !starScoreHooks.has(open) && typeof open.onclick === 'function') {
       const original = open.onclick;
@@ -2024,6 +2027,9 @@
   }
   let smithScoring = false;
   function updateSmithBaseScores(list, filters) {
+    // Safari town overlays must never synchronously redraw the entire bag just
+    // to compute an optional score preview. Keep the native GS and list intact.
+    if (isSafariBrowser()) return;
     const rows = [...list.querySelectorAll('.cand[data-uid]')];
     if (smithScoring || !rows.some(row => !smithScoreRows.has(row))) return;
     // Native selection rebuilds rows without changing their GS. Reuse previews
@@ -2106,7 +2112,7 @@
       smith.panel = panel; smith.category = ''; smith.inventory = [];
       // Populate the complete refinable list once on opening, including equipped
       // and locked pieces exactly as permitted by the game's original filter.
-      nativeSmithAll();
+      if (!filters.querySelector('[data-f="all"].active')) nativeSmithAll();
     }
     updateSmithBaseScores(list, filters);
     filters.querySelectorAll('[data-f]').forEach(button => {
@@ -2147,17 +2153,18 @@
       const count = smith.inventory.filter(item => item.category === id).length;
       const small = button.querySelector('small');
       if (small.textContent !== String(count)) small.textContent = String(count);
-      button.disabled = count === 0;
-      button.classList.toggle('active', smith.category === id);
+      if (button.disabled !== (count === 0)) button.disabled = count === 0;
+      if (button.classList.contains('active') !== (smith.category === id)) button.classList.toggle('active', smith.category === id);
     }
     if (smith.category) filters.querySelectorAll('[data-f].active').forEach(button => button.classList.remove('active'));
+    const categories = new Map(smith.inventory.map(item => [item.uid, item.category]));
     rows.forEach(row => {
       if(!smithRowHooks.has(row)&&typeof row.onclick==='function'){
         const original=row.onclick;row.onclick=function(...args){try{return Reflect.apply(original,this,args);}finally{updateSmith();}};smithRowHooks.add(row);
       }
-      const category = smith.inventory.find(item => item.uid === row.dataset.uid)?.category;
+      const category = categories.get(row.dataset.uid);
       const hide = !!smith.category && category !== smith.category;
-      row.toggleAttribute('data-ro-smith-filtered', hide);
+      if (row.hasAttribute('data-ro-smith-filtered') !== hide) row.toggleAttribute('data-ro-smith-filtered', hide);
     });
     let empty = list.querySelector('[data-ro-smith-empty]');
     if (smith.category && !rows.some(row => !row.hasAttribute('data-ro-smith-filtered'))) {
@@ -2187,12 +2194,13 @@
     const categories=new Map(rows.map(row=>{const id=items?.get(row.dataset.uid),definition=id!==undefined?smithDefs?.[id]:smithDefinition(row);return [row,smithCategory(definition)];}));
     for(const button of filters.querySelectorAll('button')){
       const key=button.dataset.roStarCategory,count=key==='all'?rows.length:rows.filter(row=>categories.get(row)===key).length;
-      button.classList.toggle('active',key===starFilterCategory);button.setAttribute('aria-pressed',String(key===starFilterCategory));
+      if(button.classList.contains('active')!==(key===starFilterCategory))button.classList.toggle('active',key===starFilterCategory);
+      if(button.getAttribute('aria-pressed')!==String(key===starFilterCategory))button.setAttribute('aria-pressed',String(key===starFilterCategory));
       const small=button.querySelector('small');if(small.textContent!==String(count))small.textContent=String(count);
     }
     for(const row of rows){const hide=starFilterCategory!=='all'&&categories.get(row)!==starFilterCategory;if(row.hasAttribute('data-ro-star-filtered')!==hide)row.toggleAttribute('data-ro-star-filtered',hide);}
     const visible=rows.filter(row=>!row.hasAttribute('data-ro-star-filtered')),selected=rows.find(row=>row.classList.contains('sel'));
-    for(const node of [panel.querySelector('#sf-detail'),panel.querySelector('#sf-go'),panel.querySelector('#ro-auto-star')])if(node)node.hidden=visible.length===0;
+    for(const node of [panel.querySelector('#sf-detail'),panel.querySelector('#sf-go')])if(node&&node.hidden!==(visible.length===0))node.hidden=visible.length===0;
     let empty=list.querySelector('[data-ro-star-empty]');
     if(!visible.length&&rows.length){if(!empty){empty=document.createElement('div');empty.className='empty-note';empty.dataset.roStarEmpty='';empty.textContent='此部位沒有可加工的裝備';list.append(empty);}}else empty?.remove();
     // Use the native selection handler, which also clears its confirmation state.
@@ -2982,7 +2990,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.4');
+      console.info('[RO助手] 即時自選已啟用 v2.2.5');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
