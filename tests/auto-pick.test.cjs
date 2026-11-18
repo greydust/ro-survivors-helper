@@ -20,7 +20,7 @@ function setup(bundle=source) {
     console, JSON, Set, innerWidth: 1200, innerHeight: 800, performance: { now: () => time },
     setTimeout: (fn, delay) => { const id = next++; timers.set(id, { fn, at: time+delay }); return id; },
     clearTimeout: id => timers.delete(id), queueMicrotask: fn => fn() });
-  vm.runInContext(bundle.replace(/\}\)\(\);\s*$/, 'globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, helperTick, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
+  vm.runInContext(bundle.replace(/\}\)\(\);\s*$/, 'stageLevelRules={config:{max:6,stages:null,exp:{from:3,base:54,span:44}},chapter2:{},stages:[{id:"prontera"},{id:"pyramid"},{id:"maze"}]}; globalThis.api = { stageSpawnRows, selectedStageScript, updateStageSpawnSchedule, spawnTime, characterStatRows, updateCharacterDetails, openCharacterDetails, closeCharacterDetails, resetRun, helperTick, beginLongPress, moveLongPress, endLongPress, suppressHeldEvent, touchContext, helperViewport, installHordeCount, hordeProgress, fieldMonsterCounts, fieldMonsterLimit, updateHordeHud, clearHordeHud, scan, context, choose, rank, cancel, installOfflineGate, setKeepOffline, isLobbySocket, updateOfflineUI, getKeepOffline:()=>keepOffline, patchMinimapContext, updateMinimapOption, setHideMagnets:value=>hideMinimapMagnets=value, hordeRingGeometry, setShowRing:value=>showHordeRing=value, setActiveGame:value=>activeGame=value, victoryMagnet, fastChoice, installFastChoice, updateSmith, smithCategory, setSmithData:(defs,assets)=>{smithDefs=defs;smithAssets=assets;}, updateAutoRefine, startAutoRefine, stopAutoRefine, setRefineTarget:value=>autoRefine.target=value, getAutoRefine:()=>autoRefine, actualEquipmentBonuses, getEquipmentCatalog:()=>EQUIPMENT_CATALOG, migrateEquipmentFilter, validDetailSettings, emptyEquipmentFilter, validEquipmentFilter, isUnwantedEquipment, equipmentGroups, setEquipmentTier, excludeEquipmentTiers, damageSkillOptions, setSkillDefs:value=>skillDefs=value, setGameCatalog:value=>gameCatalog=value, formMulti, updateMerchant, captureMerchantInventory, selectUnwanted, openFilter, closeFilter, openGearDetails, closeGearDetails, drawFilter, parseFilterImport, loadFilterStore, getFilterDraft:()=>filterDraft, setFilterStore:value=>filterStore=value, getFilterStore:()=>filterStore, getRules:()=>rules, setRules:r=>rules=r }; })();'), context);
   function tick(ms) {
     const end = time + ms;
     while (true) {
@@ -395,7 +395,7 @@ test('Safari town touch resumes skipped smith and starforge controls without ano
 });
 test('smith shows unmodified GS copies and preserves native equipment through redraws',()=>{
   const e=setup();smithFixture(e);
-  e.document.querySelector('#smith').insertAdjacentHTML('beforeend','<div id="smith-detail"><span class="gs">GS <b>200</b></span></div>');
+  e.document.querySelector('#smith').insertAdjacentHTML('beforeend','<div id="smith-detail"><span class="gs">GS <b>184</b></span><div class="ref-ore"><span class="pct">100%</span></div><div class="ref-ladder">'+Array.from({length:10},(_,i)=>'<span class="'+(i<4?'done':'')+'">+'+(i+1)+'<b>100%</b></span>').join('')+'</div></div>');
   vm.runInContext(`
     globalThis.smithGear=[
       {uid:'refined',itemId:1101,refine:4,star:3,cards:[4001,null],tier:2,quality:4,affixes:[{stat:'str',value:3}]},
@@ -415,15 +415,23 @@ test('smith shows unmodified GS copies and preserves native equipment through re
   e.api.updateSmith();
   const score=uid=>e.document.querySelector('[data-uid="'+uid+'"] .gs');
   assert.equal(score('refined').textContent,'GS 184 (109)');
+  assert.deepEqual([...e.document.querySelectorAll('#smith-detail .ref-ladder [data-ro-gs-gain]')].map(n=>n.textContent),['GS +10','GS +20','GS +30','GS +40','GS +50','GS +60']);
+  assert.equal(e.document.querySelector('#smith-detail .ref-ore [data-ro-gs-gain]'),null);
   assert.equal(score('plain').textContent,'GS 100');
   assert.equal(score('star').textContent,'GS 110 (100)');
   assert.equal(score('card').textContent,'GS 120 (100)');
-  assert.equal(e.document.querySelector('#smith-detail .gs').textContent,'GS 200 (109)');
+  assert.equal(e.document.querySelector('#smith-detail .gs').textContent,'GS 184 (109)');
   const html=e.document.querySelector('#smith').innerHTML;
   e.api.updateSmith();assert.equal(e.document.querySelector('#smith').innerHTML,html);
   vm.runInContext('smithGear[0].refine=5;drawSmith()',e.vmContext);e.api.updateSmith();
   assert.equal(score('refined').textContent,'GS 194 (109)');
   assert.equal(e.document.querySelectorAll('#smith-detail [data-ro-smith-base-gs]').length,1);
+  vm.runInContext('smithGear[0].refine=8;drawSmith()',e.vmContext);
+  e.document.querySelector('#smith-detail .gs b').textContent='224';
+  [...e.document.querySelector('.ref-ladder').children].forEach((node,index)=>node.classList.toggle('done',index<8));
+  e.api.updateSmith();
+  assert.deepEqual([...e.document.querySelectorAll('#smith-detail [data-ro-gs-gain]')].map(n=>n.textContent),['GS +10','GS +20'],'+9 and +10 compare with the current +8');
+  assert.equal(e.document.querySelector('#smith-detail [data-ro-gs-gain]').style.fontSize,'10px');
   vm.runInContext('smithGear[0].refine=4',e.vmContext);
   assert.equal(vm.runInContext('JSON.stringify(smithGear)',e.vmContext),before);
   assert(vm.runInContext('Array.prototype.filter===originalSmithFilter',e.vmContext));
@@ -466,6 +474,9 @@ test('native starforge displays base GS without resetting selection, confirmatio
   e.api.updateSmith();e.document.querySelector('#smith-star').click();
   const score=()=>e.document.querySelector('#sf-detail .gs').textContent;
   assert.equal(score(),'GS 180 (105)');
+  assert.deepEqual([...e.document.querySelectorAll('#sf-detail .ref-ladder [data-ro-gs-gain]')].map(n=>n.textContent),['GS +5','GS +10','GS +15','GS +20','GS +25']);
+  assert.equal(e.document.querySelector('#sf-detail .ref-ore [data-ro-gs-gain]'),null);
+  assert.equal(e.document.querySelector('#sf-detail [data-ro-gs-gain]').style.color,'#183b70');
   assert.equal(e.document.querySelector('#sf-list [data-uid="s2"] .gs').textContent,'GS 101');
   e.document.querySelector('#sf-go').click();e.api.updateSmith();
   assert.equal(e.document.querySelector('#sf-go').textContent,'確定？再按一次');
@@ -476,8 +487,12 @@ test('native starforge displays base GS without resetting selection, confirmatio
   assert.equal(score(),'GS 101');
   e.document.querySelector('#sf-list [data-uid="s1"]').click();e.api.updateSmith();assert.equal(score(),'GS 180 (105)');
   e.document.querySelector('[data-sft="reroll"]').click();e.api.updateSmith();
+  assert.equal(e.document.querySelector('#sf-detail [data-ro-gs-gain]'),null);
   e.document.querySelector('[data-aff="0"]').click();e.api.updateSmith();assert.equal(score(),'GS 180 (105)');
   assert.equal(e.document.querySelectorAll('#sf-detail [data-ro-smith-base-gs]').length,1);
+  vm.runInContext('starGear[0].star=10',e.vmContext);
+  e.document.querySelector('[data-sft="star"]').click();e.api.updateSmith();
+  assert.equal(e.document.querySelectorAll('#sf-detail .ref-ladder [data-ro-gs-gain]').length,0,'max stars have no higher levels');
   vm.runInContext('pendingStar.splice(0).forEach(fn=>fn())',e.vmContext);
 });
 test('smith adds all detailed categories and accurate counts from game definitions',()=>{
@@ -661,7 +676,7 @@ test('catalog merchant batch selection uses the original selection Set and resto
   assert.deepEqual([...selection],['low']);assert.equal(sells(),0);assert.equal(JSON.parse,parse);assert.equal(Set.prototype.has,has);
 });
 test('catalog metadata has Chinese drop sources without cached library bonuses',()=>{
-  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,320);
+  const e=catalogEnv(),catalog=e.api.getEquipmentCatalog();assert.equal(catalog.length,488);
   for(const r of catalog){assert(r.tiers.length);for(const source of r.sources)assert(/[\u4e00-\u9fff]/.test(source.monster));}
   assert(catalog.every(r=>!Object.hasOwn(r,'bonuses')));
   const c=e.api.emptyEquipmentFilter();const group=e.api.equipmentGroups().find(g=>g.name==='長戟');
@@ -699,15 +714,15 @@ test('two spawn windows appear on separate lines beneath the original monster ic
 });
 test('monster level sits between name and times and follows native lap level offset',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="stages"><div id="lap-tabs"><button data-laptab="1" class="primary"></button><button data-laptab="2"></button><button data-laptab="3"></button></div><div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/prontera.jpg')"></div><div class="stg-mobs"><span data-mob="poring"><img></span></div></div></div>`);
- const script=pool=>({runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
+ const script=pool=>({map:"test",runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
  e.api.setGameCatalog({bj:{poring:{level:1},lunatic:{level:3},late:{level:52}},ca:{prontera:script(['poring','lunatic']),maze:script(['late'])}});
  e.api.updateStageSpawnSchedule();const caption=e.document.querySelector('[data-ro-mob-time]');assert.equal(caption.children[0].tagName,'B');assert.equal(caption.children[1].textContent,'等級 1');assert.equal(caption.children[2].textContent,'00:00–02:00');
- for(const lap of ['2','3']){e.document.querySelector('#lap-tabs .primary').classList.remove('primary');e.document.querySelector(`[data-laptab="${lap}"]`).classList.add('primary');e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 51');}
+ for(const lap of ['2','3']){e.document.querySelector('#lap-tabs .primary').classList.remove('primary');e.document.querySelector(`[data-laptab="${lap}"]`).classList.add('primary');e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,lap==='2'?'等級 51':'等級 66');}
  e.api.setGameCatalog({ca:{prontera:script(['poring'])}});e.api.updateStageSpawnSchedule();assert.equal(e.document.querySelector('[data-ro-mob-level]').textContent,'等級 —');
 });
 test('boss levels appear below names, preserve native times and update without duplicate rows',()=>{
  const e=setup();e.document.body.insertAdjacentHTML('beforeend',`<div id="lap-tabs"><button data-laptab="2" class="primary"></button></div><div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/pyramid.jpg')"></div><div class="stg-bosses"><div class="stg-boss mvp" data-mob="osiris"><span class="stg-boss-face"><img></span><b>俄塞里斯</b><small>MVP · min 14:00</small></div></div></div>`);
- const script=pool=>({runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
+ const script=pool=>({map:"test",runLength:120,waves:[{from:0,to:120,pool}],bosses:[]});
  e.api.setGameCatalog({bj:{mummy:{level:40},late:{level:53},osiris:{level:50}},ca:{pyramid:script(['mummy']),maze:script(['late'])}});
  const boss=e.document.querySelector('.stg-boss'),name=boss.querySelector('b'),time=boss.querySelector('small');let clicks=0;boss.onclick=()=>clicks++;
  e.api.updateStageSpawnSchedule();const line=boss.querySelector('[data-ro-mob-level]');assert.equal(line.textContent,'等級 63');assert.equal(name.nextElementSibling,line);assert.equal(line.nextElementSibling,time);

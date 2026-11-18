@@ -1,10 +1,11 @@
   const equipmentById=new Map(EQUIPMENT_CATALOG.map(item=>[item.id,item]));
   // Public game RO_LAPC (2026-11-16): six laps; RO_LAPTIER = base maximum + lap - 1.
   const EQUIPMENT_LAP_COUNT=6;
-  const EQUIPMENT_BASE_MAX_TIER=Math.max(1,...EQUIPMENT_CATALOG.flatMap(record=>record.tiers));
+  const EQUIPMENT_BASE_MAX_TIER=3;
   function equipmentBaseMaxTier(){return EQUIPMENT_BASE_MAX_TIER;}
   function equipmentTiers(record){
     const base=equipmentBaseMaxTier();
+    if(record.sources.every(source=>source.chapter===2))return [...new Set([...record.tiers,6,7,8])].sort((a,b)=>a-b);
     return [...new Set([...record.tiers,...Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>base+i+1)])].sort((a,b)=>a-b);
   }
   function equipmentMaxTier(){return equipmentBaseMaxTier()+EQUIPMENT_LAP_COUNT-1;}
@@ -143,7 +144,7 @@
         const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster+(source.rare?'（稀有）':''));
       }
       for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
-      sources.append(element('li',Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>['二','三','四','五','六'][i]+'周目 T'+(equipmentBaseMaxTier()+i+1)).join('、')+'：同上關卡與怪物（依遊戲多周目規則）'));
+      if(!group.records.every(record=>record.sources.every(source=>source.chapter===2)))sources.append(element('li',Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>['二','三','四','五','六'][i]+'周目 T'+(equipmentBaseMaxTier()+i+1)).join('、')+'：同上關卡與怪物（依遊戲多周目規則）'));
       details.append(sources);card.append(details);container.append(card);
     }
     summary.textContent='目前分類 '+shown+' 筆裝備；T 亮起＝保留，關閉＝不需要。';

@@ -42,13 +42,14 @@ if(process.argv[4]){
  lapConfig=JSON.parse(main.match(/var RO_LAPC=(\{[^;]+\});/)[1]);
  const stagesText=main.match(/const xe=(\[.*?\]);/s)[1];
  const stages=vm.runInNewContext(stagesText,{yo:()=>({})},{timeout:1000});
- const stageNames={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林',xmas:'聖誕節',louyang:'元宵節'};
+ const stageNames={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林',xmas:'聖誕節',louyang:'元宵節',c2_gef:'吉芬地下城',c2_clock:'鐘樓地下',c2_abyss:'深淵之湖',c2_glast:'古城修道院',c2_nif:'尼芙菲姆原野'};
  const monsterText=fs.readFileSync(path.join(root,'src/monster-names.js'),'utf8');
  const monsters=JSON.parse(monsterText.match(/const MONSTER_NAMES = (\{.*\});/s)[1]);
  const previous=JSON.parse(fs.readFileSync(path.join(root,'src/equipment-catalog.js'),'utf8').match(/const EQUIPMENT_CATALOG = (\[.*\]);/s)[1]);
  const names=new Map(previous.map(record=>[record.id,record.name]));
  const records=new Map();
  for(const stage of stages){
+  if(stage.chapter===2)stage.tier=6;
   const stageName=stageNames[stage.id];if(!stageName)throw Error('Unknown stage; supply its Chinese name before exporting');
   const script=catalog.ca?.[stage.id];if(!script)throw Error('Stage scripts unavailable');
   const enemies=[...new Set(script.waves.flatMap(wave=>wave.pool))].map(id=>({id,boss:false}));
@@ -63,7 +64,7 @@ if(process.argv[4]){
    const icon=manifest?.items?.[drop.id]?.icon;
    if(!records.has(drop.id))records.set(drop.id,{id:drop.id,name,slot:def.slot,wtype:def.wtype||'',icon:icon?new URL(icon,'https://ro.hans-webgametw.com/assets/').href:'https://ro.hans-webgametw.com/assets/items/'+drop.id+'.png',tiers:[],sources:[]});
    const record=records.get(drop.id);if(!record.tiers.includes(stage.tier))record.tiers.push(stage.tier);
-   record.sources.push({tier:stage.tier,stage:stageName,monster:monsters[enemy.id],boss:enemy.boss,...enemy.rare?{rare:true}:{}});
+   record.sources.push({...stage.chapter?{chapter:stage.chapter}:{},tier:stage.tier,stage:stageName,monster:monsters[enemy.id],boss:enemy.boss,...enemy.rare?{rare:true}:{}});
   }
  }
  for(const record of previous)if(record.sources.some(source=>source.monster==='關卡獎勵')&&definitions[record.id]&&!records.has(record.id))records.set(record.id,record);

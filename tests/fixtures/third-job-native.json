@@ -1,0 +1,686 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz2f3bd05c.js",
+  "jobs": [
+    {
+      "id": "swordsman",
+      "name": "Swordsman"
+    },
+    {
+      "id": "mage",
+      "name": "Mage"
+    },
+    {
+      "id": "archer",
+      "name": "Archer"
+    },
+    {
+      "id": "acolyte",
+      "name": "Acolyte"
+    },
+    {
+      "id": "thief",
+      "name": "Thief"
+    },
+    {
+      "id": "merchant",
+      "name": "Merchant"
+    },
+    {
+      "id": "taekwon",
+      "name": "Taekwon"
+    },
+    {
+      "id": "ninja",
+      "name": "Ninja"
+    },
+    {
+      "id": "gunslinger",
+      "name": "Gunslinger"
+    },
+    {
+      "id": "knight",
+      "base": "swordsman",
+      "name": "Knight"
+    },
+    {
+      "id": "crusader",
+      "base": "swordsman",
+      "name": "Crusader"
+    },
+    {
+      "id": "wizard",
+      "base": "mage",
+      "name": "Wizard"
+    },
+    {
+      "id": "sage",
+      "base": "mage",
+      "name": "Sage"
+    },
+    {
+      "id": "hunter",
+      "base": "archer",
+      "name": "Hunter"
+    },
+    {
+      "id": "bard",
+      "base": "archer",
+      "name": "Bard"
+    },
+    {
+      "id": "priest",
+      "base": "acolyte",
+      "name": "Priest"
+    },
+    {
+      "id": "monk",
+      "base": "acolyte",
+      "name": "Monk"
+    },
+    {
+      "id": "assassin",
+      "base": "thief",
+      "name": "Assassin"
+    },
+    {
+      "id": "rogue",
+      "base": "thief",
+      "name": "Rogue"
+    },
+    {
+      "id": "blacksmith",
+      "base": "merchant",
+      "name": "Blacksmith"
+    },
+    {
+      "id": "alchemist",
+      "base": "merchant",
+      "name": "Alchemist"
+    },
+    {
+      "id": "star_gladiator",
+      "base": "taekwon",
+      "name": "Star Gladiator"
+    },
+    {
+      "id": "soul_linker",
+      "base": "taekwon",
+      "name": "Soul Linker"
+    },
+    {
+      "id": "knight",
+      "base": "swordsman",
+      "name": "Knight"
+    },
+    {
+      "id": "crusader",
+      "base": "swordsman",
+      "name": "Crusader"
+    },
+    {
+      "id": "wizard",
+      "base": "mage",
+      "name": "Wizard"
+    },
+    {
+      "id": "sage",
+      "base": "mage",
+      "name": "Sage"
+    },
+    {
+      "id": "hunter",
+      "base": "archer",
+      "name": "Hunter"
+    },
+    {
+      "id": "bard",
+      "base": "archer",
+      "name": "Bard"
+    },
+    {
+      "id": "priest",
+      "base": "acolyte",
+      "name": "Priest"
+    },
+    {
+      "id": "monk",
+      "base": "acolyte",
+      "name": "Monk"
+    },
+    {
+      "id": "assassin",
+      "base": "thief",
+      "name": "Assassin"
+    },
+    {
+      "id": "rogue",
+      "base": "thief",
+      "name": "Rogue"
+    },
+    {
+      "id": "blacksmith",
+      "base": "merchant",
+      "name": "Blacksmith"
+    },
+    {
+      "id": "alchemist",
+      "base": "merchant",
+      "name": "Alchemist"
+    },
+    {
+      "id": "star_gladiator",
+      "base": "taekwon",
+      "name": "Star Gladiator"
+    },
+    {
+      "id": "soul_linker",
+      "base": "taekwon",
+      "name": "Soul Linker"
+    },
+    {
+      "id": "arch_bishop",
+      "base": "priest",
+      "name": "Arch Bishop"
+    },
+    {
+      "id": "genetic",
+      "base": "alchemist",
+      "name": "Genetic"
+    },
+    {
+      "id": "guillotine_cross",
+      "base": "assassin",
+      "name": "Guillotine Cross"
+    },
+    {
+      "id": "kagerou",
+      "base": "ninja",
+      "name": "Kagerou"
+    },
+    {
+      "id": "mechanic",
+      "base": "blacksmith",
+      "name": "Mechanic"
+    },
+    {
+      "id": "minstrel",
+      "base": "bard",
+      "name": "Minstrel"
+    },
+    {
+      "id": "ranger",
+      "base": "hunter",
+      "name": "Ranger"
+    },
+    {
+      "id": "rebellion",
+      "base": "gunslinger",
+      "name": "Rebellion"
+    },
+    {
+      "id": "royal_guard",
+      "base": "crusader",
+      "name": "Royal Guard"
+    },
+    {
+      "id": "rune_knight",
+      "base": "knight",
+      "name": "Rune Knight"
+    },
+    {
+      "id": "shadow_chaser",
+      "base": "rogue",
+      "name": "Shadow Chaser"
+    },
+    {
+      "id": "sorcerer",
+      "base": "sage",
+      "name": "Sorcerer"
+    },
+    {
+      "id": "soul_reaper",
+      "base": "soul_linker",
+      "name": "Soul Reaper"
+    },
+    {
+      "id": "star_emperor",
+      "base": "star_gladiator",
+      "name": "Star Emperor"
+    },
+    {
+      "id": "sura",
+      "base": "monk",
+      "name": "Sura"
+    },
+    {
+      "id": "warlock",
+      "base": "wizard",
+      "name": "Warlock"
+    }
+  ],
+  "pool": {
+    "swordsman": [
+      "bash",
+      "magnum",
+      "sword_dance",
+      "shield_bash",
+      "provoke",
+      "demoralizing_shout",
+      "endure",
+      "hp_recovery"
+    ],
+    "mage": [
+      "firebolt",
+      "coldbolt",
+      "lightning",
+      "soul_strike",
+      "napalm",
+      "fire_wall",
+      "frost_diver",
+      "sight",
+      "thunderstorm"
+    ],
+    "archer": [
+      "double_strafe",
+      "arrow_shower",
+      "arrow_rain",
+      "arrow_repel",
+      "retreat",
+      "arcane_shot",
+      "fire_arrow",
+      "concentration"
+    ],
+    "acolyte": [
+      "heal",
+      "holy_light",
+      "ruwach",
+      "decrease_agi",
+      "signum_crucis",
+      "aqua_benedicta",
+      "blessing",
+      "holy_smite"
+    ],
+    "thief": [
+      "envenom",
+      "sand_attack",
+      "hiding",
+      "throw_stone",
+      "poison_bomb",
+      "shadowstep",
+      "fan_of_knives",
+      "caltrops"
+    ],
+    "merchant": [
+      "mammonite",
+      "cart_revolution",
+      "zeny_rain",
+      "cart_rush",
+      "vending",
+      "crazy_uproar",
+      "enlarge_weight"
+    ],
+    "taekwon": [
+      "tornado_kick",
+      "heel_drop",
+      "roundhouse",
+      "counter_kick",
+      "sprint"
+    ],
+    "ninja": [
+      "shuriken",
+      "kunai",
+      "huuma",
+      "flaming_petals",
+      "lightning_strike"
+    ],
+    "gunslinger": [
+      "triple_action",
+      "rapid_shower",
+      "spread_attack",
+      "desperado",
+      "ground_drift",
+      "tracking"
+    ]
+  },
+  "trees": [
+    {
+      "job": "arch_bishop",
+      "skills": [
+        "adoramus",
+        "lauda_ramus"
+      ]
+    },
+    {
+      "job": "arch_bishop",
+      "skills": [
+        "judex",
+        "oratio"
+      ]
+    },
+    {
+      "job": "arch_bishop",
+      "skills": [
+        "epiclesis",
+        "highness_heal"
+      ]
+    },
+    {
+      "job": "genetic",
+      "skills": [
+        "cart_cannon",
+        "cart_tornado"
+      ]
+    },
+    {
+      "job": "genetic",
+      "skills": [
+        "hells_plant",
+        "mandragora_howl"
+      ]
+    },
+    {
+      "job": "genetic",
+      "skills": [
+        "spore_explosion",
+        "acid_demonstration"
+      ]
+    },
+    {
+      "job": "guillotine_cross",
+      "skills": [
+        "rolling_cutter",
+        "cross_ripper_slasher"
+      ]
+    },
+    {
+      "job": "guillotine_cross",
+      "skills": [
+        "cross_impact",
+        "dark_claw"
+      ]
+    },
+    {
+      "job": "guillotine_cross",
+      "skills": [
+        "poison_smoke",
+        "hallucination_walk"
+      ]
+    },
+    {
+      "job": "kagerou",
+      "skills": [
+        "swirling_petal",
+        "spirit_charm"
+      ]
+    },
+    {
+      "job": "kagerou",
+      "skills": [
+        "kunai_explosion",
+        "kunai_splash"
+      ]
+    },
+    {
+      "job": "kagerou",
+      "skills": [
+        "cross_slash",
+        "shadow_warrior"
+      ]
+    },
+    {
+      "job": "mechanic",
+      "skills": [
+        "arms_cannon",
+        "cold_slower"
+      ]
+    },
+    {
+      "job": "mechanic",
+      "skills": [
+        "flame_launcher",
+        "neutral_barrier"
+      ]
+    },
+    {
+      "job": "mechanic",
+      "skills": [
+        "silver_sniper",
+        "vulcan_arm"
+      ]
+    },
+    {
+      "job": "minstrel",
+      "skills": [
+        "severe_rainstorm",
+        "windmill_rush"
+      ]
+    },
+    {
+      "job": "minstrel",
+      "skills": [
+        "great_echo",
+        "frigg_song"
+      ]
+    },
+    {
+      "job": "minstrel",
+      "skills": [
+        "reverberation",
+        "metallic_sound"
+      ]
+    },
+    {
+      "job": "ranger",
+      "skills": [
+        "arrow_storm",
+        "fear_breeze"
+      ]
+    },
+    {
+      "job": "ranger",
+      "skills": [
+        "cluster_bomb",
+        "electric_shocker"
+      ]
+    },
+    {
+      "job": "ranger",
+      "skills": [
+        "warg_strike",
+        "aimed_bolt"
+      ]
+    },
+    {
+      "job": "rebellion",
+      "skills": [
+        "fire_dance",
+        "round_trip"
+      ]
+    },
+    {
+      "job": "rebellion",
+      "skills": [
+        "crimson_marker",
+        "dragon_tail"
+      ]
+    },
+    {
+      "job": "rebellion",
+      "skills": [
+        "hammer_of_god",
+        "howling_mine"
+      ]
+    },
+    {
+      "job": "royal_guard",
+      "skills": [
+        "cannon_spear",
+        "inspiration"
+      ]
+    },
+    {
+      "job": "royal_guard",
+      "skills": [
+        "shield_press",
+        "prestige"
+      ]
+    },
+    {
+      "job": "royal_guard",
+      "skills": [
+        "earth_drive",
+        "genesis_ray"
+      ]
+    },
+    {
+      "job": "rune_knight",
+      "skills": [
+        "ignition_break",
+        "giant_growth"
+      ]
+    },
+    {
+      "job": "rune_knight",
+      "skills": [
+        "dragon_breath",
+        "dragon_howling"
+      ]
+    },
+    {
+      "job": "rune_knight",
+      "skills": [
+        "hundred_spear",
+        "wind_cutter"
+      ]
+    },
+    {
+      "job": "shadow_chaser",
+      "skills": [
+        "triangle_shot",
+        "masquerade"
+      ]
+    },
+    {
+      "job": "shadow_chaser",
+      "skills": [
+        "fatal_menace",
+        "feint_bomb"
+      ]
+    },
+    {
+      "job": "shadow_chaser",
+      "skills": [
+        "reproduce",
+        "auto_shadow_spell"
+      ]
+    },
+    {
+      "job": "sorcerer",
+      "skills": [
+        "elemental_spirit",
+        "varetyr_spear"
+      ]
+    },
+    {
+      "job": "sorcerer",
+      "skills": [
+        "psychic_wave",
+        "vacuum_extreme"
+      ]
+    },
+    {
+      "job": "sorcerer",
+      "skills": [
+        "fire_walk",
+        "diamond_dust"
+      ]
+    },
+    {
+      "job": "soul_reaper",
+      "skills": [
+        "espa",
+        "eswhoo"
+      ]
+    },
+    {
+      "job": "soul_reaper",
+      "skills": [
+        "soul_curse",
+        "curse_explosion"
+      ]
+    },
+    {
+      "job": "soul_reaper",
+      "skills": [
+        "soul_collect",
+        "soul_explosion"
+      ]
+    },
+    {
+      "job": "star_emperor",
+      "skills": [
+        "prominence_kick",
+        "universe_stance"
+      ]
+    },
+    {
+      "job": "star_emperor",
+      "skills": [
+        "star_emperor_advent",
+        "gravity_control"
+      ]
+    },
+    {
+      "job": "star_emperor",
+      "skills": [
+        "flash_kick",
+        "nova_explosion"
+      ]
+    },
+    {
+      "job": "sura",
+      "skills": [
+        "skynet_blow",
+        "raising_dragon"
+      ]
+    },
+    {
+      "job": "sura",
+      "skills": [
+        "rampage_blaster",
+        "howling_of_lion"
+      ]
+    },
+    {
+      "job": "sura",
+      "skills": [
+        "tiger_cannon",
+        "knuckle_arrow"
+      ]
+    },
+    {
+      "job": "warlock",
+      "skills": [
+        "comet",
+        "crimson_rock"
+      ]
+    },
+    {
+      "job": "warlock",
+      "skills": [
+        "summon_spheres",
+        "tetra_vortex"
+      ]
+    },
+    {
+      "job": "warlock",
+      "skills": [
+        "jack_frost",
+        "frost_misty"
+      ]
+    }
+  ],
+  "lineage": "function tl(t){const e=su(t);return e.base?[...tl(e.base),e.id]:[e.id]}",
+  "lookup": "function su(t){return kN.find(e=>e.id===t)??Mp[0]}",
+  "skillPool": "function U9(t,e=[]){const a=[...tl(t).flatMap(o=>$E[o]??[]),...e.filter(o=>{var s;return(s=yt[o])==null?void 0:s.create})];return[...new Set(a)].map(o=>({id:o,max:yt[o].maxLevel}))}"
+}

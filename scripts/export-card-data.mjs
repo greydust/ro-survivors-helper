@@ -43,7 +43,7 @@ vm.runInContext(main.slice(scoreStart,scoreEnd)+';globalThis.score=(card,job)=>M
 const jobIds=[...new Set([...raw.matchAll(/"?id"?:"([^" ]+)"/g)].map(m=>m[1]))].filter(id=>catalog.j(id)?.id===id);
 const jobs=jobIds.map(id=>({id,name:catalog.ff(catalog.j(id).name),scaling:catalog.j(id).scaling}));
 if(!jobs.some(j=>j.id==='swordsman')||!jobs.some(j=>j.id==='mage'))throw Error('Native job catalog unavailable');
-const stages={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林',xmas:'聖誕節',louyang:'元宵節'};
+const stages={prontera:'普隆德拉原野',sewer:'普隆德拉地下水道',sunken:'失事輪',byalan:'柏伊亞嵐島',payon:'斐揚森林',payon_cave:'斐揚洞穴',prt_castle:'普隆德拉城',orcs:'獸人村',pyramid:'夢羅克金字塔',maze:'迷宮森林',xmas:'聖誕節',louyang:'元宵節',c2_gef:'吉芬地下城',c2_clock:'鐘樓地下',c2_abyss:'深淵之湖',c2_glast:'古城修道院',c2_nif:'尼芙菲姆原野'};
 const slots=[['weapon','武器'],['shield','盾牌'],['headgear','頭部'],['armor','護甲'],['garment','披肩'],['shoes','鞋子'],['accessory','飾品']];
 const records=Object.values(catalog.bT).filter(card=>!card.lap&&card.id<lapConfig.cardStep).map(base=>{
  const monster=catalog.bj[base.monster];if(!monster)throw Error('Unknown card monster '+base.monster);

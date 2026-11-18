@@ -43,18 +43,43 @@
       &&JSON.stringify(s.bosses.map(b=>b.id).sort())===JSON.stringify(bosses));
     return candidates.length===1?{id:candidates[0][0],script:candidates[0][1]}:null;
   }
+  let stageLevelRules=null,stageRulesRequest=null;
+  function parseStageLevelRules(source){
+    // Read JSON and stage metadata only; never execute downloaded source.
+    const config=JSON.parse(source.match(/var RO_LAPC=(\{[^;]+\});/)[1]);
+    const chapter2=JSON.parse(source.match(/RO_C2T=(\{[^;]+\});/)[1]);
+    const list=source.match(/const xe=(\[.*?\]);/s)[1];
+    const stages=[...list.matchAll(/\{id:"([^"]+)"([^]*?)(?=\},\{id:|\}\]$)/g)].map(match=>({id:match[1],special:/special:!0|special:true/.test(match[2]),chapter:/chapter:2/.test(match[2])?2:1}));
+    if(!Number.isInteger(config.max)||config.max<1||!stages.length||!config.exp||![config.exp.from,config.exp.base,config.exp.span].every(Number.isFinite))throw Error('Unknown native stage rules');
+    return {config,chapter2,stages};
+  }
+  function loadStageLevelRules(){
+    if(stageRulesRequest)return stageRulesRequest;
+    const script=[...document.querySelectorAll('script[type="module"][src]')].find(node=>/\/main-[^/]+\.js(?:\?|$)/.test(node.getAttribute('src')));
+    if(!script)return Promise.resolve();
+    const url=new URL(script.getAttribute('src'),location.href);
+    if(url.origin!==new URL(location.href).origin)return Promise.resolve();
+    stageRulesRequest=(async()=>{
+      try{const response=await fetch(url.href,{credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);
+        stageLevelRules=parseStageLevelRules(await response.text());updateStageSpawnSchedule();
+      }catch(error){console.warn('[RO助手] 無法讀取目前周目設定；多周目等級暫顯示 —',error);}
+    })();
+    return stageRulesRequest;
+  }
   function stageMonsterLevel(id,selected,lap){
     const monsters=gameCatalog?.bj,base=monsters?.[id]?.level;
     if(!Number.isFinite(base))return null;
     if(lap<=1)return base;
-    // Native RO_LAPAVG/RO_LAPK: time-weighted pool mean, rounded difference
-    // from the last eligible stage. Laps 2–6 use the same level offset.
-    const eligible=['prontera','sewer','sunken','byalan','payon','payon_cave','orcs','pyramid','maze'];
-    if(!selected)return null;
-    // RO_LAPOF keeps story-only stages at lap 1. Special stages inherit
-    // the last regular stage's correction, whose level offset is zero.
-    if(selected.script?.storyOnly||['prt_castle','xmas','louyang'].includes(selected.id))return base;
-    if(!eligible.includes(selected.id))return null;
+    if(!selected||!stageLevelRules)return null;
+    const {config,chapter2,stages}=stageLevelRules;
+    if(selected.script?.storyOnly||chapter2[selected.id])return base;
+    const allowed=stage=>gameCatalog?.ca?.[stage.id]?.map&&!gameCatalog.ca[stage.id].storyOnly&&(!config.stages||config.stages.includes(stage.id));
+    const currentStage=stages.find(stage=>stage.id===selected.id);
+    if(!currentStage)return null;
+    if(!allowed(currentStage))return base;
+    const eligible=stages.filter(stage=>allowed(stage)&&!stage.special&&stage.chapter!==2);
+    const index=eligible.findIndex(stage=>stage.id===selected.id),special=currentStage.special;
+    if(index<0&&!special)return null;
     const average=script=>{
       let sum=0,total=0;
       for(const wave of script?.waves||[]){
@@ -64,8 +89,12 @@
       }
       return total?sum/total:null;
     };
-    const current=average(selected.script),last=average(gameCatalog?.ca?.maze);
-    return current===null||last===null?null:base+Math.max(0,Math.round(last-current));
+    const current=average(selected.script),last=average(gameCatalog.ca[eligible.at(-1)?.id]);
+    if(current===null||last===null)return null;
+    let offset=Math.max(0,Math.round((special?current:last)-current));
+    lap=Math.max(1,Math.min(config.max,lap));
+    if(lap>=config.exp.from){const f=((lap-2)*eligible.length+(special?eligible.length:index+1))/(eligible.length*(config.max-1));offset=Math.max(offset,Math.round(config.exp.base+config.exp.span*f-current));}
+    return base+offset;
   }
   function updateStageSpawnSchedule(){
     const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs'),bosses=detail?.querySelector('.stg-bosses');
@@ -77,7 +106,8 @@
     if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
     for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
-      const name=MONSTER_NAMES[id]||gameCatalog?.bj?.[id]?.name||id;
+      const nativeName=gameCatalog?.bj?.[id]?.name;
+      const name=(typeof gameCatalog?.ff==='function'&&nativeName?gameCatalog.ff(nativeName):null)||MONSTER_NAMES[id]||nativeName||id;
       const level=stageMonsterLevel(id,selected,lap),signature=JSON.stringify([name,level,times]);
       if(mob.dataset.roScheduleSignature===signature&&mob.querySelector('[data-ro-mob-time]'))continue;
       mob.dataset.roScheduleSignature=signature;mob.classList.add('ro-timed-mob');

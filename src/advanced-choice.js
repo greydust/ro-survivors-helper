@@ -229,7 +229,12 @@
         const match=upgrades.find(row=>row.rule.upgrade==='select'&&row.card.id===priority.skill&&(!priority.upgrades.length||advancedUpgradeIds(row.card).some(id=>priority.upgrades.includes(id))));
         if(match)return action('pick',match.index);
       }
-      const selected=upgrades.find(row=>row.rule.upgrade==='select')||upgrades.find(row=>row.rule.upgrade==='ignore');
+      // Detailed aspect selections also constrain the fallback. A legendary
+      // mixed upgrade must not make an unselected aspect eligible on later cards.
+      const selected=upgrades.find(row=>row.rule.upgrade==='select'&&(
+        !advancedSettings.priority.some(entry=>entry.skill===row.card.id)||
+        advancedSettings.priority.some(entry=>entry.skill===row.card.id&&(!entry.upgrades.length||advancedUpgradeIds(row.card).some(id=>entry.upgrades.includes(id))))
+      ))||upgrades.find(row=>row.rule.upgrade==='ignore');
       if(selected)return action('pick',selected.index);
       const potion=cards.findIndex(card=>card.id==='potion');
       return potion>=0?action('pick',potion):null;

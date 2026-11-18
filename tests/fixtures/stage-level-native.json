@@ -1,5 +1,5 @@
 {
-  "source": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz8a698f4b.js",
+  "source": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzb6eb53b9.js",
   "lapConfig": {
     "stages": null,
     "max": 6,
@@ -36,7 +36,28 @@
     ],
     "cardNoScale": [
       4144
-    ]
+    ],
+    "exp": {
+      "from": 3,
+      "base": 54,
+      "span": 44,
+      "mult": [
+        1,
+        1,
+        1.25,
+        1.5,
+        1.75,
+        2
+      ],
+      "minLv": 70,
+      "lowMult": 1,
+      "baseK": 0.3333333333333333,
+      "jobK": 0.025,
+      "pen": {
+        "slope": 0.08,
+        "floor": 0.15
+      }
+    }
   },
   "stages": [
     {
@@ -46,7 +67,134 @@
       "levels": "1–8",
       "tier": 1,
       "gsMin": 0,
-      "map": "prt_fild08"
+      "map": "prt_fild08",
+      "bgm": "field",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "poring",
+            "lunatic",
+            "fabre",
+            "poring",
+            "lunatic",
+            "fabre",
+            "pupa"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 40
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "peco_egg",
+            "chonchon"
+          ],
+          "perSecond": 2,
+          "maxAlive": 70
+        },
+        {
+          "from": 180,
+          "to": 300,
+          "pool": [
+            "drops",
+            "picky",
+            "roda_frog",
+            "condor",
+            "savage_babe"
+          ],
+          "perSecond": 2.8,
+          "maxAlive": 100
+        },
+        {
+          "from": 300,
+          "to": 420,
+          "pool": [
+            "condor",
+            "savage_babe",
+            "creamy",
+            "hornet",
+            "mandragora"
+          ],
+          "perSecond": 3.5,
+          "maxAlive": 140
+        },
+        {
+          "from": 420,
+          "to": 600,
+          "pool": [
+            "creamy",
+            "hornet",
+            "mandragora",
+            "baby_desert_wolf",
+            "rocker"
+          ],
+          "perSecond": 4.5,
+          "maxAlive": 180
+        },
+        {
+          "from": 600,
+          "to": 720,
+          "pool": [
+            "hornet",
+            "creamy",
+            "baby_desert_wolf",
+            "rocker"
+          ],
+          "perSecond": 5.5,
+          "maxAlive": 220
+        },
+        {
+          "from": 720,
+          "to": 900,
+          "pool": [
+            "creamy",
+            "baby_desert_wolf",
+            "rocker",
+            "hornet",
+            "mandragora"
+          ],
+          "perSecond": 7,
+          "maxAlive": 260
+        }
+      ],
+      "bosses": [
+        {
+          "t": 150,
+          "id": "eclipse"
+        },
+        {
+          "t": 300,
+          "id": "toad"
+        },
+        {
+          "t": 450,
+          "id": "dragon_fly"
+        },
+        {
+          "t": 600,
+          "id": "vocal"
+        },
+        {
+          "t": 720,
+          "id": "mastering"
+        }
+      ],
+      "runLength": 900,
+      "jobCap": 12,
+      "jobExp": 0.25
     },
     {
       "id": "sewer",
@@ -55,7 +203,101 @@
       "levels": "9–12",
       "tier": 1,
       "gsMin": 20,
-      "map": "prt_sewer"
+      "map": "prt_sewer",
+      "bgm": "sewer",
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 45
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou",
+            "thief_bug_egg"
+          ],
+          "perSecond": 1.9,
+          "maxAlive": 70
+        },
+        {
+          "from": 150,
+          "to": 270,
+          "pool": [
+            "tarou",
+            "plankton",
+            "drainliar",
+            "thief_bug"
+          ],
+          "perSecond": 2.6,
+          "maxAlive": 95
+        },
+        {
+          "from": 270,
+          "to": 390,
+          "pool": [
+            "drainliar",
+            "thief_bug_female",
+            "plankton",
+            "tarou"
+          ],
+          "perSecond": 3.3,
+          "maxAlive": 120
+        },
+        {
+          "from": 390,
+          "to": 660,
+          "pool": [
+            "thief_bug_female",
+            "cramp",
+            "drainliar",
+            "plankton"
+          ],
+          "perSecond": 4,
+          "maxAlive": 145
+        }
+      ],
+      "runLength": 660,
+      "jobCap": 20,
+      "jobExp": 1,
+      "mood": "sewer",
+      "bosses": [
+        {
+          "t": 180,
+          "id": "tarou_bite"
+        },
+        {
+          "t": 180,
+          "id": "tarou_plague"
+        },
+        {
+          "t": 180,
+          "id": "tarou_burrow"
+        },
+        {
+          "t": 480,
+          "id": "golden_thief_bug"
+        }
+      ],
+      "ramp": {
+        "hp": 0.25,
+        "damage": 0.5,
+        "gems": 0.4,
+        "full": 240,
+        "early": {
+          "hp": 0.8,
+          "until": 60
+        }
+      }
     },
     {
       "id": "sunken",
@@ -65,7 +307,95 @@
       "tier": 1,
       "gsMin": 40,
       "story": "sunken_story",
-      "map": "sunken_deck"
+      "map": "sunken_deck",
+      "bgm": "sunken",
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "kukre",
+            "marina"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 45
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "kukre",
+            "marina",
+            "hydra",
+            "whisper"
+          ],
+          "perSecond": 1.8,
+          "maxAlive": 68
+        },
+        {
+          "from": 150,
+          "to": 240,
+          "pool": [
+            "marina",
+            "hydra",
+            "whisper",
+            "sword_fish"
+          ],
+          "perSecond": 2.4,
+          "maxAlive": 90
+        },
+        {
+          "from": 240,
+          "to": 330,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel"
+          ],
+          "perSecond": 3,
+          "maxAlive": 113
+        },
+        {
+          "from": 330,
+          "to": 780,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel",
+            "hydra"
+          ],
+          "perSecond": 3.6,
+          "maxAlive": 135
+        }
+      ],
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "penomena"
+        },
+        {
+          "t": 600,
+          "id": "drake"
+        }
+      ],
+      "runLength": 780,
+      "jobCap": 25,
+      "jobExp": 2,
+      "mood": "gloom",
+      "ramp": {
+        "hp": 0.15,
+        "damage": 0.4,
+        "gems": 0.3,
+        "full": 300,
+        "early": {
+          "hp": 0.33,
+          "until": 60
+        }
+      }
     },
     {
       "id": "byalan",
@@ -74,7 +404,112 @@
       "levels": "16–20",
       "tier": 2,
       "gsMin": 110,
-      "map": "byalan"
+      "map": "byalan",
+      "bgm": "byalan",
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "vadon",
+            "cornutus"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 50
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "vadon",
+            "cornutus",
+            "marse"
+          ],
+          "perSecond": 2,
+          "maxAlive": 85
+        },
+        {
+          "from": 150,
+          "to": 270,
+          "pool": [
+            "cornutus",
+            "marse",
+            "obeaune",
+            "marine_sphere"
+          ],
+          "perSecond": 2.8,
+          "maxAlive": 120
+        },
+        {
+          "from": 270,
+          "to": 420,
+          "pool": [
+            "marse",
+            "obeaune",
+            "phen",
+            "marine_sphere"
+          ],
+          "perSecond": 3.5,
+          "maxAlive": 165
+        },
+        {
+          "from": 420,
+          "to": 600,
+          "pool": [
+            "obeaune",
+            "phen",
+            "merman",
+            "marine_sphere"
+          ],
+          "perSecond": 4.5,
+          "maxAlive": 210
+        },
+        {
+          "from": 600,
+          "to": 900,
+          "pool": [
+            "phen",
+            "merman",
+            "obeaune",
+            "marse"
+          ],
+          "perSecond": 5.5,
+          "maxAlive": 255
+        }
+      ],
+      "runLength": 900,
+      "jobCap": 31,
+      "jobExp": 1.8,
+      "mood": "sea",
+      "bosses": [
+        {
+          "t": 180,
+          "id": "deviace"
+        },
+        {
+          "t": 360,
+          "id": "strouf"
+        },
+        {
+          "t": 540,
+          "id": "king_dramoh"
+        },
+        {
+          "t": 720,
+          "id": "kraken"
+        }
+      ],
+      "ramp": {
+        "hp": 0.27,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.25,
+          "until": 60
+        }
+      },
+      "gemExp": 0.4
     },
     {
       "id": "payon",
@@ -83,7 +518,135 @@
       "levels": "21–25",
       "tier": 2,
       "gsMin": 135,
-      "map": "pay_fild08"
+      "map": "pay_fild08",
+      "bgm": "payon",
+      "waves": [
+        {
+          "from": 0,
+          "to": 85,
+          "pool": [
+            "spore",
+            "willow",
+            "poporing"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 50
+        },
+        {
+          "from": 85,
+          "to": 170,
+          "pool": [
+            "spore",
+            "willow",
+            "poporing",
+            "snake",
+            "worm_tail"
+          ],
+          "perSecond": 2,
+          "maxAlive": 88
+        },
+        {
+          "from": 170,
+          "to": 285,
+          "pool": [
+            "poporing",
+            "snake",
+            "worm_tail",
+            "poison_spore",
+            "smokie"
+          ],
+          "perSecond": 2.8,
+          "maxAlive": 125
+        },
+        {
+          "from": 285,
+          "to": 395,
+          "pool": [
+            "worm_tail",
+            "poison_spore",
+            "smokie",
+            "wolf",
+            "elder_willow"
+          ],
+          "perSecond": 3.5,
+          "maxAlive": 175
+        },
+        {
+          "from": 395,
+          "to": 565,
+          "pool": [
+            "smokie",
+            "wolf",
+            "elder_willow",
+            "dragon_tail",
+            "bigfoot"
+          ],
+          "perSecond": 4.5,
+          "maxAlive": 225
+        },
+        {
+          "from": 565,
+          "to": 735,
+          "pool": [
+            "wolf",
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi"
+          ],
+          "perSecond": 5.5,
+          "maxAlive": 275
+        },
+        {
+          "from": 735,
+          "to": 1020,
+          "pool": [
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi",
+            "nine_tail"
+          ],
+          "perSecond": 7,
+          "maxAlive": 325
+        }
+      ],
+      "runLength": 1020,
+      "start": [
+        144,
+        244
+      ],
+      "jobCap": 38,
+      "jobExp": 2.2,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "angeling"
+        },
+        {
+          "t": 360,
+          "id": "deviling"
+        },
+        {
+          "t": 600,
+          "id": "vagabond_wolf"
+        },
+        {
+          "t": 840,
+          "id": "eddga"
+        }
+      ],
+      "ramp": {
+        "hp": 0.27,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.25,
+          "until": 60
+        }
+      },
+      "gemExp": 0.4
     },
     {
       "id": "payon_cave",
@@ -92,7 +655,119 @@
       "levels": "26–30",
       "tier": 2,
       "gsMin": 165,
-      "map": "payon_cave"
+      "map": "payon_cave",
+      "bgm": "payon_cave",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 55
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing",
+            "skel_archer"
+          ],
+          "perSecond": 2,
+          "maxAlive": 97
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "skeleton",
+            "skel_archer",
+            "zombie",
+            "skel_soldier"
+          ],
+          "perSecond": 2.8,
+          "maxAlive": 138
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "skel_soldier",
+            "skel_archer",
+            "munak",
+            "bon_gun"
+          ],
+          "perSecond": 3.6,
+          "maxAlive": 193
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "munak",
+            "bon_gun",
+            "sohee",
+            "horong"
+          ],
+          "perSecond": 4.6,
+          "maxAlive": 248
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "sohee",
+            "horong",
+            "nine_tail",
+            "bon_gun",
+            "munak"
+          ],
+          "perSecond": 7.7,
+          "maxAlive": 358
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 49,
+      "jobExp": 3,
+      "mood": "cave",
+      "bosses": [
+        {
+          "t": 180,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 360,
+          "id": "cat_o_nine_tail"
+        },
+        {
+          "t": 600,
+          "id": "hyegun"
+        },
+        {
+          "t": 840,
+          "id": "moonlight"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "poporing": 2.4
+      },
+      "mobDmg": 0.75,
+      "gemExp": 0.42
     },
     {
       "id": "prt_castle",
@@ -103,7 +778,66 @@
       "gsMin": 185,
       "jobLvMin": 50,
       "map": "prt_throne",
-      "storyOnly": true
+      "bgm": "prontera",
+      "waves": [
+        {
+          "from": 0,
+          "to": 30,
+          "pool": [
+            "orc_warrior"
+          ],
+          "perSecond": 4.4,
+          "maxAlive": 100
+        },
+        {
+          "from": 30,
+          "to": 60,
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ],
+          "perSecond": 6.8,
+          "maxAlive": 150
+        },
+        {
+          "from": 60,
+          "to": 90,
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ],
+          "perSecond": 9.6,
+          "maxAlive": 200
+        }
+      ],
+      "bosses": [
+        {
+          "t": 90,
+          "id": "high_orc"
+        }
+      ],
+      "runLength": 90,
+      "jobCap": 49,
+      "story": "castle",
+      "storyOnly": true,
+      "start": [
+        248,
+        92
+      ],
+      "reward": 22847,
+      "mood": "hall",
+      "spawnAt": [
+        [
+          69.5,
+          97
+        ]
+      ],
+      "ramp": {
+        "hp": 0.28,
+        "damage": 0.45,
+        "gems": 0.4,
+        "full": 300
+      }
     },
     {
       "id": "orcs",
@@ -112,7 +846,133 @@
       "levels": "31–40",
       "tier": 3,
       "gsMin": 400,
-      "map": "gef_fild10"
+      "map": "gef_fild10",
+      "start": [
+        200,
+        216
+      ],
+      "bgm": "orc_village",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby",
+            "goblin_archer"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "kobold",
+            "wolf",
+            "orc_warrior",
+            "goblin_archer"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "goblin"
+          ],
+          "perSecond": 3.8,
+          "maxAlive": 200
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie"
+          ],
+          "perSecond": 4.8,
+          "maxAlive": 255
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie",
+            "kobold",
+            "wolf"
+          ],
+          "perSecond": 7.8,
+          "maxAlive": 360
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 3.2,
+      "gemExp": 0.45,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "goblin_leader"
+        },
+        {
+          "t": 360,
+          "id": "kobold_leader"
+        },
+        {
+          "t": 600,
+          "id": "high_orc"
+        },
+        {
+          "t": 840,
+          "id": "orc_hero"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "wolf": 2.8,
+        "orc_warrior": 1.05,
+        "orc_lady": 1.1
+      },
+      "mobDmgBy": {
+        "wolf": 1.9
+      },
+      "mobExpBy": {
+        "wolf": 2.1
+      },
+      "bossHp": {
+        "high_orc": 260000
+      }
     },
     {
       "id": "pyramid",
@@ -121,7 +981,147 @@
       "levels": "41–50",
       "tier": 3,
       "gsMin": 650,
-      "map": "moc_pryd04"
+      "map": "moc_pryd04",
+      "start": [
+        131,
+        108
+      ],
+      "bgm": "pyramid",
+      "mood": "cave",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie",
+            "verit",
+            "skeleton"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "verit",
+            "mummy",
+            "orc_skeleton"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "mummy",
+            "orc_skeleton",
+            "skel_archer",
+            "matyr"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "mummy",
+            "isis",
+            "orc_skeleton",
+            "skel_soldier",
+            "matyr"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "isis",
+            "matyr",
+            "minorous",
+            "mummy",
+            "skel_archer"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "minorous",
+            "isis",
+            "matyr",
+            "mummy",
+            "orc_skeleton",
+            "verit"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 3.5,
+      "gemExp": 0.48,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "ancient_mummy"
+        },
+        {
+          "t": 600,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 840,
+          "id": "osiris"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "zombie": 1.6,
+        "skeleton": 1.6,
+        "skel_archer": 1.6,
+        "skel_soldier": 1.45
+      },
+      "mobDmgBy": {
+        "zombie": 1.4,
+        "skeleton": 1.4,
+        "skel_archer": 1.45,
+        "skel_soldier": 1.35,
+        "ghostring": 2.6,
+        "skeleton_general": 1.45
+      },
+      "mobExpBy": {
+        "zombie": 1.5,
+        "skeleton": 1.5,
+        "skel_archer": 1.5,
+        "skel_soldier": 1.4,
+        "ghostring": 4,
+        "skeleton_general": 1.7
+      },
+      "bossHp": {
+        "ghostring": 210000,
+        "skeleton_general": 260000
+      }
     },
     {
       "id": "maze",
@@ -130,7 +1130,125 @@
       "levels": "51–60",
       "tier": 3,
       "gsMin": 900,
-      "map": "prt_maze02"
+      "map": "prt_maze02",
+      "start": [
+        85,
+        127
+      ],
+      "bgm": "maze",
+      "mood": "gloom",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "hunter_fly",
+            "side_winder"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "hunter_fly",
+            "side_winder",
+            "argiope"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "side_winder",
+            "argiope",
+            "baphomet_jr"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "argiope",
+            "baphomet_jr",
+            "killer_mantis",
+            "hunter_fly"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "baphomet_jr",
+            "killer_mantis",
+            "side_winder",
+            "argiope"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "killer_mantis",
+            "baphomet_jr",
+            "argiope",
+            "hunter_fly",
+            "side_winder"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 3.8,
+      "gemExp": 0.5,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "leib_olmai"
+        },
+        {
+          "t": 360,
+          "id": "sasquatch"
+        },
+        {
+          "t": 600,
+          "id": "deviling"
+        },
+        {
+          "t": 840,
+          "id": "baphomet"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobDmgBy": {
+        "deviling": 2.2
+      },
+      "mobExpBy": {
+        "deviling": 3.4
+      },
+      "bossHp": {
+        "deviling": 360000
+      }
     },
     {
       "id": "xmas",
@@ -140,20 +1258,1027 @@
       "tier": 3,
       "special": true,
       "gsMin": 900,
-      "map": "xmas"
+      "map": "xmas",
+      "start": [
+        132,
+        224
+      ],
+      "bgm": "xmas",
+      "waves": [
+        {
+          "from": 0,
+          "to": 110,
+          "pool": [
+            "christmas_goblin",
+            "cookie"
+          ],
+          "perSecond": 1.5,
+          "maxAlive": 60
+        },
+        {
+          "from": 110,
+          "to": 240,
+          "pool": [
+            "christmas_goblin",
+            "cookie",
+            "christmas_cookie"
+          ],
+          "perSecond": 2.4,
+          "maxAlive": 105
+        },
+        {
+          "from": 240,
+          "to": 370,
+          "pool": [
+            "christmas_cookie",
+            "cruiser",
+            "myst_case"
+          ],
+          "perSecond": 3.2,
+          "maxAlive": 150
+        },
+        {
+          "from": 370,
+          "to": 500,
+          "pool": [
+            "cruiser",
+            "myst_case",
+            "siroma",
+            "snowier"
+          ],
+          "perSecond": 4.2,
+          "maxAlive": 210
+        },
+        {
+          "from": 500,
+          "to": 750,
+          "pool": [
+            "siroma",
+            "teddy_bear",
+            "snowier",
+            "myst_case"
+          ],
+          "perSecond": 5.4,
+          "maxAlive": 280
+        },
+        {
+          "from": 750,
+          "to": 900,
+          "pool": [
+            "teddy_bear",
+            "snowier",
+            "siroma",
+            "cruiser",
+            "christmas_cookie"
+          ],
+          "perSecond": 7.2,
+          "maxAlive": 340
+        }
+      ],
+      "runLength": 900,
+      "jobCap": 50,
+      "jobExp": 3.8,
+      "gemExp": 0.5,
+      "bosses": [
+        {
+          "t": 110,
+          "id": "gazeti"
+        },
+        {
+          "t": 240,
+          "id": "freezer"
+        },
+        {
+          "t": 370,
+          "id": "ice_titan"
+        },
+        {
+          "t": 520,
+          "id": "hatii"
+        },
+        {
+          "t": 520,
+          "id": "baby_hatii"
+        },
+        {
+          "t": 750,
+          "id": "antonio"
+        }
+      ],
+      "duo": {
+        "ids": [
+          "hatii",
+          "baby_hatii"
+        ],
+        "name": "Familia de la estepa helada",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "siroma",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "intruder": {
+        "id": "stormy_knight",
+        "at": 430,
+        "say": "¡Una tormenta helada se cuela en Lutie!"
+      },
+      "heat": {
+        "every": 60,
+        "hp": 0.04,
+        "dmg": 0.03,
+        "cap": 15
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      }
     },
     {
       "id": "louyang",
-      "name": "Festival de los Faroles",
+      "name": "Feria de faroles de Louyang",
       "place": "Louyang",
       "levels": "61–70",
       "tier": 3,
       "special": true,
       "gsMin": 900,
-      "map": "louyang"
+      "map": "louyang",
+      "start": [
+        180,
+        182
+      ],
+      "bgm": "louyang",
+      "waves": [
+        {
+          "from": 0,
+          "to": 120,
+          "pool": [
+            "leaf_cat",
+            "dumpling_child"
+          ],
+          "perSecond": 1.5,
+          "maxAlive": 60
+        },
+        {
+          "from": 120,
+          "to": 270,
+          "pool": [
+            "leaf_cat",
+            "dumpling_child",
+            "stone_shooter"
+          ],
+          "perSecond": 2.4,
+          "maxAlive": 105
+        },
+        {
+          "from": 270,
+          "to": 420,
+          "pool": [
+            "stone_shooter",
+            "iron_fist",
+            "kapha"
+          ],
+          "perSecond": 3.2,
+          "maxAlive": 150
+        },
+        {
+          "from": 420,
+          "to": 570,
+          "pool": [
+            "iron_fist",
+            "kapha",
+            "spring_rabbit",
+            "dumpling_child"
+          ],
+          "perSecond": 4.1,
+          "maxAlive": 205
+        },
+        {
+          "from": 570,
+          "to": 810,
+          "pool": [
+            "kapha",
+            "spring_rabbit",
+            "enchanted_peach_tree",
+            "iron_fist"
+          ],
+          "perSecond": 5.3,
+          "maxAlive": 270
+        },
+        {
+          "from": 810,
+          "to": 960,
+          "pool": [
+            "spring_rabbit",
+            "enchanted_peach_tree",
+            "kapha",
+            "stone_shooter",
+            "leaf_cat"
+          ],
+          "perSecond": 7,
+          "maxAlive": 340
+        }
+      ],
+      "runLength": 960,
+      "jobCap": 50,
+      "jobExp": 3.8,
+      "gemExp": 0.5,
+      "bosses": [
+        {
+          "t": 120,
+          "id": "wooden_golem"
+        },
+        {
+          "t": 330,
+          "id": "zhu_po_long"
+        },
+        {
+          "t": 330,
+          "id": "the_paper"
+        },
+        {
+          "t": 570,
+          "id": "wanderer"
+        },
+        {
+          "t": 690,
+          "id": "green_maiden"
+        },
+        {
+          "t": 810,
+          "id": "white_lady"
+        }
+      ],
+      "duo": {
+        "ids": [
+          "zhu_po_long",
+          "the_paper"
+        ],
+        "name": "Dragón y farol",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "leaf_cat",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "intruder": {
+        "id": "evil_snake_lord",
+        "at": 480,
+        "say": "¡Un intruso irrumpe en la feria de faroles!"
+      },
+      "heat": {
+        "every": 60,
+        "hp": 0.06,
+        "dmg": 0.04,
+        "cap": 15
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      }
+    },
+    {
+      "id": "c2_gef",
+      "name": "Mazmorra de Geffen",
+      "place": "Bajo Geffen",
+      "levels": "71–76",
+      "tier": 8,
+      "chapter": 2,
+      "gsMin": 2360,
+      "map": "gef_dun01",
+      "start": [
+        131,
+        150
+      ],
+      "bgm": "c2_gef",
+      "mood": "cave",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "jakk",
+            "drainliar",
+            "ghoul"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "jakk",
+            "ghoul",
+            "marionette",
+            "drainliar"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "ghoul",
+            "marionette",
+            "whisper",
+            "deviruchi"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "marionette",
+            "deviruchi",
+            "nightmare",
+            "jakk"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "deviruchi",
+            "nightmare",
+            "ghoul",
+            "whisper"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "nightmare",
+            "deviruchi",
+            "marionette",
+            "ghoul",
+            "jakk",
+            "whisper"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.1,
+      "gemExp": 0.52,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "giant_whisper"
+        },
+        {
+          "t": 360,
+          "id": "ogretooth"
+        },
+        {
+          "t": 600,
+          "id": "doppelganger"
+        },
+        {
+          "t": 840,
+          "id": "dracula"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "whisper": 211.39,
+        "drainliar": 391.28
+      },
+      "mobDmgBy": {
+        "whisper": 24.94,
+        "drainliar": 27.84
+      },
+      "mobExpBy": {
+        "whisper": 6.67,
+        "drainliar": 6.67
+      }
+    },
+    {
+      "id": "c2_clock",
+      "name": "Sótano de la Torre del Reloj",
+      "place": "Al De Baran",
+      "levels": "77–82",
+      "tier": 8,
+      "chapter": 2,
+      "gsMin": 2410,
+      "map": "alde_dun03",
+      "start": [
+        149,
+        150
+      ],
+      "bgm": "c2_clock",
+      "mood": "gloom",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "punk",
+            "clock"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "punk",
+            "clock",
+            "alarm"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "alarm",
+            "rideword",
+            "bathory",
+            "mimic"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "rideword",
+            "bathory",
+            "joker",
+            "clock"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "joker",
+            "dark_frame",
+            "alarm",
+            "rideword"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "dark_frame",
+            "joker",
+            "mimic",
+            "rideword",
+            "alarm",
+            "bathory"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.4,
+      "gemExp": 0.54,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "clock_tower_manager"
+        },
+        {
+          "t": 300,
+          "id": "owl_duke"
+        },
+        {
+          "t": 480,
+          "id": "executioner"
+        },
+        {
+          "t": 660,
+          "id": "mysteltainn"
+        },
+        {
+          "t": 840,
+          "id": "owl_baron"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {}
+    },
+    {
+      "id": "c2_abyss",
+      "name": "Lago del Abismo",
+      "place": "Nido de dragones",
+      "levels": "83–88",
+      "tier": 8,
+      "chapter": 2,
+      "gsMin": 2460,
+      "map": "abyss_03",
+      "start": [
+        135,
+        100
+      ],
+      "bgm": "c2_abyss",
+      "mood": "cave",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "novus",
+            "novus_novus",
+            "dragon_egg"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "novus",
+            "novus_novus",
+            "ferus_ferus",
+            "dragon_egg"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "ferus_ferus",
+            "novus_novus",
+            "ancient_mimic",
+            "dragon_egg"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "ferus_ferus",
+            "acidus_acidus",
+            "ancient_mimic",
+            "novus"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "novus_novus",
+            "dragon_egg"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "ancient_mimic",
+            "novus",
+            "novus_novus"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.7,
+      "gemExp": 0.56,
+      "bosses": [
+        {
+          "t": 300,
+          "id": "ferus"
+        },
+        {
+          "t": 300,
+          "id": "acidus"
+        },
+        {
+          "t": 600,
+          "id": "hydrolancer"
+        },
+        {
+          "t": 840,
+          "id": "detardeurus"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {},
+      "duo": {
+        "ids": [
+          "ferus",
+          "acidus"
+        ],
+        "name": "Dragones gemelos",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "novus",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "intruder": {
+        "id": "ktullanux",
+        "at": 480,
+        "say": "¡Un dragón de cristal irrumpe en el Lago del Abismo!"
+      }
+    },
+    {
+      "id": "c2_glast",
+      "name": "Monasterio de Glast Heim",
+      "place": "Glast Heim",
+      "levels": "89–94",
+      "tier": 8,
+      "chapter": 2,
+      "gsMin": 2500,
+      "map": "gl_church",
+      "start": [
+        124,
+        148
+      ],
+      "bgm": "c2_glast",
+      "mood": "gloom",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner",
+            "raydric"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "skeleton_prisoner"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "evil_druid",
+            "wraith"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "evil_druid",
+            "khalitzburg",
+            "raydric_archer",
+            "wraith"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "khalitzburg",
+            "evil_druid",
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "zombie_prisoner"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 5,
+      "gemExp": 0.58,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "chimera"
+        },
+        {
+          "t": 300,
+          "id": "abysmal_knight"
+        },
+        {
+          "t": 480,
+          "id": "bloody_knight"
+        },
+        {
+          "t": 660,
+          "id": "dark_illusion"
+        },
+        {
+          "t": 840,
+          "id": "dark_lord"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {}
+    },
+    {
+      "id": "c2_nif",
+      "name": "Campos de Niflheim",
+      "place": "Niflheim",
+      "levels": "95–99",
+      "tier": 8,
+      "chapter": 2,
+      "gsMin": 2550,
+      "map": "nif_fild01",
+      "start": [
+        167,
+        179
+      ],
+      "bgm": "c2_nif",
+      "mood": "gloom",
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "lude",
+            "quve",
+            "whisper"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "lude",
+            "quve",
+            "heirozoist",
+            "whisper"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "quve",
+            "heirozoist",
+            "gibbet",
+            "lude"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "heirozoist",
+            "gibbet",
+            "disguise",
+            "whisper"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "gibbet",
+            "disguise",
+            "heirozoist",
+            "quve"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "disguise",
+            "gibbet",
+            "heirozoist",
+            "lude",
+            "quve",
+            "whisper"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 5.3,
+      "gemExp": 0.6,
+      "bosses": [
+        {
+          "t": 240,
+          "id": "bloody_murderer"
+        },
+        {
+          "t": 540,
+          "id": "loli_ruri"
+        },
+        {
+          "t": 540,
+          "id": "dullahan"
+        },
+        {
+          "t": 840,
+          "id": "lord_of_the_dead"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "whisper": 289.31
+      },
+      "mobDmgBy": {
+        "whisper": 30.13
+      },
+      "mobExpBy": {
+        "whisper": 11.48
+      },
+      "duo": {
+        "ids": [
+          "loli_ruri",
+          "dullahan"
+        ],
+        "name": "Bruja y jinete sin cabeza",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "lude",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "intruder": {
+        "id": "fallen_bishop_hibram",
+        "at": 480,
+        "say": "¡El obispo caído irrumpe en los campos de Niflheim!"
+      }
     }
   ],
-  "functions": "function RO_LAPST(sid){try{const s=xe.find(x=>x.id===sid);return!!s&&!!s.map&&!s.storyOnly&&(!RO_LAPC.stages||RO_LAPC.stages.includes(sid))}catch{return!1}}function RO_LAPOF(g){try{if(!g||g.endless||!RO_LAPST(g.stageId))return 1;const v=Math.floor(+((g.difficulty||{}).lap)||1);return Math.max(1,Math.min(RO_LAPC.max,v))}catch{return 1}}var RO_LAPSEL=null;function RO_LAPSET(st,d){try{RO_LAPSEL={stage:st,lap:RO_LAPOF({stageId:st,difficulty:d})}}catch{}}function RO_LAPNOW(st){try{const g=typeof F!=\"undefined\"?F:null;if(g&&g.stageId===st&&!g.endless)return RO_LAPOF(g);return RO_LAPSEL&&RO_LAPSEL.stage===st?RO_LAPSEL.lap:1}catch{return 1}}var RO_LAPKC={};function RO_LAPAVG(sid){const w=(tt[sid]||{}).waves||[];let h=0,d=0,x=0,l=0,t=0;for(const v of w){const p=(v.pool||[]).map(i=>_e[i]).filter(Boolean),u=Math.max(0,(v.to||0)-(v.from||0));if(!p.length||!u)continue;h+=u*p.reduce((a,m)=>a+(m.hp||0),0)/p.length;d+=u*p.reduce((a,m)=>a+(m.damage||0),0)/p.length;x+=u*p.reduce((a,m)=>a+(m.exp||0),0)/p.length;l+=u*p.reduce((a,m)=>a+(m.level||0),0)/p.length;t+=u}return t?{hp:h/t,dmg:d/t,exp:x/t,lv:l/t}:null}function RO_LAPLIST(){return xe.filter(s=>RO_LAPST(s.id)&&!s.special)}function RO_LAPK(sid,n){const key=sid+\"|\"+n;if(RO_LAPKC[key])return RO_LAPKC[key];const L=RO_LAPLIST(),R=L[L.length-1],k=L.findIndex(s=>s.id===sid);let o={hp:1,damage:1,exp:1,lv:0,gs:0,jobCap:void 0};if(k<0&&R&&R.id!==sid&&(xe.find(s=>s.id===sid)||{}).special&&RO_LAPST(sid))return RO_LAPKC[key]=RO_LAPK(R.id,n);try{const A=RO_LAPAVG(sid),B=R&&RO_LAPAVG(R.id);if(n>1&&A&&B&&k>=0){const P=L.length,f=((n-2)*P+k+1)/(P*(RO_LAPC.max-1)),cv=RO_LAPC.curve;o={hp:Math.max(1,B.hp*Math.pow(cv.hp,f)/Math.max(1,A.hp)),damage:Math.max(1,B.dmg*Math.pow(cv.dmg,f)/Math.max(1,A.dmg)),exp:Math.max(1,B.exp/Math.max(.1,A.exp)),lv:Math.max(0,Math.round(B.lv-A.lv)),gs:Math.ceil((R.gsMin||0)*Math.pow(cv.gs,f)),jobCap:(tt[R.id]||{}).jobCap}}}catch(e){console.error(\"[laps]\",e)}return RO_LAPKC[key]=o}",
   "scripts": {
     "prontera": {
       "map": "prt_fild08",
@@ -472,6 +2597,129 @@
           "until": 60
         }
       }
+    },
+    "sunken_story": {
+      "map": "sunken",
+      "bgm": "sunken",
+      "waves": [
+        {
+          "from": 0,
+          "to": 60,
+          "pool": [
+            "kukre",
+            "marina"
+          ],
+          "perSecond": 1.2,
+          "maxAlive": 45
+        },
+        {
+          "from": 60,
+          "to": 150,
+          "pool": [
+            "kukre",
+            "marina",
+            "hydra",
+            "whisper"
+          ],
+          "perSecond": 1.8,
+          "maxAlive": 68
+        },
+        {
+          "from": 150,
+          "to": 240,
+          "pool": [
+            "marina",
+            "hydra",
+            "whisper",
+            "sword_fish"
+          ],
+          "perSecond": 2.4,
+          "maxAlive": 90
+        },
+        {
+          "from": 240,
+          "to": 330,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel"
+          ],
+          "perSecond": 3,
+          "maxAlive": 113
+        },
+        {
+          "from": 330,
+          "to": 780,
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel",
+            "hydra"
+          ],
+          "perSecond": 3.6,
+          "maxAlive": 135
+        }
+      ],
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 420,
+          "id": "drake"
+        }
+      ],
+      "runLength": 600,
+      "jobCap": 25,
+      "jobExp": 2,
+      "mood": "gloom",
+      "gate": {
+        "down": "H-H'",
+        "up": "H'-H",
+        "boss": "ghostring"
+      },
+      "mvpAt": [
+        302,
+        47
+      ],
+      "story": "sunken",
+      "jobWeapon": true,
+      "ramp": {
+        "hp": 0.1,
+        "damage": 0.35,
+        "gems": 0.5,
+        "full": 480
+      },
+      "hpGrowth": 600,
+      "mobHp": 0.5,
+      "bossHp": {
+        "ghostring": 1700,
+        "drake": 8000
+      },
+      "areas": [
+        {
+          "name": "Barco hundido 1F",
+          "x0": 0,
+          "y0": 0,
+          "x1": 200,
+          "y1": 200
+        },
+        {
+          "name": "Barco hundido 2F",
+          "x0": 200,
+          "y0": 0,
+          "x1": 400,
+          "y1": 200
+        },
+        {
+          "name": "Isla del barco hundido",
+          "x0": 400,
+          "y0": 0,
+          "x1": 540,
+          "y1": 140
+        }
+      ]
     },
     "byalan": {
       "map": "byalan",
@@ -1592,854 +3840,2954 @@
           "until": 60
         }
       }
+    },
+    "c2_gef": {
+      "map": "gef_dun01",
+      "start": [
+        131,
+        150
+      ],
+      "bgm": "c2_gef",
+      "mood": "cave",
+      "chapter": 2,
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "jakk",
+            "drainliar",
+            "ghoul"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "jakk",
+            "ghoul",
+            "marionette",
+            "drainliar"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "ghoul",
+            "marionette",
+            "whisper",
+            "deviruchi"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "marionette",
+            "deviruchi",
+            "nightmare",
+            "jakk"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "deviruchi",
+            "nightmare",
+            "ghoul",
+            "whisper"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "nightmare",
+            "deviruchi",
+            "marionette",
+            "ghoul",
+            "jakk",
+            "whisper"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.1,
+      "gemExp": 0.52,
+      "bosses": [
+        {
+          "t": 180,
+          "id": "giant_whisper"
+        },
+        {
+          "t": 360,
+          "id": "ogretooth"
+        },
+        {
+          "t": 600,
+          "id": "doppelganger"
+        },
+        {
+          "t": 840,
+          "id": "dracula"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "whisper": 211.39,
+        "drainliar": 391.28
+      },
+      "mobDmgBy": {
+        "whisper": 24.94,
+        "drainliar": 27.84
+      },
+      "mobExpBy": {
+        "whisper": 6.67,
+        "drainliar": 6.67
+      }
+    },
+    "c2_clock": {
+      "map": "alde_dun03",
+      "start": [
+        149,
+        150
+      ],
+      "bgm": "c2_clock",
+      "mood": "gloom",
+      "chapter": 2,
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "punk",
+            "clock"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "punk",
+            "clock",
+            "alarm"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "alarm",
+            "rideword",
+            "bathory",
+            "mimic"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "rideword",
+            "bathory",
+            "joker",
+            "clock"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "joker",
+            "dark_frame",
+            "alarm",
+            "rideword"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "dark_frame",
+            "joker",
+            "mimic",
+            "rideword",
+            "alarm",
+            "bathory"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.4,
+      "gemExp": 0.54,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "clock_tower_manager"
+        },
+        {
+          "t": 300,
+          "id": "owl_duke"
+        },
+        {
+          "t": 480,
+          "id": "executioner"
+        },
+        {
+          "t": 660,
+          "id": "mysteltainn"
+        },
+        {
+          "t": 840,
+          "id": "owl_baron"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {}
+    },
+    "c2_abyss": {
+      "map": "abyss_03",
+      "start": [
+        135,
+        100
+      ],
+      "bgm": "c2_abyss",
+      "mood": "cave",
+      "chapter": 2,
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "novus",
+            "novus_novus",
+            "dragon_egg"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "novus",
+            "novus_novus",
+            "ferus_ferus",
+            "dragon_egg"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "ferus_ferus",
+            "novus_novus",
+            "ancient_mimic",
+            "dragon_egg"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "ferus_ferus",
+            "acidus_acidus",
+            "ancient_mimic",
+            "novus"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "novus_novus",
+            "dragon_egg"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "ancient_mimic",
+            "novus",
+            "novus_novus"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 4.7,
+      "gemExp": 0.56,
+      "bosses": [
+        {
+          "t": 300,
+          "id": "ferus"
+        },
+        {
+          "t": 300,
+          "id": "acidus"
+        },
+        {
+          "t": 600,
+          "id": "hydrolancer"
+        },
+        {
+          "t": 840,
+          "id": "detardeurus"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {},
+      "duo": {
+        "ids": [
+          "ferus",
+          "acidus"
+        ],
+        "name": "Dragones gemelos",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "novus",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "intruder": {
+        "id": "ktullanux",
+        "at": 480,
+        "say": "¡Un dragón de cristal irrumpe en el Lago del Abismo!"
+      }
+    },
+    "c2_glast": {
+      "map": "gl_church",
+      "start": [
+        124,
+        148
+      ],
+      "bgm": "c2_glast",
+      "mood": "gloom",
+      "chapter": 2,
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner",
+            "raydric"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "skeleton_prisoner"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "evil_druid",
+            "wraith"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "evil_druid",
+            "khalitzburg",
+            "raydric_archer",
+            "wraith"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "khalitzburg",
+            "evil_druid",
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "zombie_prisoner"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 5,
+      "gemExp": 0.58,
+      "bosses": [
+        {
+          "t": 150,
+          "id": "chimera"
+        },
+        {
+          "t": 300,
+          "id": "abysmal_knight"
+        },
+        {
+          "t": 480,
+          "id": "bloody_knight"
+        },
+        {
+          "t": 660,
+          "id": "dark_illusion"
+        },
+        {
+          "t": 840,
+          "id": "dark_lord"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {},
+      "mobDmgBy": {},
+      "mobExpBy": {}
+    },
+    "c2_nif": {
+      "map": "nif_fild01",
+      "start": [
+        167,
+        179
+      ],
+      "bgm": "c2_nif",
+      "mood": "gloom",
+      "chapter": 2,
+      "waves": [
+        {
+          "from": 0,
+          "to": 90,
+          "pool": [
+            "lude",
+            "quve",
+            "whisper"
+          ],
+          "perSecond": 1.4,
+          "maxAlive": 60
+        },
+        {
+          "from": 90,
+          "to": 180,
+          "pool": [
+            "lude",
+            "quve",
+            "heirozoist",
+            "whisper"
+          ],
+          "perSecond": 2.2,
+          "maxAlive": 100
+        },
+        {
+          "from": 180,
+          "to": 330,
+          "pool": [
+            "quve",
+            "heirozoist",
+            "gibbet",
+            "lude"
+          ],
+          "perSecond": 3,
+          "maxAlive": 145
+        },
+        {
+          "from": 330,
+          "to": 540,
+          "pool": [
+            "heirozoist",
+            "gibbet",
+            "disguise",
+            "whisper"
+          ],
+          "perSecond": 3.9,
+          "maxAlive": 205
+        },
+        {
+          "from": 540,
+          "to": 720,
+          "pool": [
+            "gibbet",
+            "disguise",
+            "heirozoist",
+            "quve"
+          ],
+          "perSecond": 4.9,
+          "maxAlive": 260
+        },
+        {
+          "from": 720,
+          "to": 1020,
+          "pool": [
+            "disguise",
+            "gibbet",
+            "heirozoist",
+            "lude",
+            "quve",
+            "whisper"
+          ],
+          "perSecond": 8,
+          "maxAlive": 370
+        }
+      ],
+      "runLength": 1020,
+      "jobCap": 50,
+      "jobExp": 5.3,
+      "gemExp": 0.6,
+      "bosses": [
+        {
+          "t": 240,
+          "id": "bloody_murderer"
+        },
+        {
+          "t": 540,
+          "id": "loli_ruri"
+        },
+        {
+          "t": 540,
+          "id": "dullahan"
+        },
+        {
+          "t": 840,
+          "id": "lord_of_the_dead"
+        }
+      ],
+      "ramp": {
+        "hp": 0.104,
+        "damage": 0.3,
+        "gems": 0.25,
+        "full": 450,
+        "early": {
+          "hp": 0.24,
+          "until": 60
+        }
+      },
+      "mobHpBy": {
+        "whisper": 289.31
+      },
+      "mobDmgBy": {
+        "whisper": 30.13
+      },
+      "mobExpBy": {
+        "whisper": 11.48
+      },
+      "duo": {
+        "ids": [
+          "loli_ruri",
+          "dullahan"
+        ],
+        "name": "Bruja y jinete sin cabeza",
+        "link": {
+          "r": 300,
+          "heal": 0.015
+        },
+        "grief": {
+          "cd": 1.7,
+          "speed": 1.3,
+          "summon": {
+            "id": "lude",
+            "n": 3,
+            "every": 10
+          }
+        }
+      },
+      "bossEase": {
+        "sec": 20,
+        "rate": 0.4
+      },
+      "intruder": {
+        "id": "fallen_bishop_hibram",
+        "at": 480,
+        "say": "¡El obispo caído irrumpe en los campos de Niflheim!"
+      }
+    },
+    "endless": {
+      "map": "endless",
+      "bgm": "endless",
+      "waves": [
+        {
+          "from": 0,
+          "to": 1000000000,
+          "pool": [
+            "poring"
+          ],
+          "perSecond": 0,
+          "maxAlive": 0
+        }
+      ],
+      "bosses": [],
+      "runLength": 1000000000
     }
   },
   "monsters": {
     "poring": {
+      "id": "poring",
+      "name": "Poring",
       "level": 1,
       "hp": 30,
+      "speed": 70,
       "damage": 3,
-      "exp": 1
+      "exp": 1,
+      "radius": 14
     },
     "lunatic": {
+      "id": "lunatic",
+      "name": "Lunatic",
       "level": 1,
       "hp": 25,
+      "speed": 85,
       "damage": 3,
-      "exp": 1
+      "exp": 1,
+      "radius": 12
     },
     "fabre": {
+      "id": "fabre",
+      "name": "Fabre",
       "level": 2,
       "hp": 35,
+      "speed": 60,
       "damage": 4,
-      "exp": 1
+      "exp": 1,
+      "radius": 13
     },
     "pupa": {
+      "id": "pupa",
+      "name": "Pupa",
       "level": 2,
       "hp": 60,
+      "speed": 0,
       "damage": 0,
-      "exp": 2
+      "exp": 2,
+      "radius": 14
     },
     "drops": {
+      "id": "drops",
+      "name": "Drops",
       "level": 2,
       "hp": 45,
+      "speed": 72,
       "damage": 5,
-      "exp": 2
+      "exp": 2,
+      "radius": 14
     },
     "picky": {
+      "id": "picky",
+      "name": "Picky",
       "level": 3,
       "hp": 40,
+      "speed": 90,
       "damage": 4,
-      "exp": 2
+      "exp": 2,
+      "radius": 12
     },
     "roda_frog": {
+      "id": "roda_frog",
+      "name": "Roda Frog",
       "level": 3,
       "hp": 55,
+      "speed": 78,
       "damage": 5,
-      "exp": 2
+      "exp": 2,
+      "radius": 15
     },
     "peco_egg": {
+      "id": "peco_egg",
+      "name": "Peco Peco Egg",
       "level": 3,
       "hp": 90,
+      "speed": 0,
       "damage": 0,
-      "exp": 3
+      "exp": 3,
+      "radius": 15
     },
     "condor": {
+      "id": "condor",
+      "name": "Condor",
       "level": 4,
       "hp": 65,
+      "speed": 108,
       "damage": 6,
-      "exp": 3
+      "exp": 3,
+      "radius": 16
     },
     "savage_babe": {
+      "id": "savage_babe",
+      "name": "Savage Babe",
       "level": 4,
       "hp": 75,
+      "speed": 80,
       "damage": 7,
-      "exp": 3
+      "exp": 3,
+      "radius": 14
     },
     "creamy": {
+      "id": "creamy",
+      "name": "Creamy",
       "level": 5,
       "hp": 80,
+      "speed": 100,
       "damage": 7,
-      "exp": 3
+      "exp": 3,
+      "radius": 14
     },
     "hornet": {
+      "id": "hornet",
+      "name": "Hornet",
       "level": 5,
       "hp": 70,
+      "speed": 120,
       "damage": 7,
-      "exp": 3
+      "exp": 3,
+      "radius": 12
     },
     "mandragora": {
+      "id": "mandragora",
+      "name": "Mandragora",
       "level": 6,
       "hp": 160,
+      "speed": 0,
       "damage": 10,
-      "exp": 4
+      "exp": 4,
+      "radius": 16,
+      "sprout": {
+        "min": 220,
+        "max": 340,
+        "cap": 6
+      },
+      "ranged": {
+        "range": 380,
+        "cd": 3,
+        "warn": 1.2,
+        "windup": 0.15,
+        "radius": 40,
+        "fx": "fx_mandragora_atk"
+      }
     },
     "baby_desert_wolf": {
+      "id": "baby_desert_wolf",
+      "name": "Baby Desert Wolf",
       "level": 7,
       "hp": 150,
+      "speed": 118,
       "damage": 11,
-      "exp": 5
+      "exp": 5,
+      "radius": 15
     },
     "rocker": {
+      "id": "rocker",
+      "name": "Rocker",
       "level": 8,
       "hp": 200,
+      "speed": 90,
       "damage": 13,
-      "exp": 6
+      "exp": 6,
+      "radius": 16
     },
     "eclipse": {
+      "id": "eclipse",
+      "name": "Eclipse",
       "level": 3,
       "hp": 3400,
+      "speed": 92,
       "damage": 18,
-      "exp": 110
+      "exp": 110,
+      "radius": 20,
+      "boss": "mini",
+      "scale": 1.35
     },
     "toad": {
+      "id": "toad",
+      "name": "Toad",
       "level": 4,
       "hp": 4600,
+      "speed": 80,
       "damage": 20,
-      "exp": 135
+      "exp": 135,
+      "radius": 22,
+      "boss": "mini",
+      "scale": 1.35
     },
     "dragon_fly": {
+      "id": "dragon_fly",
+      "name": "Dragon Fly",
       "level": 5,
       "hp": 5600,
+      "speed": 115,
       "damage": 22,
-      "exp": 150
+      "exp": 150,
+      "radius": 18,
+      "boss": "mini",
+      "scale": 1.35
     },
     "vocal": {
+      "id": "vocal",
+      "name": "Vocal",
       "level": 7,
       "hp": 7500,
+      "speed": 88,
       "damage": 25,
-      "exp": 180
+      "exp": 180,
+      "radius": 20,
+      "boss": "mini",
+      "scale": 1.35
     },
     "mastering": {
+      "id": "mastering",
+      "name": "Mastering",
       "level": 8,
       "hp": 52000,
+      "speed": 82,
       "damage": 44,
-      "exp": 700
+      "exp": 700,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "thief_bug_egg": {
+      "id": "thief_bug_egg",
+      "name": "Thief Bug Egg",
       "level": 9,
       "hp": 195,
+      "speed": 0,
       "damage": 0,
-      "exp": 5
+      "exp": 5,
+      "radius": 15,
+      "hatch": {
+        "id": "thief_bug",
+        "secs": 15
+      }
     },
     "familiar": {
+      "id": "familiar",
+      "name": "Familiar",
       "level": 9,
       "hp": 225,
+      "speed": 95,
       "damage": 9,
-      "exp": 4
+      "exp": 4,
+      "radius": 15
     },
     "thief_bug": {
+      "id": "thief_bug",
+      "name": "Thief Bug",
       "level": 9,
       "hp": 255,
+      "speed": 90,
       "damage": 10,
-      "exp": 4
+      "exp": 4,
+      "radius": 15
     },
     "tarou": {
+      "id": "tarou",
+      "name": "Tarou",
       "level": 10,
       "hp": 285,
+      "speed": 85,
       "damage": 10,
-      "exp": 5
+      "exp": 5,
+      "radius": 13
     },
     "plankton": {
+      "id": "plankton",
+      "name": "Plankton",
       "level": 10,
       "hp": 330,
+      "speed": 60,
       "damage": 11,
-      "exp": 5
+      "exp": 5,
+      "radius": 16
     },
     "drainliar": {
+      "id": "drainliar",
+      "name": "Drainliar",
       "level": 11,
       "hp": 300,
+      "speed": 110,
       "damage": 11,
-      "exp": 6
+      "exp": 6,
+      "radius": 14
     },
     "thief_bug_female": {
+      "id": "thief_bug_female",
+      "name": "Thief Bug Female",
       "level": 11,
       "hp": 345,
+      "speed": 90,
       "damage": 12,
-      "exp": 6
+      "exp": 6,
+      "radius": 16
     },
     "cramp": {
+      "id": "cramp",
+      "name": "Cramp",
       "level": 12,
       "hp": 390,
+      "speed": 92,
       "damage": 13,
-      "exp": 7
+      "exp": 7,
+      "radius": 14
     },
     "tarou_bite": {
+      "id": "tarou_bite",
+      "name": "Biting Tarou",
       "level": 10,
       "hp": 5500,
+      "speed": 110,
       "damage": 23,
-      "exp": 120
+      "exp": 120,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 2.8,
+      "group": "tarou",
+      "aura": 16730682
     },
     "tarou_plague": {
+      "id": "tarou_plague",
+      "name": "Plague Tarou",
       "level": 10,
       "hp": 5500,
+      "speed": 95,
       "damage": 21,
-      "exp": 120
+      "exp": 120,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 2.8,
+      "group": "tarou",
+      "aura": 8050762
     },
     "tarou_burrow": {
+      "id": "tarou_burrow",
+      "name": "Burrowing Tarou",
       "level": 10,
       "hp": 5500,
+      "speed": 100,
       "damage": 23,
-      "exp": 120
+      "exp": 120,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 2.8,
+      "group": "tarou",
+      "aura": 14197322
     },
     "golden_thief_bug": {
+      "id": "golden_thief_bug",
+      "name": "Golden Thief Bug",
       "level": 12,
       "hp": 58000,
+      "speed": 100,
       "damage": 47,
-      "exp": 750
+      "exp": 750,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "chonchon": {
+      "id": "chonchon",
+      "name": "Chonchon",
       "level": 1,
       "hp": 30,
+      "speed": 115,
       "damage": 4,
-      "exp": 2
+      "exp": 2,
+      "radius": 12
     },
     "goblin": {
+      "id": "goblin",
+      "name": "Goblin",
       "level": 31,
       "hp": 3600,
+      "speed": 100,
       "damage": 33,
-      "exp": 19
+      "exp": 19,
+      "radius": 16
     },
     "kobold": {
+      "id": "kobold",
+      "name": "Kobold",
       "level": 32,
       "hp": 3900,
+      "speed": 96,
       "damage": 35,
-      "exp": 20
+      "exp": 20,
+      "radius": 17
     },
     "orc_skeleton": {
+      "id": "orc_skeleton",
+      "name": "Orc Skeleton",
       "level": 41,
       "hp": 4800,
+      "speed": 82,
       "damage": 41,
-      "exp": 24
+      "exp": 24,
+      "radius": 18,
+      "undead": true
     },
     "ghostring": {
+      "id": "ghostring",
+      "name": "Ghostring",
       "level": 13,
       "hp": 28000,
+      "speed": 92,
       "damage": 24,
-      "exp": 180
+      "exp": 180,
+      "radius": 20,
+      "boss": "mini",
+      "undead": true,
+      "scale": 1.35
     },
     "orc_hero": {
+      "id": "orc_hero",
+      "name": "Orc Hero",
       "level": 40,
       "hp": 1300000,
+      "speed": 95,
       "damage": 88,
-      "exp": 1600
+      "exp": 1600,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "osiris": {
+      "id": "osiris",
+      "name": "Osiris",
       "level": 50,
       "hp": 1700000,
+      "speed": 90,
       "damage": 96,
-      "exp": 1900
+      "exp": 1900,
+      "radius": 41,
+      "boss": "mvp",
+      "undead": true,
+      "scale": 1.5
     },
     "baphomet": {
+      "id": "baphomet",
+      "name": "Baphomet",
       "level": 60,
       "hp": 2200000,
+      "speed": 100,
       "damage": 105,
-      "exp": 2300
+      "exp": 2300,
+      "radius": 40,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "orc_baby": {
+      "id": "orc_baby",
+      "name": "Orc Baby",
       "level": 30,
       "hp": 3200,
+      "speed": 105,
       "damage": 30,
-      "exp": 17
+      "exp": 17,
+      "radius": 15
     },
     "goblin_archer": {
+      "id": "goblin_archer",
+      "name": "Goblin Archer",
       "level": 33,
       "hp": 3300,
+      "speed": 80,
       "damage": 31,
-      "exp": 20
+      "exp": 20,
+      "radius": 15,
+      "ranged": {
+        "range": 380,
+        "cd": 2.6,
+        "warn": 0,
+        "windup": 0.3,
+        "radius": 0,
+        "fx": "fx_arrow",
+        "arrow": 560
+      }
     },
     "orc_archer": {
+      "id": "orc_archer",
+      "name": "Orc Archer",
       "level": 36,
       "hp": 3800,
+      "speed": 75,
       "damage": 34,
-      "exp": 22
+      "exp": 22,
+      "radius": 17,
+      "ranged": {
+        "range": 380,
+        "cd": 2.6,
+        "warn": 0,
+        "windup": 0.3,
+        "radius": 0,
+        "fx": "fx_arrow",
+        "arrow": 560
+      }
     },
     "orc_zombie": {
+      "id": "orc_zombie",
+      "name": "Orc Zombie",
       "level": 37,
       "hp": 4600,
+      "speed": 60,
       "damage": 38,
-      "exp": 23
+      "exp": 23,
+      "radius": 18,
+      "undead": true
     },
     "goblin_leader": {
+      "id": "goblin_leader",
+      "name": "Goblin Leader",
       "level": 38,
       "hp": 210000,
+      "speed": 100,
       "damage": 58,
-      "exp": 650
+      "exp": 650,
+      "radius": 22,
+      "boss": "mini",
+      "scale": 1.35
     },
     "kobold_leader": {
+      "id": "kobold_leader",
+      "name": "Kobold Leader",
       "level": 39,
       "hp": 230000,
+      "speed": 98,
       "damage": 60,
-      "exp": 700
+      "exp": 700,
+      "radius": 22,
+      "boss": "mini",
+      "scale": 1.35
     },
     "verit": {
+      "id": "verit",
+      "name": "Verit",
       "level": 43,
       "hp": 4600,
+      "speed": 110,
       "damage": 42,
-      "exp": 25
+      "exp": 25,
+      "radius": 15,
+      "undead": true
     },
     "mummy": {
+      "id": "mummy",
+      "name": "Mummy",
       "level": 44,
       "hp": 5400,
+      "speed": 70,
       "damage": 44,
-      "exp": 26
+      "exp": 26,
+      "radius": 17,
+      "undead": true
     },
     "matyr": {
+      "id": "matyr",
+      "name": "Matyr",
       "level": 45,
       "hp": 4400,
+      "speed": 140,
       "damage": 44,
-      "exp": 26
+      "exp": 26,
+      "radius": 15
     },
     "isis": {
+      "id": "isis",
+      "name": "Isis",
       "level": 46,
       "hp": 5600,
+      "speed": 95,
       "damage": 47,
-      "exp": 28
+      "exp": 28,
+      "radius": 17
     },
     "minorous": {
+      "id": "minorous",
+      "name": "Minorous",
       "level": 48,
       "hp": 6200,
+      "speed": 100,
       "damage": 50,
-      "exp": 30
+      "exp": 30,
+      "radius": 19
     },
     "ancient_mummy": {
+      "id": "ancient_mummy",
+      "name": "Ancient Mummy",
       "level": 49,
       "hp": 270000,
+      "speed": 85,
       "damage": 70,
-      "exp": 850
+      "exp": 850,
+      "radius": 24,
+      "boss": "mini",
+      "undead": true,
+      "scale": 1.35
     },
     "hunter_fly": {
+      "id": "hunter_fly",
+      "name": "Hunter Fly",
       "level": 52,
       "hp": 5200,
+      "speed": 150,
       "damage": 50,
-      "exp": 30
+      "exp": 30,
+      "radius": 13
     },
     "side_winder": {
+      "id": "side_winder",
+      "name": "Sidewinder",
       "level": 53,
       "hp": 6400,
+      "speed": 110,
       "damage": 54,
-      "exp": 32
+      "exp": 32,
+      "radius": 16
     },
     "argiope": {
+      "id": "argiope",
+      "name": "Argiope",
       "level": 54,
       "hp": 7600,
+      "speed": 75,
       "damage": 55,
-      "exp": 34
+      "exp": 34,
+      "radius": 20
     },
     "baphomet_jr": {
+      "id": "baphomet_jr",
+      "name": "Baphomet Jr.",
       "level": 55,
       "hp": 6000,
+      "speed": 120,
       "damage": 56,
-      "exp": 33
+      "exp": 33,
+      "radius": 15
     },
     "killer_mantis": {
+      "id": "killer_mantis",
+      "name": "Killer Mantis",
       "level": 56,
       "hp": 7200,
+      "speed": 100,
       "damage": 60,
-      "exp": 35
+      "exp": 35,
+      "radius": 18
     },
     "leib_olmai": {
+      "id": "leib_olmai",
+      "name": "Leib Olmai",
       "level": 58,
       "hp": 340000,
+      "speed": 95,
       "damage": 78,
-      "exp": 1000
+      "exp": 1000,
+      "radius": 26,
+      "boss": "mini",
+      "scale": 1.35
     },
     "sasquatch": {
+      "id": "sasquatch",
+      "name": "Sasquatch",
       "level": 59,
       "hp": 380000,
+      "speed": 100,
       "damage": 82,
-      "exp": 1100
+      "exp": 1100,
+      "radius": 26,
+      "boss": "mini",
+      "scale": 1.35
     },
     "leaf_cat": {
+      "id": "leaf_cat",
+      "name": "Leaf Cat",
       "level": 63,
       "hp": 11620,
+      "speed": 125,
       "damage": 74,
-      "exp": 14
+      "exp": 14,
+      "radius": 14
     },
     "dumpling_child": {
+      "id": "dumpling_child",
+      "name": "Dumpling Kid",
       "level": 61,
       "hp": 10870,
+      "speed": 122,
       "damage": 48,
-      "exp": 17
+      "exp": 17,
+      "radius": 14
     },
     "stone_shooter": {
+      "id": "stone_shooter",
+      "name": "Stone Shooter",
       "level": 63,
       "hp": 15210,
+      "speed": 118,
       "damage": 79,
-      "exp": 39
+      "exp": 39,
+      "radius": 16,
+      "ranged": {
+        "range": 340,
+        "cd": 3.1,
+        "warn": 0,
+        "windup": 0.35,
+        "radius": 0,
+        "fx": "fx_fireball",
+        "arrow": 420
+      }
     },
     "iron_fist": {
+      "id": "iron_fist",
+      "name": "Iron Fist",
       "level": 64,
       "hp": 15430,
+      "speed": 110,
       "damage": 99,
-      "exp": 42
+      "exp": 42,
+      "radius": 16
     },
     "kapha": {
+      "id": "kapha",
+      "name": "Kapha",
       "level": 63,
       "hp": 21090,
+      "speed": 121,
       "damage": 103,
-      "exp": 53
+      "exp": 53,
+      "radius": 16
     },
     "spring_rabbit": {
+      "id": "spring_rabbit",
+      "name": "Spring Rabbit",
       "level": 66,
       "hp": 22580,
+      "speed": 122,
       "damage": 116,
-      "exp": 70
+      "exp": 70,
+      "radius": 16
     },
     "enchanted_peach_tree": {
+      "id": "enchanted_peach_tree",
+      "name": "Enchanted Peach Tree",
       "level": 65,
       "hp": 22400,
+      "speed": 60,
       "damage": 79,
-      "exp": 57
+      "exp": 57,
+      "radius": 16
     },
     "wooden_golem": {
+      "id": "wooden_golem",
+      "name": "Wooden Golem",
       "level": 65,
       "hp": 375150,
+      "speed": 121,
       "damage": 82,
-      "exp": 991
+      "exp": 991,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.35
     },
     "zhu_po_long": {
+      "id": "zhu_po_long",
+      "name": "Zhu Po Long",
       "level": 65,
       "hp": 373850,
+      "speed": 122,
       "damage": 86,
-      "exp": 1243
+      "exp": 1243,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
     },
     "the_paper": {
+      "id": "the_paper",
+      "name": "The Paper",
       "level": 66,
       "hp": 532810,
+      "speed": 119,
       "damage": 105,
-      "exp": 1205
+      "exp": 1205,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
     },
     "wanderer": {
+      "id": "wanderer",
+      "name": "Wanderer",
       "level": 68,
       "hp": 353530,
+      "speed": 140,
       "damage": 95,
-      "exp": 1717
+      "exp": 1717,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35,
+      "undead": true
     },
     "green_maiden": {
+      "id": "green_maiden",
+      "name": "Green Maiden",
       "level": 64,
       "hp": 604660,
+      "speed": 119,
       "damage": 92,
-      "exp": 1105
+      "exp": 1105,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
     },
     "white_lady": {
+      "id": "white_lady",
+      "name": "White Lady",
       "level": 70,
       "hp": 2862860,
+      "speed": 131,
       "damage": 115,
-      "exp": 2758
+      "exp": 2758,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "evil_snake_lord": {
+      "id": "evil_snake_lord",
+      "name": "Evil Snake Lord",
       "level": 68,
       "hp": 3303790,
+      "speed": 110,
       "damage": 104,
-      "exp": 2161
+      "exp": 2161,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "christmas_goblin": {
+      "id": "christmas_goblin",
+      "name": "Christmas Goblin",
       "level": 61,
       "hp": 5190,
+      "speed": 110,
       "damage": 47,
-      "exp": 32
+      "exp": 32,
+      "radius": 15
     },
     "cookie": {
+      "id": "cookie",
+      "name": "Cookie",
       "level": 61,
       "hp": 5380,
+      "speed": 105,
       "damage": 49,
-      "exp": 32
+      "exp": 32,
+      "radius": 14
     },
     "christmas_cookie": {
+      "id": "christmas_cookie",
+      "name": "Christmas Cookie",
       "level": 62,
       "hp": 5930,
+      "speed": 115,
       "damage": 52,
-      "exp": 35
+      "exp": 35,
+      "radius": 14
     },
     "cruiser": {
+      "id": "cruiser",
+      "name": "Cruiser",
       "level": 63,
       "hp": 5930,
+      "speed": 70,
       "damage": 53,
-      "exp": 36
+      "exp": 36,
+      "radius": 16,
+      "ranged": {
+        "range": 360,
+        "cd": 2.9,
+        "warn": 0,
+        "windup": 0.3,
+        "radius": 0,
+        "fx": "fx_arrow",
+        "arrow": 520
+      }
     },
     "myst_case": {
+      "id": "myst_case",
+      "name": "Myst Case",
       "level": 63,
       "hp": 7230,
+      "speed": 90,
       "damage": 57,
-      "exp": 38
+      "exp": 38,
+      "radius": 18
     },
     "siroma": {
+      "id": "siroma",
+      "name": "Siroma",
       "level": 64,
       "hp": 6490,
+      "speed": 125,
       "damage": 58,
-      "exp": 39
+      "exp": 39,
+      "radius": 14
     },
     "teddy_bear": {
+      "id": "teddy_bear",
+      "name": "Teddy Bear",
       "level": 65,
       "hp": 7790,
+      "speed": 120,
       "damage": 62,
-      "exp": 42
+      "exp": 42,
+      "radius": 15
     },
     "snowier": {
+      "id": "snowier",
+      "name": "Snowier",
       "level": 65,
       "hp": 9640,
+      "speed": 80,
       "damage": 68,
-      "exp": 45
+      "exp": 45,
+      "radius": 22
     },
     "gazeti": {
+      "id": "gazeti",
+      "name": "Gazeti",
       "level": 62,
       "hp": 334620,
+      "speed": 110,
       "damage": 79,
-      "exp": 950
+      "exp": 950,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
     },
     "ice_titan": {
+      "id": "ice_titan",
+      "name": "Ice Titan",
       "level": 63,
       "hp": 375180,
+      "speed": 70,
       "damage": 83,
-      "exp": 1050
+      "exp": 1050,
+      "radius": 30,
+      "boss": "mini",
+      "scale": 1.35
     },
     "baby_hatii": {
+      "id": "baby_hatii",
+      "name": "Hatii Bebe",
       "level": 63,
       "hp": 395460,
+      "speed": 125,
       "damage": 85,
-      "exp": 1100
+      "exp": 1100,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.4
     },
     "freezer": {
+      "id": "freezer",
+      "name": "Freezer",
       "level": 64,
       "hp": 415740,
+      "speed": 95,
       "damage": 87,
-      "exp": 1150
+      "exp": 1150,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.4
     },
     "hatii": {
+      "id": "hatii",
+      "name": "Hatii",
       "level": 65,
       "hp": 466440,
+      "speed": 135,
       "damage": 93,
-      "exp": 1300
+      "exp": 1300,
+      "radius": 30,
+      "boss": "mini",
+      "scale": 1.35
     },
     "stormy_knight": {
+      "id": "stormy_knight",
+      "name": "Stormy Knight",
       "level": 65,
       "hp": 2886500,
+      "speed": 120,
       "damage": 110,
-      "exp": 2268
+      "exp": 2268,
+      "radius": 30,
+      "boss": "mvp",
+      "scale": 1.35
     },
     "antonio": {
+      "id": "antonio",
+      "name": "Antonio",
       "level": 65,
       "hp": 2510000,
+      "speed": 115,
       "damage": 110,
-      "exp": 2520
+      "exp": 2520,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 2.2
+    },
+    "ghoul": {
+      "id": "ghoul",
+      "name": "Ghoul",
+      "level": 72,
+      "hp": 159550,
+      "speed": 95,
+      "damage": 369,
+      "exp": 42,
+      "radius": 16,
+      "undead": true
+    },
+    "jakk": {
+      "id": "jakk",
+      "name": "Jakk",
+      "level": 71,
+      "hp": 129710,
+      "speed": 110,
+      "damage": 321,
+      "exp": 47,
+      "radius": 16
+    },
+    "marionette": {
+      "id": "marionette",
+      "name": "Marionette",
+      "level": 72,
+      "hp": 123040,
+      "speed": 80,
+      "damage": 339,
+      "exp": 41,
+      "radius": 14
+    },
+    "deviruchi": {
+      "id": "deviruchi",
+      "name": "Deviruchi",
+      "level": 72,
+      "hp": 176970,
+      "speed": 125,
+      "damage": 392,
+      "exp": 65,
+      "radius": 14
+    },
+    "nightmare": {
+      "id": "nightmare",
+      "name": "Nightmare",
+      "level": 72,
+      "hp": 144380,
+      "speed": 125,
+      "damage": 380,
+      "exp": 55,
+      "radius": 20
+    },
+    "giant_whisper": {
+      "id": "giant_whisper",
+      "name": "Giant Whisper",
+      "level": 71,
+      "hp": 6928990,
+      "speed": 95,
+      "damage": 477,
+      "exp": 1353,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
+    },
+    "ogretooth": {
+      "id": "ogretooth",
+      "name": "Ogretooth",
+      "level": 75,
+      "hp": 8151760,
+      "speed": 140,
+      "damage": 524,
+      "exp": 1592,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
+    },
+    "doppelganger": {
+      "id": "doppelganger",
+      "name": "Doppelganger",
+      "level": 75,
+      "hp": 9374520,
+      "speed": 140,
+      "damage": 571,
+      "exp": 1830,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
+    },
+    "dracula": {
+      "id": "dracula",
+      "name": "Dracula",
+      "level": 76,
+      "hp": 49816300,
+      "speed": 127,
+      "damage": 688,
+      "exp": 3487,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
+    },
+    "alarm": {
+      "id": "alarm",
+      "name": "Alarm",
+      "level": 79,
+      "hp": 180890,
+      "speed": 80,
+      "damage": 360,
+      "exp": 69,
+      "radius": 16
+    },
+    "rideword": {
+      "id": "rideword",
+      "name": "Rideword",
+      "level": 79,
+      "hp": 189120,
+      "speed": 125,
+      "damage": 408,
+      "exp": 49,
+      "radius": 14
+    },
+    "clock": {
+      "id": "clock",
+      "name": "Clock",
+      "level": 80,
+      "hp": 184280,
+      "speed": 110,
+      "damage": 442,
+      "exp": 64,
+      "radius": 16
+    },
+    "punk": {
+      "id": "punk",
+      "name": "Punk",
+      "level": 77,
+      "hp": 105470,
+      "speed": 80,
+      "damage": 281,
+      "exp": 45,
+      "radius": 14
+    },
+    "bathory": {
+      "id": "bathory",
+      "name": "Bathory",
+      "level": 77,
+      "hp": 129000,
+      "speed": 140,
+      "damage": 267,
+      "exp": 55,
+      "radius": 16,
+      "ranged": {
+        "range": 340,
+        "cd": 3.1,
+        "warn": 0,
+        "windup": 0.35,
+        "radius": 0,
+        "fx": "fx_fireball",
+        "arrow": 420
+      }
+    },
+    "joker": {
+      "id": "joker",
+      "name": "Joker",
+      "level": 79,
+      "hp": 195600,
+      "speed": 140,
+      "damage": 404,
+      "exp": 67,
+      "radius": 20
+    },
+    "dark_frame": {
+      "id": "dark_frame",
+      "name": "Dark Frame",
+      "level": 79,
+      "hp": 151820,
+      "speed": 110,
+      "damage": 510,
+      "exp": 66,
+      "radius": 16
+    },
+    "mimic": {
+      "id": "mimic",
+      "name": "Mimic",
+      "level": 78,
+      "hp": 137140,
+      "speed": 140,
+      "damage": 355,
+      "exp": 45,
+      "radius": 16
+    },
+    "clock_tower_manager": {
+      "id": "clock_tower_manager",
+      "name": "Clock Tower Manager",
+      "level": 80,
+      "hp": 7074010,
+      "speed": 110,
+      "damage": 484,
+      "exp": 1463,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "owl_duke": {
+      "id": "owl_duke",
+      "name": "Owl Duke",
+      "level": 82,
+      "hp": 8223530,
+      "speed": 112,
+      "damage": 527,
+      "exp": 1700,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "executioner": {
+      "id": "executioner",
+      "name": "Executioner",
+      "level": 80,
+      "hp": 9461480,
+      "speed": 110,
+      "damage": 573,
+      "exp": 1956,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "mysteltainn": {
+      "id": "mysteltainn",
+      "name": "Mysteltainn",
+      "level": 82,
+      "hp": 10611010,
+      "speed": 95,
+      "damage": 616,
+      "exp": 2194,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "owl_baron": {
+      "id": "owl_baron",
+      "name": "Owl Baron",
+      "level": 82,
+      "hp": 54037540,
+      "speed": 118,
+      "damage": 722,
+      "exp": 4005,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.6
+    },
+    "novus": {
+      "id": "novus",
+      "name": "Red Novus",
+      "level": 83,
+      "hp": 106020,
+      "speed": 137,
+      "damage": 302,
+      "exp": 35,
+      "radius": 14
+    },
+    "novus_novus": {
+      "id": "novus_novus",
+      "name": "Yellow Novus",
+      "level": 83,
+      "hp": 109850,
+      "speed": 140,
+      "damage": 315,
+      "exp": 36,
+      "radius": 14
+    },
+    "ferus_ferus": {
+      "id": "ferus_ferus",
+      "name": "Green Ferus",
+      "level": 85,
+      "hp": 209390,
+      "speed": 134,
+      "damage": 535,
+      "exp": 79,
+      "radius": 20
+    },
+    "acidus_acidus": {
+      "id": "acidus_acidus",
+      "name": "Blue Acidus",
+      "level": 86,
+      "hp": 284530,
+      "speed": 116,
+      "damage": 658,
+      "exp": 115,
+      "radius": 20
+    },
+    "ancient_mimic": {
+      "id": "ancient_mimic",
+      "name": "Ancient Mimic",
+      "level": 85,
+      "hp": 129320,
+      "speed": 140,
+      "damage": 551,
+      "exp": 52,
+      "radius": 20
+    },
+    "dragon_egg": {
+      "id": "dragon_egg",
+      "name": "Dragon Egg",
+      "level": 83,
+      "hp": 194740,
+      "speed": 0,
+      "damage": 0,
+      "exp": 79,
+      "radius": 16,
+      "hatch": {
+        "id": "novus",
+        "secs": 15
+      }
+    },
+    "ferus": {
+      "id": "ferus",
+      "name": "Red Ferus",
+      "level": 86,
+      "hp": 8806880,
+      "speed": 140,
+      "damage": 550,
+      "exp": 1932,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.35
+    },
+    "acidus": {
+      "id": "acidus",
+      "name": "Gold Acidus",
+      "level": 86,
+      "hp": 8806880,
+      "speed": 119,
+      "damage": 550,
+      "exp": 1932,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.35
+    },
+    "hydrolancer": {
+      "id": "hydrolancer",
+      "name": "Hydrolancer",
+      "level": 87,
+      "hp": 11008600,
+      "speed": 122,
+      "damage": 629,
+      "exp": 2415,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.25
+    },
+    "detardeurus": {
+      "id": "detardeurus",
+      "name": "Detardeurus",
+      "level": 87,
+      "hp": 58499820,
+      "speed": 95,
+      "damage": 758,
+      "exp": 4601,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.3
+    },
+    "ktullanux": {
+      "id": "ktullanux",
+      "name": "Ktullanux",
+      "level": 88,
+      "hp": 67274790,
+      "speed": 60,
+      "damage": 758,
+      "exp": 4141,
+      "radius": 30,
+      "boss": "mvp",
+      "scale": 1.3
+    },
+    "evil_druid": {
+      "id": "evil_druid",
+      "name": "Evil Druid",
+      "level": 90,
+      "hp": 227230,
+      "speed": 80,
+      "damage": 361,
+      "exp": 75,
+      "radius": 20,
+      "undead": true
+    },
+    "wraith": {
+      "id": "wraith",
+      "name": "Wraith",
+      "level": 89,
+      "hp": 185490,
+      "speed": 80,
+      "damage": 400,
+      "exp": 65,
+      "radius": 20,
+      "undead": true
+    },
+    "raydric": {
+      "id": "raydric",
+      "name": "Raydric",
+      "level": 89,
+      "hp": 164140,
+      "speed": 125,
+      "damage": 459,
+      "exp": 81,
+      "radius": 20
+    },
+    "raydric_archer": {
+      "id": "raydric_archer",
+      "name": "Raydric Archer",
+      "level": 89,
+      "hp": 128150,
+      "speed": 110,
+      "damage": 331,
+      "exp": 77,
+      "radius": 16,
+      "ranged": {
+        "range": 380,
+        "cd": 2.6,
+        "warn": 0,
+        "windup": 0.3,
+        "radius": 0,
+        "fx": "fx_arrow",
+        "arrow": 560
+      }
+    },
+    "khalitzburg": {
+      "id": "khalitzburg",
+      "name": "Khalitzburg",
+      "level": 91,
+      "hp": 245550,
+      "speed": 65,
+      "damage": 477,
+      "exp": 92,
+      "radius": 20,
+      "undead": true
+    },
+    "zombie_prisoner": {
+      "id": "zombie_prisoner",
+      "name": "Zombie Prisoner",
+      "level": 89,
+      "hp": 187840,
+      "speed": 65,
+      "damage": 452,
+      "exp": 71,
+      "radius": 16,
+      "undead": true
+    },
+    "skeleton_prisoner": {
+      "id": "skeleton_prisoner",
+      "name": "Skeleton Prisoner",
+      "level": 89,
+      "hp": 164880,
+      "speed": 65,
+      "damage": 431,
+      "exp": 69,
+      "radius": 16,
+      "undead": true
+    },
+    "chimera": {
+      "id": "chimera",
+      "name": "Chimera",
+      "level": 92,
+      "hp": 8274840,
+      "speed": 110,
+      "damage": 532,
+      "exp": 1930,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.25
+    },
+    "abysmal_knight": {
+      "id": "abysmal_knight",
+      "name": "Abysmal Knight",
+      "level": 94,
+      "hp": 9619500,
+      "speed": 80,
+      "damage": 579,
+      "exp": 2244,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "bloody_knight": {
+      "id": "bloody_knight",
+      "name": "Bloody Knight",
+      "level": 94,
+      "hp": 11067590,
+      "speed": 95,
+      "damage": 630,
+      "exp": 2582,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "dark_illusion": {
+      "id": "dark_illusion",
+      "name": "Dark Illusion",
+      "level": 93,
+      "hp": 12412250,
+      "speed": 127,
+      "damage": 677,
+      "exp": 2895,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3,
+      "undead": true
+    },
+    "dark_lord": {
+      "id": "dark_lord",
+      "name": "Dark Lord",
+      "level": 94,
+      "hp": 63210560,
+      "speed": 140,
+      "damage": 794,
+      "exp": 5285,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.4,
+      "undead": true
+    },
+    "lude": {
+      "id": "lude",
+      "name": "Lude",
+      "level": 95,
+      "hp": 150370,
+      "speed": 125,
+      "damage": 408,
+      "exp": 42,
+      "radius": 14,
+      "undead": true
+    },
+    "quve": {
+      "id": "quve",
+      "name": "Quve",
+      "level": 95,
+      "hp": 179090,
+      "speed": 125,
+      "damage": 416,
+      "exp": 43,
+      "radius": 14,
+      "undead": true
+    },
+    "heirozoist": {
+      "id": "heirozoist",
+      "name": "Hylozoist",
+      "level": 96,
+      "hp": 224850,
+      "speed": 124,
+      "damage": 429,
+      "exp": 101,
+      "radius": 14
+    },
+    "gibbet": {
+      "id": "gibbet",
+      "name": "Gibbet",
+      "level": 97,
+      "hp": 219380,
+      "speed": 116,
+      "damage": 492,
+      "exp": 133,
+      "radius": 20
+    },
+    "disguise": {
+      "id": "disguise",
+      "name": "Disguise",
+      "level": 96,
+      "hp": 230370,
+      "speed": 126,
+      "damage": 431,
+      "exp": 112,
+      "radius": 16
+    },
+    "bloody_murderer": {
+      "id": "bloody_murderer",
+      "name": "Bloody Murderer",
+      "level": 97,
+      "hp": 9482830,
+      "speed": 118,
+      "damage": 576,
+      "exp": 2329,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "loli_ruri": {
+      "id": "loli_ruri",
+      "name": "Loli Ruri",
+      "level": 97,
+      "hp": 11714090,
+      "speed": 133,
+      "damage": 652,
+      "exp": 2877,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.3
+    },
+    "dullahan": {
+      "id": "dullahan",
+      "name": "Dullahan",
+      "level": 97,
+      "hp": 11714090,
+      "speed": 124,
+      "damage": 652,
+      "exp": 2877,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.4,
+      "undead": true
+    },
+    "lord_of_the_dead": {
+      "id": "lord_of_the_dead",
+      "name": "Lord of the Dead",
+      "level": 99,
+      "hp": 68177240,
+      "speed": 116,
+      "damage": 831,
+      "exp": 6002,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.4
+    },
+    "fallen_bishop_hibram": {
+      "id": "fallen_bishop_hibram",
+      "name": "Fallen Bishop Hibram",
+      "level": 98,
+      "hp": 78403830,
+      "speed": 125,
+      "damage": 831,
+      "exp": 5401,
+      "radius": 30,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "kukre": {
+      "id": "kukre",
+      "name": "Kukre",
       "level": 13,
       "hp": 560,
+      "speed": 75,
       "damage": 9,
-      "exp": 4
+      "exp": 4,
+      "radius": 13
     },
     "marina": {
+      "id": "marina",
+      "name": "Marina",
       "level": 13,
       "hp": 620,
+      "speed": 60,
       "damage": 10,
-      "exp": 4
+      "exp": 4,
+      "radius": 14
     },
     "hydra": {
+      "id": "hydra",
+      "name": "Hydra",
       "level": 14,
       "hp": 680,
+      "speed": 40,
       "damage": 12,
-      "exp": 5
+      "exp": 5,
+      "radius": 15,
+      "ranged": {
+        "range": 320,
+        "cd": 2.6,
+        "warn": 1.5,
+        "windup": 0.12,
+        "radius": 38,
+        "fx": "fx_hydra_atk"
+      }
     },
     "whisper": {
+      "id": "whisper",
+      "name": "Whisper",
       "level": 14,
       "hp": 590,
+      "speed": 105,
       "damage": 13,
-      "exp": 6
+      "exp": 6,
+      "radius": 15,
+      "undead": true
     },
     "penomena": {
+      "id": "penomena",
+      "name": "Penomena",
       "level": 15,
       "hp": 28000,
+      "speed": 60,
       "damage": 29,
-      "exp": 240
+      "exp": 240,
+      "radius": 20,
+      "boss": "mini",
+      "scale": 1.35,
+      "ranged": {
+        "range": 360,
+        "cd": 2.4,
+        "warn": 1.3,
+        "windup": 0.12,
+        "radius": 54,
+        "fx": "fx_hydra_atk"
+      }
     },
     "sword_fish": {
+      "id": "sword_fish",
+      "name": "Sword Fish",
       "level": 14,
       "hp": 740,
+      "speed": 110,
       "damage": 18,
-      "exp": 8
+      "exp": 8,
+      "radius": 17
     },
     "pirate_skel": {
+      "id": "pirate_skel",
+      "name": "Pirate Skeleton",
       "level": 14,
       "hp": 800,
+      "speed": 95,
       "damage": 20,
-      "exp": 9
+      "exp": 9,
+      "radius": 16,
+      "undead": true
     },
     "drake": {
+      "id": "drake",
+      "name": "Drake",
       "level": 15,
       "hp": 180000,
+      "speed": 100,
       "damage": 49,
-      "exp": 800
+      "exp": 800,
+      "radius": 41,
+      "boss": "mvp",
+      "undead": true,
+      "scale": 1.5
     },
     "vadon": {
+      "id": "vadon",
+      "name": "Vadon",
       "level": 16,
       "hp": 820,
+      "speed": 70,
       "damage": 12,
-      "exp": 6
+      "exp": 6,
+      "radius": 15
     },
     "cornutus": {
+      "id": "cornutus",
+      "name": "Cornutus",
       "level": 16,
       "hp": 900,
+      "speed": 60,
       "damage": 12,
-      "exp": 6
+      "exp": 6,
+      "radius": 15
     },
     "marse": {
+      "id": "marse",
+      "name": "Marse",
       "level": 17,
       "hp": 860,
+      "speed": 95,
       "damage": 13,
-      "exp": 6
+      "exp": 6,
+      "radius": 14
     },
     "phen": {
+      "id": "phen",
+      "name": "Phen",
       "level": 18,
       "hp": 1100,
+      "speed": 125,
       "damage": 15,
-      "exp": 7
+      "exp": 7,
+      "radius": 16
     },
     "obeaune": {
+      "id": "obeaune",
+      "name": "Obeaune",
       "level": 18,
       "hp": 1200,
+      "speed": 100,
       "damage": 15,
-      "exp": 7
+      "exp": 7,
+      "radius": 16
     },
     "marine_sphere": {
+      "id": "marine_sphere",
+      "name": "Marine Sphere",
       "level": 19,
       "hp": 950,
+      "speed": 0,
       "damage": 16,
-      "exp": 7
+      "exp": 7,
+      "radius": 15,
+      "fuse": {
+        "secs": 10,
+        "m": 2,
+        "mult": 3
+      }
     },
     "merman": {
+      "id": "merman",
+      "name": "Merman",
       "level": 20,
       "hp": 1400,
+      "speed": 105,
       "damage": 18,
-      "exp": 9
+      "exp": 9,
+      "radius": 17
     },
     "kraken_leg": {
+      "id": "kraken_leg",
+      "name": "Kraken Leg",
       "level": 20,
       "hp": 9000,
+      "speed": 0,
       "damage": 22,
-      "exp": 20
+      "exp": 20,
+      "radius": 22,
+      "ranged": {
+        "range": 420,
+        "cd": 2.8,
+        "warn": 1.3,
+        "windup": 0.12,
+        "radius": 46,
+        "fx": "fx_hydra_atk"
+      }
     },
     "deviace": {
+      "id": "deviace",
+      "name": "Deviace",
       "level": 17,
       "hp": 30000,
+      "speed": 110,
       "damage": 30,
-      "exp": 210
+      "exp": 210,
+      "radius": 22,
+      "boss": "mini",
+      "scale": 1.35
     },
     "strouf": {
+      "id": "strouf",
+      "name": "Strouf",
       "level": 19,
       "hp": 50000,
+      "speed": 95,
       "damage": 35,
-      "exp": 280
+      "exp": 280,
+      "radius": 24,
+      "boss": "mini",
+      "scale": 1.35
     },
     "king_dramoh": {
+      "id": "king_dramoh",
+      "name": "King Dramoh",
       "level": 20,
       "hp": 80000,
+      "speed": 80,
       "damage": 40,
-      "exp": 400
+      "exp": 400,
+      "radius": 28,
+      "boss": "mini",
+      "scale": 1.25
     },
     "kraken": {
+      "id": "kraken",
+      "name": "Kraken",
       "level": 20,
       "hp": 280000,
+      "speed": 45,
       "damage": 62,
-      "exp": 1000
+      "exp": 1000,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "spore": {
+      "id": "spore",
+      "name": "Spore",
       "level": 21,
       "hp": 830,
+      "speed": 65,
       "damage": 12,
-      "exp": 6
+      "exp": 6,
+      "radius": 15
     },
     "willow": {
+      "id": "willow",
+      "name": "Willow",
       "level": 21,
       "hp": 860,
+      "speed": 55,
       "damage": 12,
-      "exp": 6
+      "exp": 6,
+      "radius": 18
     },
     "poporing": {
+      "id": "poporing",
+      "name": "Poporing",
       "level": 21,
       "hp": 840,
+      "speed": 78,
       "damage": 13,
-      "exp": 6
+      "exp": 6,
+      "radius": 14
     },
     "snake": {
+      "id": "snake",
+      "name": "Boa",
       "level": 22,
       "hp": 1200,
+      "speed": 95,
       "damage": 15,
-      "exp": 7
+      "exp": 7,
+      "radius": 15
     },
     "worm_tail": {
+      "id": "worm_tail",
+      "name": "Wormtail",
       "level": 22,
       "hp": 1250,
+      "speed": 80,
       "damage": 15,
-      "exp": 7
+      "exp": 7,
+      "radius": 16
     },
     "poison_spore": {
+      "id": "poison_spore",
+      "name": "Poison Spore",
       "level": 22,
       "hp": 1300,
+      "speed": 68,
       "damage": 16,
-      "exp": 8
+      "exp": 8,
+      "radius": 15
     },
     "smokie": {
+      "id": "smokie",
+      "name": "Smokie",
       "level": 23,
       "hp": 1350,
+      "speed": 100,
       "damage": 17,
-      "exp": 8
+      "exp": 8,
+      "radius": 15
     },
     "wolf": {
+      "id": "wolf",
+      "name": "Wolf",
       "level": 23,
       "hp": 1400,
+      "speed": 128,
       "damage": 18,
-      "exp": 9
+      "exp": 9,
+      "radius": 18
     },
     "elder_willow": {
+      "id": "elder_willow",
+      "name": "Elder Willow",
       "level": 23,
       "hp": 1650,
+      "speed": 55,
       "damage": 20,
-      "exp": 10
+      "exp": 10,
+      "radius": 20
     },
     "dragon_tail": {
+      "id": "dragon_tail",
+      "name": "Dragon Tail",
       "level": 24,
       "hp": 1450,
+      "speed": 125,
       "damage": 21,
-      "exp": 10
+      "exp": 10,
+      "radius": 15
     },
     "bigfoot": {
+      "id": "bigfoot",
+      "name": "Bigfoot",
       "level": 24,
       "hp": 2000,
+      "speed": 80,
       "damage": 24,
-      "exp": 12
+      "exp": 12,
+      "radius": 22
     },
     "greatest_general": {
+      "id": "greatest_general",
+      "name": "Greatest General",
       "level": 24,
       "hp": 2200,
+      "speed": 0,
       "damage": 22,
-      "exp": 12
+      "exp": 12,
+      "radius": 18
     },
     "dokebi": {
+      "id": "dokebi",
+      "name": "Dokebi",
       "level": 25,
       "hp": 1900,
+      "speed": 115,
       "damage": 25,
-      "exp": 13
+      "exp": 13,
+      "radius": 16
     },
     "nine_tail": {
+      "id": "nine_tail",
+      "name": "Nine Tail",
       "level": 25,
       "hp": 2100,
+      "speed": 125,
       "damage": 27,
-      "exp": 14
+      "exp": 14,
+      "radius": 18
     },
     "angeling": {
+      "id": "angeling",
+      "name": "Angeling",
       "level": 22,
       "hp": 35100,
+      "speed": 82,
       "damage": 30,
-      "exp": 220
+      "exp": 220,
+      "radius": 20,
+      "boss": "mini",
+      "scale": 1.35
     },
     "deviling": {
+      "id": "deviling",
+      "name": "Deviling",
       "level": 23,
       "hp": 58500,
+      "speed": 96,
       "damage": 36,
-      "exp": 300
+      "exp": 300,
+      "radius": 20,
+      "boss": "mini",
+      "scale": 1.35
     },
     "vagabond_wolf": {
+      "id": "vagabond_wolf",
+      "name": "Vagabond Wolf",
       "level": 24,
       "hp": 93600,
+      "speed": 125,
       "damage": 42,
-      "exp": 430
+      "exp": 430,
+      "radius": 29,
+      "boss": "mini",
+      "scale": 1.35
     },
     "eddga": {
+      "id": "eddga",
+      "name": "Eddga",
       "level": 25,
       "hp": 338000,
+      "speed": 100,
       "damage": 72,
-      "exp": 1100
+      "exp": 1100,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "zombie": {
+      "id": "zombie",
+      "name": "Zombie",
       "level": 26,
       "hp": 2875,
+      "speed": 55,
       "damage": 28,
-      "exp": 15
+      "exp": 15,
+      "radius": 18,
+      "undead": true
     },
     "skeleton": {
+      "id": "skeleton",
+      "name": "Skeleton",
       "level": 26,
       "hp": 2760,
+      "speed": 95,
       "damage": 28,
-      "exp": 15
+      "exp": 15,
+      "radius": 16,
+      "undead": true
     },
     "skel_archer": {
+      "id": "skel_archer",
+      "name": "Archer Skeleton",
       "level": 27,
       "hp": 2640,
+      "speed": 60,
       "damage": 26,
-      "exp": 16
+      "exp": 16,
+      "radius": 16,
+      "undead": true,
+      "ranged": {
+        "range": 380,
+        "cd": 2.6,
+        "warn": 0,
+        "windup": 0.3,
+        "radius": 0,
+        "fx": "fx_arrow",
+        "arrow": 560
+      }
     },
     "skel_soldier": {
+      "id": "skel_soldier",
+      "name": "Soldier Skeleton",
       "level": 27,
       "hp": 3385,
+      "speed": 100,
       "damage": 31,
-      "exp": 17
+      "exp": 17,
+      "radius": 17,
+      "undead": true
     },
     "munak": {
+      "id": "munak",
+      "name": "Munak",
       "level": 28,
       "hp": 3540,
+      "speed": 85,
       "damage": 32,
-      "exp": 18
+      "exp": 18,
+      "radius": 16,
+      "undead": true
     },
     "bon_gun": {
+      "id": "bon_gun",
+      "name": "Bongun",
       "level": 28,
       "hp": 3265,
+      "speed": 115,
       "damage": 33,
-      "exp": 18
+      "exp": 18,
+      "radius": 16,
+      "undead": true
     },
     "sohee": {
+      "id": "sohee",
+      "name": "Sohee",
       "level": 29,
       "hp": 3775,
+      "speed": 95,
       "damage": 34,
-      "exp": 19
+      "exp": 19,
+      "radius": 16
     },
     "horong": {
+      "id": "horong",
+      "name": "Horong",
       "level": 30,
       "hp": 1890,
+      "speed": 140,
       "damage": 30,
-      "exp": 16
+      "exp": 16,
+      "radius": 13
     },
     "skeleton_general": {
+      "id": "skeleton_general",
+      "name": "Skeleton General",
       "level": 27,
       "hp": 71250,
+      "speed": 100,
       "damage": 46,
-      "exp": 480
+      "exp": 480,
+      "radius": 26,
+      "boss": "mini",
+      "undead": true,
+      "scale": 1.35
     },
     "cat_o_nine_tail": {
+      "id": "cat_o_nine_tail",
+      "name": "Cat O' Nine Tails",
       "level": 28,
       "hp": 112500,
+      "speed": 120,
       "damage": 52,
-      "exp": 600
+      "exp": 600,
+      "radius": 26,
+      "boss": "mini",
+      "scale": 1.35
     },
     "hyegun": {
+      "id": "hyegun",
+      "name": "Hyegun",
       "level": 29,
       "hp": 150000,
+      "speed": 105,
       "damage": 58,
-      "exp": 700
+      "exp": 700,
+      "radius": 26,
+      "boss": "mini",
+      "undead": true,
+      "scale": 1.35
     },
     "moonlight": {
+      "id": "moonlight",
+      "name": "Moonlight Flower",
       "level": 30,
       "hp": 1000000,
+      "speed": 110,
       "damage": 80,
-      "exp": 1400
+      "exp": 1400,
+      "radius": 41,
+      "boss": "mvp",
+      "scale": 1.5
     },
     "orc_warrior": {
+      "id": "orc_warrior",
+      "name": "Orc Warrior",
       "level": 31,
       "hp": 3900,
+      "speed": 86,
       "damage": 36,
-      "exp": 20
+      "exp": 20,
+      "radius": 20
     },
     "orc_lady": {
+      "id": "orc_lady",
+      "name": "Orc Lady",
       "level": 32,
       "hp": 3500,
+      "speed": 108,
       "damage": 34,
-      "exp": 20
+      "exp": 20,
+      "radius": 17
     },
     "high_orc": {
+      "id": "high_orc",
+      "name": "High Orc",
       "level": 35,
       "hp": 190000,
+      "speed": 95,
       "damage": 62,
-      "exp": 800
+      "exp": 800,
+      "radius": 26,
+      "boss": "mini",
+      "scale": 1.35
     }
-  }
+  },
+  "rulesSource": "var RO_LAPC={\"stages\":null,\"max\":6,\"curve\":{\"hp\":181.01933598375618,\"dmg\":22.91765149399039,\"gs\":4.976041599504569},\"suffix\":[\"\",\"・改\",\"・改²\",\"・改³\",\"・改⁴\",\"・改⁵\"],\"label\":[\"一周目\",\"二周目\",\"三周目\",\"四周目\",\"五周目\",\"六周目\"],\"tierMax\":8,\"cardStep\":1000000,\"cardMult\":[1,1.5,2,2.5,3,3.5],\"cardNoScale\":[4144],\"exp\":{\"from\":3,\"base\":54,\"span\":44,\"mult\":[1,1,1.25,1.5,1.75,2],\"minLv\":70,\"lowMult\":1,\"baseK\":0.3333333333333333,\"jobK\":0.025,\"pen\":{\"slope\":0.08,\"floor\":0.15}}};RO_C2T={\"c2_gef\":[{\"hp\":1,\"dmg\":1,\"gate\":2360,\"tier\":6,\"mult\":1.5},{\"hp\":1.5466,\"dmg\":1.3004,\"gate\":2650,\"tier\":7,\"mult\":1.75},{\"hp\":2.3446,\"dmg\":1.6709,\"gate\":2950,\"tier\":8,\"mult\":2},{\"hp\":3.9277,\"dmg\":2.28,\"gate\":3400,\"tier\":8,\"mult\":2},{\"hp\":7.1436,\"dmg\":3.2692,\"gate\":3950,\"tier\":8,\"mult\":2},{\"hp\":14.0046,\"dmg\":4.9042,\"gate\":4600,\"tier\":8,\"mult\":2}],\"c2_clock\":[{\"hp\":1,\"dmg\":1,\"gate\":2410,\"tier\":6,\"mult\":1.5},{\"hp\":1.5355,\"dmg\":1.2948,\"gate\":2700,\"tier\":7,\"mult\":1.75},{\"hp\":2.3857,\"dmg\":1.6885,\"gate\":3030,\"tier\":8,\"mult\":2},{\"hp\":4.0884,\"dmg\":2.3358,\"gate\":3500,\"tier\":8,\"mult\":2},{\"hp\":7.5822,\"dmg\":3.3887,\"gate\":4090,\"tier\":8,\"mult\":2},{\"hp\":14.9124,\"dmg\":5.0934,\"gate\":4750,\"tier\":8,\"mult\":2}],\"c2_abyss\":[{\"hp\":1,\"dmg\":1,\"gate\":2460,\"tier\":6,\"mult\":1.5},{\"hp\":1.525,\"dmg\":1.2895,\"gate\":2750,\"tier\":7,\"mult\":1.75},{\"hp\":2.4253,\"dmg\":1.7053,\"gate\":3100,\"tier\":8,\"mult\":2},{\"hp\":4.2455,\"dmg\":2.3894,\"gate\":3600,\"tier\":8,\"mult\":2},{\"hp\":8.0165,\"dmg\":3.5044,\"gate\":4230,\"tier\":8,\"mult\":2},{\"hp\":15.8133,\"dmg\":5.2766,\"gate\":4900,\"tier\":8,\"mult\":2}],\"c2_glast\":[{\"hp\":1,\"dmg\":1,\"gate\":2500,\"tier\":6,\"mult\":1.5},{\"hp\":1.515,\"dmg\":1.2844,\"gate\":2800,\"tier\":7,\"mult\":1.75},{\"hp\":2.4635,\"dmg\":1.7214,\"gate\":3180,\"tier\":8,\"mult\":2},{\"hp\":4.399,\"dmg\":2.4411,\"gate\":3700,\"tier\":8,\"mult\":2},{\"hp\":8.446,\"dmg\":3.6163,\"gate\":4360,\"tier\":8,\"mult\":2},{\"hp\":16.706,\"dmg\":5.4541,\"gate\":5050,\"tier\":8,\"mult\":2}],\"c2_nif\":[{\"hp\":1,\"dmg\":1,\"gate\":2550,\"tier\":6,\"mult\":1.5},{\"hp\":1.5056,\"dmg\":1.2795,\"gate\":2850,\"tier\":7,\"mult\":1.75},{\"hp\":2.5003,\"dmg\":1.7369,\"gate\":3250,\"tier\":8,\"mult\":2},{\"hp\":4.5489,\"dmg\":2.4909,\"gate\":3800,\"tier\":8,\"mult\":2},{\"hp\":8.8703,\"dmg\":3.7247,\"gate\":4500,\"tier\":8,\"mult\":2},{\"hp\":17.5894,\"dmg\":5.626,\"gate\":5200,\"tier\":8,\"mult\":2}]};const xe=[{id:\"prontera\",name:\"Campos de Prontera\",place:\"Al sur de Prontera\",levels:\"1–8\",tier:1,gsMin:0,...yo(\"prontera\")},{id:\"sewer\",name:\"Alcantarillas de Prontera\",place:\"Bajo las calles de Prontera\",levels:\"9–12\",tier:1,gsMin:20,...yo(\"sewer\")},{id:\"sunken\",name:\"Barco hundido\",place:\"Costa de Alberta\",levels:\"13–15\",tier:1,gsMin:40,story:\"sunken_story\",...yo(\"sunken\")},{id:\"byalan\",name:\"Isla de Byalan\",place:\"Mazmorra de Izlude\",levels:\"16–20\",tier:2,gsMin:110,...yo(\"byalan\")},{id:\"payon\",name:\"Bosque de Payon\",place:\"Alrededores de Payon\",levels:\"21–25\",tier:2,gsMin:135,...yo(\"payon\")},{id:\"payon_cave\",name:\"Cueva de Payon\",place:\"Bajo las montañas de Payon\",levels:\"26–30\",tier:2,gsMin:165,...yo(\"payon_cave\")},{id:\"prt_castle\",name:\"Castillo de Prontera\",place:\"Sala del trono\",levels:\"31–35\",tier:2,gsMin:185,jobLvMin:50,...yo(\"prt_castle\")},{id:\"orcs\",name:\"Aldea orca\",place:\"Campos de Geffen\",levels:\"31–40\",tier:3,gsMin:400,...yo(\"orcs\")},{id:\"pyramid\",name:\"Pirámides de Morroc\",place:\"Desierto de Morroc\",levels:\"41–50\",tier:3,gsMin:650,...yo(\"pyramid\")},{id:\"maze\",name:\"Bosque laberinto\",place:\"Al norte de Prontera\",levels:\"51–60\",tier:3,gsMin:900,...yo(\"maze\")},{id:\"xmas\",name:\"Navidad\",place:\"Lutie\",levels:\"61–65\",tier:3,special:true,gsMin:900,...yo(\"xmas\")},{id:\"louyang\",name:\"Feria de faroles de Louyang\",place:\"Louyang\",levels:\"61–70\",tier:3,special:true,gsMin:900,...yo(\"louyang\")},{id:\"c2_gef\",name:\"Mazmorra de Geffen\",place:\"Bajo Geffen\",levels:\"71–76\",tier:8,chapter:2,gsMin:2360,...yo(\"c2_gef\")},{id:\"c2_clock\",name:\"Sótano de la Torre del Reloj\",place:\"Al De Baran\",levels:\"77–82\",tier:8,chapter:2,gsMin:2410,...yo(\"c2_clock\")},{id:\"c2_abyss\",name:\"Lago del Abismo\",place:\"Nido de dragones\",levels:\"83–88\",tier:8,chapter:2,gsMin:2460,...yo(\"c2_abyss\")},{id:\"c2_glast\",name:\"Monasterio de Glast Heim\",place:\"Glast Heim\",levels:\"89–94\",tier:8,chapter:2,gsMin:2500,...yo(\"c2_glast\")},{id:\"c2_nif\",name:\"Campos de Niflheim\",place:\"Niflheim\",levels:\"95–99\",tier:8,chapter:2,gsMin:2550,...yo(\"c2_nif\")}];",
+  "functions": "var RO_C2T={\"c2_gef\":[{\"hp\":1,\"dmg\":1,\"gate\":2360,\"tier\":6,\"mult\":1.5},{\"hp\":1.5466,\"dmg\":1.3004,\"gate\":2650,\"tier\":7,\"mult\":1.75},{\"hp\":2.3446,\"dmg\":1.6709,\"gate\":2950,\"tier\":8,\"mult\":2},{\"hp\":3.9277,\"dmg\":2.28,\"gate\":3400,\"tier\":8,\"mult\":2},{\"hp\":7.1436,\"dmg\":3.2692,\"gate\":3950,\"tier\":8,\"mult\":2},{\"hp\":14.0046,\"dmg\":4.9042,\"gate\":4600,\"tier\":8,\"mult\":2}],\"c2_clock\":[{\"hp\":1,\"dmg\":1,\"gate\":2410,\"tier\":6,\"mult\":1.5},{\"hp\":1.5355,\"dmg\":1.2948,\"gate\":2700,\"tier\":7,\"mult\":1.75},{\"hp\":2.3857,\"dmg\":1.6885,\"gate\":3030,\"tier\":8,\"mult\":2},{\"hp\":4.0884,\"dmg\":2.3358,\"gate\":3500,\"tier\":8,\"mult\":2},{\"hp\":7.5822,\"dmg\":3.3887,\"gate\":4090,\"tier\":8,\"mult\":2},{\"hp\":14.9124,\"dmg\":5.0934,\"gate\":4750,\"tier\":8,\"mult\":2}],\"c2_abyss\":[{\"hp\":1,\"dmg\":1,\"gate\":2460,\"tier\":6,\"mult\":1.5},{\"hp\":1.525,\"dmg\":1.2895,\"gate\":2750,\"tier\":7,\"mult\":1.75},{\"hp\":2.4253,\"dmg\":1.7053,\"gate\":3100,\"tier\":8,\"mult\":2},{\"hp\":4.2455,\"dmg\":2.3894,\"gate\":3600,\"tier\":8,\"mult\":2},{\"hp\":8.0165,\"dmg\":3.5044,\"gate\":4230,\"tier\":8,\"mult\":2},{\"hp\":15.8133,\"dmg\":5.2766,\"gate\":4900,\"tier\":8,\"mult\":2}],\"c2_glast\":[{\"hp\":1,\"dmg\":1,\"gate\":2500,\"tier\":6,\"mult\":1.5},{\"hp\":1.515,\"dmg\":1.2844,\"gate\":2800,\"tier\":7,\"mult\":1.75},{\"hp\":2.4635,\"dmg\":1.7214,\"gate\":3180,\"tier\":8,\"mult\":2},{\"hp\":4.399,\"dmg\":2.4411,\"gate\":3700,\"tier\":8,\"mult\":2},{\"hp\":8.446,\"dmg\":3.6163,\"gate\":4360,\"tier\":8,\"mult\":2},{\"hp\":16.706,\"dmg\":5.4541,\"gate\":5050,\"tier\":8,\"mult\":2}],\"c2_nif\":[{\"hp\":1,\"dmg\":1,\"gate\":2550,\"tier\":6,\"mult\":1.5},{\"hp\":1.5056,\"dmg\":1.2795,\"gate\":2850,\"tier\":7,\"mult\":1.75},{\"hp\":2.5003,\"dmg\":1.7369,\"gate\":3250,\"tier\":8,\"mult\":2},{\"hp\":4.5489,\"dmg\":2.4909,\"gate\":3800,\"tier\":8,\"mult\":2},{\"hp\":8.8703,\"dmg\":3.7247,\"gate\":4500,\"tier\":8,\"mult\":2},{\"hp\":17.5894,\"dmg\":5.626,\"gate\":5200,\"tier\":8,\"mult\":2}]};function RO_LAPST(sid){try{const s=xe.find(x=>x.id===sid);return!!s&&!!s.map&&!s.storyOnly&&(!RO_LAPC.stages||RO_LAPC.stages.includes(sid))}catch{return!1}}function RO_LAPOF(g){try{if(!g||g.endless||!RO_LAPST(g.stageId))return 1;const v=Math.floor(+((g.difficulty||{}).lap)||1);return Math.max(1,Math.min(RO_LAPC.max,v))}catch{return 1}}var RO_LAPSEL=null;function RO_LAPSET(st,d){try{RO_LAPSEL={stage:st,lap:RO_LAPOF({stageId:st,difficulty:d})}}catch{}}function RO_LAPNOW(st){try{const g=typeof F!=\"undefined\"?F:null;if(g&&g.stageId===st&&!g.endless)return RO_LAPOF(g);return RO_LAPSEL&&RO_LAPSEL.stage===st?RO_LAPSEL.lap:1}catch{return 1}}var RO_LAPKC={};function RO_LAPAVG(sid){const w=(tt[sid]||{}).waves||[];let h=0,d=0,x=0,l=0,t=0;for(const v of w){const p=(v.pool||[]).map(i=>_e[i]).filter(Boolean),u=Math.max(0,(v.to||0)-(v.from||0));if(!p.length||!u)continue;h+=u*p.reduce((a,m)=>a+(m.hp||0),0)/p.length;d+=u*p.reduce((a,m)=>a+(m.damage||0),0)/p.length;x+=u*p.reduce((a,m)=>a+(m.exp||0),0)/p.length;l+=u*p.reduce((a,m)=>a+(m.level||0),0)/p.length;t+=u}return t?{hp:h/t,dmg:d/t,exp:x/t,lv:l/t}:null}function RO_LAPLIST(){return xe.filter(s=>RO_LAPST(s.id)&&!s.special&&s.chapter!==2)}function RO_LAPK(sid,n){const key=sid+\"|\"+n;if(RO_LAPKC[key])return RO_LAPKC[key];if(RO_C2T[sid]){const T=RO_C2T[sid][Math.max(1,Math.min(RO_LAPC.max,n))-1];return RO_LAPKC[key]={hp:T.hp,damage:T.dmg,exp:1,lv:0,mult:T.mult,mlv:(RO_LAPAVG(sid)||{}).lv||0,gs:T.gate,jobCap:(tt[sid]||{}).jobCap}}const L=RO_LAPLIST(),R=L[L.length-1],k=L.findIndex(s=>s.id===sid);let o={hp:1,damage:1,exp:1,lv:0,gs:0,jobCap:void 0};if(k<0&&R&&R.id!==sid&&(xe.find(s=>s.id===sid)||{}).special&&RO_LAPST(sid)){const r=RO_LAPK(R.id,n),A=RO_LAPAVG(sid),P=L.length,f=((n-2)*P+P)/(P*(RO_LAPC.max-1));return RO_LAPKC[key]=n>1&&A?{...r,...RO_LAPEXK(A,A,f,n,RO_LAPC)}:r}try{const A=RO_LAPAVG(sid),B=R&&RO_LAPAVG(R.id);if(n>1&&A&&B&&k>=0){const P=L.length,f=((n-2)*P+k+1)/(P*(RO_LAPC.max-1)),cv=RO_LAPC.curve;o={hp:Math.max(1,B.hp*Math.pow(cv.hp,f)/Math.max(1,A.hp)),damage:Math.max(1,B.dmg*Math.pow(cv.dmg,f)/Math.max(1,A.dmg)),...RO_LAPEXK(A,B,f,n,RO_LAPC),gs:Math.ceil((R.gsMin||0)*Math.pow(cv.gs,f)),jobCap:(tt[R.id]||{}).jobCap}}}catch(e){console.error(\"[laps]\",e)}return RO_LAPKC[key]=o}var RO_LAPEXK=function lapExpK(A, B, f, n, C) {\n  const E = C.exp || {};\n  let lv = Math.max(0, Math.round(B.lv - A.lv));\n  const exp = Math.max(1, B.exp / Math.max(0.1, A.exp));\n  if (n >= (E.from || Infinity)) lv = Math.max(lv, Math.round(E.base + E.span * f - A.lv));\n  const mult = n > 1 && E.mult ? E.mult[Math.min(E.mult.length, n) - 1] || 1 : 1;\n  return { lv, exp, mult, mlv: A.lv + lv };\n};"
 }

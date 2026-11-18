@@ -33,6 +33,38 @@ function setup(initialStorage=[]){
 const fresh=id=>({id,isNew:true,rarity:0}),up=(id,aspect='dmg')=>({id,isNew:false,rarity:1,upgrade:{aspect,amount:1}}),item=(slot,id,quality=0,refine=0)=>({slot,item:id,quality,refine});
 const normalize=value=>JSON.parse(JSON.stringify(value));
 {
+ const snapshot=JSON.parse(fs.readFileSync('tests/fixtures/third-job-native.json','utf8'));
+ const thirdJobs=snapshot.jobs.filter(job=>snapshot.trees.some(tree=>tree.job===job.id));
+ assert.equal(thirdJobs.length,16);assert.equal(snapshot.trees.length,48);
+ for(const job of thirdJobs){
+  const e=setup(),trees=snapshot.trees.filter(tree=>tree.job===job.id);
+  const skillIds=[...new Set([...Object.values(snapshot.pool).flat(),...snapshot.trees.flatMap(tree=>tree.skills)])];
+  e.ctx.kN=snapshot.jobs;e.ctx.Mp=snapshot.jobs;e.ctx.$E=snapshot.pool;
+  // Skill constructors are stubs; job ancestry and pool functions are native.
+  e.ctx.yt=Object.fromEntries(skillIds.map(id=>[id,{id,name:id,kind:'weapon',maxLevel:10,create:()=>({})}]));
+  vm.runInContext(snapshot.lookup+snapshot.lineage+snapshot.skillPool+';api.catalog.pool=U9;api.catalog.lineage=tl;api.catalog.jobs=su;',e.ctx);
+  e.api.catalog.skills=Object.values(e.ctx.yt);
+  e.api.catalog.talents=Object.fromEntries(trees.flatMap((tree,index)=>tree.skills.map((skill,slot)=>[`${job.id}.${index+1}.s${slot+1}`,{job:job.id,learn:skill}])));
+  e.ctx.skillDefs=e.ctx.yt;
+  for(const representation of [{job:job.base,promotion:job.id},{job:job.id}]){
+   const hero={id:'third-hero',name:'greydust',...representation,talents:{},equipped:{},inventory:[]};
+   const skill=trees[0].skills[0],other=trees[1].skills[0];
+   hero.talents[`${job.id}.1.s1`]=1;
+   const scope=e.api.scope(hero);assert(scope,job.id);assert(scope.ids.has(skill),job.id+' learned third skill');assert(!scope.ids.has(other),job.id+' unlearned third skill');
+   e.api.setScope(scope);assert(e.api.scopedSkills().some(row=>row.id===skill));
+   assert(e.api.scopedItems('deity').some(row=>row.id===skill),job.id+' dedicated deity');
+   e.saved.set('ro-survivors.characters.v1',JSON.stringify([hero]));e.api.ui();e.document.querySelector('#ro-advanced-choice').click();
+   const names=[...e.document.querySelectorAll('.ro-ac-row[data-search]')].map(row=>row.firstElementChild.textContent);
+   assert(names.includes(skill),job.id+' skill settings');assert(!names.includes(other));
+   [...e.document.querySelectorAll('button')].find(button=>button.textContent==='新增條目').click();
+   assert([...e.document.querySelectorAll('.ro-ac-priority select option')].some(option=>option.textContent===skill),job.id+' priority option');
+   e.api.input({type:'keydown',key:'Escape',preventDefault(){},stopImmediatePropagation(){}});
+   assert.equal(e.api.decide(e.game(),[fresh(skill)],'skill').index,0);
+  }
+ }
+ console.log('PASS all 16 native third jobs: learned skills, settings, priority and deity in both character representations');
+}
+{
  const e=setup(),g=e.game();e.api.configure({skills:{must:{take:'must'},no:{take:'never'},stop:{upgrade:'banish'}}});g.newSkills=[fresh('must')];
  assert.deepEqual(normalize(e.api.decide(g,[fresh('must'),up('stop')],'skill')),{type:'banish',index:1});
  assert.deepEqual(normalize(e.api.decide(g,[fresh('fill'),fresh('must'),fresh('must2')],'skill')),{type:'pick',index:1});
@@ -52,6 +84,19 @@ const normalize=value=>JSON.parse(JSON.stringify(value));
  assert.equal(e.api.decide(g,[up('b'),up('c')],'skill',{available:()=>false}).index,0,'exhausted banish is not chosen as upgrade');
  assert.equal(e.api.decide(g,[up('c')],'skill',{available:()=>false}),null);
  console.log('PASS detailed priority, multi-part upgrades, select/ignore and banish exhaustion');
+}
+{
+ const e=setup(),g=e.game();g.slots=['auto_guard','b','c'];
+ e.api.configure({priority:[{skill:'auto_guard',upgrades:['effect:block']}]});
+ const mixed=up('auto_guard');mixed.rarity=4;mixed.upgrade={parts:[{aspect:'duration'},{aspect:'effect',effect:'block'}]};
+ assert.equal(e.api.decide(g,[mixed,up('b')],'skill').index,0,'legendary card containing the requested aspect is eligible');
+ g.choose(mixed);
+ assert.equal(e.api.decide(g,[up('auto_guard','duration'),up('b')],'skill').index,1,'later duration-only cards cannot bypass the aspect filter');
+ assert.equal(e.api.decide(g,[up('auto_guard','duration')],'skill'),null,'no matching upgrade leaves the choice manual');
+ assert.equal(e.api.decide(g,[up('auto_guard','duration'),{id:'potion'}],'skill').index,1,'healing fallback remains available');
+ e.api.configure({priority:[{skill:'auto_guard',upgrades:[]}]});
+ assert.equal(e.api.decide(g,[up('auto_guard','duration')],'skill').index,0,'empty aspect selection still allows any upgrade');
+ console.log('PASS legendary auto guard mixed upgrades do not enable duration-only fallback');
 }
 {
  const e=setup(),g=e.game();e.api.configure({items:{potion:{wanted:['p_hp','p_cd']},dish:{wanted:['d_str']}}});

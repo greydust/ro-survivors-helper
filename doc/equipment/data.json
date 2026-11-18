@@ -1,8 +1,8 @@
 {
   "updatedAt": "2026-11-18",
-  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzd1f6294e.js",
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz2f3bd05c.js",
   "manifestSource": "https://ro.hans-webgametw.com/assets/manifest.json",
-  "manifestSha256": "63ccf8cb47f5f0464ea19c42c19c936e778fb5cbd4a53fdca98f49c9f1188e8b",
+  "manifestSha256": "4e7959bee99d4cdeab39876329d9c28a4270a7dbcac11d9f6e3c39e91f0c4f6a",
   "lapConfig": {
     "stages": null,
     "max": 6,
@@ -39,11 +39,32 @@
     ],
     "cardNoScale": [
       4144
-    ]
+    ],
+    "exp": {
+      "from": 3,
+      "base": 54,
+      "span": 44,
+      "mult": [
+        1,
+        1,
+        1.25,
+        1.5,
+        1.75,
+        2
+      ],
+      "minLv": 70,
+      "lowMult": 1,
+      "baseK": 0.3333333333333333,
+      "jobK": 0.025,
+      "pen": {
+        "slope": 0.08,
+        "floor": 0.15
+      }
+    }
   },
-  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz8a698f4b.js",
-  "mainSourceSha256": "ae5c55db64f34a62cdff8625ff33e92803f138b871ea238e65451c081d32a6eb",
-  "sourceSha256": "5397b153fe6e48c8518fccdfe76cb7c130a20b03d3a708a2e4633d8e7d791a77",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzb6eb53b9.js",
+  "mainSourceSha256": "97eb02fe60bfdc3298fe612dab6abdfde096bde9f6c572613d85556e1f94a8d6",
+  "sourceSha256": "9913ef5583dd82252cbf96f4e49ee5158cc424d3b4611ff7409323881b10d6a9",
   "slots": [
     [
       "onehand",
@@ -2078,6 +2099,13 @@
           "stage": "普隆德拉地下水道",
           "monster": "紅蝙蝠",
           "boss": false
+        },
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "紅蝙蝠",
+          "boss": false
         }
       ]
     },
@@ -2925,6 +2953,20 @@
         {
           "tier": 1,
           "stage": "失事輪",
+          "monster": "白幽靈",
+          "boss": false
+        },
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "白幽靈",
+          "boss": false
+        },
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
           "monster": "白幽靈",
           "boss": false
         }
@@ -17980,6 +18022,6263 @@
           "tier": 3,
           "stage": "元宵節",
           "monster": "墨蛇君",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2331,
+      "name": "緊身便衣",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2331.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "南瓜先生",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13105,
+      "name": "加立遜手槍",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13105.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "南瓜先生",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1182,
+      "name": "血靈魔劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1182.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "綠腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2374,
+      "name": "魔王的外袍",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2374.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "綠腐屍",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1520,
+      "name": "鏈錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1520.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "傀儡娃娃",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2407,
+      "name": "玻璃鞋",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2407.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "傀儡娃娃",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5141,
+      "name": "傀儡娃娃頭飾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5141.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "傀儡娃娃",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1458,
+      "name": "雙刃長戟",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1458.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "小惡魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1919,
+      "name": "低音吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1919.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "小惡魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2426,
+      "name": "陰暗步行長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2426.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "夢魘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1822,
+      "name": "連擊的套甲",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1822.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "夢魘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1643,
+      "name": "枯木魔杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1643.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "巨大白幽靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2450,
+      "name": "生命樹枝鞋",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2450.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "巨大白幽靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1972,
+      "name": "電鰻鞭",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1972.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "巨大白幽靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1175,
+      "name": "阿特羅斯的巨劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1175.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "獸牙怪",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13412,
+      "name": "夜勝魔的雙子銳劍(藍)",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13412.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "獸牙怪",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1271,
+      "name": "血淚拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1271.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "獸牙怪",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2317,
+      "name": "鋼鐵鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2317.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1162,
+      "name": "雙手重劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1162.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1168,
+      "name": "巨大雙手劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1168.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2258,
+      "name": "尖角髮圈",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2258.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1411,
+      "name": "騎士長矛",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1411.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13308,
+      "name": "風魔烈焰手裡劍",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13308.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "死靈",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1473,
+      "name": "大巫師之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1473.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2621,
+      "name": "力量戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2621.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2375,
+      "name": "魔王的鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2375.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1637,
+      "name": "銷魂杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1637.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2542,
+      "name": "夜勝魔的火焰斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2542.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1636,
+      "name": "黑暗的荊棘骷髏杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1636.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13170,
+      "name": "操作桿來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13170.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%",
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%",
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%",
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1818,
+      "name": "岩漿拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1818.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "吉芬地下城",
+          "monster": "德古拉男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2788,
+      "name": "鈽鐳耳環",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2788.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "朽魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13047,
+      "name": "毒鋸短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13047.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "朽魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1925,
+      "name": "大提琴",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1925.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "古鐘魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2790,
+      "name": "鈽鐳別針",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2790.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鐘怪",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13107,
+      "name": "荒野的無法者",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13107.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鐘怪",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1554,
+      "name": "地靈之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1554.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "飛行魔書",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1556,
+      "name": "風靈之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1556.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "飛行魔書",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1817,
+      "name": "精製風靈拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1817.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "飛行魔書",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1626,
+      "name": "銳利波之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1626.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "巫婆",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1970,
+      "name": "女王的鞭子",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1970.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "巫婆",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13302,
+      "name": "風魔輪飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13302.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "邪惡箱",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1259,
+      "name": "風靈拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1259.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "裘卡",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13165,
+      "name": "短卡賓",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13165.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "裘卡",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2519,
+      "name": "茉莉雅娜斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2519.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鏡妖",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2109,
+      "name": "謊言紀錄本",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2109.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鐘塔守護者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1564,
+      "name": "大百科全書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1564.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鐘塔守護者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1820,
+      "name": "雷電拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1820.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鐘塔守護者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1629,
+      "name": "紳士的權杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1629.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5045,
+      "name": "魔術師帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5045.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1422,
+      "name": "狩獵長矛",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1422.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1733,
+      "name": "疾風之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1733.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊首領",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1111,
+      "name": "擊刺長劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1111.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "行刑者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1114,
+      "name": "彎刀",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1114.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "行刑者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1186,
+      "name": "死亡引導者",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1186.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "行刑者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13309,
+      "name": "精製風魔輪飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13309.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "行刑者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1155,
+      "name": "亞爾特劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1155.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "弒神者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13413,
+      "name": "夜勝魔的雙子銳劍(紅)",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13413.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "弒神者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1143,
+      "name": "尋礦之劍",
+      "slot": "onehand",
+      "wtype": "검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1143.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "弒神者",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1716,
+      "name": "角弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1716.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1472,
+      "name": "靈魂之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1472.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1737,
+      "name": "伊克希恩的羽翼",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1737.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6",
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7",
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8",
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2342,
+      "name": "秘銀金屬鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2342.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13169,
+      "name": "Thunder P",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13169.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1825,
+      "name": "三角幼獅獸之角拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1825.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1745,
+      "name": "獵鷹閃電弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1745.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "鐘樓地下",
+          "monster": "鴞裊男爵",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2520,
+      "name": "哥夫內肩飾",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2520.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "諾博斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13108,
+      "name": "破壞性的左輪手槍",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13108.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "諾博斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5128,
+      "name": "哥夫內的頭具",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5128.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃諾博斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1962,
+      "name": "細刃鞭子",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1962.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX",
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX",
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX",
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃諾博斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1560,
+      "name": "賢者的日記",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1560.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "龍蛋",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1484,
+      "name": "樞機長槍",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1484.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "綠貝勒斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1375,
+      "name": "肉搏斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1375.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "綠貝勒斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1268,
+      "name": "野獸的指甲",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1268.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "綠貝勒斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1311,
+      "name": "貝伽勒巨斧",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1311.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "狂暴邪惡箱",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1270,
+      "name": "鑽孔機拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1270.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "狂暴邪惡箱",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13173,
+      "name": "敏銳的霰彈槍",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13173.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "灰俄希托斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2417,
+      "name": "傅里哥長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2417.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "灰俄希托斯",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 5122,
+      "name": "魔術無邊帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5122.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "紅貝勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1821,
+      "name": "大地拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1821.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "紅貝勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1420,
+      "name": "長角槍",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1420.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "紅貝勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1730,
+      "name": "燃燒之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1730.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "紅貝勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1269,
+      "name": "茵博斯拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1269.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃俄希托斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1823,
+      "name": "斗士的戰鬥升龍拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1823.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃俄希托斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13305,
+      "name": "戰鬥風魔翼飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13305.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃俄希托斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1824,
+      "name": "勇氣的戰鬥升龍拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1824.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "黃俄希托斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5126,
+      "name": "摩菲斯的頭巾",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5126.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "三頭龍",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5127,
+      "name": "茉莉雅娜的頭盔",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5127.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "三頭龍",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5124,
+      "name": "菲力卡的頭箍",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5124.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "三頭龍",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2649,
+      "name": "摩菲斯臂環",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2649.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2648,
+      "name": "摩菲斯戒指",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2648.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1417,
+      "name": "鐮戟",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1417.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5002,
+      "name": "首領冠冕",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5002.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2354,
+      "name": "哥夫內的鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2354.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1478,
+      "name": "爾休披斯槍",
+      "slot": "twohand",
+      "wtype": "양손창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1478.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "迪塔勒泰晤勒斯",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13167,
+      "name": "短口創DD",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13167.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "水晶龍",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 1376,
+      "name": "心破壞斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1376.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊",
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊",
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊",
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "水晶龍",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 1561,
+      "name": "精裝之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1561.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "水晶龍",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 1918,
+      "name": "琵琶",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1918.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍",
+            "★ 急速 +6"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍",
+            "★ 急速 +7"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍",
+            "★ 急速 +8"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "深淵之湖",
+          "monster": "水晶龍",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2408,
+      "name": "腳鍊",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2408.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "腐屍戰俘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1829,
+      "name": "精製升龍拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1829.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "腐屍戰俘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2319,
+      "name": "秘衣 惡德",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2319.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "邪骸戰俘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1963,
+      "name": "毒鞭 薔薇",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1963.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "邪骸戰俘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1244,
+      "name": "神聖大駒短劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1244.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "邪骸戰俘",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2266,
+      "name": "金屬口罩",
+      "slot": "head_low",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2266.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +0.6 HP/秒"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +0.7 HP/秒"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +0.8 HP/秒"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈劍士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2315,
+      "name": "鋼鐵鎖子甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2315.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈劍士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1158,
+      "name": "雙手巨劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1158.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈劍士",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1715,
+      "name": "亞伯雷弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1715.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈弓箭手",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1719,
+      "name": "盜賊之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1719.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈弓箭手",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1721,
+      "name": "十字機弩",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1721.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "幽靈弓箭手",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2206,
+      "name": "婚禮頭紗",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2206.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "惡靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1573,
+      "name": "古老魔法書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1573.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "惡靈",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2508,
+      "name": "抗魔斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2508.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "闇神官",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2005,
+      "name": "女神之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2005.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "闇神官",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1828,
+      "name": "武僧拳套",
+      "slot": "onehand",
+      "wtype": "너클",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1828.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "闇神官",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1170,
+      "name": "亞藍斯之劍",
+      "slot": "twohand",
+      "wtype": "양손검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1170.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 VIT",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 VIT",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 VIT",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "卡利斯格",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1544,
+      "name": "露娜平底鍋",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1544.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "卡利斯格",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13306,
+      "name": "英勇的戰鬥風魔翼飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13306.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "卡利斯格",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1306,
+      "name": "血腥戰斧",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1306.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "凱美拉",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1364,
+      "name": "克萊伊特斧",
+      "slot": "twohand",
+      "wtype": "양손도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1364.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "凱美拉",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13176,
+      "name": "勇士來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13176.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "凱美拉",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2318,
+      "name": "秘衣 美德",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2318.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "深淵騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1421,
+      "name": "戰鬥鉤槍",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1421.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%",
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "深淵騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1826,
+      "name": "勇士龍爪拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1826.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "深淵騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2125,
+      "name": "強硬鋼盾",
+      "slot": "shield",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2125.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "血腥騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1308,
+      "name": "金斧頭",
+      "slot": "onehand",
+      "wtype": "도끼",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1308.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "血腥騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1541,
+      "name": "納米西斯錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1541.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "血腥騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2001,
+      "name": "神聖十字之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2001.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "迷幻之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1926,
+      "name": "豬籠草之豎琴",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1926.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "迷幻之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1572,
+      "name": "魔法經典",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1572.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "迷幻之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2004,
+      "name": "克羅納斯魔杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2004.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1237,
+      "name": "無影之牙",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1237.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee",
+            "★ +6% 爆擊"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee",
+            "★ +7% 爆擊"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee",
+            "★ +8% 爆擊"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2334,
+      "name": "魔法外套",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2334.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5162,
+      "name": "骨製頭盔",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5162.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5093,
+      "name": "修女的帽子",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5093.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5808,
+      "name": "黑暗巴西里昂冠",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5808.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "古城修道院",
+          "monster": "黑暗之王",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1973,
+      "name": "海洋魔女之腳鞭",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1973.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "南瓜魂",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13110,
+      "name": "勇士左輪手槍",
+      "slot": "twohand",
+      "wtype": "권총",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13110.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "南瓜魂",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13171,
+      "name": "快速的布林其來福槍",
+      "slot": "twohand",
+      "wtype": "라이플",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13171.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "萬聖魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2422,
+      "name": "高級輕便鞋",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2422.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "萬聖魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13307,
+      "name": "勇士風魔飛鏢",
+      "slot": "twohand",
+      "wtype": "수리검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13307.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害",
+            "★ +6 詠唱速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害",
+            "★ +7 詠唱速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害",
+            "★ +8 詠唱速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "萬聖魔",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 13178,
+      "name": "勇士霰彈槍",
+      "slot": "twohand",
+      "wtype": "샷건",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13178.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害",
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害",
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害",
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "兔斯拉",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1568,
+      "name": "水靈之書",
+      "slot": "onehand",
+      "wtype": "책",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1568.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "兔斯拉",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1974,
+      "name": "紅蘿蔔鞭",
+      "slot": "onehand",
+      "wtype": "채찍",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1974.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 範圍"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 範圍"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 範圍"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "鬼娃樹",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1425,
+      "name": "突襲隊長的長矛",
+      "slot": "onehand",
+      "wtype": "창",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1425.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "鬼娃樹",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1732,
+      "name": "大地之弓",
+      "slot": "twohand",
+      "wtype": "활",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1732.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 彈道速度 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 彈道速度 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 彈道速度 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "鬼娃樹",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 2529,
+      "name": "騎乘之徽章",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2529.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 AGI"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 AGI"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 AGI"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "假面鬼",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1276,
+      "name": "刺藤拳刃",
+      "slot": "twohand",
+      "wtype": "카타르",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1276.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "假面鬼",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "id": 1229,
+      "name": "廚刀",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1229.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊",
+            "★ +18% Zeny"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊",
+            "★ +21% Zeny"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊",
+            "★ +24% Zeny"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "嗜血怪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 13002,
+      "name": "卡卡普劍",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/13002.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +18%",
+            "★ 命中時暈眩機率 +6%"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +21%",
+            "★ 命中時暈眩機率 +7%"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 中毒、燃燒與出血傷害 +24%",
+            "★ 命中時暈眩機率 +8%"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "嗜血怪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1827,
+      "name": "勇士升龍拳套",
+      "slot": "onehand",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1827.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "嗜血怪人",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2718,
+      "name": "瘋兔別針",
+      "slot": "acc",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2718.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 LUK"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 LUK"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 LUK"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "銀月魔女",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2000,
+      "name": "破壞之杖",
+      "slot": "onehand",
+      "wtype": "롯드",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2000.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "銀月魔女",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2537,
+      "name": "魔王的斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2537.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "銀月魔女",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1927,
+      "name": "勇士吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1927.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +18% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +21% 對頭目與不死系傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +24% 對頭目與不死系傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "銀月魔女",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1920,
+      "name": "狂暴吉他",
+      "slot": "onehand",
+      "wtype": "악기",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1920.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 急速 +6",
+            "★ +6 DEX"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 急速 +7",
+            "★ +7 DEX"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 急速 +8",
+            "★ +8 DEX"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "無顱武士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1548,
+      "name": "熟練者之錘",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1548.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35% 肉類回復量"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40% 肉類回復量"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "無顱武士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2364,
+      "name": "隕石鋼鐵鎧甲",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2364.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "無顱武士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1230,
+      "name": "破甲短錐",
+      "slot": "onehand",
+      "wtype": "단검",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1230.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% 爆擊",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% 爆擊",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% 爆擊",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 1529,
+      "name": "高爾夫球桿",
+      "slot": "onehand",
+      "wtype": "클럽",
+      "icon": "https://ro.hans-webgametw.com/assets/items/1529.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ 命中時暈眩機率 +6%",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ 命中時暈眩機率 +7%",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ 命中時暈眩機率 +8%",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2421,
+      "name": "巴基力的長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2421.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +30 最大 HP",
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +35 最大 HP",
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +40 最大 HP",
+            "★ +8% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2524,
+      "name": "巴基力的斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2524.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6% Flee",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7% Flee",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8% Flee",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 5171,
+      "name": "巴基力頭具",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5171.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2423,
+      "name": "變形長靴",
+      "slot": "shoes",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2423.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +2.4 護甲",
+            "★ +6% 移動速度"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +2.8 護甲",
+            "★ +7% 移動速度"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +3.2 護甲",
+            "★ +8% 移動速度"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "死靈騎士",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "id": 2365,
+      "name": "歐羅萊昂的制服",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2365.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 詠唱速度",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 詠唱速度",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 詠唱速度",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "墮落大神官 悉潘",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2366,
+      "name": "神聖的衣裳",
+      "slot": "armor",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2366.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +2.4 護甲"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +2.8 護甲"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +3.2 護甲"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "墮落大神官 悉潘",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 5170,
+      "name": "羽毛貝雷帽",
+      "slot": "head_top",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/5170.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ -6% 承受傷害",
+            "★ +30 最大 HP"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ -7% 承受傷害",
+            "★ +35 最大 HP"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ -8% 承受傷害",
+            "★ +40 最大 HP"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "墮落大神官 悉潘",
+          "boss": true,
+          "rare": true
+        }
+      ]
+    },
+    {
+      "id": 2546,
+      "name": "海灘斗篷",
+      "slot": "garment",
+      "wtype": "unknown",
+      "icon": "https://ro.hans-webgametw.com/assets/items/2546.png",
+      "tiers": [
+        {
+          "tier": 6,
+          "bonuses": [
+            "★ +6 STR",
+            "★ +6 INT"
+          ]
+        },
+        {
+          "tier": 7,
+          "bonuses": [
+            "★ +7 STR",
+            "★ +7 INT"
+          ]
+        },
+        {
+          "tier": 8,
+          "bonuses": [
+            "★ +8 STR",
+            "★ +8 INT"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "chapter": 2,
+          "tier": 6,
+          "stage": "尼芙菲姆原野",
+          "monster": "墮落大神官 悉潘",
           "boss": true,
           "rare": true
         }

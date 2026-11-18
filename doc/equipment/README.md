@@ -2,7 +2,7 @@
 
 直接以瀏覽器開啟 `index.html`，不需登入、啟動遊戲或安裝使用者腳本。文字、分類與搜尋可離線使用；原遊戲裝備圖片需要網路。
 
-與助手過濾器共用 `equipmentGroups`、`equipmentTiers`、`actualEquipmentBonuses`、部位與武器類型資料。目前共 320 個裝備 ID、10 個部位分類，提供單手／雙手武器細分類、跨部位搜尋、T4～T8 及中文掉落來源。同名不同 ID 分開呈現，避免把其中一件的詞條誤套到另一件。
+與助手過濾器共用 `equipmentGroups`、`equipmentTiers`、`actualEquipmentBonuses`、部位與武器類型資料。目前共 488 個裝備 ID、10 個部位分類，提供單手／雙手武器細分類、跨部位搜尋、第一章 T4～T8、第二章 T6～T8 及中文掉落來源。同名不同 ID 分開呈現，避免把其中一件的詞條誤套到另一件。
 
 固定加成來自實際遊戲定義與 Tier 詞條，不再使用舊圖書館的說明。數值未含精煉、品質基礎面板或隨機詞綴；來源清單保留基礎周目的關卡及 Tier，T4～T8 的規則與過濾器一致。沒有固定詞條的 Tier 明確顯示「無固定加成」。例如紫蝶髮帶 2208 沒有固定減傷，而同名 2209 的原生固定詞條不同，兩者分開顯示。
 
@@ -18,8 +18,8 @@
 
 本次公開資料來源：
 
-- https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hzd1f6294e.js
-- https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz8a698f4b.js
+- https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz2f3bd05c.js
+- https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzb6eb53b9.js
 
 遊戲更新不會自動更新此快照。裝備與圖像權利屬原權利人。
 
