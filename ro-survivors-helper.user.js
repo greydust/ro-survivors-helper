@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.0
+// @version      2.2.1
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.0'};
+  window[runtimeKey]={version:'2.2.1'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -2625,7 +2625,7 @@
   }
   function advancedManualInput(event){
     if(advancedClicking)return;
-    if(event.type==='keydown'&&advancedDialog){event.stopImmediatePropagation();if(event.key==='Escape'){event.preventDefault();closeAdvancedDialog();}return;}
+    if(event.type==='keydown'&&advancedDialog&&!advancedDialog.hidden){event.stopImmediatePropagation();if(event.key==='Escape'){event.preventDefault();closeAdvancedDialog();}return;}
     if(!advancedSettings.enabled)return;
     if(event.type==='keydown'){
       if(!pickerIsOpen()&&!advancedChoice?.background)return;
@@ -2715,11 +2715,58 @@
       row.append(choices);root.append(row);
     }
   }
+  let advancedButtonPosition=null;
+  function placeAdvancedButton(button){
+    if(!advancedButtonPosition)return;
+    const view=helperViewport(),rect=button.getBoundingClientRect();
+    advancedButtonPosition={left:Math.max(view.left,Math.min(advancedButtonPosition.left,view.left+view.width-rect.width)),top:Math.max(view.top,Math.min(advancedButtonPosition.top,view.top+view.height-rect.height))};
+    Object.assign(button.style,{left:advancedButtonPosition.left+'px',top:advancedButtonPosition.top+'px',right:'auto',bottom:'auto'});
+  }
+  function installAdvancedButtonDrag(button){
+    let hold=null,suppressClick=false;
+    const clear=()=>{if(hold)clearTimeout(hold.timer);hold=null;button.style.cursor='grab';};
+    button.addEventListener('pointerdown',event=>{
+      if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
+      clear();suppressClick=false;
+      const rect=button.getBoundingClientRect();
+      hold={id:event.pointerId,x:event.clientX,y:event.clientY,left:rect.left,top:rect.top,dragging:false};
+      hold.timer=setTimeout(()=>{if(hold){hold.dragging=true;button.style.cursor='grabbing';}},300);
+      button.setPointerCapture?.(event.pointerId);
+    });
+    button.addEventListener('pointermove',event=>{
+      if(!hold||hold.id!==event.pointerId)return;
+      const dx=event.clientX-hold.x,dy=event.clientY-hold.y;
+      if(!hold.dragging){if(Math.hypot(dx,dy)>10){suppressClick=true;clear();}return;}
+      event.preventDefault();suppressClick=true;
+      advancedButtonPosition={left:hold.left+dx,top:hold.top+dy};placeAdvancedButton(button);
+    });
+    button.addEventListener('pointerup',event=>{if(hold?.id===event.pointerId){suppressClick=hold.dragging||suppressClick;clear();}});
+    button.addEventListener('pointercancel',()=>{suppressClick=true;clear();});
+    button.addEventListener('lostpointercapture',clear);
+    button.addEventListener('contextmenu',event=>event.preventDefault());
+    button.addEventListener('click',event=>{if(suppressClick){event.preventDefault();event.stopImmediatePropagation();suppressClick=false;}},true);
+  }
+  function advancedNativeWindowOpen(){
+    return [...document.querySelectorAll('.overlay,dialog[open],[role="dialog"]')].some(panel=>{
+      if(panel===advancedDialog||panel.closest('#ro-advanced-choice-dialog'))return false;
+      for(let node=panel;node instanceof Element;node=node.parentElement){
+        if(node.hidden||node.classList.contains('hidden')||node.getAttribute('aria-hidden')==='true')return false;
+        const style=window.getComputedStyle?.(node);
+        if(style?.display==='none'||style?.visibility==='hidden')return false;
+      }
+      return true;
+    });
+  }
   function updateAdvancedChoiceUI(){
     const lobby=document.querySelector('#lobby-ui');let button=document.querySelector('#ro-advanced-choice');
     if(!lobby||lobby.classList.contains('hidden')||!document.body.classList.contains('in-lobby')){button?.remove();closeAdvancedDialog();return;}
     if(!button){button=advancedButton('自動選卡',()=>{if(advancedDialog)return;advancedScope=advancedCharacterScope(advancedReadCharacter());advancedDialog=document.createElement('section');advancedDialog.id='ro-advanced-choice-dialog';advancedDialog.setAttribute('role','dialog');advancedDialog.setAttribute('aria-modal','true');advancedDialog.setAttribute('aria-label','自動選卡設定');document.body.append(advancedDialog);renderAdvancedDialog();});button.id='ro-advanced-choice';document.body.append(button);}
+    if(!button.dataset.roDraggable){button.dataset.roDraggable='true';button.title='點一下開啟設定；長按後拖曳移動';installAdvancedButtonDrag(button);}
+    const blocked=advancedNativeWindowOpen();
+    if(button.hidden!==blocked)button.hidden=blocked;
+    if(advancedDialog&&advancedDialog.hidden!==blocked)advancedDialog.hidden=blocked;
     const text='自動選卡'+(advancedSettings.enabled?'：開':'：關');if(button.textContent!==text)button.textContent=text;
+    if(!blocked)placeAdvancedButton(button);
   }
   function pickerIsOpen(){
     const picker=document.querySelector('#picker');
@@ -2865,7 +2912,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.0');
+      console.info('[RO助手] 即時自選已啟用 v2.2.1');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3143,6 +3190,7 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #ro-advanced-choice[data-ro-draggable]{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}#ro-advanced-choice[hidden],#ro-advanced-choice-dialog[hidden]{display:none!important}
       #ro-advanced-choice{position:fixed;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));z-index:40;padding:10px 16px;border:1px solid #718dbb;border-radius:8px;background:#233b61;color:#fff;font:600 15px sans-serif;cursor:pointer}
       #ro-advanced-choice-dialog{position:fixed;inset:4vh max(8px,calc((100vw - 960px)/2));z-index:10000;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;padding:18px;background:#142238;color:#edf4ff;border:1px solid #819bc4;border-radius:12px;box-shadow:0 0 0 100vmax #0009;font:14px/1.6 sans-serif}
       #ro-advanced-choice-dialog header{display:flex;justify-content:space-between;align-items:center;font-size:20px}
@@ -3311,10 +3359,12 @@
         // the value unchanged. Never schedule another scan for that no-op.
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
+        if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
+        if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
         return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
       });
       if (relevant) schedule();
-    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src'] });
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });
     scan();
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.
