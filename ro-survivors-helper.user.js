@@ -2459,7 +2459,7 @@
     if(!card.upgrade)return [];
     return (card.upgrade.parts||[card.upgrade]).map(part=>part.aspect==='effect'?'effect:'+part.effect:part.aspect);
   }
-  function advancedDecision(game,cards,kind,{rerolled=false,available=()=>true}={}){
+  function advancedDecision(game,cards,kind,{available=()=>true}={}){
     const action=(type,index)=>({type,index});
     if(kind==='skill'){
       const upgrades=cards.map((card,index)=>({card,index,rule:advancedSkillRule(card.id)})).filter(row=>!row.card.isNew&&row.card.id!=='potion');
@@ -2472,7 +2472,7 @@
       const missing=new Set(eligible.filter(card=>!slots.includes(card.id)&&advancedSkillRule(card.id).take==='must').map(card=>card.id)).size;
       const fill=cards.findIndex(card=>card.isNew&&advancedSkillRule(card.id).take==='fill');
       if(fill>=0&&remaining>missing)return action('pick',fill);
-      if(remaining>0&&missing>=remaining&&!rerolled&&available('deck',-1))return action('deck',-1);
+      if(remaining>0&&missing>=remaining&&available('deck',-1))return action('deck',-1);
       for(const priority of advancedSettings.priority){
         if(advancedSkillRule(priority.skill).upgrade!=='select')continue;
         const match=upgrades.find(row=>row.rule.upgrade==='select'&&row.card.id===priority.skill&&(!priority.upgrades.length||advancedUpgradeIds(row.card).some(id=>priority.upgrades.includes(id))));
@@ -2521,7 +2521,7 @@
   function resetAdvancedChoice(){cancelAdvancedChoice(false);advancedChoice=null;}
   function captureAdvancedChoice(game,cards,kind,render=null){
     clearTimeout(advancedTimer);advancedTimer=null;
-    advancedChoice={game,cards,kind,render,background:typeof render==='function',manual:false,rerolled:false,started:performance.now(),pending:null,actions:0};
+    advancedChoice={game,cards,kind,render,background:typeof render==='function',manual:false,started:performance.now(),pending:null,actions:0};
     queueAdvancedChoice();
   }
   function queueAdvancedChoice(delay){
@@ -2567,13 +2567,13 @@
     const {game,kind}=state;
     if(game.state!=='levelup')return cancelAdvancedChoice(false);
     if(++state.actions>1000||performance.now()-state.started>10000)return cancelAdvancedChoice();
-    const decision=advancedDecision(game,state.cards,kind,{rerolled:state.rerolled,available:(type,index)=>advancedBackgroundAvailable(state,type,index)});
+    const decision=advancedDecision(game,state.cards,kind,{available:(type,index)=>advancedBackgroundAvailable(state,type,index)});
     if(!decision)return revealAdvancedChoice(state);
     const card=state.cards[decision.index];advancedClicking=true;
     try{
       if(decision.type==='pick')return finishAdvancedBackground(state,card);
       if(decision.type==='deck'){
-        state.rerolled=true;const cards=game[kind==='skill'?'rerollDeck':'rerollChest']();
+        const cards=game[kind==='skill'?'rerollDeck':'rerollChest']();
         if(!Array.isArray(cards)||!cards.length)return revealAdvancedChoice(state);state.cards=cards;
       }else if(decision.type==='single'){
         const replacement=game.rerollChestCard(card);if(!replacement)return revealAdvancedChoice(state);state.cards[decision.index]=replacement;
@@ -2602,7 +2602,7 @@
     if(!nodes.length||nodes.length!==state.cards.length||nodes.some((node,index)=>node.dataset.i!==String(index)))return;
     if(performance.now()-state.started>10000){cancelAdvancedChoice();notify('自動選卡未完成，已恢復手動選擇');return;}
     const available=(type,index)=>{const button=advancedActionButton(state,type,index);return !!button&&!button.disabled&&!button.classList.contains('disabled');};
-    const decision=state.pending||advancedDecision(state.game,state.cards,state.kind,{rerolled:state.rerolled,available});
+    const decision=state.pending||advancedDecision(state.game,state.cards,state.kind,{available});
     if(!decision)return;
     const node=nodes[decision.index];
     // Retain native entrance locks, animation, coop deadline and replacement
@@ -2617,7 +2617,6 @@
       }else{
         const button=advancedActionButton(state,decision.type,decision.index);
         if(!button||button.disabled)return;
-        if(decision.type==='deck')state.rerolled=true;
         button.click();
         // Native methods schedule the next pass only when an action ran.
       }
