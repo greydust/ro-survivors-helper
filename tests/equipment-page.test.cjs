@@ -23,7 +23,7 @@ assert.deepEqual(data.records.map(record=>record.id).sort((a,b)=>a-b),catalog.ma
 assert.equal(data.maxTier,8);assert.equal(data.lapCount,6);assert.equal(data.lapConfig.max,6);
 assert(data.records.every(record=>(record.sources.every(source=>source.chapter===2)?[6,7,8]:[4,5,6,7,8]).every(tier=>record.tiers.some(row=>row.tier===tier))));
 const dagger=data.records.find(record=>record.id===1202);assert(dagger.tiers.find(row=>row.tier===8).bonuses.includes('★ 急速 +8'));
-assert(document.body.textContent.includes('六周目 T8'));
+for(const sources of document.querySelectorAll('.gear-sources'))assert(!/T[1-8]|周目/.test(sources.textContent));
 assert(data.records.every(record=>record.sources.every(source=>!/[A-Za-z]/.test(source.monster))));
 assert(!html.includes('import('));assert(!html.includes('fetch('));
 console.log('PASS static equipment page shares filter catalog, actual bonuses, Chinese sources and T4–T8; categories, subtypes and search work offline');
@@ -33,7 +33,7 @@ for(const [id,name,stage] of [[39001,'聖誕版海東劍','聖誕節'],[5457,'�
  const record=data.records.find(row=>row.id===id);assert(record);assert.equal(record.name,name);assert(record.sources.some(source=>source.stage===stage));assert(record.tiers.some(row=>row.tier===8));
  input.value=name;input.oninput();assert(document.querySelector('.gear[data-item-id="'+id+'"]'));
 }
-const rare=data.records.find(row=>row.id===5292);assert(rare.sources.some(source=>source.rare&&source.monster==='墨蛇君'));assert(document.querySelector('.gear[data-item-id="5292"]').textContent.includes('稀有'));
+const rare=data.records.find(row=>row.id===5292);assert(rare.sources.some(source=>source.rare&&source.monster==='墨蛇君'));assert(document.querySelector('.gear[data-item-id="5292"]').textContent.includes('闖入者'));
 assert.equal(data.records.find(row=>row.id===39001).icon,'https://ro.hans-webgametw.com/assets/items/1128.png');
 assert(data.records.find(row=>row.id===1559).tiers.find(row=>row.tier===8).bonuses.includes('★ +24% 對頭目與不死系傷害'));
 console.log('PASS expanded catalog includes official names, reused artwork, festival/rare sources and current T8 bonuses');

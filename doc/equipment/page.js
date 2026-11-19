@@ -37,16 +37,16 @@
       }
       const list=document.createElement('ul'),sources=new Map();
       for(const source of record.sources){
-        const key=source.stage+'\0'+source.tier;
-        if(!sources.has(key))sources.set(key,{stage:source.stage,tier:source.tier,monsters:new Set()});
-        sources.get(key).monsters.add((source.boss?'👑 ':'')+source.monster+(source.rare?'（稀有）':''));
+        const key=source.stage;
+        if(!sources.has(key))sources.set(key,{stage:source.stage,monsters:new Set()});
+        sources.get(key).monsters.add((source.boss?'👑 ':'')+source.monster+(source.rare?'（闖入者）':''));
       }
       for(const source of sources.values()){
-        const line=document.createElement('li'),stage=document.createElement('b');stage.textContent=source.stage+' T'+source.tier;
+        const line=document.createElement('li'),stage=document.createElement('b');stage.textContent=source.stage;
         line.append(stage,document.createTextNode('：'+[...source.monsters].join('、')));list.append(line);
       }
-      const laps=document.createElement('li');laps.textContent='二周目 T4、三周目 T5、四周目 T6、五周目 T7、六周目 T8：同上關卡與怪物';list.append(laps);
-      card.append(list);grid.append(card);
+      list.className='gear-sources';list.setAttribute('aria-label','掉落來源');
+      card.insertBefore(list,header.nextSibling);grid.append(card);
     }
     if(!records.length){const note=document.createElement('p');note.className='empty-result';note.textContent='沒有符合的裝備，請換個分類或關鍵字。';grid.append(note);}
     const label=query?'搜尋全部部位':data.slots.find(([id])=>id===category)[1]+(subtype?'／'+(names.get(subtype)||'其他'):'');

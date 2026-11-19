@@ -561,7 +561,7 @@ test('multi-lap gear exposes T4 through T8, bulk exclusions stop below highest a
   e.api.openFilter();
   const card=e.document.querySelector('[data-gear-id="1202"]');
   assert.deepEqual([...card.querySelectorAll('[data-gear-tier]')].map(b=>b.dataset.gearTier),['1','4','5','6','7','8']);
-  assert(card.textContent.includes('實際 T4 屬性'));assert(card.textContent.includes('實際 T5 屬性'));assert(seen.includes(8));assert(card.textContent.includes('六周目 T8'));
+  assert(card.textContent.includes('實際 T4 屬性'));assert(card.textContent.includes('實際 T5 屬性'));assert(seen.includes(8));const sources=card.querySelector('.ro-gear-sources');assert(sources.textContent.includes('波利'));assert(!sources.closest('details'));assert(!/T[1-8]|周目/.test(sources.textContent));assert.equal(card.querySelector('summary').textContent,'各階屬性');
   assert.deepEqual([...e.document.querySelectorAll('[data-exclude-tier-select] option')].map(b=>b.value),['1','2','3','4','5','6','7']);
   const cutoff=e.document.querySelector('[data-exclude-tier-select]');cutoff.querySelector('[value="7"]').selected=true;cutoff.onchange();
   assert(!e.api.getFilterDraft().disabledTiers['1163:7'],'selecting a cutoff does not apply changes');
@@ -1071,3 +1071,15 @@ test('removed minimap cache has no option or pickup accessor even with an old sa
   e.api.installFastChoice(game);assert.deepEqual(Object.getOwnPropertyDescriptor(game,'pickups'),descriptor);
 });
 console.log(`${count} tests passed`);
+
+test('equipment drop sources stay visible, merge stages and omit source Tier labels',()=>{
+ const e=catalogEnv();e.api.openFilter();
+ const catalog=e.api.getEquipmentCatalog();
+ const cards=[...e.document.querySelectorAll('.ro-gear-card')];assert(cards.length);
+ for(const card of cards){
+  const record=catalog.find(row=>String(row.id)===card.dataset.gearId),sources=card.querySelector('.ro-gear-sources');
+  assert(sources);assert(!sources.closest('details'));assert(!/T[1-8]|周目/.test(sources.textContent));
+  assert.equal(sources.children.length,new Set(record.sources.map(source=>source.stage)).size);
+  for(const source of record.sources){assert(sources.textContent.includes(source.stage));assert(sources.textContent.includes(source.monster));if(source.rare)assert(sources.textContent.includes('闖入者'));}
+ }
+});

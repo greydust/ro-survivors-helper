@@ -120,9 +120,17 @@
       for(const [id,name] of options){const option=element('option',name);option.value=id;option.selected=id===(assigned.length>1?'__mixed':assigned[0]);option.disabled=id==='__mixed';settings.append(option);}
       settings.onchange=()=>{for(const r of group.records){if(settings.value)filterDraft.assignments[r.id]=settings.value;else delete filterDraft.assignments[r.id];}};
       header.append(image,title,settings);card.append(header);
+      const sources=element('ul',undefined,'ro-gear-sources'),locations=new Map();
+      sources.setAttribute('aria-label','掉落來源');
+      for(const record of group.records)for(const source of record.sources){
+        if(!locations.has(source.stage))locations.set(source.stage,new Set());
+        locations.get(source.stage).add((source.boss?'👑 ':'')+source.monster+(source.rare?'（闖入者）':''));
+      }
+      for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
+      card.append(sources);
       const tiers=[...new Set(group.records.flatMap(r=>equipmentTiers(r)))].sort((a,b)=>a-b);
       const toggles=element('div',undefined,'ro-gear-tier ro-gear-tier-switches'),details=element('details',undefined,'ro-gear-expanded');
-      details.open=expanded.has(card.dataset.gearId);details.append(element('summary','各階屬性與掉落來源'));
+      details.open=expanded.has(card.dataset.gearId);details.append(element('summary','各階屬性'));
       const bonusGroups=new Map();
       for(const tier of tiers){
         const records=group.records,ids=records.map(r=>r.id);
@@ -138,14 +146,7 @@
       card.append(toggles,element('p',card.dataset.highestBonus,'ro-gear-bonus-preview'));
       delete card.dataset.highestBonus;
       for(const [text,values] of bonusGroups){const row=element('div',undefined,'ro-gear-tier');row.append(element('b',values.map(t=>'T'+t).join('／')),element('span',text));details.append(row);}
-      const sources=element('ul');
-      const locations=new Map();
-      for(const record of group.records)for(const source of record.sources){
-        const key=source.stage+' T'+source.tier;if(!locations.has(key))locations.set(key,new Set());locations.get(key).add((source.boss?'👑 ':'')+source.monster+(source.rare?'（稀有）':''));
-      }
-      for(const [location,monsters] of locations)sources.append(element('li',location+'：'+[...monsters].join('、')));
-      if(!group.records.every(record=>record.sources.every(source=>source.chapter===2)))sources.append(element('li',Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>['二','三','四','五','六'][i]+'周目 T'+(equipmentBaseMaxTier()+i+1)).join('、')+'：同上關卡與怪物（依遊戲多周目規則）'));
-      details.append(sources);card.append(details);container.append(card);
+      card.append(details);container.append(card);
     }
     summary.textContent='目前分類 '+shown+' 筆裝備；T 亮起＝保留，關閉＝不需要。';
     if(!shown)container.append(element('p','沒有符合搜尋的裝備。'));
