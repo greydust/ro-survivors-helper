@@ -50,12 +50,12 @@ const normalize=value=>JSON.parse(JSON.stringify(value));
    const hero={id:'third-hero',name:'greydust',...representation,talents:{},equipped:{},inventory:[]};
    const skill=trees[0].skills[0],other=trees[1].skills[0];
    hero.talents[`${job.id}.1.s1`]=1;
-   const scope=e.api.scope(hero);assert(scope,job.id);assert(scope.ids.has(skill),job.id+' learned third skill');assert(!scope.ids.has(other),job.id+' unlearned third skill');
+   const scope=e.api.scope(hero);assert(scope,job.id);assert(scope.ids.has(skill),job.id+' learned third skill');assert(scope.ids.has(other),job.id+' unallocated third talent skill');
    e.api.setScope(scope);assert(e.api.scopedSkills().some(row=>row.id===skill));
    assert(e.api.scopedItems('deity').some(row=>row.id===skill),job.id+' dedicated deity');
    e.saved.set('ro-survivors.characters.v1',JSON.stringify([hero]));e.api.ui();e.document.querySelector('#ro-advanced-choice').click();
    const names=[...e.document.querySelectorAll('.ro-ac-row[data-search]')].map(row=>row.firstElementChild.textContent);
-   assert(names.includes(skill),job.id+' skill settings');assert(!names.includes(other));
+   assert(names.includes(skill),job.id+' skill settings');assert(names.includes(other));
    [...e.document.querySelectorAll('button')].find(button=>button.textContent==='新增條目').click();
    assert([...e.document.querySelectorAll('.ro-ac-priority select option')].some(option=>option.textContent===skill),job.id+' priority option');
    e.api.input({type:'keydown',key:'Escape',preventDefault(){},stopImmediatePropagation(){}});
@@ -182,7 +182,7 @@ const normalize=value=>JSON.parse(JSON.stringify(value));
  e.ctx.skillDefs={bash:{id:'bash',name:'狂擊',kind:'weapon'},shield_bash:{id:'shield_bash',name:'盾擊',kind:'weapon',needsShield:true},holy_cross:{id:'holy_cross',name:'聖十字攻擊',kind:'weapon'},firebolt:{id:'firebolt',name:'火箭術',kind:'weapon'},atk_sword:{id:'atk_sword',name:'攻擊：劍',kind:'weapon'}};
  e.api.catalog.skills=Object.values(e.ctx.skillDefs);e.api.catalog.items=[{id:'g_war',name:'戰爭神格',slot:'deity'}];
  e.ctx.smithDefs={1:{wtype:'검',slot:'weapon'},2:{slot:'shield'}};
- e.api.catalog.pool=(job,learned)=>[...(job==='crusader'?['bash','shield_bash']:['firebolt']),...learned].map(id=>({id}));
+ e.api.catalog.pool=(job,learned)=>[...(['swordsman','crusader'].includes(job)?['bash','shield_bash']:['firebolt']),...learned].map(id=>({id}));
  e.api.catalog.lineage=job=>job==='crusader'?['swordsman','crusader']:['mage'];e.api.catalog.basic=()=> 'atk_sword';
  e.api.catalog.talents={learn:{job:'crusader',learn:'holy_cross'},wrong:{job:'mage',learn:'firebolt'}};
  const hero={id:'hero',name:'greydust',job:'crusader',talents:{learn:1,wrong:1},equipped:{weapon:'w',shield:'s'},inventory:[{uid:'w',itemId:1},{uid:'s',itemId:2}]};
@@ -193,7 +193,7 @@ const normalize=value=>JSON.parse(JSON.stringify(value));
  const read=e.api.read();assert.equal(read.inventory.length,2);
  const scope=e.api.scope(read);assert.deepEqual([...scope.ids],['bash','shield_bash','holy_cross','atk_sword']);e.api.setScope(scope);
  assert.deepEqual(e.api.scopedItems('deity').map(item=>item.id),['g_war','bash','shield_bash','holy_cross']);
- delete hero.equipped.shield;assert(!e.api.scope(hero).ids.has('shield_bash'),'shield-bound skills follow current equipment');
+ delete hero.equipped.shield;assert(e.api.scope(hero).ids.has('shield_bash'),'shield skills remain configurable without a shield');
  e.api.configure({priority:[{skill:'firebolt',upgrades:[]},{skill:'bash',upgrades:[]},{skill:'holy_cross',upgrades:[]}]});
  e.api.ui();e.document.querySelector('#ro-advanced-choice').click();
  const names=[...e.document.querySelectorAll('.ro-ac-row[data-search]')].map(row=>row.firstElementChild.textContent);
@@ -204,7 +204,7 @@ const normalize=value=>JSON.parse(JSON.stringify(value));
  assert(e.api.settings().priority.some(row=>row.skill==='firebolt'),'other-class settings preserved without appearing in current UI');
  [...e.document.querySelectorAll('.ro-ac-priority button')].find(button=>button.textContent==='↓'&&!button.disabled).click();
  assert.equal(e.api.settings().priority[0].skill,'firebolt');assert.equal(e.api.settings().priority[1].skill,'holy_cross','visible reorder skips hidden other-job entries');
- console.log('PASS current profession, learned talents, equipment, dedicated deities and scoped priority ordering');
+ console.log('PASS current profession, all talent branches, equipment-independent configuration, dedicated deities and scoped priority ordering');
 }
 {
  const e=setup();
@@ -309,4 +309,40 @@ for(const background of [false,true]){
  assert.equal(button.style.left,'0px','position survives hide/show');
  pointer('pointerdown',100,100);e.advance(300);pointer('pointercancel',100,100);pointer('pointermove',200,200);assert.equal(button.style.left,'0px','cancel stops dragging');
  console.log('PASS floating choice button hold/drag, viewport bounds, tap, cancellation and multiple native windows');
+}
+
+{
+ const snapshot=JSON.parse(fs.readFileSync('tests/fixtures/infused-attack-native.json','utf8'));
+ const e=setup();e.ctx.skillDefs=Object.fromEntries(Object.entries(snapshot.skills).map(([id,def])=>[id,{...def,create:()=>({upgradeAspects:()=>['dmg','cd'],effects:[]})}]));
+ e.api.init({skills:e.ctx.skillDefs});
+ e.api.catalog.pool=()=>[];e.api.catalog.lineage=job=>job==='warlock'?['mage','wizard','warlock']:[job];
+ e.api.catalog.basic=type=>snapshot.basics[type||''];e.api.catalog.talents=Object.fromEntries(snapshot.talents.map(t=>[t.id,t]));
+ e.ctx.smithDefs={1:{slot:'weapon',wtype:'롯드'},2:{slot:'weapon',wtype:'단검'},3:{slot:'weapon',wtype:'활'}};
+ const hero={id:'mage-hero',name:'greydust',job:'mage',talents:{},equipped:{weapon:'w'},inventory:[{uid:'w',itemId:1}]};
+ const before=JSON.stringify(hero);
+ assert.deepEqual([...e.api.scope(hero).ids],['atk_rod','atk_dagger','atk_fist','atk_bow','atk_infused','atk_infused_melee']);assert.equal(JSON.stringify(hero),before);
+ for(const talent of snapshot.talents)for(const [weapon,expected]of [[1,'atk_infused'],[2,'atk_infused_melee'],[3,'atk_infused'],[null,'atk_infused_melee']]){
+  hero.talents={[talent.id]:1};hero.inventory=weapon?[{uid:'w',itemId:weapon}]:[];
+  const scope=e.api.scope(hero);assert.deepEqual([...scope.ids],['atk_rod','atk_dagger','atk_fist','atk_bow','atk_infused','atk_infused_melee'],talent.id+' weapon '+weapon);
+  e.api.setScope(scope);assert(e.api.scopedSkills().some(row=>row.id===expected));
+  assert(!e.api.scopedItems('deity').some(row=>row.id===expected),'basic attack has no dedicated deity');
+ }
+ hero.job='warlock';hero.promotion='warlock';hero.inventory=[{uid:'w',itemId:1}];
+ hero.talents=Object.fromEntries(snapshot.talents.map(t=>[t.id,1]));assert.deepEqual([...e.api.scope(hero).ids],['atk_rod','atk_dagger','atk_fist','atk_bow','atk_infused','atk_infused_melee']);
+ e.api.setScope(e.api.scope(hero));e.saved.set('ro-survivors.characters.v1',JSON.stringify([hero]));
+ e.api.configure({skills:{atk_infused:{take:'never',upgrade:'select'}},priority:[{skill:'atk_infused',upgrades:['cd']}]});
+ e.api.ui();e.document.querySelector('#ro-advanced-choice').click();
+ assert([...e.document.querySelectorAll('.ro-ac-row[data-search]')].some(row=>row.firstElementChild.textContent==='攻擊：屬性附魔'));
+ assert([...e.document.querySelectorAll('.ro-ac-priority select option')].some(option=>option.value==='atk_infused'));
+ assert(e.api.upgrades('atk_infused').some(row=>row.id==='cd'));
+ vm.runInContext('closeAdvancedDialog()',e.ctx);
+ const game=e.game();game.slots=['full'];game.maxSkills=1;
+ const cards=[up('atk_rod'),up('atk_infused','cd')];
+ assert.deepEqual(normalize(e.api.decide(game,cards,'skill')),{type:'pick',index:1});
+ e.api.capture(game,cards,'skill',()=>{throw Error('unexpected manual fallback');});e.advance(100);assert.equal(game.chosen[0].id,'atk_infused');
+ hero.talents={};assert.deepEqual([...e.api.scope(hero).ids],['atk_rod','atk_dagger','atk_fist','atk_bow','atk_infused','atk_infused_melee']);
+ assert.equal(e.api.settings().priority[0].skill,'atk_infused','changing talents preserves saved preferences');
+ hero.talents={'mage.0.fire_infusion':0};assert.deepEqual([...e.api.scope(hero).ids],['atk_rod','atk_dagger','atk_fist','atk_bow','atk_infused','atk_infused_melee']);
+ hero.job='swordsman';delete hero.promotion;hero.talents={'mage.0.fire_infusion':1};assert.deepEqual([...e.api.scope(hero).ids],['atk_rod','atk_dagger','atk_fist','atk_bow'],'unrelated job excludes infused attacks');
+ console.log('PASS native Mage infusion talents: all elements, ranged/melee/unarmed, inherited jobs, settings UI, upgrade priority, background choice and respec');
 }

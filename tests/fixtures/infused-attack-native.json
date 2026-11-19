@@ -1,0 +1,97 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz2f3bd05c.js",
+  "talents": [
+    {
+      "id": "mage.0.fire_infusion",
+      "job": "mage"
+    },
+    {
+      "id": "mage.1.water_infusion",
+      "job": "mage"
+    },
+    {
+      "id": "mage.2.wind_infusion",
+      "job": "mage"
+    }
+  ],
+  "skills": {
+    "atk_rod": {
+      "id": "atk_rod",
+      "name": "攻擊：法杖",
+      "kind": "weapon",
+      "tags": [
+        "projectile",
+        "single",
+        "magic",
+        "neutral",
+        "basic"
+      ]
+    },
+    "atk_dagger": {
+      "id": "atk_dagger",
+      "name": "攻擊：大駒短劍",
+      "kind": "weapon",
+      "tags": [
+        "melee",
+        "single",
+        "physical",
+        "neutral",
+        "basic"
+      ]
+    },
+    "atk_fist": {
+      "id": "atk_fist",
+      "name": "攻擊：拳腳",
+      "kind": "weapon",
+      "tags": [
+        "melee",
+        "single",
+        "physical",
+        "neutral",
+        "basic"
+      ]
+    },
+    "atk_bow": {
+      "id": "atk_bow",
+      "name": "攻擊：弓",
+      "kind": "weapon",
+      "tags": [
+        "projectile",
+        "single",
+        "physical",
+        "neutral",
+        "basic"
+      ]
+    },
+    "atk_infused": {
+      "id": "atk_infused",
+      "name": "攻擊：屬性附魔",
+      "kind": "weapon",
+      "tags": [
+        "projectile",
+        "single",
+        "magic",
+        "neutral",
+        "basic"
+      ]
+    },
+    "atk_infused_melee": {
+      "id": "atk_infused_melee",
+      "name": "攻擊：屬性附魔（近戰）",
+      "kind": "weapon",
+      "tags": [
+        "melee",
+        "single",
+        "magic",
+        "neutral",
+        "basic"
+      ]
+    }
+  },
+  "basics": {
+    "롯드": "atk_rod",
+    "단검": "atk_dagger",
+    "활": "atk_bow",
+    "": "atk_fist"
+  }
+}

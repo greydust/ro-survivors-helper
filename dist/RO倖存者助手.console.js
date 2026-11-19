@@ -1,4 +1,4 @@
-// RO 倖存者助手 2.2.8 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+// RO 倖存者助手 2.2.9 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
 (() => {
   'use strict';
   // Console and userscript installs share one instance per page.
@@ -7,7 +7,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.8'};
+  window[runtimeKey]={version:'2.2.9'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -2550,17 +2550,15 @@
     try{
       const lineage=advancedCatalog.lineage(character.promotion||character.job);
       const jobs=new Set(lineage.includes(character.job)?lineage:advancedCatalog.lineage(character.job));
-      const inventory=character.inventory||[],weapon=inventory.find(item=>item.uid===character.equipped?.weapon),shield=inventory.find(item=>item.uid===character.equipped?.shield);
-      const wtype=smithDefs?.[weapon?.itemId]?.wtype,hasShield=smithDefs?.[shield?.itemId]?.slot==='shield';
-      const learned=[];
-      for(const [id,rank]of Object.entries(character.talents||{})){
-        const talent=advancedCatalog.talents?.[id];
-        if(rank>0&&talent?.learn&&jobs.has(talent.job)&&(!talent.weapons||talent.weapons.includes(wtype||''))&&(!talent.needsShield||hasShield))learned.push(talent.learn);
+      // Settings describe the profession's possible build, independently of
+      // allocated talents and current equipment. Runtime offers remain native.
+      const learnable=Object.values(advancedCatalog.talents||{}).filter(talent=>jobs.has(talent.job)&&talent.learn).map(talent=>talent.learn);
+      const ids=new Set([...jobs].flatMap(job=>advancedCatalog.pool(job,learnable).map(row=>row.id)).filter(id=>skillDefs?.[id]));
+      for(const def of Object.values(skillDefs||{})){
+        if(!def?.id?.startsWith('atk_'))continue;
+        if(['atk_infused','atk_infused_melee'].includes(def.id)&&!jobs.has('mage'))continue;
+        ids.add(def.id);
       }
-      const ids=new Set(advancedCatalog.pool(character.job,learned).map(row=>row.id).filter(id=>{
-        const def=skillDefs?.[id];return def&&(!def.needsShield||hasShield)&&(!def.weapons||def.weapons.includes(wtype||''));
-      }));
-      if(advancedCatalog.basic){const basic=advancedCatalog.basic(wtype);if(skillDefs?.[basic])ids.add(basic);}
       const job=advancedCatalog.jobs?.(character.promotion||character.job);
       return {character:character.id,job:character.promotion||character.job,name:String(job?.name||character.job),ids};
     }catch{return null;}
@@ -2832,7 +2830,7 @@
     toggle.onchange=()=>{advancedSettings.enabled=toggle.checked;saveAdvancedSettings();};enabled.append(toggle,' 啟用進階自動選卡（設定會保存；啟用時取代舊自選）');dialog.append(enabled);
     const note=document.createElement('p');note.textContent='填充只在仍能保留所有必拿技能格時選。刷新／放逐使用原生剩餘次數；無可選項時保留手動。點選卡片、刷新按鈕或按 Escape，可中止當次自動選擇。';dialog.append(note);
     if(!advancedCatalog.skills.length||!advancedScope){const loading=document.createElement('p');loading.textContent='尚無法確認目前角色或職業資料，請回到主城重新開啟設定；不會顯示其他職業的技能。';dialog.append(loading);return;}
-    const scopeLabel=document.createElement('p');scopeLabel.textContent='目前職業：'+advancedScope.name+'（含已解鎖天賦技能；依目前武器／盾牌篩選）';dialog.append(scopeLabel);
+    const scopeLabel=document.createElement('p');scopeLabel.textContent='目前職業：'+advancedScope.name+'（含繼承職業、全部天賦技能及普攻；可提前設定）';dialog.append(scopeLabel);
     const search=document.createElement('input');search.type='search';search.placeholder='搜尋技能名稱或 ID';search.setAttribute('aria-label','搜尋技能');dialog.append(search);
     const table=document.createElement('div');table.className='ro-ac-table';dialog.append(table);
     const heading=document.createElement('div');heading.className='ro-ac-row';heading.append(...['技能','新技能','升級卡'].map(text=>{const span=document.createElement('b');span.textContent=text;return span;}));table.append(heading);
@@ -3085,7 +3083,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.8');
+      console.info('[RO助手] 即時自選已啟用 v2.2.9');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
