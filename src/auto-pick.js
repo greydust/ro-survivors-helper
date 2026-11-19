@@ -144,6 +144,7 @@
       skillDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value.atk_sword?.kind === 'weapon' && value.bash?.kind === 'weapon') || null;
       initializeAdvancedCatalog(module);
+      initializeTradeSearch(module);
       const hooks = Object.values(module).find(value => value && typeof value === 'object'
         && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
       if (!hooks) throw new Error('找不到遊戲事件介面');
@@ -153,7 +154,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.12');
+      console.info('[RO助手] 即時自選已啟用 v2.2.16');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -371,6 +372,7 @@
       updateSmith();
       updateMerchant();
       updateInventoryViews();
+      updateTradeSearch();
       updateStatCapDisplay();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {

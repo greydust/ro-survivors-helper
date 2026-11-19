@@ -2,6 +2,9 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #minimap .ro-title{display:flex;align-items:center;gap:.3em}
+      #minimap-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #minimap-coords{flex:0 0 auto;white-space:nowrap}
       #chronicle{box-sizing:border-box}
       #chronicle>.chronicle-window{box-sizing:border-box;width:min(900px,calc((100vw - max(8px,env(safe-area-inset-left)) - max(8px,env(safe-area-inset-right)))/var(--ui,1)));max-height:calc((100vh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));max-height:calc((100dvh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));display:flex;flex-direction:column;min-height:0}
       #chronicle>.chronicle-window>.ro-title,#chronicle>.chronicle-window>.btn-row{flex:none}
@@ -181,7 +184,7 @@
         if(el?.closest('#chr-perks'))return true;
         if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
         if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
-        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
+        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });

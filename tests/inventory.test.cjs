@@ -79,7 +79,7 @@ function nativeComparison(e,{cards=[101,102],candidateCards=[null,null],newItem=
  const Zj=[['ATK',stats=>stats.atk,'int']],Bv=value=>String(value),c=value=>value,De=value=>value,$e=()=>'',d=()=>'',l=item=>item.uid;
  const h=()=>({name:'Weapon'}),f=(score,diff=0)=>'<span class="gs">GS <b>'+score+'</b>'+(diff?'<i>'+diff+'</i>':'')+'</span>',v=()=>'',m=()=>'',w=()=>'',y=()=>[],k=()=>'',Am=()=>'',lm=()=>null;
  const z=()=>{},UC=()=>{},O={ui(){}},n=()=>{},la=()=>{};
- const T=()=>t.inventory.filter(item=>item.uid==='new').map(item=>({g:item,s:p(item)}));
+ const T=()=>{t.inventory.find(item=>item.uid==='shield');return t.inventory.filter(item=>item.uid==='new').map(item=>({g:item,s:p(item)}));};
  let j=null,C=null;
  const L=${native.compare},render=${native.render};
  render();
@@ -123,6 +123,36 @@ function nativeComparison(e,{cards=[101,102],candidateCards=[null,null],newItem=
  assert.equal(e.document.querySelector('#cp-eq-cmp .gs i').textContent,'-60');
  assert.equal(e.run('JSON.stringify(account)'),before);
  console.log('PASS base GS excludes refine, stars and cards without changing real equipment');
+}
+{
+ const e=setup();nativeComparison(e);
+ e.run('account.inventory[0].base=187;account.inventory[0].cards=[];account.inventory[0].refine=8;account.inventory[0].star=8;account.inventory[2].base=231;');
+ // The native list excludes worn gear. Reading another slot after the current
+ // item must not substitute that slot's GS, even when uid is the worn item.
+ assert(!e.document.querySelector('[data-uid="old"]'));
+ const before=e.run('JSON.stringify(account)');
+ e.api.withEquipmentScoreCapture(()=>e.run('nativeRender()'),'old');
+ assert.equal(e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]').textContent,' (187)');
+ assert.equal(e.run('JSON.stringify(account)'),before);
+ e.api.withEquipmentScoreCapture(()=>e.run("nativeRender();document.querySelector('#cp-eq-current .gs b').textContent='9999';"),'old');
+ assert(!e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]'),'unmatched current equipment must not reuse an earlier score');
+ console.log('PASS hovering worn gear cannot substitute another slot\'s 231 GS for its own 187 GS');
+}
+{
+ const e=setup();nativeComparison(e);e.api.updateEquipCandidates();
+ assert(!e.document.querySelector('[data-uid="old"]'),'native candidates exclude the current equipment');
+ assert.equal(e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]').textContent,' (100)');
+ e.api.withEquipmentScoreCapture(()=>{},'new');
+ assert.equal(e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]').textContent,' (100)','a no-op hover must retain the verified current score');
+ console.log('PASS current GS is shown without a candidate row and survives a no-op hover');
+}
+{
+ const e=setup();nativeComparison(e,{candidateCards:[101]});
+ e.run('account.inventory[1].refine=3;');
+ e.document.querySelector('[data-uid="new"] .cand-info > b').textContent='old';
+ e.api.withEquipmentScoreCapture(()=>e.run('nativeRender()'),'new');
+ assert(!e.document.querySelector('#cp-eq-current [data-ro-equipment-base-gs]'),'identical names and total GS with different base scores are ambiguous');
+ console.log('PASS ambiguous identical equipment omits current base GS rather than guessing');
 }
 for(const [candidateCards,expected,count] of [[[null],120,1],[[999,null],170,null],[[],120,null]]){
  const e=setup();nativeComparison(e,{candidateCards});const before=e.run('JSON.stringify(account)');e.api.updateEquipCandidates();

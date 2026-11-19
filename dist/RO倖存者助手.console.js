@@ -1,4 +1,4 @@
-// RO 倖存者助手 2.2.12 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
+// RO 倖存者助手 2.2.16 — 在遊戲頁面 Console 貼上執行；重新整理後需重貼。
 (() => {
   'use strict';
   // Console and userscript installs share one instance per page.
@@ -7,10 +7,66 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.12'};
+  window[runtimeKey]={version:'2.2.16'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
+  const KEEP_CHANNEL_KEY='greydust.ro.keep-channel.v1',CHANNELS_KEY='greydust.ro.last-channels.v1',LAST_LOBBY_KEY='greydust.ro.last-lobby.v1';
+  let keepChannel=false,lastChannels={},lastLobby='',autoLobbyAttempted=false;
+  try{lastLobby=localStorage.getItem(LAST_LOBBY_KEY)||'';}catch{}
+  try{keepChannel=localStorage.getItem(KEEP_CHANNEL_KEY)==='true';const saved=JSON.parse(localStorage.getItem(CHANNELS_KEY)||'{}');if(saved&&typeof saved==='object'&&!Array.isArray(saved))lastChannels=saved;}catch{}
+  const channelStates=new WeakMap();
+  function rememberChannel(socket){
+    const state=channelStates.get(socket);if(!state||!Number.isSafeInteger(state.channel)||state.channel<1)return;
+    lastChannels[state.lobby]=state.channel;
+    try{localStorage.setItem(CHANNELS_KEY,JSON.stringify(lastChannels));}catch{}
+  }
+  function trackLobbyChannel(socket,url){
+    const state={lobby:new URL(String(url),location.href).searchParams.get('l')||'0',channel:0,welcomed:false,pending:0};
+    channelStates.set(socket,state);
+    const send=socket.send;
+    socket.send=function(data){
+      // Explicit native hops take precedence over an automatic restoration.
+      try{if(JSON.parse(data).t==='hop')state.pending=0;}catch{}
+      return Reflect.apply(send,this,[data]);
+    };
+    socket.addEventListener('message',event=>{
+      if(!lobbySockets.has(socket))return;
+      let message;try{message=JSON.parse(event.data);}catch{return;}
+      if(message.t!=='welcome'||!Number.isSafeInteger(message.channel)||message.channel<1)return;
+      state.channel=message.channel;
+      lastLobby=state.lobby;
+      try{localStorage.setItem(LAST_LOBBY_KEY,lastLobby);}catch{}
+      const first=!state.welcomed;state.welcomed=true;
+      const desired=lastChannels[state.lobby];
+      if(first&&keepChannel&&!keepOffline&&Number.isSafeInteger(desired)&&desired>0&&desired!==state.channel){
+        // Use the same hop request as the game's channel picker, once per connection.
+        state.pending=desired;
+        try{Reflect.apply(send,socket,[JSON.stringify({t:'hop',n:desired})]);}catch{}
+        return;
+      }
+      if(state.pending&&state.channel!==state.pending)return;
+      state.pending=0;rememberChannel(socket);
+    });
+  }
+  function setKeepChannel(enabled){
+    keepChannel=!!enabled;
+    try{localStorage.setItem(KEEP_CHANNEL_KEY,String(keepChannel));}catch{notify('頻道設定無法保存，目前只在本分頁有效');}
+    for(const socket of lobbySockets){const state=channelStates.get(socket);if(state)state.pending=0;if(keepChannel)rememberChannel(socket);}
+    updateOfflineUI();notify(keepChannel?'已開啟保持所在頻道':'已關閉保持所在頻道');
+  }
+  function skipInitialLobbyPicker(){
+    if(!keepChannel||keepOffline||autoLobbyAttempted)return;
+    const dialog=document.querySelector('#npc-dialog');
+    if(!dialog||dialog.classList.contains('hidden'))return;
+    const buttons=[...dialog.querySelectorAll('.lb-pick [data-lb]')];
+    if(!buttons.length)return;
+    // Only skip the initial picker; later manual choices and failed connections
+    // must remain available without an automatic selection loop.
+    autoLobbyAttempted=true;
+    const button=lastLobby?buttons.find(item=>item.dataset.lb===lastLobby):buttons.find(item=>item.classList.contains('me'));
+    if(button&&!button.disabled&&!button.classList.contains('full'))button.click();
+  }
   const lobbySockets=new Set(),blockedLobbySockets=new Set();
   function isLobbySocket(url){
     try{const page=new URL(location.href),target=new URL(String(url),page);return ['ws:','wss:'].includes(target.protocol)&&target.host===page.host&&target.pathname===new URL('ws',page).pathname;}catch{return false;}
@@ -29,7 +85,7 @@
         blockedLobbySockets.add(socket);return socket;
       }
       const socket=Reflect.construct(target,args,newTarget===Gate?target:newTarget);
-      if(isLobbySocket(args[0])){lobbySockets.add(socket);socket.addEventListener('close',()=>lobbySockets.delete(socket),{once:true});}
+      if(isLobbySocket(args[0])){lobbySockets.add(socket);trackLobbyChannel(socket,args[0]);socket.addEventListener('close',()=>lobbySockets.delete(socket),{once:true});}
       return socket;
     }});
     window.WebSocket=Gate;
@@ -54,6 +110,19 @@
       const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,checkbox,toggle);body.append(row);
     }
     const checkbox=body?.querySelector('[data-ro-keep-offline]');if(checkbox)checkbox.checked=keepOffline;
+    const offlineRow=checkbox?.closest('.opt-row');
+    if(offlineRow){
+      let channelInput=body.querySelector('[data-ro-keep-channel]');
+      if(!channelInput){
+        const row=document.createElement('label');row.className='opt-row opt-check';
+        const text=document.createElement('span'),name=document.createElement('b'),hint=document.createElement('small');
+        name.textContent='保持所在頻道';hint.textContent='略過開頭伺服器選擇，回主城或重新上線時回到上次頻道；保持離線遊玩優先';text.append(name,hint);
+        channelInput=document.createElement('input');channelInput.type='checkbox';channelInput.setAttribute('data-ro-keep-channel','');channelInput.onchange=()=>setKeepChannel(channelInput.checked);
+        const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,channelInput,toggle);offlineRow.after(row);
+      }
+      channelInput.checked=keepChannel;
+    }
+    skipInitialLobbyPicker();
     if(!keepOffline)return;
     const status=document.querySelector('#lobby-online');
     if(status){if(status.textContent!=='離線遊玩（助手）')status.textContent='離線遊玩（助手）';if(status.classList.contains('online'))status.classList.remove('online');}
@@ -1623,9 +1692,9 @@
   const equipmentBaseScores=new Map();
   function withEquipmentScoreCapture(action,uid){
     const find=Array.prototype.find,filter=Array.prototype.filter,map=Array.prototype.map;
-    const hasCurrent=!!document.querySelector('#cp-eq-current .eq-name');
-    if(!hasCurrent)equipmentCurrentItem=null;
-    let inventory=null,current=null;
+    const previousScoreNode=document.querySelector('#cp-eq-current .gs b');
+    const foundItems=new Map();
+    let inventory=null,scoreCandidate=null;
     const isInventory=value=>gearArray(value)&&value.some(item=>item.uid===uid);
     try{
       Array.prototype.find=function(...args){
@@ -1633,9 +1702,7 @@
         if(!inventory&&isInventory(this))inventory=this;
         if(this!==inventory)return result;
         for(const item of this)inventoryItems.set(item.uid,item);
-        // Native render reads the current slot before enumerating candidates.
-        // A click may first look up the selected item to clear its "new" flag.
-        if(hasCurrent&&!current&&result&&result.uid!==uid){current=result;equipmentCurrentItem=result;}
+        if(result&&this.includes(result))foundItems.set(result.uid,result);
         return result;
       };
       Array.prototype.filter=function(...args){
@@ -1650,7 +1717,8 @@
         // Native candidate scorer returns {g: gear, s: score}. Reuse that
         // closure for pristine copies, preserving job, Tier and affix weights.
         if(gearArray(this)&&result.length===this.length&&result.every((row,index)=>row?.g===this[index]&&Number.isFinite(row.s))){
-          for(const item of [...this,...(current?[current]:[])]){
+          scoreCandidate=item=>Reflect.apply(callback,thisArg,[item,0,this]);
+          for(const item of this){
             try{
               const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
               const scored=Reflect.apply(callback,thisArg,[base,0,this]);
@@ -1661,8 +1729,31 @@
         return result;
       };
       const result=action();
+      // Native rendering also looks up other worn items for ownership/stat
+      // previews. Lookup order cannot identify the item in the current slot.
+      // Worn items are excluded from the candidate list. Validate the items
+      // actually read during rendering against the displayed native GS, using
+      // the same scorer; do not infer identity from lookup order.
+      const currentRoot=document.querySelector('#cp-eq-current');
+      const scoreNode=currentRoot?.querySelector('.gs b');
+      const score=scoreNode?.textContent;
+      const matches=[];
+      if(score&&scoreCandidate)for(const item of [...foundItems.values()]){
+        try{
+          const original=scoreCandidate(item);
+          if(original?.g!==item||original.s!==Number(score.replaceAll(',','')))continue;
+          const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
+          const scored=scoreCandidate(base);
+          if(scored?.g===base&&Number.isFinite(scored.s)){
+            equipmentBaseScores.set(item.uid,String(scored.s));matches.push(item);
+          }
+        }catch{/* Omit an uncertain preview rather than use another item's GS. */}
+      }
+      if(scoreCandidate||scoreNode!==previousScoreNode)equipmentCurrentItem=null;
+      if(matches.length&&matches.every(item=>equipmentBaseScores.get(item.uid)===equipmentBaseScores.get(matches[0].uid)))equipmentCurrentItem=matches[0];
+      if(!equipmentCurrentItem)currentRoot?.querySelector('[data-ro-equipment-base-gs]')?.remove();
       paintEquipmentBaseScores(uid);
-      return {result,current};
+      return {result,current:equipmentCurrentItem};
     }finally{Array.prototype.find=find;Array.prototype.filter=filter;Array.prototype.map=map;}
   }
   function refinePreviewMultiplier(item){
@@ -1814,6 +1905,63 @@
       }
       updateEquipCandidates();
     }finally{inventoryUpdating=false;}
+  }
+  let tradeItemName=null,tradeCardName=null,tradeSearchState=null;
+  let tradeSearchManifest=null;
+  const tradeIconNames=new Map();
+  function initializeTradeSearch(module){
+    const functions=Object.values(module||{}).filter(value=>typeof value==='function');
+    tradeItemName=functions.find(fn=>/\.manifest\.items/.test(String(fn))&&/\.name/.test(String(fn))&&/"#"\s*\+/.test(String(fn)))||null;
+    tradeCardName=functions.find(fn=>/\.manifest\.cards/.test(String(fn))&&/\.name/.test(String(fn))&&/1000000/.test(String(fn)))||null;
+    updateTradeSearch();
+  }
+  function tradeSearchText(cell){
+    const id=cell.dataset.card||cell.dataset.ore;
+    if(id){const name=cell.dataset.card?tradeCardName:tradeItemName;return name?String(name(Number(id))):null;}
+    const manifest=smithAssets?.manifest?.items;
+    if(!manifest||!tradeItemName)return null;
+    if(manifest!==tradeSearchManifest){
+      tradeSearchManifest=manifest;tradeIconNames.clear();
+      for(const [itemId,item] of Object.entries(manifest)){
+        if(!item.icon)continue;
+        const suffix='/'+decodeURI(item.icon).replace(/^(?:\.\/|\/)+/,'');
+        tradeIconNames.set(suffix,(tradeIconNames.get(suffix)||'')+' '+tradeItemName(Number(itemId)));
+      }
+    }
+    let path;try{path=decodeURI(new URL(cell.querySelector('img')?.getAttribute('src'),location.href).pathname);}catch{return null;}
+    const names=[];
+    for(let index=path.indexOf('/');index>=0;index=path.indexOf('/',index+1))if(tradeIconNames.has(path.slice(index)))names.push(tradeIconNames.get(path.slice(index)));
+    return names.length?names.join(' '):null;
+  }
+  function updateTradeSearch(){
+    const panel=document.querySelector('#trade'),list=panel?.querySelector('#tr-inv'),filters=panel?.querySelector('#tr-filters');
+    if(!panel||panel.classList.contains('hidden')){if(tradeSearchState){tradeSearchState.input.value='';tradeSearchState=null;}return;}
+    if(!list||!filters)return;
+    let bar=panel.querySelector('[data-ro-trade-search]');
+    if(!bar){
+      bar=document.createElement('div');bar.dataset.roTradeSearch='';bar.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0';
+      const input=document.createElement('input');input.type='search';input.placeholder='搜尋物品或卡片名稱';input.setAttribute('aria-label','搜尋交易物品或卡片');input.style.cssText='flex:1;min-width:120px;max-width:100%;box-sizing:border-box;font-size:16px;padding:8px';
+      const count=document.createElement('span');count.setAttribute('aria-live','polite');
+      const empty=document.createElement('div');empty.textContent='找不到符合的物品或卡片';empty.dataset.roTradeEmpty='';empty.className='empty-note';empty.hidden=true;
+      input.oninput=updateTradeSearch;
+      input.onkeydown=event=>event.stopPropagation();
+      bar.append(input,count);filters.after(bar);list.after(empty);
+    }
+    const input=bar.querySelector('input'),count=bar.querySelector('span'),empty=panel.querySelector('[data-ro-trade-empty]');
+    if(!tradeSearchState||tradeSearchState.panel!==panel){input.value='';tradeSearchState={panel,input};}
+    const query=input.value.normalize('NFKC').trim().toLocaleLowerCase(),terms=query.split(/\s+/).filter(Boolean);
+    let shown=0;const cells=[...list.querySelectorAll('.item-cell')];
+    for(const cell of cells){
+      const name=terms.length?tradeSearchText(cell):null;
+      // Unknown assets stay visible so an incomplete catalog cannot hide inventory.
+      const match=!terms.length||name===null||terms.every(term=>name.normalize('NFKC').toLocaleLowerCase().includes(term));
+      if(cell.hidden===match)cell.hidden=!match;
+      if(!match){if(cell.style.display!=='none')cell.style.setProperty('display','none','important');}
+      else if(cell.style.display==='none')cell.style.removeProperty('display');
+      if(match)shown++;
+    }
+    const text=terms.length?shown+' / '+cells.length:'';if(count.textContent!==text)count.textContent=text;
+    const noMatches=terms.length>0&&cells.length>0&&shown===0;if(empty.hidden===noMatches)empty.hidden=!noMatches;
   }
   function spawnTime(seconds){
     if(!Number.isFinite(seconds)||seconds<0)return '時間未提供';
@@ -3076,6 +3224,7 @@
       skillDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value.atk_sword?.kind === 'weapon' && value.bash?.kind === 'weapon') || null;
       initializeAdvancedCatalog(module);
+      initializeTradeSearch(module);
       const hooks = Object.values(module).find(value => value && typeof value === 'object'
         && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
       if (!hooks) throw new Error('找不到遊戲事件介面');
@@ -3085,7 +3234,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.12');
+      console.info('[RO助手] 即時自選已啟用 v2.2.16');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3303,6 +3452,7 @@
       updateSmith();
       updateMerchant();
       updateInventoryViews();
+      updateTradeSearch();
       updateStatCapDisplay();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {
@@ -3365,6 +3515,9 @@
     loadFilterStore();
     const style = document.createElement('style');
     style.textContent = `
+      #minimap .ro-title{display:flex;align-items:center;gap:.3em}
+      #minimap-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #minimap-coords{flex:0 0 auto;white-space:nowrap}
       #chronicle{box-sizing:border-box}
       #chronicle>.chronicle-window{box-sizing:border-box;width:min(900px,calc((100vw - max(8px,env(safe-area-inset-left)) - max(8px,env(safe-area-inset-right)))/var(--ui,1)));max-height:calc((100vh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));max-height:calc((100dvh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));display:flex;flex-direction:column;min-height:0}
       #chronicle>.chronicle-window>.ro-title,#chronicle>.chronicle-window>.btn-row{flex:none}
@@ -3544,7 +3697,7 @@
         if(el?.closest('#chr-perks'))return true;
         if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
         if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
-        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
+        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });

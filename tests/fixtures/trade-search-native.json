@@ -1,0 +1,5 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz73d536e0.js",
+  "itemName": "function L1(t){var a,o;const e=(o=(a=wa.manifest.items)==null?void 0:a[t])==null?void 0:o.name;return e?(_a.lang===\"pt-BR\"?gy(e):Ta(e)):\"#\"+t}",
+  "cardName": "function G7(t){if(t>=1000000)return G7(t%1000000)+([\"\",\"・改\",\"・改²\",\"・改³\",\"・改⁴\",\"・改⁵\"][Math.floor(t/1000000)]||\"\");var a,o;const e=(o=(a=wa.manifest.cards)==null?void 0:a[t])==null?void 0:o.name;return e?(_a.lang===\"pt-BR\"?gy(e):Ta(e)):\"#\"+t}"
+}

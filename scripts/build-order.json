@@ -16,6 +16,7 @@
   "merchant-filter.js",
   "equipment-filter.js",
   "inventory.js",
+  "trade-search.js",
   "stage-schedule.js",
   "smith.js",
   "performance.js",
