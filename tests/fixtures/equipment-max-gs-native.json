@@ -1,8 +1,8 @@
 {
   "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hza78cd192.js",
-  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz08c0d000.js",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzf64b3f03.js",
   "sourceSha256": "ee90428caab0b35f32fc96a53db072edb914caf293c44c1dc4b58299eb91984a",
-  "mainSourceSha256": "0c824e006f06ef6665846ca32a13c7a3a1e75c0a4633626d2f5206e84d430e41",
+  "mainSourceSha256": "8d09b2d48b6224644e1f80bb3a970b16636a454fbd1b2f8bea404e786f1c84d2",
   "scoreConditions": {
     "quality": 4,
     "refine": 0,
@@ -15,6 +15,13 @@
       "id": 1202,
       "tier": 1,
       "job": "swordsman",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 66,
       "combinations": 720,
       "base": {
@@ -91,6 +98,13 @@
       "id": 1202,
       "tier": 8,
       "job": "mage",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 161,
       "combinations": 1980,
       "base": {
@@ -174,6 +188,13 @@
       "id": 1163,
       "tier": 8,
       "job": "swordsman",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 439,
       "combinations": 1440,
       "base": {
@@ -254,6 +275,13 @@
       "id": 1823,
       "tier": 8,
       "job": "taekwon",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 261,
       "combinations": 1440,
       "base": {
@@ -334,6 +362,13 @@
       "id": 1559,
       "tier": 8,
       "job": "sage",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 272,
       "combinations": 2340,
       "base": {
@@ -419,6 +454,13 @@
       "id": 2102,
       "tier": 1,
       "job": "swordsman",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 35,
       "combinations": 720,
       "base": {
@@ -495,6 +537,13 @@
       "id": 2208,
       "tier": 8,
       "job": "wizard",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 173,
       "combinations": 1980,
       "base": {
@@ -578,6 +627,13 @@
       "id": 2254,
       "tier": 8,
       "job": "arch_bishop",
+      "quality": 4,
+      "slots": [
+        1,
+        2,
+        3,
+        4
+      ],
       "maximum": 197,
       "combinations": 2160,
       "base": {
@@ -657,6 +713,82 @@
         "magnus_exorcismus",
         "sanctuary"
       ]
+    },
+    {
+      "id": 22847,
+      "tier": 2,
+      "job": "swordsman",
+      "quality": 2,
+      "slots": [
+        1,
+        3
+      ],
+      "maximum": 71,
+      "combinations": 18,
+      "base": {
+        "atk": 0,
+        "matk": 0,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 2
+        },
+        {
+          "stat": "agi",
+          "value": 2
+        },
+        {
+          "stat": "vit",
+          "value": 2
+        },
+        {
+          "stat": "int",
+          "value": 2
+        },
+        {
+          "stat": "dex",
+          "value": 2
+        },
+        {
+          "stat": "luk",
+          "value": 2
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.02
+        },
+        {
+          "stat": "cd",
+          "value": 0.02
+        },
+        {
+          "stat": "area",
+          "value": 0.02
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 10
+        },
+        {
+          "stat": "armor",
+          "value": 0.8
+        },
+        {
+          "stat": "spd",
+          "value": 0.02
+        },
+        {
+          "stat": "flee",
+          "value": 0.02
+        }
+      ],
+      "skills": []
     }
   ]
 }

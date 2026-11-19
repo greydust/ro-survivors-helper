@@ -68,7 +68,12 @@ if(process.argv[4]){
    record.sources.push({...stage.chapter?{chapter:stage.chapter}:{},tier:stage.tier,stage:stageName,monster:monsters[enemy.id],boss:enemy.boss,...enemy.rare?{rare:true}:{}});
   }
  }
- for(const record of previous)if(record.sources.some(source=>source.monster==='關卡獎勵')&&definitions[record.id]&&!records.has(record.id))records.set(record.id,record);
+ for(const stage of stages){
+  const reward=catalog.ca[stage.id]?.reward,def=definitions[reward];if(!def||def.secret||def.starter)continue;
+  if(!records.has(reward))records.set(reward,{id:reward,name:manifest?catalog.bp(reward,''):names.get(reward)||def.name,slot:def.slot,wtype:def.wtype||'',icon:manifest?.items?.[reward]?.icon?new URL(manifest.items[reward].icon,'https://ro.hans-webgametw.com/assets/').href:'https://ro.hans-webgametw.com/assets/items/'+reward+'.png',tiers:[stage.tier],sources:[]});
+  records.get(reward).sources.push({tier:stage.tier,stage:stageNames[stage.id],monster:'關卡獎勵',boss:false,reward:true});
+ }
+
  if([...records.values()].some(record=>!record.name))throw Error('New equipment needs a Chinese name before export');
  fs.writeFileSync(path.join(root,'src/monster-names.js'),'  // Chinese names from the current public game translation catalog.\n  const MONSTER_NAMES = '+JSON.stringify(monsters)+';\n');
  fs.writeFileSync(path.join(root,'src/equipment-catalog.js'),'  // Generated from current public stage drop tables.\n  const EQUIPMENT_CATALOG = '+JSON.stringify([...records.values()])+';\n');

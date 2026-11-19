@@ -41,10 +41,14 @@ assert.equal(reference.sourceSha256,data.sourceSha256);assert.equal(reference.ma
 assert(reference.cases.reduce((sum,entry)=>sum+entry.combinations,0)>10000);
 for(const sample of reference.cases){
  const actual=row(sample.id,sample.tier).maxGS[sample.job],allocation=data.allocations[actual.allocation];assert.equal(actual.gs,sample.maximum,JSON.stringify(sample));
- const affixes=allocation.affixes;assert.equal(affixes.length,sample.skills.length?5:4);assert.notEqual(affixes[0].stat,affixes[1].stat);
- for(const affix of affixes.slice(0,2))assert(sample.primary.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affix)));
- assert(sample.third.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affixes[2])));assert(sample.fourth.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affixes[3])));
- if(sample.skills.length){assert(sample.skills.includes(affixes[4].skill));assert.equal(affixes[4].value,.2);}
+ const affixes=allocation.affixes,primaryCount=sample.slots.filter(slot=>slot<=2).length;
+ assert.equal(affixes.length,sample.slots.length+(sample.skills.length?1:0));
+ assert.equal(new Set(affixes.slice(0,primaryCount).map(affix=>affix.stat)).size,primaryCount);
+ for(const affix of affixes.slice(0,primaryCount))assert(sample.primary.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affix)));
+ let offset=primaryCount;
+ if(sample.slots.includes(3)){assert(sample.third.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affixes[offset])));offset++;}
+ if(sample.slots.includes(4)){assert(sample.fourth.some(candidate=>JSON.stringify(candidate)===JSON.stringify(affixes[offset])));offset++;}
+ if(sample.skills.length){assert(sample.skills.includes(affixes[offset].skill));assert.equal(affixes[offset].value,.2);}
  assert.deepEqual(row(sample.id,sample.tier).base,sample.base);
 }
 assert(data.records.every(record=>record.jobs.length));
@@ -53,3 +57,9 @@ const catalog=JSON.parse(fs.readFileSync(path.join(__dirname,'../src/equipment-c
 assert(record(5292).sources.some(source=>source.rare&&source.monster==='墨蛇君'));assert.equal(record(39001).icon,'https://ro.hans-webgametw.com/assets/items/1128.png');
 assert(row(1559,8).bonuses.includes('★ +24% 對頭目與不死系傷害'));assert(!html.includes('import(')&&!html.includes('fetch('));
 console.log('PASS 39-job/Tier filters, native eligibility, GS sorting, selected-tier attributes, maximum allocations, exhaustive native reference scores, source search and Taekwon subtype');
+
+assert.deepEqual(record(22847).tiers.map(row=>row.tier),[2]);assert.equal(record(22847).quality,2);
+update('swordsman',8);search.value='普隆德拉巡邏徽章';search.oninput();assert.equal(cards().length,0);
+update('swordsman',2);assert.equal(cards().length,1);assert(cards()[0].querySelector('.reward-note').textContent.includes('固定 T2／稀有品質'));
+const badgeAllocation=data.allocations[row(22847,2).maxGS.swordsman.allocation];assert.equal(badgeAllocation.affixes.length,2);assert(!badgeAllocation.affixes.some(affix=>affix.stat==='skill'));
+console.log('PASS story reward is T2/rare only, uses native rare affixes and is excluded from T8');

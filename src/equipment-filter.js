@@ -5,6 +5,7 @@
   function equipmentBaseMaxTier(){return EQUIPMENT_BASE_MAX_TIER;}
   function equipmentTiers(record){
     const base=equipmentBaseMaxTier();
+    if(record.sources.length&&record.sources.every(source=>source.reward||source.monster==='關卡獎勵'))return [...record.tiers].sort((a,b)=>a-b);
     if(record.sources.every(source=>source.chapter===2))return [...new Set([...record.tiers,6,7,8])].sort((a,b)=>a-b);
     return [...new Set([...record.tiers,...Array.from({length:EQUIPMENT_LAP_COUNT-1},(_,i)=>base+i+1)])].sort((a,b)=>a-b);
   }

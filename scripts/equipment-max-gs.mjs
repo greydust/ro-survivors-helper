@@ -18,7 +18,7 @@ export function createEquipmentScorer(main, catalog, sandbox) {
     section('const Bk=','function Hk(')+
     section('function RO_EQJ(','function _n(')+bow+
     ';globalThis.native={score:or,base:Ma,bonus:vf,bonuses:Gm,eligible:qn,skills:QM};',context,{timeout:1000});
-  vm.runInContext('globalThis.affixMetadata={main:Object.keys(ru),mainValue:vG,third:yG,fourth:bG,values:Object.fromEntries(Object.entries(Qy).map(([key,value])=>[key,value.base])),skillMax:y0[1],slots:Fv[4]};',sandbox,{timeout:1000});
+  vm.runInContext('globalThis.affixMetadata={main:Object.keys(ru),mainValue:vG,third:yG,fourth:bG,values:Object.fromEntries(Object.entries(Qy).map(([key,value])=>[key,value.base])),skillMax:y0[1],slots:Fv[4],layouts:Fv};',sandbox,{timeout:1000});
   const rules=sandbox.affixMetadata,native=context.native;
   if(JSON.stringify(rules.slots)!=='[1,2,3,4]'||!sandbox.HZAF?.pool)throw Error('Unsupported legendary affix layout');
   const defs=catalog.br;
@@ -26,7 +26,11 @@ export function createEquipmentScorer(main, catalog, sandbox) {
     .map(id=>({id,name:catalog.ff(catalog.j(id).name),scaling:catalog.j(id).scaling}));
   if(jobs.length<30)throw Error('Native job catalog incomplete');
   const allocations=[],allocationIds=new Map();
-  const item=(id,tier,affixes=[])=>({itemId:id,tier,quality:4,refine:0,star:0,cards:[],affixes});
+  const drops=new Set(Object.values(catalog.cb).flatMap(table=>table.map(drop=>drop.id)));
+  const rewards=new Set(Object.values(catalog.ca).map(script=>script.reward).filter(id=>id&&!drops.has(id)));
+  const qualityFor=id=>rewards.has(id)?bindings.Ol:4;
+  const layout=id=>[...rules.layouts[qualityFor(id)]];
+  const item=(id,tier,affixes=[])=>({itemId:id,tier,quality:qualityFor(id),refine:0,star:0,cards:[],affixes});
   const eligible=(id,job)=>['m','f'].some(gender=>native.eligible({job,look:{gender}},defs[id]));
   const contribution=(affix,job)=>native.bonuses([affix]).reduce((sum,bonus)=>sum+native.bonus(bonus,job),0);
   function candidates(id,tier){
@@ -39,10 +43,12 @@ export function createEquipmentScorer(main, catalog, sandbox) {
     const groups=candidates(id,tier),rank=rows=>rows.map(affix=>({affix,score:contribution(affix,job)})).sort((a,b)=>b.score-a.score);
     // Native GS is additive before its final rounding and two-hand multiplier;
     // legendary main attributes are drawn without replacement.
-    const affixes=[...rank(groups[0]).slice(0,2).map(row=>row.affix),rank(groups[1])[0].affix,rank(groups[2])[0].affix];
+    const slots=layout(id),affixes=rank(groups[0]).slice(0,slots.filter(slot=>slot<=2).length).map(row=>row.affix);
+    if(slots.includes(3))affixes.push(rank(groups[1])[0].affix);
+    if(slots.includes(4))affixes.push(rank(groups[2])[0].affix);
     const skills=[...sandbox.HZAF.pool(id,job,tier)],scored=new Set(native.skills(job));
     const skill=skills.find(id=>scored.has(id))||skills[0];
-    if(skill)affixes.push({stat:'skill',skill,value:rules.skillMax});
+    if(qualityFor(id)===4&&skill)affixes.push({stat:'skill',skill,value:rules.skillMax});
     const instance=item(id,tier,affixes),gs=native.score(instance,job);
     if(!Number.isFinite(gs))throw Error('Invalid native equipment GS');
     const key=JSON.stringify(affixes);
@@ -52,13 +58,14 @@ export function createEquipmentScorer(main, catalog, sandbox) {
     }
     return {gs,allocation:allocationIds.get(key)};
   }
-  return {jobs,allocations,eligible,best,candidates,item,native,skillPool:(id,job,tier)=>[...sandbox.HZAF.pool(id,job,tier)],skillMax:rules.skillMax};
+  return {jobs,allocations,eligible,best,candidates,item,native,qualityFor,layout,qualityName:id=>String(bindings.Oe[qualityFor(id)].name),skillPool:(id,job,tier)=>[...sandbox.HZAF.pool(id,job,tier)],skillMax:rules.skillMax};
 }
 
 export function enrichEquipmentScores(data,scorer){
   data.jobs=scorer.jobs;data.allocations=scorer.allocations;
   data.scoreConditions={quality:4,refine:0,star:0,cards:false,affixes:'native-maximum'};
   for(const record of data.records){
+    record.quality=scorer.qualityFor(record.id);record.qualityName=scorer.qualityName(record.id);
     record.jobs=scorer.jobs.filter(job=>scorer.eligible(record.id,job.id)).map(job=>job.id);
     for(const row of record.tiers){
       row.maxGS=Object.fromEntries(record.jobs.map(job=>[job,scorer.best(record.id,row.tier,job)]));
@@ -70,18 +77,22 @@ export function enrichEquipmentScores(data,scorer){
 
 export function verifyEquipmentMaxima(data,scorer){
   const cases=[];
-  for(const [id,tier,job] of [[1202,1,'swordsman'],[1202,8,'mage'],[1163,8,'swordsman'],[1823,8,'taekwon'],[1559,8,'sage'],[2102,1,'swordsman'],[2208,8,'wizard'],[2254,8,'arch_bishop']]){
+  for(const [id,tier,job] of [[1202,1,'swordsman'],[1202,8,'mage'],[1163,8,'swordsman'],[1823,8,'taekwon'],[1559,8,'sage'],[2102,1,'swordsman'],[2208,8,'wizard'],[2254,8,'arch_bishop'],[22847,2,'swordsman']]){
     const record=data.records.find(record=>record.id===id),row=record?.tiers.find(row=>row.tier===tier);
     if(!row?.maxGS[job])throw Error('Native verification case unavailable: '+id);
     const [primary,third,fourth]=scorer.candidates(id,tier);
-    const skills=scorer.skillPool(id,job,tier),skillChoices=skills.length?skills.map(skill=>[{stat:'skill',value:scorer.skillMax,skill}]):[[]];
+    const slots=scorer.layout(id),quality=scorer.qualityFor(id),skills=quality===4?scorer.skillPool(id,job,tier):[],skillChoices=skills.length?skills.map(skill=>[{stat:'skill',value:scorer.skillMax,skill}]):[[]];
     let maximum=-Infinity,combinations=0;
     // Independent exhaustive enumeration, using the unchanged native scorer.
-    for(let a=0;a<primary.length;a++)for(let b=a+1;b<primary.length;b++)for(const c of third)for(const d of fourth)for(const skill of skillChoices){
-      maximum=Math.max(maximum,scorer.native.score(scorer.item(id,tier,[primary[a],primary[b],c,d,...skill]),job));combinations++;
+    const primaryChoices=[];
+    const count=slots.filter(slot=>slot<=2).length;
+    if(count===2){for(let a=0;a<primary.length;a++)for(let b=a+1;b<primary.length;b++)primaryChoices.push([primary[a],primary[b]]);}
+    else if(count===1)primaryChoices.push(...primary.map(affix=>[affix]));else primaryChoices.push([]);
+    for(const p of primaryChoices)for(const c of slots.includes(3)?third:[null])for(const d of slots.includes(4)?fourth:[null])for(const skill of skillChoices){
+      maximum=Math.max(maximum,scorer.native.score(scorer.item(id,tier,[...p,...(c?[c]:[]),...(d?[d]:[]),...skill]),job));combinations++;
     }
     if(maximum!==row.maxGS[job].gs)throw Error('Equipment maximum mismatch: '+JSON.stringify({id,tier,job,maximum,actual:row.maxGS[job].gs}));
-    cases.push({id,tier,job,maximum,combinations,base:row.base,primary,third,fourth,skills});
+    cases.push({id,tier,job,quality,slots,maximum,combinations,base:row.base,primary,third,fourth,skills});
   }
   return {source:data.source,mainSource:data.mainSource,sourceSha256:data.sourceSha256,mainSourceSha256:data.mainSourceSha256,scoreConditions:data.scoreConditions,cases};
 }

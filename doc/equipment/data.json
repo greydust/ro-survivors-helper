@@ -62,8 +62,8 @@
       }
     }
   },
-  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz08c0d000.js",
-  "mainSourceSha256": "0c824e006f06ef6665846ca32a13c7a3a1e75c0a4633626d2f5206e84d430e41",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzf64b3f03.js",
+  "mainSourceSha256": "8d09b2d48b6224644e1f80bb3a970b16636a454fbd1b2f8bea404e786f1c84d2",
   "sourceSha256": "ee90428caab0b35f32fc96a53db072edb914caf293c44c1dc4b58299eb91984a",
   "slots": [
     [
@@ -938,6 +938,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -2191,6 +2193,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -3263,6 +3267,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -3759,6 +3765,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "acolyte",
@@ -4159,6 +4167,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -5204,6 +5214,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -6469,6 +6481,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -6904,6 +6918,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -7251,6 +7267,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -8294,6 +8312,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -9541,6 +9561,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -10325,6 +10347,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -10569,6 +10593,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -11607,6 +11633,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -11791,6 +11819,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -12826,6 +12856,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -13082,6 +13114,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -14120,6 +14154,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -15192,6 +15228,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -16264,6 +16302,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -17336,6 +17376,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -18589,6 +18631,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -19661,6 +19705,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -20733,6 +20779,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -21805,6 +21853,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -22883,6 +22933,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -23955,6 +24007,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -25027,6 +25081,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -26099,6 +26155,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -26595,6 +26653,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -27643,6 +27703,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -28715,6 +28777,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -29787,6 +29851,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -30866,6 +30932,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -31362,6 +31430,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -32410,6 +32480,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -33494,6 +33566,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -34578,6 +34652,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -35662,6 +35738,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -35918,6 +35996,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "priest",
@@ -36962,6 +37042,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -38034,6 +38116,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -39106,6 +39190,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -40178,6 +40264,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -40602,6 +40690,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -40903,6 +40993,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -41083,6 +41175,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -42118,6 +42212,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -42388,6 +42484,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -42649,6 +42747,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -43687,6 +43787,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -44183,6 +44285,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -45231,6 +45335,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -46659,6 +46765,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -47010,6 +47118,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "ninja",
@@ -48400,6 +48510,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -49659,6 +49771,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -50570,6 +50684,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "archer",
@@ -51054,6 +51170,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -51526,6 +51644,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -51998,6 +52118,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -53046,6 +53168,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -53548,6 +53672,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -53780,6 +53906,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -54824,6 +54952,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -55914,6 +56044,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -56998,6 +57130,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -57266,6 +57400,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -58316,6 +58452,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -59394,6 +59532,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -60466,6 +60606,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -61538,6 +61680,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -62029,6 +62173,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -63074,6 +63220,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -63864,6 +64012,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -64108,6 +64258,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -65146,6 +65298,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -66218,6 +66372,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -66594,6 +66750,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -67637,6 +67795,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -68709,6 +68869,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -69781,6 +69943,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -70157,6 +70321,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -70552,6 +70718,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -70859,6 +71027,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -71906,6 +72076,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -72162,6 +72334,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "priest",
@@ -73200,6 +73374,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -74459,6 +74635,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -75531,6 +75709,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -76778,6 +76958,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -76962,6 +77144,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -77181,6 +77365,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -77403,6 +77589,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "assassin",
@@ -78616,6 +78804,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -79881,6 +80071,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -80456,6 +80648,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "acolyte",
@@ -81679,6 +81873,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -82120,6 +82316,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -83338,6 +83536,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -84249,6 +84449,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -85148,6 +85350,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -86208,6 +86412,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -87280,6 +87486,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -88352,6 +88560,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -88656,6 +88866,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "ninja",
@@ -89696,6 +89908,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -90768,6 +90982,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -91552,6 +91768,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -91796,6 +92014,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "priest",
@@ -92018,6 +92238,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -92195,6 +92417,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -93230,6 +93454,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -94141,6 +94367,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -95040,6 +95268,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -95338,6 +95568,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "ninja",
@@ -96378,6 +96610,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -96634,6 +96868,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "priest",
@@ -96958,6 +97194,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -97182,6 +97420,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -97441,6 +97681,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -98660,6 +98902,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -99905,6 +100149,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -101156,6 +101402,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -102407,6 +102655,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -102663,6 +102913,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -103701,6 +103953,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -104773,6 +105027,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -105845,6 +106101,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -106917,6 +107175,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -107989,6 +108249,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -109061,6 +109323,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -109305,6 +109569,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -109527,6 +109793,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -109677,6 +109945,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -109824,6 +110094,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -110859,6 +111131,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -111931,6 +112205,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -112259,6 +112535,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -112412,6 +112690,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -112559,6 +112839,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -112778,6 +113060,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -113048,6 +113332,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -113200,6 +113486,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -114235,6 +114523,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -114491,6 +114781,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -114641,6 +114933,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -114932,6 +115226,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -115205,6 +115501,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "ninja",
@@ -115357,6 +115655,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -115582,6 +115882,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -115810,6 +116112,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -116848,6 +117152,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -117914,6 +118220,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -118980,6 +119288,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -120052,6 +120362,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -121124,6 +121436,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -122196,6 +122510,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -123256,6 +123572,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -124328,6 +124646,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -125400,6 +125720,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -126472,6 +126794,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -127532,6 +127856,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -127788,6 +128114,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -128130,6 +128458,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -128285,6 +128615,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -128672,6 +129004,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -129069,6 +129403,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -129226,6 +129562,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -130261,6 +130599,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -130445,6 +130785,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -130664,6 +131006,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -130814,6 +131158,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -130961,6 +131307,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -131108,6 +131456,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -131255,6 +131605,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -131402,6 +131754,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -132443,6 +132797,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -133515,6 +133871,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -134575,6 +134933,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -134807,6 +135167,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -134956,6 +135318,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -135199,6 +135563,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -135350,6 +135716,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -135689,6 +136057,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -136738,6 +137108,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -137810,6 +138182,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -138066,6 +138440,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "assassin",
@@ -138408,6 +138784,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -138635,6 +139013,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -139673,6 +140053,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -139857,6 +140239,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -140004,6 +140388,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -140229,6 +140615,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -140427,6 +140815,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -140582,6 +140972,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -141623,6 +142015,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -141807,6 +142201,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -141954,6 +142350,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -142293,6 +142691,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -142760,6 +143160,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -143808,6 +144210,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -144880,6 +145284,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -145664,6 +146070,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -146724,6 +147132,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -146980,6 +147390,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "thief",
         "assassin",
@@ -148018,6 +148430,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -149090,6 +149504,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -150162,6 +150578,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -151234,6 +151652,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -151466,6 +151886,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -152503,6 +152925,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -153575,6 +153999,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -154647,6 +155073,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -155719,6 +156147,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -156095,6 +156525,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -156250,6 +156682,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -157285,6 +157719,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -158357,6 +158793,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -158733,6 +159171,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -159776,6 +160216,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -160848,6 +161290,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -161920,6 +162364,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -162992,6 +163438,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -163296,6 +163744,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -164336,6 +164786,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -165408,6 +165860,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -166480,6 +166934,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -166736,6 +167192,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -167774,6 +168232,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -168846,6 +169306,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -169030,6 +169492,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -170065,6 +170529,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -170249,6 +170715,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -170396,6 +170864,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -170543,6 +171013,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -170690,6 +171162,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -171725,6 +172199,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -171909,6 +172385,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -172296,6 +172774,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -173341,6 +173821,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -174413,6 +174895,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -174597,6 +175081,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -175645,6 +176131,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -176021,6 +176509,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -177064,6 +177554,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -177440,6 +177932,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -177691,6 +178185,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -177842,6 +178338,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -178877,6 +179375,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -179949,6 +180449,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -181039,6 +181541,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -181223,6 +181727,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -181442,6 +181948,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -182480,6 +182988,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -183552,6 +184062,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -184624,6 +185136,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -185696,6 +186210,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -186792,6 +187308,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -187216,6 +187734,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -187373,6 +187893,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -188120,6 +188642,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -188436,6 +188960,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -188589,6 +189115,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -188736,6 +189264,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -189771,6 +190301,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -190568,6 +191100,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -190746,6 +191280,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -190893,6 +191429,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -191040,6 +191578,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -191259,6 +191799,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -191409,6 +191951,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -192444,6 +192988,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -192646,6 +193192,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -193681,6 +194229,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -194753,6 +195303,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -195825,6 +196377,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -196897,6 +197451,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -197699,6 +198255,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -197889,6 +198447,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -198948,6 +199508,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -199223,6 +199785,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -199973,6 +200537,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -200343,6 +200909,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -201386,6 +201954,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -202458,6 +203028,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -203530,6 +204102,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -204602,6 +205176,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -205674,6 +206250,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -205931,6 +206509,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -206154,6 +206734,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -206497,6 +207079,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -207541,6 +208125,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -208614,6 +209200,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -208889,6 +209477,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -209118,6 +209708,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -210157,6 +210749,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -211247,6 +211841,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -212319,6 +212915,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -213121,6 +213719,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -214181,6 +214781,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -215253,6 +215855,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -215635,6 +216239,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -215790,6 +216396,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -216825,6 +217433,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -217897,6 +218507,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -218969,6 +219581,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -220041,6 +220655,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -220225,6 +220841,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -221260,6 +221878,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -222332,6 +222952,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -223116,6 +223738,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -224176,6 +224800,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -225248,6 +225874,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -225534,6 +226162,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -226573,6 +227203,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -226830,6 +227462,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -227869,6 +228503,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -228054,6 +228690,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -228583,6 +229221,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -228705,6 +229345,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -228829,6 +229471,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -229361,6 +230005,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -229579,6 +230225,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -230116,6 +230764,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -230682,6 +231332,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -230840,6 +231492,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -230928,6 +231582,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -231457,6 +232113,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -231615,6 +232273,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -231826,6 +232486,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -232365,6 +233027,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -232490,6 +233154,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -232611,6 +233277,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -232855,6 +233523,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -232953,6 +233623,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -233482,6 +234154,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -233640,6 +234314,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -233764,6 +234440,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -234296,6 +234974,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -234454,6 +235134,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -234545,6 +235227,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -234693,6 +235377,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -235230,6 +235916,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -235799,6 +236487,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -236044,6 +236734,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -236586,6 +237278,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -236831,6 +237525,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -236929,6 +237625,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -237017,6 +237715,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -237546,6 +238246,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -237968,6 +238670,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -238078,6 +238782,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -238607,6 +239313,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -238729,6 +239437,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -238862,6 +239572,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -238999,6 +239711,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -239127,6 +239841,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -239335,6 +240051,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -239430,6 +240148,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -239515,6 +240235,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -239600,6 +240322,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -239685,6 +240409,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -240214,6 +240940,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -240780,6 +241508,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -240950,6 +241680,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -241039,6 +241771,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -241247,6 +241981,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "acolyte",
@@ -241786,6 +242522,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -241947,6 +242685,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -242131,6 +242871,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -242380,6 +243122,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -242634,6 +243378,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -242771,6 +243517,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -242859,6 +243607,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -242980,6 +243730,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -243224,6 +243976,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -243478,6 +244232,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "thief",
@@ -243675,6 +244431,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -243831,6 +244589,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -244020,6 +244780,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -244560,6 +245322,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -244685,6 +245449,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -244809,6 +245575,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -244996,6 +245764,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -245533,6 +246303,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -245655,6 +246427,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -246184,6 +246958,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -246309,6 +247085,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -246442,6 +247220,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -246567,6 +247347,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -246691,6 +247473,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -246779,6 +247563,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -246960,6 +247746,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -247056,6 +247844,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -247141,6 +247931,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -247670,6 +248462,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -248236,6 +249030,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -248358,6 +249154,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -248482,6 +249280,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -248666,6 +249466,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -248762,6 +249564,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -248883,6 +249687,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -248971,6 +249777,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -249092,6 +249900,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -249624,6 +250434,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -250190,6 +251002,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -250756,6 +251570,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -251325,6 +252141,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -251894,6 +252712,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -252055,6 +252875,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -252590,6 +253412,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -253159,6 +253983,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -253320,6 +254146,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -253412,6 +254240,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -253537,6 +254367,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -253677,6 +254509,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -253770,6 +254604,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -254299,6 +255135,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -254421,6 +255259,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -254950,6 +255790,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -255075,6 +255917,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -255463,6 +256307,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -256017,6 +256863,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -256583,6 +257431,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -256741,6 +257591,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -256925,6 +257777,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -257114,6 +257968,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -257303,6 +258159,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -257840,6 +258698,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -258010,6 +258870,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -258543,6 +259405,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -258725,6 +259589,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -258818,6 +259684,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "monk",
         "sura"
@@ -258942,6 +259810,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -259126,6 +259996,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -259219,6 +260091,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -259400,6 +260274,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -259529,6 +260405,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "merchant",
         "blacksmith",
@@ -259620,6 +260498,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -260149,6 +261029,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -260310,6 +261192,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -260434,6 +261318,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -260966,6 +261852,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -261184,6 +262072,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "merchant",
@@ -261376,6 +262266,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -261532,6 +262424,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -261622,6 +262516,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -261755,6 +262651,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -261907,6 +262805,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -262300,6 +263200,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -262857,6 +263759,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -263426,6 +264330,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -263995,6 +264901,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -264564,6 +265472,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -264686,6 +265596,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -264771,6 +265683,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -264856,6 +265770,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -265385,6 +266301,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -265510,6 +266428,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "ninja",
         "kagerou"
@@ -265598,6 +266518,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "gunslinger",
         "rebellion"
@@ -265731,6 +266653,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "sage",
         "priest",
@@ -265820,6 +266744,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -265941,6 +266867,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "knight",
@@ -266125,6 +267053,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "archer",
         "thief",
@@ -266662,6 +267592,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -266784,6 +267716,8 @@
           "boss": false
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "assassin",
         "guillotine_cross"
@@ -267172,6 +268106,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -267585,6 +268521,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -267731,6 +268669,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "taekwon",
         "star_gladiator",
@@ -268263,6 +269203,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -268448,6 +269390,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "mage",
         "wizard",
@@ -268982,6 +269926,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -269104,6 +270050,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -269192,6 +270140,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "bard",
         "minstrel"
@@ -269373,6 +270323,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -269910,6 +270862,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -270335,6 +271289,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -270544,6 +271500,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "acolyte",
         "merchant",
@@ -271084,6 +272042,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -271653,6 +272613,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -272222,6 +273184,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -272791,6 +273755,8 @@
           "boss": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -273361,6 +274327,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -273931,6 +274899,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -274501,6 +275471,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -275071,6 +276043,8 @@
           "rare": true
         }
       ],
+      "quality": 4,
+      "qualityName": "傳說",
       "jobs": [
         "swordsman",
         "mage",
@@ -275130,1020 +276104,160 @@
           ],
           "maxGS": {
             "swordsman": {
-              "gs": 94,
-              "allocation": 101
+              "gs": 71,
+              "allocation": 200
             },
             "mage": {
-              "gs": 96,
-              "allocation": 102
+              "gs": 71,
+              "allocation": 201
             },
             "archer": {
-              "gs": 94,
-              "allocation": 167
+              "gs": 71,
+              "allocation": 202
             },
             "acolyte": {
-              "gs": 96,
-              "allocation": 104
+              "gs": 71,
+              "allocation": 201
             },
             "thief": {
-              "gs": 94,
-              "allocation": 105
+              "gs": 71,
+              "allocation": 200
             },
             "merchant": {
-              "gs": 94,
-              "allocation": 106
+              "gs": 71,
+              "allocation": 200
             },
             "taekwon": {
-              "gs": 94,
-              "allocation": 107
+              "gs": 71,
+              "allocation": 200
             },
             "ninja": {
-              "gs": 94,
-              "allocation": 108
+              "gs": 71,
+              "allocation": 202
             },
             "gunslinger": {
-              "gs": 94,
-              "allocation": 168
+              "gs": 71,
+              "allocation": 202
             },
             "knight": {
-              "gs": 94,
-              "allocation": 101
+              "gs": 71,
+              "allocation": 200
             },
             "crusader": {
-              "gs": 94,
-              "allocation": 101
+              "gs": 71,
+              "allocation": 200
             },
             "wizard": {
-              "gs": 96,
-              "allocation": 102
+              "gs": 71,
+              "allocation": 201
             },
             "sage": {
-              "gs": 96,
-              "allocation": 102
+              "gs": 71,
+              "allocation": 201
             },
             "hunter": {
-              "gs": 94,
-              "allocation": 167
+              "gs": 71,
+              "allocation": 202
             },
             "bard": {
-              "gs": 94,
-              "allocation": 167
+              "gs": 71,
+              "allocation": 202
             },
             "priest": {
-              "gs": 96,
-              "allocation": 104
+              "gs": 71,
+              "allocation": 201
             },
             "monk": {
-              "gs": 94,
-              "allocation": 109
+              "gs": 71,
+              "allocation": 200
             },
             "assassin": {
-              "gs": 94,
-              "allocation": 105
+              "gs": 71,
+              "allocation": 200
             },
             "rogue": {
-              "gs": 94,
-              "allocation": 105
+              "gs": 71,
+              "allocation": 200
             },
             "blacksmith": {
-              "gs": 94,
-              "allocation": 106
+              "gs": 71,
+              "allocation": 200
             },
             "alchemist": {
-              "gs": 94,
-              "allocation": 106
+              "gs": 71,
+              "allocation": 200
             },
             "star_gladiator": {
-              "gs": 94,
-              "allocation": 107
+              "gs": 71,
+              "allocation": 200
             },
             "soul_linker": {
-              "gs": 96,
-              "allocation": 110
+              "gs": 71,
+              "allocation": 201
             },
             "arch_bishop": {
-              "gs": 96,
-              "allocation": 104
+              "gs": 71,
+              "allocation": 201
             },
             "genetic": {
-              "gs": 94,
-              "allocation": 106
+              "gs": 71,
+              "allocation": 200
             },
             "guillotine_cross": {
-              "gs": 94,
-              "allocation": 105
+              "gs": 71,
+              "allocation": 200
             },
             "kagerou": {
-              "gs": 94,
-              "allocation": 108
+              "gs": 71,
+              "allocation": 202
             },
             "mechanic": {
-              "gs": 94,
-              "allocation": 106
+              "gs": 71,
+              "allocation": 200
             },
             "minstrel": {
-              "gs": 94,
-              "allocation": 167
+              "gs": 71,
+              "allocation": 202
             },
             "ranger": {
-              "gs": 94,
-              "allocation": 167
+              "gs": 71,
+              "allocation": 202
             },
             "rebellion": {
-              "gs": 94,
-              "allocation": 168
+              "gs": 71,
+              "allocation": 202
             },
             "royal_guard": {
-              "gs": 94,
-              "allocation": 101
+              "gs": 71,
+              "allocation": 200
             },
             "rune_knight": {
-              "gs": 94,
-              "allocation": 101
+              "gs": 71,
+              "allocation": 200
             },
             "shadow_chaser": {
-              "gs": 94,
-              "allocation": 105
+              "gs": 71,
+              "allocation": 200
             },
             "sorcerer": {
-              "gs": 96,
-              "allocation": 102
+              "gs": 71,
+              "allocation": 201
             },
             "soul_reaper": {
-              "gs": 96,
-              "allocation": 110
+              "gs": 71,
+              "allocation": 201
             },
             "star_emperor": {
-              "gs": 94,
-              "allocation": 107
+              "gs": 71,
+              "allocation": 200
             },
             "sura": {
-              "gs": 94,
-              "allocation": 109
+              "gs": 71,
+              "allocation": 200
             },
             "warlock": {
-              "gs": 96,
-              "allocation": 102
-            }
-          },
-          "base": {
-            "atk": 0,
-            "matk": 0,
-            "def": 0
-          }
-        },
-        {
-          "tier": 4,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 承受傷害",
-            "+5% 傷害"
-          ],
-          "maxGS": {
-            "swordsman": {
-              "gs": 112,
-              "allocation": 6
-            },
-            "mage": {
-              "gs": 116,
-              "allocation": 7
-            },
-            "archer": {
-              "gs": 112,
-              "allocation": 8
-            },
-            "acolyte": {
-              "gs": 116,
-              "allocation": 111
-            },
-            "thief": {
-              "gs": 112,
-              "allocation": 9
-            },
-            "merchant": {
-              "gs": 112,
-              "allocation": 10
-            },
-            "taekwon": {
-              "gs": 112,
-              "allocation": 112
-            },
-            "ninja": {
-              "gs": 124,
-              "allocation": 11
-            },
-            "gunslinger": {
-              "gs": 124,
-              "allocation": 162
-            },
-            "knight": {
-              "gs": 124,
-              "allocation": 6
-            },
-            "crusader": {
-              "gs": 124,
-              "allocation": 12
-            },
-            "wizard": {
-              "gs": 128,
-              "allocation": 13
-            },
-            "sage": {
-              "gs": 128,
-              "allocation": 7
-            },
-            "hunter": {
-              "gs": 124,
-              "allocation": 14
-            },
-            "bard": {
-              "gs": 124,
-              "allocation": 8
-            },
-            "priest": {
-              "gs": 128,
-              "allocation": 114
-            },
-            "monk": {
-              "gs": 124,
-              "allocation": 115
-            },
-            "assassin": {
-              "gs": 124,
-              "allocation": 15
-            },
-            "rogue": {
-              "gs": 124,
-              "allocation": 9
-            },
-            "blacksmith": {
-              "gs": 124,
-              "allocation": 16
-            },
-            "alchemist": {
-              "gs": 124,
-              "allocation": 10
-            },
-            "star_gladiator": {
-              "gs": 124,
-              "allocation": 116
-            },
-            "soul_linker": {
-              "gs": 128,
-              "allocation": 117
-            },
-            "arch_bishop": {
-              "gs": 128,
-              "allocation": 118
-            },
-            "genetic": {
-              "gs": 124,
-              "allocation": 17
-            },
-            "guillotine_cross": {
-              "gs": 124,
-              "allocation": 18
-            },
-            "kagerou": {
-              "gs": 124,
-              "allocation": 19
-            },
-            "mechanic": {
-              "gs": 124,
-              "allocation": 20
-            },
-            "minstrel": {
-              "gs": 124,
-              "allocation": 8
-            },
-            "ranger": {
-              "gs": 124,
-              "allocation": 21
-            },
-            "rebellion": {
-              "gs": 124,
-              "allocation": 119
-            },
-            "royal_guard": {
-              "gs": 124,
-              "allocation": 22
-            },
-            "rune_knight": {
-              "gs": 124,
-              "allocation": 6
-            },
-            "shadow_chaser": {
-              "gs": 124,
-              "allocation": 9
-            },
-            "sorcerer": {
-              "gs": 128,
-              "allocation": 7
-            },
-            "soul_reaper": {
-              "gs": 128,
-              "allocation": 120
-            },
-            "star_emperor": {
-              "gs": 124,
-              "allocation": 116
-            },
-            "sura": {
-              "gs": 124,
-              "allocation": 115
-            },
-            "warlock": {
-              "gs": 128,
-              "allocation": 23
-            }
-          },
-          "base": {
-            "atk": 0,
-            "matk": 0,
-            "def": 0
-          }
-        },
-        {
-          "tier": 5,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 承受傷害",
-            "+5% 傷害"
-          ],
-          "maxGS": {
-            "swordsman": {
-              "gs": 127,
-              "allocation": 24
-            },
-            "mage": {
-              "gs": 132,
-              "allocation": 25
-            },
-            "archer": {
-              "gs": 127,
-              "allocation": 26
-            },
-            "acolyte": {
-              "gs": 132,
-              "allocation": 121
-            },
-            "thief": {
-              "gs": 127,
-              "allocation": 27
-            },
-            "merchant": {
-              "gs": 127,
-              "allocation": 28
-            },
-            "taekwon": {
-              "gs": 127,
-              "allocation": 122
-            },
-            "ninja": {
-              "gs": 139,
-              "allocation": 29
-            },
-            "gunslinger": {
-              "gs": 139,
-              "allocation": 163
-            },
-            "knight": {
-              "gs": 139,
-              "allocation": 24
-            },
-            "crusader": {
-              "gs": 139,
-              "allocation": 30
-            },
-            "wizard": {
-              "gs": 144,
-              "allocation": 31
-            },
-            "sage": {
-              "gs": 144,
-              "allocation": 25
-            },
-            "hunter": {
-              "gs": 139,
-              "allocation": 32
-            },
-            "bard": {
-              "gs": 139,
-              "allocation": 26
-            },
-            "priest": {
-              "gs": 144,
-              "allocation": 124
-            },
-            "monk": {
-              "gs": 139,
-              "allocation": 125
-            },
-            "assassin": {
-              "gs": 139,
-              "allocation": 33
-            },
-            "rogue": {
-              "gs": 139,
-              "allocation": 27
-            },
-            "blacksmith": {
-              "gs": 139,
-              "allocation": 34
-            },
-            "alchemist": {
-              "gs": 139,
-              "allocation": 28
-            },
-            "star_gladiator": {
-              "gs": 139,
-              "allocation": 126
-            },
-            "soul_linker": {
-              "gs": 144,
-              "allocation": 127
-            },
-            "arch_bishop": {
-              "gs": 144,
-              "allocation": 128
-            },
-            "genetic": {
-              "gs": 139,
-              "allocation": 35
-            },
-            "guillotine_cross": {
-              "gs": 139,
-              "allocation": 36
-            },
-            "kagerou": {
-              "gs": 139,
-              "allocation": 37
-            },
-            "mechanic": {
-              "gs": 139,
-              "allocation": 38
-            },
-            "minstrel": {
-              "gs": 139,
-              "allocation": 26
-            },
-            "ranger": {
-              "gs": 139,
-              "allocation": 39
-            },
-            "rebellion": {
-              "gs": 139,
-              "allocation": 129
-            },
-            "royal_guard": {
-              "gs": 139,
-              "allocation": 40
-            },
-            "rune_knight": {
-              "gs": 139,
-              "allocation": 24
-            },
-            "shadow_chaser": {
-              "gs": 139,
-              "allocation": 27
-            },
-            "sorcerer": {
-              "gs": 144,
-              "allocation": 25
-            },
-            "soul_reaper": {
-              "gs": 144,
-              "allocation": 130
-            },
-            "star_emperor": {
-              "gs": 139,
-              "allocation": 126
-            },
-            "sura": {
-              "gs": 139,
-              "allocation": 125
-            },
-            "warlock": {
-              "gs": 144,
-              "allocation": 41
-            }
-          },
-          "base": {
-            "atk": 0,
-            "matk": 0,
-            "def": 0
-          }
-        },
-        {
-          "tier": 6,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 承受傷害",
-            "+5% 傷害"
-          ],
-          "maxGS": {
-            "swordsman": {
-              "gs": 143,
-              "allocation": 42
-            },
-            "mage": {
-              "gs": 149,
-              "allocation": 43
-            },
-            "archer": {
-              "gs": 143,
-              "allocation": 44
-            },
-            "acolyte": {
-              "gs": 149,
-              "allocation": 131
-            },
-            "thief": {
-              "gs": 143,
-              "allocation": 45
-            },
-            "merchant": {
-              "gs": 143,
-              "allocation": 46
-            },
-            "taekwon": {
-              "gs": 143,
-              "allocation": 132
-            },
-            "ninja": {
-              "gs": 155,
-              "allocation": 47
-            },
-            "gunslinger": {
-              "gs": 155,
-              "allocation": 164
-            },
-            "knight": {
-              "gs": 155,
-              "allocation": 42
-            },
-            "crusader": {
-              "gs": 155,
-              "allocation": 48
-            },
-            "wizard": {
-              "gs": 161,
-              "allocation": 49
-            },
-            "sage": {
-              "gs": 161,
-              "allocation": 43
-            },
-            "hunter": {
-              "gs": 155,
-              "allocation": 50
-            },
-            "bard": {
-              "gs": 155,
-              "allocation": 44
-            },
-            "priest": {
-              "gs": 161,
-              "allocation": 134
-            },
-            "monk": {
-              "gs": 155,
-              "allocation": 135
-            },
-            "assassin": {
-              "gs": 155,
-              "allocation": 51
-            },
-            "rogue": {
-              "gs": 155,
-              "allocation": 45
-            },
-            "blacksmith": {
-              "gs": 155,
-              "allocation": 52
-            },
-            "alchemist": {
-              "gs": 155,
-              "allocation": 46
-            },
-            "star_gladiator": {
-              "gs": 155,
-              "allocation": 136
-            },
-            "soul_linker": {
-              "gs": 161,
-              "allocation": 137
-            },
-            "arch_bishop": {
-              "gs": 161,
-              "allocation": 138
-            },
-            "genetic": {
-              "gs": 155,
-              "allocation": 53
-            },
-            "guillotine_cross": {
-              "gs": 155,
-              "allocation": 54
-            },
-            "kagerou": {
-              "gs": 155,
-              "allocation": 55
-            },
-            "mechanic": {
-              "gs": 155,
-              "allocation": 56
-            },
-            "minstrel": {
-              "gs": 155,
-              "allocation": 44
-            },
-            "ranger": {
-              "gs": 155,
-              "allocation": 57
-            },
-            "rebellion": {
-              "gs": 155,
-              "allocation": 139
-            },
-            "royal_guard": {
-              "gs": 155,
-              "allocation": 58
-            },
-            "rune_knight": {
-              "gs": 155,
-              "allocation": 42
-            },
-            "shadow_chaser": {
-              "gs": 155,
-              "allocation": 45
-            },
-            "sorcerer": {
-              "gs": 161,
-              "allocation": 43
-            },
-            "soul_reaper": {
-              "gs": 161,
-              "allocation": 140
-            },
-            "star_emperor": {
-              "gs": 155,
-              "allocation": 136
-            },
-            "sura": {
-              "gs": 155,
-              "allocation": 135
-            },
-            "warlock": {
-              "gs": 161,
-              "allocation": 59
-            }
-          },
-          "base": {
-            "atk": 0,
-            "matk": 0,
-            "def": 0
-          }
-        },
-        {
-          "tier": 7,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 承受傷害",
-            "+5% 傷害"
-          ],
-          "maxGS": {
-            "swordsman": {
-              "gs": 158,
-              "allocation": 60
-            },
-            "mage": {
-              "gs": 165,
-              "allocation": 61
-            },
-            "archer": {
-              "gs": 158,
-              "allocation": 62
-            },
-            "acolyte": {
-              "gs": 165,
-              "allocation": 141
-            },
-            "thief": {
-              "gs": 158,
-              "allocation": 63
-            },
-            "merchant": {
-              "gs": 158,
-              "allocation": 64
-            },
-            "taekwon": {
-              "gs": 158,
-              "allocation": 142
-            },
-            "ninja": {
-              "gs": 170,
-              "allocation": 65
-            },
-            "gunslinger": {
-              "gs": 170,
-              "allocation": 165
-            },
-            "knight": {
-              "gs": 170,
-              "allocation": 60
-            },
-            "crusader": {
-              "gs": 170,
-              "allocation": 66
-            },
-            "wizard": {
-              "gs": 177,
-              "allocation": 67
-            },
-            "sage": {
-              "gs": 177,
-              "allocation": 61
-            },
-            "hunter": {
-              "gs": 170,
-              "allocation": 68
-            },
-            "bard": {
-              "gs": 170,
-              "allocation": 62
-            },
-            "priest": {
-              "gs": 177,
-              "allocation": 144
-            },
-            "monk": {
-              "gs": 170,
-              "allocation": 145
-            },
-            "assassin": {
-              "gs": 170,
-              "allocation": 69
-            },
-            "rogue": {
-              "gs": 170,
-              "allocation": 63
-            },
-            "blacksmith": {
-              "gs": 170,
-              "allocation": 70
-            },
-            "alchemist": {
-              "gs": 170,
-              "allocation": 64
-            },
-            "star_gladiator": {
-              "gs": 170,
-              "allocation": 146
-            },
-            "soul_linker": {
-              "gs": 177,
-              "allocation": 147
-            },
-            "arch_bishop": {
-              "gs": 177,
-              "allocation": 148
-            },
-            "genetic": {
-              "gs": 170,
-              "allocation": 71
-            },
-            "guillotine_cross": {
-              "gs": 170,
-              "allocation": 72
-            },
-            "kagerou": {
-              "gs": 170,
-              "allocation": 73
-            },
-            "mechanic": {
-              "gs": 170,
-              "allocation": 74
-            },
-            "minstrel": {
-              "gs": 170,
-              "allocation": 62
-            },
-            "ranger": {
-              "gs": 170,
-              "allocation": 75
-            },
-            "rebellion": {
-              "gs": 170,
-              "allocation": 149
-            },
-            "royal_guard": {
-              "gs": 170,
-              "allocation": 76
-            },
-            "rune_knight": {
-              "gs": 170,
-              "allocation": 60
-            },
-            "shadow_chaser": {
-              "gs": 170,
-              "allocation": 63
-            },
-            "sorcerer": {
-              "gs": 177,
-              "allocation": 61
-            },
-            "soul_reaper": {
-              "gs": 177,
-              "allocation": 150
-            },
-            "star_emperor": {
-              "gs": 170,
-              "allocation": 146
-            },
-            "sura": {
-              "gs": 170,
-              "allocation": 145
-            },
-            "warlock": {
-              "gs": 177,
-              "allocation": 77
-            }
-          },
-          "base": {
-            "atk": 0,
-            "matk": 0,
-            "def": 0
-          }
-        },
-        {
-          "tier": 8,
-          "bonuses": [
-            "最大 HP +8%",
-            "+3 護甲",
-            "-5% 承受傷害",
-            "+5% 傷害"
-          ],
-          "maxGS": {
-            "swordsman": {
-              "gs": 173,
-              "allocation": 78
-            },
-            "mage": {
-              "gs": 181,
-              "allocation": 79
-            },
-            "archer": {
-              "gs": 173,
-              "allocation": 80
-            },
-            "acolyte": {
-              "gs": 181,
-              "allocation": 151
-            },
-            "thief": {
-              "gs": 173,
-              "allocation": 81
-            },
-            "merchant": {
-              "gs": 173,
-              "allocation": 82
-            },
-            "taekwon": {
-              "gs": 173,
-              "allocation": 152
-            },
-            "ninja": {
-              "gs": 185,
-              "allocation": 83
-            },
-            "gunslinger": {
-              "gs": 185,
-              "allocation": 166
-            },
-            "knight": {
-              "gs": 185,
-              "allocation": 78
-            },
-            "crusader": {
-              "gs": 185,
-              "allocation": 84
-            },
-            "wizard": {
-              "gs": 193,
-              "allocation": 85
-            },
-            "sage": {
-              "gs": 193,
-              "allocation": 79
-            },
-            "hunter": {
-              "gs": 185,
-              "allocation": 86
-            },
-            "bard": {
-              "gs": 185,
-              "allocation": 80
-            },
-            "priest": {
-              "gs": 193,
-              "allocation": 154
-            },
-            "monk": {
-              "gs": 185,
-              "allocation": 155
-            },
-            "assassin": {
-              "gs": 185,
-              "allocation": 87
-            },
-            "rogue": {
-              "gs": 185,
-              "allocation": 81
-            },
-            "blacksmith": {
-              "gs": 185,
-              "allocation": 88
-            },
-            "alchemist": {
-              "gs": 185,
-              "allocation": 82
-            },
-            "star_gladiator": {
-              "gs": 185,
-              "allocation": 156
-            },
-            "soul_linker": {
-              "gs": 193,
-              "allocation": 157
-            },
-            "arch_bishop": {
-              "gs": 193,
-              "allocation": 158
-            },
-            "genetic": {
-              "gs": 185,
-              "allocation": 89
-            },
-            "guillotine_cross": {
-              "gs": 185,
-              "allocation": 90
-            },
-            "kagerou": {
-              "gs": 185,
-              "allocation": 91
-            },
-            "mechanic": {
-              "gs": 185,
-              "allocation": 92
-            },
-            "minstrel": {
-              "gs": 185,
-              "allocation": 80
-            },
-            "ranger": {
-              "gs": 185,
-              "allocation": 93
-            },
-            "rebellion": {
-              "gs": 185,
-              "allocation": 159
-            },
-            "royal_guard": {
-              "gs": 185,
-              "allocation": 94
-            },
-            "rune_knight": {
-              "gs": 185,
-              "allocation": 78
-            },
-            "shadow_chaser": {
-              "gs": 185,
-              "allocation": 81
-            },
-            "sorcerer": {
-              "gs": 193,
-              "allocation": 79
-            },
-            "soul_reaper": {
-              "gs": 193,
-              "allocation": 160
-            },
-            "star_emperor": {
-              "gs": 185,
-              "allocation": 156
-            },
-            "sura": {
-              "gs": 185,
-              "allocation": 155
-            },
-            "warlock": {
-              "gs": 193,
-              "allocation": 95
+              "gs": 71,
+              "allocation": 201
             }
           },
           "base": {
@@ -276158,9 +276272,12 @@
           "tier": 2,
           "stage": "普隆德拉城",
           "monster": "關卡獎勵",
-          "boss": false
+          "boss": false,
+          "reward": true
         }
       ],
+      "quality": 2,
+      "qualityName": "稀有",
       "jobs": [
         "swordsman",
         "mage",
@@ -282752,6 +282869,54 @@
         "+3 AGI",
         "急速 +3",
         "+3% Flee"
+      ]
+    },
+    {
+      "affixes": [
+        {
+          "stat": "str",
+          "value": 2
+        },
+        {
+          "stat": "cd",
+          "value": 0.02
+        }
+      ],
+      "text": [
+        "+2 STR",
+        "急速 +2"
+      ]
+    },
+    {
+      "affixes": [
+        {
+          "stat": "int",
+          "value": 2
+        },
+        {
+          "stat": "cd",
+          "value": 0.02
+        }
+      ],
+      "text": [
+        "+2 INT",
+        "急速 +2"
+      ]
+    },
+    {
+      "affixes": [
+        {
+          "stat": "dex",
+          "value": 2
+        },
+        {
+          "stat": "cd",
+          "value": 0.02
+        }
+      ],
+      "text": [
+        "+2 DEX",
+        "急速 +2"
       ]
     }
   ],

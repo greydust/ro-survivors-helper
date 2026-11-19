@@ -34,6 +34,7 @@
       const row=rowOf(record),maximum=row.maxGS[job.value],allocation=data.allocations[maximum.allocation];
       const card=node('article',undefined,'gear');card.dataset.itemId=record.id;card.dataset.score=maximum.gs;card.dataset.tier=selectedTier;
       const header=node('header'),icon=node('img'),title=node('h2',record.name),id=node('small','#'+record.id);
+      if(record.quality!==4)card.append(node('p','劇情獎勵 · 固定 T'+selectedTier+'／'+record.qualityName+'品質','note reward-note'));
       icon.src=record.icon;icon.alt='';icon.loading='lazy';header.append(icon,title,id);card.append(header);
       const list=node('ul',undefined,'gear-sources'),sources=new Map();list.setAttribute('aria-label','掉落來源');
       for(const source of record.sources){if(!sources.has(source.stage))sources.set(source.stage,new Set());sources.get(source.stage).add((source.boss?'👑 ':'')+source.monster+(source.rare?'（闖入者）':''));}
