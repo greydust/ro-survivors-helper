@@ -1083,3 +1083,11 @@ test('equipment drop sources stay visible, merge stages and omit source Tier lab
   for(const source of record.sources){assert(sources.textContent.includes(source.stage));assert(sources.textContent.includes(source.monster));if(source.rare)assert(sources.textContent.includes('闖入者'));}
  }
 });
+
+test('Taekwon weapon display subtype uses catalog fallback without changing native type',()=>{
+ const e=catalogEnv(),defs={1823:{id:1823,slot:'weapon',jobs:['taekwon']}};e.api.setSmithData(defs,null);e.api.openFilter();
+ const before=JSON.stringify(defs),subtype=e.document.querySelector('[data-weapon-type="taekwon"]');assert(subtype);assert(subtype.textContent.includes('跆拳拳套'));subtype.click();
+ const ids=[...e.document.querySelectorAll('.ro-gear-card')].map(card=>Number(card.dataset.gearId));
+ assert.equal(ids.length,9);assert(ids.includes(1823));assert(ids.every(id=>e.api.getEquipmentCatalog().find(record=>record.id===id).wtype==='taekwon'));
+ assert.equal(JSON.stringify(defs),before);assert.equal(defs[1823].wtype,undefined);
+});

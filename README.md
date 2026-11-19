@@ -2,7 +2,7 @@
 
 新版相容性與 Safari 手機修正見 [2026-11-18 核對紀錄](doc/COMPATIBILITY.md)。
 
-獨立查詢網頁：[裝備總覽](doc/equipment/index.html) · [卡片總覽](doc/cards/index.html)。卡片依部位分類，列出各版本能力，並可選擇職業、依 GS 由高至低排序；直接開啟 HTML 即可使用。
+獨立查詢網頁：[裝備總覽](doc/equipment/index.html) · [卡片總覽](doc/cards/index.html)。卡片依部位分類，列出各版本能力，並可選擇職業、依 GS 由高至低排序；裝備可依職業與 Tier 篩選，顯示該階屬性及傳說滿詞綴、未精煉／升星／插卡的理論最高 GS 與詞綴範例；直接開啟 HTML 即可使用。
 
 RO 倖存者助手提供裝備整理、換裝預覽、連續精煉／升星與戰鬥介面輔助，適用於 https://ro.hans-webgametw.com/ 。
 

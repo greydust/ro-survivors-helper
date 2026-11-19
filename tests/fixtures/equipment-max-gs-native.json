@@ -1,0 +1,662 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hza78cd192.js",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hz08c0d000.js",
+  "sourceSha256": "ee90428caab0b35f32fc96a53db072edb914caf293c44c1dc4b58299eb91984a",
+  "mainSourceSha256": "0c824e006f06ef6665846ca32a13c7a3a1e75c0a4633626d2f5206e84d430e41",
+  "scoreConditions": {
+    "quality": 4,
+    "refine": 0,
+    "star": 0,
+    "cards": false,
+    "affixes": "native-maximum"
+  },
+  "cases": [
+    {
+      "id": 1202,
+      "tier": 1,
+      "job": "swordsman",
+      "maximum": 66,
+      "combinations": 720,
+      "base": {
+        "atk": 30,
+        "matk": 0,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 1
+        },
+        {
+          "stat": "agi",
+          "value": 1
+        },
+        {
+          "stat": "vit",
+          "value": 1
+        },
+        {
+          "stat": "int",
+          "value": 1
+        },
+        {
+          "stat": "dex",
+          "value": 1
+        },
+        {
+          "stat": "luk",
+          "value": 1
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.01
+        },
+        {
+          "stat": "cd",
+          "value": 0.01
+        },
+        {
+          "stat": "area",
+          "value": 0.01
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 5
+        },
+        {
+          "stat": "armor",
+          "value": 0.4
+        },
+        {
+          "stat": "spd",
+          "value": 0.01
+        },
+        {
+          "stat": "flee",
+          "value": 0.01
+        }
+      ],
+      "skills": [
+        "bash",
+        "magnum",
+        "shield_bash",
+        "sword_dance"
+      ]
+    },
+    {
+      "id": 1202,
+      "tier": 8,
+      "job": "mage",
+      "maximum": 161,
+      "combinations": 1980,
+      "base": {
+        "atk": 58,
+        "matk": 0,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "abracadabra",
+        "deluge",
+        "earth_spike",
+        "fire_pillar",
+        "frost_nova",
+        "heavens_drive",
+        "jupitel_thunder",
+        "lord_of_vermilion",
+        "meteor_storm",
+        "storm_gust",
+        "volcano"
+      ]
+    },
+    {
+      "id": 1163,
+      "tier": 8,
+      "job": "swordsman",
+      "maximum": 439,
+      "combinations": 1440,
+      "base": {
+        "atk": 101,
+        "matk": 0,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "auto_counter",
+        "bowling_bash",
+        "brandish_spear",
+        "charge_attack",
+        "grand_cross",
+        "holy_cross",
+        "pierce",
+        "spear_boomerang"
+      ]
+    },
+    {
+      "id": 1823,
+      "tier": 8,
+      "job": "taekwon",
+      "maximum": 261,
+      "combinations": 1440,
+      "base": {
+        "atk": 96,
+        "matk": 0,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "esma",
+        "estin",
+        "estun",
+        "falling_star",
+        "full_moon_kick",
+        "new_moon_kick",
+        "solar_burst",
+        "warmth_sun"
+      ]
+    },
+    {
+      "id": 1559,
+      "tier": 8,
+      "job": "sage",
+      "maximum": 272,
+      "combinations": 2340,
+      "base": {
+        "atk": 28,
+        "matk": 70,
+        "def": 0
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "abracadabra",
+        "benedictio",
+        "deluge",
+        "earth_spike",
+        "falling_star",
+        "full_moon_kick",
+        "heavens_drive",
+        "magnus_exorcismus",
+        "new_moon_kick",
+        "sanctuary",
+        "solar_burst",
+        "volcano",
+        "warmth_sun"
+      ]
+    },
+    {
+      "id": 2102,
+      "tier": 1,
+      "job": "swordsman",
+      "maximum": 35,
+      "combinations": 720,
+      "base": {
+        "atk": 0,
+        "matk": 0,
+        "def": 3
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 1
+        },
+        {
+          "stat": "agi",
+          "value": 1
+        },
+        {
+          "stat": "vit",
+          "value": 1
+        },
+        {
+          "stat": "int",
+          "value": 1
+        },
+        {
+          "stat": "dex",
+          "value": 1
+        },
+        {
+          "stat": "luk",
+          "value": 1
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.01
+        },
+        {
+          "stat": "cd",
+          "value": 0.01
+        },
+        {
+          "stat": "area",
+          "value": 0.01
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 5
+        },
+        {
+          "stat": "armor",
+          "value": 0.4
+        },
+        {
+          "stat": "spd",
+          "value": 0.01
+        },
+        {
+          "stat": "flee",
+          "value": 0.01
+        }
+      ],
+      "skills": [
+        "bash",
+        "magnum",
+        "shield_bash",
+        "sword_dance"
+      ]
+    },
+    {
+      "id": 2208,
+      "tier": 8,
+      "job": "wizard",
+      "maximum": 173,
+      "combinations": 1980,
+      "base": {
+        "atk": 0,
+        "matk": 0,
+        "def": 16
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "abracadabra",
+        "deluge",
+        "earth_spike",
+        "fire_pillar",
+        "frost_nova",
+        "heavens_drive",
+        "jupitel_thunder",
+        "lord_of_vermilion",
+        "meteor_storm",
+        "storm_gust",
+        "volcano"
+      ]
+    },
+    {
+      "id": 2254,
+      "tier": 8,
+      "job": "arch_bishop",
+      "maximum": 197,
+      "combinations": 2160,
+      "base": {
+        "atk": 0,
+        "matk": 0,
+        "def": 16
+      },
+      "primary": [
+        {
+          "stat": "str",
+          "value": 8
+        },
+        {
+          "stat": "agi",
+          "value": 8
+        },
+        {
+          "stat": "vit",
+          "value": 8
+        },
+        {
+          "stat": "int",
+          "value": 8
+        },
+        {
+          "stat": "dex",
+          "value": 8
+        },
+        {
+          "stat": "luk",
+          "value": 8
+        }
+      ],
+      "third": [
+        {
+          "stat": "crit",
+          "value": 0.08
+        },
+        {
+          "stat": "cd",
+          "value": 0.08
+        },
+        {
+          "stat": "area",
+          "value": 0.08
+        }
+      ],
+      "fourth": [
+        {
+          "stat": "hp",
+          "value": 40
+        },
+        {
+          "stat": "armor",
+          "value": 3.2
+        },
+        {
+          "stat": "spd",
+          "value": 0.08
+        },
+        {
+          "stat": "flee",
+          "value": 0.08
+        }
+      ],
+      "skills": [
+        "adoramus",
+        "asura_strike",
+        "benedictio",
+        "call_spirits",
+        "chain_combo",
+        "combo_finish",
+        "epiclesis",
+        "finger_offensive",
+        "highness_heal",
+        "judex",
+        "magnus_exorcismus",
+        "sanctuary"
+      ]
+    }
+  ]
+}

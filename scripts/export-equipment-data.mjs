@@ -1,3 +1,4 @@
+import {createEquipmentScorer,enrichEquipmentScores,verifyEquipmentMaxima} from './equipment-max-gs.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -62,7 +63,7 @@ if(process.argv[4]){
    const name=manifest?catalog.bp(drop.id,''):names.get(drop.id)||def.name;
    if(!name||name==='#'+drop.id)throw Error('Missing equipment name: '+drop.id);
    const icon=manifest?.items?.[drop.id]?.icon;
-   if(!records.has(drop.id))records.set(drop.id,{id:drop.id,name,slot:def.slot,wtype:def.wtype||'',icon:icon?new URL(icon,'https://ro.hans-webgametw.com/assets/').href:'https://ro.hans-webgametw.com/assets/items/'+drop.id+'.png',tiers:[],sources:[]});
+   if(!records.has(drop.id))records.set(drop.id,{id:drop.id,name,slot:def.slot,wtype:def.wtype||(def.slot==='weapon'&&def.jobs?.includes('taekwon')?'taekwon':''),icon:icon?new URL(icon,'https://ro.hans-webgametw.com/assets/').href:'https://ro.hans-webgametw.com/assets/items/'+drop.id+'.png',tiers:[],sources:[]});
    const record=records.get(drop.id);if(!record.tiers.includes(stage.tier))record.tiers.push(stage.tier);
    record.sources.push({...stage.chapter?{chapter:stage.chapter}:{},tier:stage.tier,stage:stageName,monster:monsters[enemy.id],boss:enemy.boss,...enemy.rare?{rare:true}:{}});
   }
@@ -90,5 +91,9 @@ const data={updatedAt:new Date().toISOString().slice(0,10),source:process.argv[3
  ...(manifest?{manifestSource:'https://ro.hans-webgametw.com/assets/manifest.json',manifestSha256:crypto.createHash('sha256').update(fs.readFileSync(process.argv[6])).digest('hex')} :{}),...(lapConfig?{lapConfig,mainSource:process.argv[5]||null,mainSourceSha256}:{}),sourceSha256:crypto.createHash('sha256').update(raw).digest('hex'),...helper.equipmentSnapshot};
 if(lapConfig&&(data.maxTier!==lapConfig.tierMax||data.lapCount!==lapConfig.max))throw Error('Helper lap/Tier settings differ from the current game');
 if(data.records.some(record=>record.tiers.some(row=>!Array.isArray(row.bonuses))))throw Error('Actual equipment bonuses missing; snapshot not written');
+if(!process.argv[4])throw Error('Main module required for native equipment GS');
+const scorer=createEquipmentScorer(fs.readFileSync(process.argv[4],'utf8'),catalog,sandbox);
+enrichEquipmentScores(data,scorer);
+if(process.argv.includes('--verify')){const verified=verifyEquipmentMaxima(data,scorer);fs.writeFileSync(path.join(root,'tests/fixtures/equipment-max-gs-native.json'),JSON.stringify(verified,null,2)+'\n');console.log('Verified '+verified.cases.reduce((sum,row)=>sum+row.combinations,0)+' native affix combinations');}
 fs.writeFileSync(path.join(root,'doc/equipment/data.json'),JSON.stringify(data,null,2)+'\n');
 console.log(`Exported ${data.records.length} equipment records, T1–T${data.maxTier}, using the helper filter functions`);
