@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.14
+// @version      2.2.15
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.14'};
+  window[runtimeKey]={version:'2.2.15'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -1895,6 +1895,63 @@
       updateEquipCandidates();
     }finally{inventoryUpdating=false;}
   }
+  let tradeItemName=null,tradeCardName=null,tradeSearchState=null;
+  let tradeSearchManifest=null;
+  const tradeIconNames=new Map();
+  function initializeTradeSearch(module){
+    const functions=Object.values(module||{}).filter(value=>typeof value==='function');
+    tradeItemName=functions.find(fn=>/\.manifest\.items/.test(String(fn))&&/\.name/.test(String(fn))&&/"#"\s*\+/.test(String(fn)))||null;
+    tradeCardName=functions.find(fn=>/\.manifest\.cards/.test(String(fn))&&/\.name/.test(String(fn))&&/1000000/.test(String(fn)))||null;
+    updateTradeSearch();
+  }
+  function tradeSearchText(cell){
+    const id=cell.dataset.card||cell.dataset.ore;
+    if(id){const name=cell.dataset.card?tradeCardName:tradeItemName;return name?String(name(Number(id))):null;}
+    const manifest=smithAssets?.manifest?.items;
+    if(!manifest||!tradeItemName)return null;
+    if(manifest!==tradeSearchManifest){
+      tradeSearchManifest=manifest;tradeIconNames.clear();
+      for(const [itemId,item] of Object.entries(manifest)){
+        if(!item.icon)continue;
+        const suffix='/'+decodeURI(item.icon).replace(/^(?:\.\/|\/)+/,'');
+        tradeIconNames.set(suffix,(tradeIconNames.get(suffix)||'')+' '+tradeItemName(Number(itemId)));
+      }
+    }
+    let path;try{path=decodeURI(new URL(cell.querySelector('img')?.getAttribute('src'),location.href).pathname);}catch{return null;}
+    const names=[];
+    for(let index=path.indexOf('/');index>=0;index=path.indexOf('/',index+1))if(tradeIconNames.has(path.slice(index)))names.push(tradeIconNames.get(path.slice(index)));
+    return names.length?names.join(' '):null;
+  }
+  function updateTradeSearch(){
+    const panel=document.querySelector('#trade'),list=panel?.querySelector('#tr-inv'),filters=panel?.querySelector('#tr-filters');
+    if(!panel||panel.classList.contains('hidden')){if(tradeSearchState){tradeSearchState.input.value='';tradeSearchState=null;}return;}
+    if(!list||!filters)return;
+    let bar=panel.querySelector('[data-ro-trade-search]');
+    if(!bar){
+      bar=document.createElement('div');bar.dataset.roTradeSearch='';bar.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0';
+      const input=document.createElement('input');input.type='search';input.placeholder='搜尋物品或卡片名稱';input.setAttribute('aria-label','搜尋交易物品或卡片');input.style.cssText='flex:1;min-width:120px;max-width:100%;box-sizing:border-box;font-size:16px;padding:8px';
+      const count=document.createElement('span');count.setAttribute('aria-live','polite');
+      const empty=document.createElement('div');empty.textContent='找不到符合的物品或卡片';empty.dataset.roTradeEmpty='';empty.className='empty-note';empty.hidden=true;
+      input.oninput=updateTradeSearch;
+      input.onkeydown=event=>event.stopPropagation();
+      bar.append(input,count);filters.after(bar);list.after(empty);
+    }
+    const input=bar.querySelector('input'),count=bar.querySelector('span'),empty=panel.querySelector('[data-ro-trade-empty]');
+    if(!tradeSearchState||tradeSearchState.panel!==panel){input.value='';tradeSearchState={panel,input};}
+    const query=input.value.normalize('NFKC').trim().toLocaleLowerCase(),terms=query.split(/\s+/).filter(Boolean);
+    let shown=0;const cells=[...list.querySelectorAll('.item-cell')];
+    for(const cell of cells){
+      const name=terms.length?tradeSearchText(cell):null;
+      // Unknown assets stay visible so an incomplete catalog cannot hide inventory.
+      const match=!terms.length||name===null||terms.every(term=>name.normalize('NFKC').toLocaleLowerCase().includes(term));
+      if(cell.hidden===match)cell.hidden=!match;
+      if(!match){if(cell.style.display!=='none')cell.style.setProperty('display','none','important');}
+      else if(cell.style.display==='none')cell.style.removeProperty('display');
+      if(match)shown++;
+    }
+    const text=terms.length?shown+' / '+cells.length:'';if(count.textContent!==text)count.textContent=text;
+    const noMatches=terms.length>0&&cells.length>0&&shown===0;if(empty.hidden===noMatches)empty.hidden=!noMatches;
+  }
   function spawnTime(seconds){
     if(!Number.isFinite(seconds)||seconds<0)return '時間未提供';
     const n=Math.floor(seconds);return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
@@ -3156,6 +3213,7 @@
       skillDefs = Object.values(module).find(value => value && typeof value === 'object'
         && value.atk_sword?.kind === 'weapon' && value.bash?.kind === 'weapon') || null;
       initializeAdvancedCatalog(module);
+      initializeTradeSearch(module);
       const hooks = Object.values(module).find(value => value && typeof value === 'object'
         && ['start', 'tick', 'hurt', 'damageMult', 'hit', 'kill', 'cast'].every(key => Array.isArray(value[key])));
       if (!hooks) throw new Error('找不到遊戲事件介面');
@@ -3165,7 +3223,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.12');
+      console.info('[RO助手] 即時自選已啟用 v2.2.15');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3383,6 +3441,7 @@
       updateSmith();
       updateMerchant();
       updateInventoryViews();
+      updateTradeSearch();
       updateStatCapDisplay();
     // Bottom bars are recreated whenever levels or items change.
     document.querySelectorAll(SLOT).forEach(el => {
@@ -3624,7 +3683,7 @@
         if(el?.closest('#chr-perks'))return true;
         if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
         if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
-        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage')));
+        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters')));
       });
       if (relevant) schedule();
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });
