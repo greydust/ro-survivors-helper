@@ -1703,9 +1703,9 @@
   const equipmentBaseScores=new Map();
   function withEquipmentScoreCapture(action,uid){
     const find=Array.prototype.find,filter=Array.prototype.filter,map=Array.prototype.map;
-    const hasCurrent=!!document.querySelector('#cp-eq-current .eq-name');
-    if(!hasCurrent)equipmentCurrentItem=null;
-    let inventory=null,current=null;
+    const previousScoreNode=document.querySelector('#cp-eq-current .gs b');
+    const foundItems=new Map();
+    let inventory=null,scoreCandidate=null;
     const isInventory=value=>gearArray(value)&&value.some(item=>item.uid===uid);
     try{
       Array.prototype.find=function(...args){
@@ -1713,9 +1713,7 @@
         if(!inventory&&isInventory(this))inventory=this;
         if(this!==inventory)return result;
         for(const item of this)inventoryItems.set(item.uid,item);
-        // Native render reads the current slot before enumerating candidates.
-        // A click may first look up the selected item to clear its "new" flag.
-        if(hasCurrent&&!current&&result&&result.uid!==uid){current=result;equipmentCurrentItem=result;}
+        if(result&&this.includes(result))foundItems.set(result.uid,result);
         return result;
       };
       Array.prototype.filter=function(...args){
@@ -1730,7 +1728,8 @@
         // Native candidate scorer returns {g: gear, s: score}. Reuse that
         // closure for pristine copies, preserving job, Tier and affix weights.
         if(gearArray(this)&&result.length===this.length&&result.every((row,index)=>row?.g===this[index]&&Number.isFinite(row.s))){
-          for(const item of [...this,...(current?[current]:[])]){
+          scoreCandidate=item=>Reflect.apply(callback,thisArg,[item,0,this]);
+          for(const item of this){
             try{
               const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
               const scored=Reflect.apply(callback,thisArg,[base,0,this]);
@@ -1741,8 +1740,31 @@
         return result;
       };
       const result=action();
+      // Native rendering also looks up other worn items for ownership/stat
+      // previews. Lookup order cannot identify the item in the current slot.
+      // Worn items are excluded from the candidate list. Validate the items
+      // actually read during rendering against the displayed native GS, using
+      // the same scorer; do not infer identity from lookup order.
+      const currentRoot=document.querySelector('#cp-eq-current');
+      const scoreNode=currentRoot?.querySelector('.gs b');
+      const score=scoreNode?.textContent;
+      const matches=[];
+      if(score&&scoreCandidate)for(const item of [...foundItems.values()]){
+        try{
+          const original=scoreCandidate(item);
+          if(original?.g!==item||original.s!==Number(score.replaceAll(',','')))continue;
+          const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
+          const scored=scoreCandidate(base);
+          if(scored?.g===base&&Number.isFinite(scored.s)){
+            equipmentBaseScores.set(item.uid,String(scored.s));matches.push(item);
+          }
+        }catch{/* Omit an uncertain preview rather than use another item's GS. */}
+      }
+      if(scoreCandidate||scoreNode!==previousScoreNode)equipmentCurrentItem=null;
+      if(matches.length&&matches.every(item=>equipmentBaseScores.get(item.uid)===equipmentBaseScores.get(matches[0].uid)))equipmentCurrentItem=matches[0];
+      if(!equipmentCurrentItem)currentRoot?.querySelector('[data-ro-equipment-base-gs]')?.remove();
       paintEquipmentBaseScores(uid);
-      return {result,current};
+      return {result,current:equipmentCurrentItem};
     }finally{Array.prototype.find=find;Array.prototype.filter=filter;Array.prototype.map=map;}
   }
   function refinePreviewMultiplier(item){
