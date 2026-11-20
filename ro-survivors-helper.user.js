@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.18
+// @version      2.2.19
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.18'};
+  window[runtimeKey]={version:'2.2.19'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -145,6 +145,45 @@
     }
   }
   installOfflineGate();
+  const AUTO_WORLD_BOSS_KEY='greydust.ro.auto-world-boss.v1';
+  let autoWorldBoss=false,worldBossLastAttempt=-Infinity;
+  const worldBossAttemptedChips=new WeakSet();
+  try{autoWorldBoss=localStorage.getItem(AUTO_WORLD_BOSS_KEY)==='true';}catch{}
+  function tryAutoWorldBoss(){
+    if(!autoWorldBoss||keepOffline)return;
+    const chip=document.querySelector('#wb-chip'),button=chip?.querySelector('#wb-join');
+    // Native draw replaces its button every second. Remember the chip, not the
+    // button; also guard reconnects that recreate the chip during the same event.
+    if(!button||button.disabled||typeof button.onclick!=='function'||worldBossAttemptedChips.has(chip)||Date.now()-worldBossLastAttempt<30*60*1000)return;
+    for(let el=button;el;el=el.parentElement){
+      if(el.hidden||el.classList.contains('hidden')||el.getAttribute('aria-hidden')==='true')return;
+      const style=getComputedStyle(el);if(style.display==='none'||style.visibility==='hidden')return;
+    }
+    worldBossAttemptedChips.add(chip);worldBossLastAttempt=Date.now();
+    button.click();
+  }
+  function updateWorldBossOption(){
+    const body=document.querySelector('#opt-body');
+    if(!body||!document.querySelector('#opt-tabs [data-opt-tab="game"].active'))return;
+    let input=body.querySelector('[data-ro-auto-world-boss]');
+    if(!input){
+      const row=document.createElement('label');row.className='opt-row opt-check';
+      const text=document.createElement('span'),name=document.createElement('b'),hint=document.createElement('small');
+      name.textContent='自動進世界王';hint.textContent='入口出現時自動點進場一次，額滿依原生規則排隊；需保持遊戲開啟且連線，保持離線遊玩優先。失敗可手動重試。';text.append(name,hint);
+      input=document.createElement('input');input.type='checkbox';input.setAttribute('data-ro-auto-world-boss','');
+      input.onchange=()=>{autoWorldBoss=input.checked;try{localStorage.setItem(AUTO_WORLD_BOSS_KEY,String(autoWorldBoss));}catch{notify('世界王設定無法保存，目前只在本分頁有效');}tryAutoWorldBoss();};
+      const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,input,toggle);body.append(row);
+    }
+    input.checked=autoWorldBoss;
+  }
+  function startWorldBossObserver(){
+    // Separate from the batched helper scan: react in the mutation microtask
+    // after the game has installed the native onclick, including during pickers.
+    new MutationObserver(records=>{
+      if(records.some(r=>r.target.id==='wb-chip'||r.target.closest?.('#wb-chip')||[...(r.addedNodes||[])].some(n=>n.id==='wb-chip'||n.querySelector?.('#wb-chip'))))tryAutoWorldBoss();
+    }).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style','disabled']});
+    tryAutoWorldBoss();
+  }
   const MINIMAP_MAGNET_KEY='greydust.ro.hide-minimap-magnets.v1';
   const HORDE_RING_KEY='greydust.ro.show-horde-ring.v1';
   let hideMinimapMagnets=false;
@@ -3410,7 +3449,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.18');
+      console.info('[RO助手] 即時自選已啟用 v2.2.19');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3621,6 +3660,7 @@
       updateStageSpawnSchedule();
       updateCharacterDetails();
       updateOfflineUI();
+      updateWorldBossOption();
       updateMinimapOption();
       updatePickupOptions();
       updateBattlePreferenceOptions();
@@ -3808,6 +3848,7 @@
     `;
     document.head.append(style);
     safariDiagnostics?.mount();
+    startWorldBossObserver();
     document.addEventListener('pointerdown',advancedManualInput,true);
     document.addEventListener('touchstart',advancedManualInput,{capture:true,passive:true});
     window.addEventListener('keydown',advancedManualInput,true);
