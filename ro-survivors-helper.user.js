@@ -1656,6 +1656,7 @@
   function equipmentMaxTier(){return equipmentBaseMaxTier()+EQUIPMENT_LAP_COUNT-1;}
   let filterSlot='onehand',filterSearch='',gearDetails=null;
   let filterWeaponType='',filterExcludeTier=1;
+  let filterAssignedAtOpen=new Set();
   const weaponTypeLabels=[['단검','短劍'],['검','單手劍'],['양손검','雙手劍'],['카타르','拳刃'],['창','單手矛'],['양손창','雙手矛'],['도끼','單手斧'],['양손도끼','雙手斧'],['클럽','鈍器'],['너클','拳套'],['taekwon','跆拳拳套'],['롯드','法杖'],['책','書'],['활','弓'],['악기','樂器'],['채찍','鞭子'],['권총','手槍'],['라이플','步槍'],['샷건','散彈槍'],['수리검','風魔手裏劍'],['unknown','其他']];
   function groupWeaponType(group){return smithDefs?.[group.records[0].id]?.wtype||group.records[0].wtype||'unknown';}
   const emptyDetailSettings=()=>({first:[],second:[],third:[],fourth:[],skills:[]});
@@ -1766,7 +1767,9 @@
   }
   function element(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
   function drawEquipmentCards(container,summary){
-    const groups=equipmentGroups().filter(group=>group.slot===filterSlot&&(!filterWeaponType||groupWeaponType(group)===filterWeaponType));
+    const assignedAtOpen=group=>group.records.some(record=>filterAssignedAtOpen.has(String(record.id)));
+    const groups=equipmentGroups().filter(group=>group.slot===filterSlot&&(!filterWeaponType||groupWeaponType(group)===filterWeaponType))
+      .sort((a,b)=>Number(assignedAtOpen(b))-Number(assignedAtOpen(a)));
     const query=filterSearch.trim().toLocaleLowerCase();
     const expanded=new Set([...container.querySelectorAll('.ro-gear-card')].filter(card=>card.querySelector('.ro-gear-expanded')?.open).map(card=>card.dataset.gearId));
     container.replaceChildren();let shown=0;
@@ -1900,7 +1903,10 @@
   }
   function closeFilter(){closeFilterMenus();closeGearDetails();filterDialog?.remove();filterDialog=null;filterDraft=null;}
   function openFilter(){
-    closeFilter();filterDraft=copy(filterStore);filterDialog=element('div');filterDialog.id='ro-unwanted-dialog';filterDialog.setAttribute('role','dialog');filterDialog.setAttribute('aria-label','裝備圖鑑過濾器');filterDialog.setAttribute('aria-modal','true');
+    closeFilter();filterDraft=copy(filterStore);
+    // Keep this opening's order through edits, imports, and redraws.
+    filterAssignedAtOpen=new Set(Object.entries(filterDraft.assignments).filter(([,ids])=>ids.some(id=>id!=='default')).map(([id])=>id));
+    filterDialog=element('div');filterDialog.id='ro-unwanted-dialog';filterDialog.setAttribute('role','dialog');filterDialog.setAttribute('aria-label','裝備圖鑑過濾器');filterDialog.setAttribute('aria-modal','true');
     const panel=element('div',undefined,'ro-filter-panel ro-equipment-filter');filterDialog.append(panel);document.body.append(filterDialog);
     filterDialog.onclick=event=>{if(event.target===filterDialog)closeFilter();};drawFilter();
   }
@@ -2753,7 +2759,7 @@
     const game=activeGame;
     if(!game||typeof game.step!=='function')return {ok:false,error:'請先進入一場遊戲，再啟動量測'};
     seconds=Number(seconds);if(!Number.isFinite(seconds)||seconds<1||seconds>60)return {ok:false,error:'量測秒數須為 1～60'};
-    const session={game,seconds,phase:'waiting',createdAt:performance.now(),startedAt:null,endedAt:null,records:[],stack:[],stats:new Map(),missing:[],weapons:new WeakSet(),counts:{},frames:[],lastFrame:null,frameId:null,timer:null,waitTimer:null,projectileTargets:new WeakMap(),projectileCoverage:{modelTargets:0,viewTargets:0,unwrappedTargets:0},pickupStart:null,enemyTargets:new WeakMap(),enemyCoverage:{observedEnemies:0,viewTargets:0,missingViewTargets:0,unwrappedTargets:0}};
+    const session={game,seconds,phase:'waiting',createdAt:performance.now(),startedAt:null,endedAt:null,records:[],stack:[],stats:new Map(),missing:[],weapons:new WeakSet(),counts:{},frames:[],lastFrame:null,frameId:null,timer:null,waitTimer:null,projectileTargets:new WeakMap(),projectileCoverage:{modelTargets:0,viewTargets:0,unwrappedTargets:0},pickupStart:null,enemyTargets:new WeakMap(),enemyObserved:new WeakSet(),enemySampling:{interval:32,updateCalls:0,sampledCalls:0,totalMs:0,selfMs:0},enemyCoverage:{observedEnemies:0,viewTargets:0,missingViewTargets:0,unwrappedTargets:0}};
     performanceSession=session;
     function begin(){
       if(session.startedAt!==null)return;
@@ -2771,7 +2777,9 @@
         if(scope&&!session.stack.some(frame=>frame.name===scope))return Reflect.apply(original,this,args);
         begin();
         if(name==='updateProjectiles')observeProjectiles();
-        if(name==='updateEnemies')observeEnemies();
+        const enemySample=name==='updateEnemies'&&session.enemySampling.updateCalls++%session.enemySampling.interval===0;
+        const detailStart=session.records.length;
+        if(enemySample){session.enemyTargets=new WeakMap();observeEnemies();}
         if(category==='step'){
           for(const weapon of game.weapons||[])if(weapon&&!session.weapons.has(weapon)){session.weapons.add(weapon);wrap(weapon,'update','skills','weapon:'+session.weaponsCount++);}
           for(const key of ['pickups','enemies','projectiles','fx','numbers','weapons']){const value=game[key]?.length;if(Number.isFinite(value)){const count=session.counts[key]||{samples:0,total:0,max:0};count.samples++;count.total+=value;count.max=Math.max(count.max,value);session.counts[key]=count;}}
@@ -2781,13 +2789,19 @@
         finally{
           const elapsed=Math.max(0,performance.now()-frame.start);session.stack.pop();
           const parent=session.stack[session.stack.length-1];if(parent)parent.children+=elapsed;
+          if(enemySample){
+            session.enemySampling.sampledCalls++;session.enemySampling.totalMs+=elapsed;session.enemySampling.selfMs+=Math.max(0,elapsed-frame.children);
+            const added=session.records.splice(detailStart);
+            session.records.push(...added.filter(record=>!record.enemyDetail));
+            restorePerformanceRecords(added.filter(record=>record.enemyDetail));
+          }
           stat.calls++;stat.totalMs+=elapsed;stat.selfMs+=Math.max(0,elapsed-frame.children);stat.maxMs=Math.max(stat.maxMs,elapsed);
           if(stat.samples.length<4096)stat.samples.push(elapsed);else stat.samples[(stat.calls-1)%4096]=elapsed;
         }
       };
       try{Object.defineProperty(object,key,{configurable:true,enumerable:descriptor?.enumerable??false,writable:true,value:wrapper});}
       catch{session.missing.push(name);return;}
-      session.stats.set(name,stat);session.records.push({object,key,descriptor,wrapper});
+      session.stats.set(name,stat);session.records.push({object,key,descriptor,wrapper,enemyDetail:scope==='updateEnemies'});
       return true;
     }
     function observeProjectiles(){
@@ -2811,7 +2825,7 @@
       for(const enemy of game.enemies||[]){
         if(!enemy||typeof enemy!=='object')continue;
         let keys=session.enemyTargets.get(enemy);if(!keys){keys=new Set();session.enemyTargets.set(enemy,keys);}
-        if(!keys.has('observed')){keys.add('observed');session.enemyCoverage.observedEnemies++;
+        if(!session.enemyObserved.has(enemy)){session.enemyObserved.add(enemy);session.enemyCoverage.observedEnemies++;
           if(typeof enemy.updateView==='function')session.enemyCoverage.viewTargets++;else session.enemyCoverage.missingViewTargets++;
         }
         enemyWrap(enemy,'updateView','view');
@@ -2833,11 +2847,14 @@
     session.waitTimer=setTimeout(()=>stopPerformanceMeasurement('no-playing-scene'),120000);
     return {ok:true,phase:'waiting',seconds};
   }
+  function restorePerformanceRecords(records){
+    for(const {object,key,descriptor,wrapper} of records.reverse())if(object[key]===wrapper){if(descriptor)Object.defineProperty(object,key,descriptor);else delete object[key];}
+  }
   function stopPerformanceMeasurement(reason='manual'){
     const session=performanceSession;if(!session)return lastPerformanceReport;
     performanceSession=null;session.endedAt=performance.now();clearTimeout(session.timer);clearTimeout(session.waitTimer);
     if(session.frameId!==null)window.cancelAnimationFrame?.(session.frameId);
-    for(const {object,key,descriptor,wrapper} of session.records.reverse())if(object[key]===wrapper){if(descriptor)Object.defineProperty(object,key,descriptor);else delete object[key];}
+    restorePerformanceRecords(session.records);
     const methods=[...session.stats.values()].map(({samples,...stat})=>({...stat,meanMs:stat.calls?stat.totalMs/stat.calls:null,p95Ms:performancePercentile(samples,.95),sampleCount:samples.length}));
     const step=methods.find(row=>row.category==='step'),steps=step?.calls||0;
     const categories=Object.entries(performanceLabels).map(([key,label])=>{
@@ -2851,13 +2868,13 @@
     const enemy=methods.find(row=>row.name==='updateEnemies');
     const enemyGroups=Object.fromEntries(['view','separation','navigation','targeting','bossAI'].map(group=>[group,methods.filter(row=>row.name.startsWith('enemy:'+group+':')).reduce((sum,row)=>sum+row.selfMs,0)]));
     const enemyMeasured=Object.values(enemyGroups).reduce((sum,value)=>sum+value,0);
-    lastPerformanceReport={format:3,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
+    lastPerformanceReport={format:4,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
       pickupOptimization:{start:session.pickupStart,end:pickupEnd,skippedDuringMeasurement:skipped},
       projectileBreakdown:{totalMs:projectile?.totalMs??null,visualCallbacksMs:visualMs,remainingMs:projectile?Math.max(0,projectile.totalMs-visualMs):null,modelUpdateCalls:model?.calls||0,viewUpdateCalls:view?.calls||0,...session.projectileCoverage},
-      enemyBreakdown:{totalMs:enemy?.totalMs??null,groupsMs:enemyGroups,remainingMs:enemy?Math.max(0,enemy.selfMs):null,nestedOtherMs:enemy?Math.max(0,enemy.totalMs-enemy.selfMs-enemyMeasured):null,...session.enemyCoverage},
+      enemyBreakdown:{sampling:{interval:session.enemySampling.interval,updateCalls:session.enemySampling.updateCalls,sampledCalls:session.enemySampling.sampledCalls},totalMs:enemy?session.enemySampling.totalMs:null,groupsMs:enemyGroups,remainingMs:enemy?session.enemySampling.selfMs:null,nestedOtherMs:enemy?Math.max(0,session.enemySampling.totalMs-session.enemySampling.selfMs-enemyMeasured):null,...session.enemyCoverage},
       categories,methods,counts:Object.fromEntries(Object.entries(session.counts).map(([key,value])=>[key,{mean:value.total/value.samples,max:value.max}])),missing:session.missing,
       frames:{samples:session.frames.length,fps:frameSum?session.frames.length*1000/frameSum:null,p95IntervalMs:performancePercentile(session.frames,.95)},
-      notes:['怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未包裝的技能 hook、地圖／玩家／助手等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
+      notes:['怪物細節每 32 次更新抽樣一次，totalMs/groupsMs/remainingMs 僅代表抽樣更新，不外推為全程；分類與 updateEnemies 方法仍逐次計時。細節包裝僅在抽樣更新期間安裝，完成即還原，安裝及還原成本留在外層呼叫者。','怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未包裝的技能 hook、地圖／玩家／助手等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
     return lastPerformanceReport;
   }
   function performanceMeasurementState(){return {phase:performanceSession?.phase||'idle',seconds:performanceSession?.seconds??null,hasReport:!!lastPerformanceReport};}
@@ -2898,7 +2915,7 @@
         summary.textContent+='\n'+label+'物品檢查：陣列 '+inventory.entries+' 筆，未死亡 '+inventory.live+' 筆／'+inventory.uniqueLiveObjects+' 個不同物件，死亡 '+inventory.dead+' 筆，重複參照 '+inventory.duplicateReferences+' 筆（'+inventory.repeatedObjects+' 個物件重複），無效 '+inventory.invalidEntries+' 筆';
         for(const row of inventory.byKind)summary.textContent+='\n  '+(row.kind===null?'[缺少或非字串 kind]':row.kind)+': '+row.entries+' 筆，未死亡 '+row.live+' 筆／'+row.uniqueLiveObjects+' 個不同物件，死亡 '+row.dead+' 筆，重複 '+row.duplicateReferences+' 筆，隱藏 '+row.hiddenLive+' 筆，吸取中 '+row.magnetLive+' 筆';
       }
-      const enemy=lastPerformanceReport.enemyBreakdown;if(enemy)summary.textContent+='\n怪物更新細分（ms）：'+Object.entries(enemy.groupsMs).map(([key,value])=>key+' '+value.toFixed(2)).join('／')+'；其餘 '+(enemy.remainingMs?.toFixed(2)??'無樣本')+'；視覺目標 '+enemy.viewTargets+'/'+enemy.observedEnemies+'；無法包裝 '+enemy.unwrappedTargets;
+      const enemy=lastPerformanceReport.enemyBreakdown;if(enemy)summary.textContent+='\n怪物更新細分（僅抽樣 '+enemy.sampling.sampledCalls+'/'+enemy.sampling.updateCalls+' 次，ms）：'+Object.entries(enemy.groupsMs).map(([key,value])=>key+' '+value.toFixed(2)).join('／')+'；其餘 '+(enemy.remainingMs?.toFixed(2)??'無樣本')+'；視覺目標 '+enemy.viewTargets+'/'+enemy.observedEnemies+'；無法包裝 '+enemy.unwrappedTargets;
       if(projectile)summary.textContent+='\n投射物視覺回呼：'+projectile.visualCallbacksMs.toFixed(2)+' ms；其餘更新（含未拆出視覺）：'+(projectile.remainingMs?.toFixed(2)??'無樣本')+' ms；無法包裝目標：'+projectile.unwrappedTargets;
     }
     const text=document.createElement('textarea');text.readOnly=true;text.setAttribute('aria-label','效能報告 JSON');text.style.cssText='display:block;width:100%;height:35vh;box-sizing:border-box';text.value=lastPerformanceReport?JSON.stringify(lastPerformanceReport,null,2):'';
