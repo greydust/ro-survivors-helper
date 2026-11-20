@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.21
+// @version      2.2.22
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.21'};
+  window[runtimeKey]={version:'2.2.22'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -3229,7 +3229,14 @@
     clearTimeout(advancedTimer);advancedTimer=null;if(advancedChoice){advancedChoice.manual=true;if(reveal)revealAdvancedChoice(advancedChoice);}
   }
   function resetAdvancedChoice(){cancelAdvancedChoice(false);advancedChoice=null;}
+  function advancedChoiceApplies(game){
+    // World-boss setup reuses the expedition map and level-up event, but its
+    // host:-1 session has a separate, mandatory build-selection flow.
+    return !!game&&!game.isStory&&!game.endless&&game.coop?.host!==-1
+      &&window.__WBF?.game!==game&&!document.body.classList.contains('wb-picking');
+  }
   function captureAdvancedChoice(game,cards,kind,render=null){
+    if(!advancedChoiceApplies(game)){if(typeof render==='function')return render(cards);return;}
     clearTimeout(advancedTimer);advancedTimer=null;
     advancedChoice={game,cards,kind,render,background:typeof render==='function',manual:false,started:performance.now(),pending:null,actions:0};
     queueAdvancedChoice();
@@ -3306,6 +3313,7 @@
   function runAdvancedChoice(){
     advancedTimer=null;const state=advancedChoice,picker=document.querySelector('#picker');
     if(!advancedSettings.enabled||!state||state.manual||state.game!==activeGame||state.game.player?.dead||state.game.state==='over'||advancedDialog)return;
+    if(!advancedChoiceApplies(state.game)){cancelAdvancedChoice();return;}
     if(state.background)return runAdvancedBackground(state);
     if(!picker||picker.classList.contains('hidden')||picker.classList.contains('closing'))return;
     const nodes=[...picker.querySelectorAll('#pk-cards .pk-card')];
@@ -3377,7 +3385,7 @@
     head.append(title,advancedButton('關閉',closeAdvancedDialog));dialog.append(head);
     renderAdvancedProfiles(dialog);
     const enabled=document.createElement('label'),toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=advancedSettings.enabled;
-    toggle.onchange=()=>{advancedSettings.enabled=toggle.checked;saveAdvancedSettings();};enabled.append(toggle,' 啟用進階自動選卡（設定會保存；啟用時取代舊自選）');dialog.append(enabled);
+    toggle.onchange=()=>{advancedSettings.enabled=toggle.checked;saveAdvancedSettings();};enabled.append(toggle,' 啟用進階自動選卡（僅適用遠征；設定會保存；啟用時取代舊自選）');dialog.append(enabled);
     const note=document.createElement('p');note.textContent='填充只在仍能保留所有必拿技能格時選。刷新／放逐使用原生剩餘次數；無可選項時保留手動。點選卡片、刷新按鈕或按 Escape，可中止當次自動選擇。';dialog.append(note);
     if(!advancedCatalog.skills.length||!advancedScope){const loading=document.createElement('p');loading.textContent='尚無法確認目前角色或職業資料，請回到主城重新開啟設定；不會顯示其他職業的技能。';dialog.append(loading);return;}
     const scopeLabel=document.createElement('p');scopeLabel.textContent='目前職業：'+advancedScope.name+'（含繼承職業、全部天賦技能及普攻；可提前設定）';dialog.append(scopeLabel);
@@ -3636,7 +3644,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.20');
+      console.info('[RO助手] 即時自選已啟用 v2.2.22');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
