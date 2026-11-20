@@ -12,6 +12,7 @@
   function equipmentMaxTier(){return equipmentBaseMaxTier()+EQUIPMENT_LAP_COUNT-1;}
   let filterSlot='onehand',filterSearch='',gearDetails=null;
   let filterWeaponType='',filterExcludeTier=1;
+  let filterAssignedAtOpen=new Set();
   const weaponTypeLabels=[['단검','短劍'],['검','單手劍'],['양손검','雙手劍'],['카타르','拳刃'],['창','單手矛'],['양손창','雙手矛'],['도끼','單手斧'],['양손도끼','雙手斧'],['클럽','鈍器'],['너클','拳套'],['taekwon','跆拳拳套'],['롯드','法杖'],['책','書'],['활','弓'],['악기','樂器'],['채찍','鞭子'],['권총','手槍'],['라이플','步槍'],['샷건','散彈槍'],['수리검','風魔手裏劍'],['unknown','其他']];
   function groupWeaponType(group){return smithDefs?.[group.records[0].id]?.wtype||group.records[0].wtype||'unknown';}
   const emptyDetailSettings=()=>({first:[],second:[],third:[],fourth:[],skills:[]});
@@ -21,21 +22,35 @@
       &&Array.isArray(d.skills)&&d.skills.length<=500&&new Set(d.skills.map(s=>s?.id)).size===d.skills.length&&d.skills.every(s=>s&&typeof s.id==='string'&&s.id.length>0&&s.id.length<100&&typeof s.min==='number'&&Number.isFinite(s.min)&&s.min>=0&&s.min<=10000);
   }
   function validEquipmentFilter(data){
-    if(!data||![2,3].includes(data.version)||!Array.isArray(data.unwantedRarities)||data.unwantedRarities.length>5||!data.unwantedRarities.every(v=>RARITIES.some(([id])=>id===v)))return false;
+    if(!data||![2,3,4].includes(data.version)||!Array.isArray(data.unwantedRarities)||data.unwantedRarities.length>5||!data.unwantedRarities.every(v=>RARITIES.some(([id])=>id===v)))return false;
     if(!data.disabledTiers||typeof data.disabledTiers!=='object'||Array.isArray(data.disabledTiers)||Object.keys(data.disabledTiers).length>5000||!Object.entries(data.disabledTiers).every(([k,v])=>/^\d+:[1-9]\d*$/.test(k)&&v===true))return false;
     if(data.version===2)return data.details&&typeof data.details==='object'&&!Array.isArray(data.details)&&Object.keys(data.details).length<=1000&&Object.entries(data.details).every(([id,d])=>/^\d+$/.test(id)&&validDetailSettings(d));
-    if(!Array.isArray(data.filters)||data.filters.length>100||new Set(data.filters.map(f=>f?.id)).size!==data.filters.length)return false;
+    if(!Array.isArray(data.filters)||data.filters.length>(data.version===4?101:100)||new Set(data.filters.map(f=>f?.id)).size!==data.filters.length)return false;
     if(!data.filters.every(f=>f&&typeof f.id==='string'&&/^[a-zA-Z0-9_-]{1,80}$/.test(f.id)&&typeof f.name==='string'&&f.name.trim().length>0&&f.name.length<=80&&validDetailSettings(f)))return false;
-    return data.assignments&&typeof data.assignments==='object'&&!Array.isArray(data.assignments)&&Object.keys(data.assignments).length<=1000&&Object.entries(data.assignments).every(([id,filter])=>/^\d+$/.test(id)&&data.filters.some(f=>f.id===filter));
+    if(data.version===4&&!(data.filters[0]?.id==='default'&&data.filters[0]?.name==='預設'))return false;
+    return data.assignments&&typeof data.assignments==='object'&&!Array.isArray(data.assignments)&&Object.keys(data.assignments).length<=1000&&Object.entries(data.assignments).every(([id,filter])=>/^\d+$/.test(id)&&(data.version===3?data.filters.some(f=>f.id===filter):Array.isArray(filter)&&filter.length<=101&&new Set(filter).size===filter.length&&filter.every(value=>data.filters.some(f=>f.id===value))));
   }
   function migrateEquipmentFilter(data){
     if(!validEquipmentFilter(data))throw new Error('不是有效的裝備過濾器');
-    if(data.version===3)return copy(data);
+    if(data.version===4){
+      const next=copy(data);
+      for(const [id,values] of Object.entries(next.assignments)){
+        const custom=values.filter(value=>value!=='default');
+        if(custom.length)next.assignments[id]=custom;else delete next.assignments[id];
+      }
+      return next;
+    }
     const next={...emptyEquipmentFilter(),unwantedRarities:copy(data.unwantedRarities),disabledTiers:copy(data.disabledTiers)},seen=new Map();
-    for(const [id,d] of Object.entries(data.details)){
+    if(data.version===3){
+      const ids=new Set(data.filters.map(f=>f.id));let suffix=0,replacement='legacy-default';
+      while(ids.has(replacement))replacement='legacy-default-'+(++suffix);
+      next.filters.push(...copy(data.filters).map(f=>({...f,id:f.id==='default'?replacement:f.id})));
+      for(const [id,value] of Object.entries(data.assignments))next.assignments[id]=[value==='default'?replacement:value];
+    }else for(const [id,d] of Object.entries(data.details)){
+      if(!['first','second','third','fourth','skills'].some(key=>d[key].length))continue;
       const signature=JSON.stringify(d);let filter=seen.get(signature);
-      if(!filter){filter={...copy(d),id:'migrated-'+next.filters.length,name:'細項過濾器 '+(next.filters.length+1)};next.filters.push(filter);seen.set(signature,filter);}
-      next.assignments[id]=filter.id;
+      if(!filter){filter={...copy(d),id:'migrated-'+next.filters.length,name:'細項過濾器 '+next.filters.length};next.filters.push(filter);seen.set(signature,filter);}
+      next.assignments[id]=[filter.id];
     }
     if(!validEquipmentFilter(next))throw new Error('舊設定超過可轉換的細項過濾器數量');
     return next;
@@ -52,24 +67,30 @@
     const quality=item.quality??0;
     if(!Number.isInteger(quality)||quality<0||quality>4)return false;
     if(config.unwantedRarities.includes(String(quality))||config.disabledTiers[item.itemId+':'+item.tier])return true;
-    const settings=config.version===2?config.details[item.itemId]:config.filters.find(f=>f.id===config.assignments[item.itemId]);if(!settings)return false;
+    const custom=(config.version===4?config.assignments[item.itemId]||[]:[]).filter(id=>id!=='default');
+    const selected=config.version===2?[config.details[item.itemId]].filter(Boolean):config.filters.filter(f=>(config.version===3?[config.assignments[item.itemId]]:(custom.length?custom:['default'])).includes(f.id));
+    if(!selected.length)return false;
     if(!Array.isArray(item.affixes))return false;
     const affixes=item.affixes;
     if(!affixes.every(a=>a&&typeof a==='object'&&typeof a.stat==='string'))return false;
-    const first=affixes.filter(a=>PRIMARY.some(([id])=>id===a.stat));
-    // Primary fields are unordered, but require two distinct affixes when both are set.
-    const mainOK=(!settings.first.length&&!settings.second.length)
-      ||(settings.first.length&&settings.second.length
-        ?first.some((a,i)=>settings.first.includes(a.stat)&&first.some((b,j)=>i!==j&&settings.second.includes(b.stat)))
-        :first.some(a=>(settings.first.length?settings.first:settings.second).includes(a.stat)));
-    const thirdOK=!settings.third.length||affixes.some(a=>settings.third.includes(a.stat));
-    const fourthOK=!settings.fourth.length||affixes.some(a=>settings.fourth.includes(a.stat));
-    const skillOK=!settings.skills.length||settings.skills.some(s=>affixes.some(a=>a.stat==='skill'&&a.skill===s.id&&Number.isFinite(a.value)&&a.value*100+1e-8>=s.min));
-    return !(mainOK&&thirdOK&&fourthOK&&skillOK);
+    return !selected.some(settings=>{
+      const first=affixes.filter(a=>PRIMARY.some(([id])=>id===a.stat));
+      // Primary fields are unordered, but require two distinct affixes when both are set.
+      const mainOK=(!settings.first.length&&!settings.second.length)
+        ||(settings.first.length&&settings.second.length
+          ?first.some((a,i)=>settings.first.includes(a.stat)&&first.some((b,j)=>i!==j&&settings.second.includes(b.stat)))
+          :first.some(a=>(settings.first.length?settings.first:settings.second).includes(a.stat)));
+      const thirdOK=!settings.third.length||affixes.some(a=>settings.third.includes(a.stat));
+      const fourthOK=!settings.fourth.length||affixes.some(a=>settings.fourth.includes(a.stat));
+      const skillOK=!settings.skills.length||settings.skills.some(s=>affixes.some(a=>a.stat==='skill'&&a.skill===s.id&&Number.isFinite(a.value)&&a.value*100+1e-8>=s.min));
+      return mainOK&&thirdOK&&fourthOK&&skillOK;
+    });
   }
   function damageSkillOptions() {
     try {
-      const ids=gameCatalog?.bU?.();
+      // Native bU() defaults to first/second jobs; pass each job to include third jobs.
+      const jobs=[...new Set(Object.values(gameCatalog||{}).filter(Array.isArray).flat().filter(job=>job?.id&&job.scaling).map(job=>job.id))];
+      const ids=[gameCatalog?.bU?.(),...jobs.map(job=>gameCatalog?.bU?.(job))].filter(Array.isArray).flat();
       if(!Array.isArray(ids))return [];
       return [...new Set(ids)].filter(id=>skillDefs?.[id]).map(id=>[id,`${skillDefs[id].name}傷害`]).sort((a,b)=>a[1].localeCompare(b[1],'zh-Hant'));
     }catch{return [];}
@@ -102,9 +123,11 @@
   }
   function element(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
   function drawEquipmentCards(container,summary){
-    const groups=equipmentGroups().filter(group=>group.slot===filterSlot&&(!filterWeaponType||groupWeaponType(group)===filterWeaponType));
+    const assignedAtOpen=group=>group.records.some(record=>filterAssignedAtOpen.has(String(record.id)));
+    const groups=equipmentGroups().filter(group=>group.slot===filterSlot&&(!filterWeaponType||groupWeaponType(group)===filterWeaponType))
+      .sort((a,b)=>Number(assignedAtOpen(b))-Number(assignedAtOpen(a)));
     const query=filterSearch.trim().toLocaleLowerCase();
-    const expanded=new Set([...container.querySelectorAll('.ro-gear-card')].filter(card=>card.querySelector('details')?.open).map(card=>card.dataset.gearId));
+    const expanded=new Set([...container.querySelectorAll('.ro-gear-card')].filter(card=>card.querySelector('.ro-gear-expanded')?.open).map(card=>card.dataset.gearId));
     container.replaceChildren();let shown=0;
     for(const group of groups){
       const searchable=group.name+' '+group.records.map(r=>r.id).join(' ')+' '+group.records.flatMap(r=>r.sources.map(s=>s.stage+' '+s.monster)).join(' ')+' '+group.records.flatMap(r=>equipmentTiers(r).flatMap(t=>actualEquipmentBonuses(r,t)||[])).join(' ');
@@ -112,14 +135,13 @@
       shown++;
       const card=element('article',undefined,'ro-gear-card'),header=element('header');card.dataset.gearId=String(group.records[0].id);
       const image=element('img');image.src=group.records[0].icon;image.alt='';image.loading='lazy';
-      const duplicate=EQUIPMENT_CATALOG.some(r=>r.id!==group.records[0].id&&r.name===group.name);
-      const displayName=group.name+(duplicate?'（ID '+group.records[0].id+'）':'');
-      const title=element('b',displayName),settings=element('select');settings.className='ro-gear-filter-select';settings.setAttribute('aria-label',displayName+'細項過濾器');
-      const assigned=[...new Set(group.records.map(r=>filterDraft.assignments[r.id]||''))];
-      const options=[['','不限細項'],...filterDraft.filters.map(f=>[f.id,f.name])];
-      if(assigned.length>1)options.unshift(['__mixed','多個設定']);
-      for(const [id,name] of options){const option=element('option',name);option.value=id;option.selected=id===(assigned.length>1?'__mixed':assigned[0]);option.disabled=id==='__mixed';settings.append(option);}
-      settings.onchange=()=>{for(const r of group.records){if(settings.value)filterDraft.assignments[r.id]=settings.value;else delete filterDraft.assignments[r.id];}};
+      const displayName=group.name;
+      const title=element('b',displayName);
+      const assigned=[...new Set(group.records.flatMap(r=>(filterDraft.assignments[r.id]||[]).filter(id=>id!=='default')))];
+      const settings=formMulti(filterDraft.filters.filter(f=>f.id!=='default').map(f=>[f.id,f.name]),assigned,values=>{
+        for(const r of group.records){if(values.length)filterDraft.assignments[r.id]=[...values];else delete filterDraft.assignments[r.id];}
+      },'預設',names=>names.length===1?names[0]:names.length+' 個過濾器');
+      settings.classList.add('ro-gear-filter-select');settings.setAttribute('aria-label',displayName+'細項過濾器');
       header.append(image,title,settings);card.append(header);
       const sources=element('ul',undefined,'ro-gear-sources'),locations=new Map();
       sources.setAttribute('aria-label','掉落來源');
@@ -161,23 +183,28 @@
     gearDetails=element('div',undefined,'ro-gear-detail-backdrop');
     const panel=element('section',undefined,'ro-gear-detail-panel ro-detail-manager');panel.setAttribute('role','dialog');panel.setAttribute('aria-label','管理細項過濾器');gearDetails.append(panel);filterDialog.append(gearDetails);
     const draw=()=>{
-      closeFilterMenus(panel);panel.replaceChildren();panel.append(element('h3','管理細項過濾器'),element('p','同格多選符合任一項，不同格必須全部符合；未選不限。移除過濾器會一併解除裝備的選用。'));
+      closeFilterMenus(panel);panel.replaceChildren();panel.append(element('h3','管理細項過濾器'),element('p','同格多選符合任一項，不同格必須全部符合；未選不限。預設不可刪除；每件裝備可多選自訂過濾器，符合任一個即保留；未選時自動套用預設。移除過濾器會一併解除裝備的選用。'));
       const layout=element('div',undefined,'ro-detail-layout'),sidebar=element('div',undefined,'ro-detail-list'),editor=element('div',undefined,'ro-detail-editor');
-      sidebar.append(formButton('新增',()=>{if(working.filters.length>=100)return;const f={...emptyDetailSettings(),id:'f-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),name:'新細項過濾器'};working.filters.push(f);selected=f.id;draw();}));
+      sidebar.append(formButton('新增',()=>{if(working.filters.length>=101)return;const f={...emptyDetailSettings(),id:'f-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),name:'新細項過濾器'};working.filters.push(f);selected=f.id;draw();}));
       working.filters.forEach((f,index)=>{
         const row=element('div',undefined,'ro-detail-list-row'),choose=formButton(f.name,()=>{selected=f.id;draw();});choose.dataset.detailId=f.id;choose.classList.toggle('active',selected===f.id);row.append(choose);
-        for(const [delta,label] of [[-1,'↑'],[1,'↓']]){const button=formButton(label,()=>{const other=index+delta;[working.filters[index],working.filters[other]]=[working.filters[other],working.filters[index]];draw();});button.disabled=index+delta<0||index+delta>=working.filters.length;button.setAttribute('aria-label',f.name+(delta<0?'上移':'下移'));row.append(button);}sidebar.append(row);
+        for(const [delta,label] of [[-1,'↑'],[1,'↓']]){const button=formButton(label,()=>{const other=index+delta;[working.filters[index],working.filters[other]]=[working.filters[other],working.filters[index]];draw();});button.disabled=f.id==='default'||index+delta<1||index+delta>=working.filters.length;button.setAttribute('aria-label',f.name+(delta<0?'上移':'下移'));row.append(button);}sidebar.append(row);
       });
       const settings=working.filters.find(f=>f.id===selected);
       if(settings){
-        const name=element('input');name.type='text';name.maxLength=80;name.value=settings.name;name.setAttribute('aria-label','細項過濾器名稱');name.oninput=()=>{settings.name=name.value;const button=sidebar.querySelector('[data-detail-id="'+settings.id+'"]');if(button)button.textContent=name.value||'未命名';};editor.append(name,formButton('移除',()=>{working.filters=working.filters.filter(f=>f.id!==selected);for(const [id,value] of Object.entries(working.assignments))if(value===selected)delete working.assignments[id];selected=working.filters[0]?.id||'';draw();}));
+        const name=element('input');name.type='text';name.maxLength=80;name.value=settings.name;name.setAttribute('aria-label','細項過濾器名稱');name.oninput=()=>{settings.name=name.value;const button=sidebar.querySelector('[data-detail-id="'+settings.id+'"]');if(button)button.textContent=name.value||'未命名';};name.disabled=settings.id==='default';editor.append(name);
+        if(settings.id!=='default')editor.append(formButton('移除',()=>{
+          working.filters=working.filters.filter(f=>f.id!==selected);
+          for(const [id,values] of Object.entries(working.assignments))if(values.includes(selected)){const remaining=values.filter(value=>value!==selected&&value!=='default');if(remaining.length)working.assignments[id]=remaining;else delete working.assignments[id];}
+          selected='default';draw();
+        }));
         for(const [key,title,options] of [['first','屬性一',PRIMARY],['second','屬性二',PRIMARY],['third','副屬性第一格',SECOND3],['fourth','副屬性第二格',SECOND4]]){
           const row=element('div',undefined,'ro-gear-detail-field');row.append(element('b',title),formMulti(options,settings[key],v=>settings[key]=v,'不限（可多選）'));editor.append(row);
         }
         const options=damageSkillOptions(),known=new Set(options.map(([id])=>id));for(const s of settings.skills)if(!known.has(s.id))options.push([s.id,s.id]);
         const skillRows=element('div',undefined,'ro-selected-skills'),thresholds=new Map(settings.skills.map(s=>[s.id,s.min]));
         const drawSkills=()=>{skillRows.replaceChildren();for(const skill of settings.skills){const row=element('label',undefined,'ro-gear-skill'),min=element('input');min.type='number';min.min='0';min.max='10000';min.step='0.1';min.value=Number.isFinite(skill.min)?String(skill.min):'';const title=options.find(([id])=>id===skill.id)?.[1]||skill.id;min.setAttribute('aria-label',title+'最低百分比');min.oninput=()=>{skill.min=min.value.trim()===''?NaN:Number(min.value);thresholds.set(skill.id,skill.min);};row.append(element('span',title),min,element('span','% 以上'));skillRows.append(row);}};
-        const skillField=element('div',undefined,'ro-gear-detail-field');skillField.append(element('b','技能傷害'),formMulti(options,settings.skills.map(s=>s.id),ids=>{settings.skills=ids.map(id=>({id,min:thresholds.get(id)??0}));drawSkills();},'不限（可多選）'));editor.append(skillField,skillRows);drawSkills();
+        const skillField=element('div',undefined,'ro-gear-detail-field');skillField.append(element('b','技能傷害'),formMulti(options,settings.skills.map(s=>s.id),ids=>{settings.skills=ids.map(id=>({id,min:thresholds.get(id)??0}));drawSkills();},'不限（可多選）',null,'搜尋技能名稱'));editor.append(skillField,skillRows);drawSkills();
       }else editor.append(element('p','按「新增」建立可供裝備選用的細項過濾器。'));
       layout.append(sidebar,editor);panel.append(layout);
       const status=element('p','', 'ro-gear-error');panel.append(status,formButton('套用管理設定',()=>{
@@ -193,7 +220,7 @@
   function drawFilter(){
     if(!filterDialog||!filterDraft)return;
     const panel=filterDialog.querySelector('.ro-filter-panel');closeFilterMenus(panel);panel.replaceChildren();
-    panel.append(element('h3','裝備圖鑑過濾器'),element('p','設定不要的稀有度、關閉不保留的 Tier；裝備右上角選取細項過濾器。任一已設定欄位未符合即納入「不需要」。只勾選目前商人分類，請檢查後自行出售。'));
+    panel.append(element('h3','裝備圖鑑過濾器'),element('p','設定不要的稀有度、關閉不保留的 Tier；裝備右上角可多選細項過濾器，符合其中任一個即保留；全部不符才納入「不需要」。未選自訂過濾器時自動套用預設。只勾選目前商人分類，請檢查後自行出售。'));
     const toolbar=element('div',undefined,'ro-gear-toolbar');
     const rarities=element('div',undefined,'ro-rarity-buttons');
     for(const [id,name] of RARITIES){const button=formButton(name,()=>{filterDraft.unwantedRarities=filterDraft.unwantedRarities.includes(id)?filterDraft.unwantedRarities.filter(v=>v!==id):[...filterDraft.unwantedRarities,id];drawFilter();});button.dataset.unwantedRarity=id;button.style.setProperty('--rarity-color',COLORS[Number(id)]);button.classList.toggle('excluded',filterDraft.unwantedRarities.includes(id));button.setAttribute('aria-pressed',String(filterDraft.unwantedRarities.includes(id)));button.setAttribute('aria-label',name+' 不要');rarities.append(button);}
@@ -210,7 +237,7 @@
       if(!validEquipmentFilter(filterDraft)){status.textContent='設定不完整，無法儲存';return;}
       try{localStorage.setItem(FILTER_KEY,JSON.stringify(filterDraft));filterStore=copy(filterDraft);closeFilter();notify('圖鑑過濾器已儲存');}catch{status.textContent='儲存失敗，請匯出備份';}
     });save.dataset.filterSave='';
-    actions.append(save,formButton('取消',closeFilter),formButton('全部保留',()=>{filterDraft={...emptyEquipmentFilter(),filters:copy(filterDraft.filters)};drawFilter();}),formButton('匯出',()=>{
+    actions.append(save,formButton('取消',closeFilter),formButton('全部保留',()=>{filterDraft={...emptyEquipmentFilter(),filters:filterDraft.filters.map(f=>f.id==='default'?defaultEquipmentDetail():copy(f))};drawFilter();}),formButton('匯出',()=>{
       const url=URL.createObjectURL(new Blob([JSON.stringify({format:'ro-helper-equipment',settings:filterDraft},null,2)],{type:'application/json'}));
       const a=element('a');a.href=url;a.download='RO裝備圖鑑過濾器.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
     }));
@@ -232,7 +259,10 @@
   }
   function closeFilter(){closeFilterMenus();closeGearDetails();filterDialog?.remove();filterDialog=null;filterDraft=null;}
   function openFilter(){
-    closeFilter();filterDraft=copy(filterStore);filterDialog=element('div');filterDialog.id='ro-unwanted-dialog';filterDialog.setAttribute('role','dialog');filterDialog.setAttribute('aria-label','裝備圖鑑過濾器');filterDialog.setAttribute('aria-modal','true');
+    closeFilter();filterDraft=copy(filterStore);
+    // Keep this opening's order through edits, imports, and redraws.
+    filterAssignedAtOpen=new Set(Object.entries(filterDraft.assignments).filter(([,ids])=>ids.some(id=>id!=='default')).map(([id])=>id));
+    filterDialog=element('div');filterDialog.id='ro-unwanted-dialog';filterDialog.setAttribute('role','dialog');filterDialog.setAttribute('aria-label','裝備圖鑑過濾器');filterDialog.setAttribute('aria-modal','true');
     const panel=element('div',undefined,'ro-filter-panel ro-equipment-filter');filterDialog.append(panel);document.body.append(filterDialog);
     filterDialog.onclick=event=>{if(event.target===filterDialog)closeFilter();};drawFilter();
   }

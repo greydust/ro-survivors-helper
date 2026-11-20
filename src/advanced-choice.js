@@ -273,7 +273,14 @@
     clearTimeout(advancedTimer);advancedTimer=null;if(advancedChoice){advancedChoice.manual=true;if(reveal)revealAdvancedChoice(advancedChoice);}
   }
   function resetAdvancedChoice(){cancelAdvancedChoice(false);advancedChoice=null;}
+  function advancedChoiceApplies(game){
+    // World-boss setup reuses the expedition map and level-up event, but its
+    // host:-1 session has a separate, mandatory build-selection flow.
+    return !!game&&!game.isStory&&!game.endless&&game.coop?.host!==-1
+      &&window.__WBF?.game!==game&&!document.body.classList.contains('wb-picking');
+  }
   function captureAdvancedChoice(game,cards,kind,render=null){
+    if(!advancedChoiceApplies(game)){if(typeof render==='function')return render(cards);return;}
     clearTimeout(advancedTimer);advancedTimer=null;
     advancedChoice={game,cards,kind,render,background:typeof render==='function',manual:false,started:performance.now(),pending:null,actions:0};
     queueAdvancedChoice();
@@ -350,6 +357,7 @@
   function runAdvancedChoice(){
     advancedTimer=null;const state=advancedChoice,picker=document.querySelector('#picker');
     if(!advancedSettings.enabled||!state||state.manual||state.game!==activeGame||state.game.player?.dead||state.game.state==='over'||advancedDialog)return;
+    if(!advancedChoiceApplies(state.game)){cancelAdvancedChoice();return;}
     if(state.background)return runAdvancedBackground(state);
     if(!picker||picker.classList.contains('hidden')||picker.classList.contains('closing'))return;
     const nodes=[...picker.querySelectorAll('#pk-cards .pk-card')];
@@ -421,7 +429,7 @@
     head.append(title,advancedButton('關閉',closeAdvancedDialog));dialog.append(head);
     renderAdvancedProfiles(dialog);
     const enabled=document.createElement('label'),toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=advancedSettings.enabled;
-    toggle.onchange=()=>{advancedSettings.enabled=toggle.checked;saveAdvancedSettings();};enabled.append(toggle,' 啟用進階自動選卡（設定會保存；啟用時取代舊自選）');dialog.append(enabled);
+    toggle.onchange=()=>{advancedSettings.enabled=toggle.checked;saveAdvancedSettings();};enabled.append(toggle,' 啟用進階自動選卡（僅適用遠征；設定會保存；啟用時取代舊自選）');dialog.append(enabled);
     const note=document.createElement('p');note.textContent='填充只在仍能保留所有必拿技能格時選。刷新／放逐使用原生剩餘次數；無可選項時保留手動。點選卡片、刷新按鈕或按 Escape，可中止當次自動選擇。';dialog.append(note);
     if(!advancedCatalog.skills.length||!advancedScope){const loading=document.createElement('p');loading.textContent='尚無法確認目前角色或職業資料，請回到主城重新開啟設定；不會顯示其他職業的技能。';dialog.append(loading);return;}
     const scopeLabel=document.createElement('p');scopeLabel.textContent='目前職業：'+advancedScope.name+'（含繼承職業、全部天賦技能及普攻；可提前設定）';dialog.append(scopeLabel);
@@ -476,10 +484,12 @@
     position.left=Math.max(view.left,Math.min(position.left,view.left+view.width-rect.width));position.top=Math.max(view.top,Math.min(position.top,view.top+view.height-rect.height));
     Object.assign(button.style,{left:position.left+'px',top:position.top+'px',right:'auto',bottom:'auto'});
   }
-  function installFloatingHelperDrag(button){
+  function installFloatingHelperDrag(button,handle=button){
     let hold=null,suppressClick=false;
     const clear=()=>{if(hold)clearTimeout(hold.timer);hold=null;button.style.cursor='grab';};
-    button.addEventListener('pointerdown',event=>{
+    handle.addEventListener('pointerdown',event=>{
+      if(handle!==button&&event.target.closest('button'))return;
+      event.stopPropagation();
       if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
       clear();suppressClick=false;
       const rect=button.getBoundingClientRect();
@@ -491,7 +501,7 @@
       if(!hold||hold.id!==event.pointerId)return;
       const dx=event.clientX-hold.x,dy=event.clientY-hold.y;
       if(!hold.dragging){if(Math.hypot(dx,dy)>10){suppressClick=true;clear();}return;}
-      event.preventDefault();suppressClick=true;
+      event.preventDefault();event.stopPropagation();suppressClick=true;
       floatingHelperPositions.set(button.id,{left:hold.left+dx,top:hold.top+dy});placeFloatingHelperButton(button);
     });
     button.addEventListener('pointerup',event=>{if(hold?.id===event.pointerId){suppressClick=hold.dragging||suppressClick;clear();}});

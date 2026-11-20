@@ -24,7 +24,7 @@
       #ro-advanced-choice-dialog [hidden]{display:none!important}#ro-advanced-choice-dialog .ro-ac-priority{border-bottom:1px solid #304764;padding:5px 0}
       @media(max-width:500px){#ro-advanced-choice-dialog{padding:10px;inset:8px}#ro-advanced-choice-dialog .ro-ac-row{grid-template-columns:minmax(90px,1fr) 78px 78px;gap:2px;padding:3px}#ro-advanced-choice-dialog select{width:auto;min-width:0}}
       #ro-horde-hud{position:fixed;right:12px;top:auto;bottom:12px;width:180px;max-width:calc(100vw - 24px);z-index:8;box-sizing:border-box;background:#101a2be8;border:1px solid #738ab466;border-radius:7px;padding:7px 8px;color:#e8eef8;font:12px/1.5 sans-serif;overflow:auto;pointer-events:none}
-      #ro-horde-hud[hidden]{display:none!important}#ro-horde-hud [data-monster-toggle]{pointer-events:auto;touch-action:manipulation}#ro-horde-hud [data-monster-counts]{pointer-events:auto}#ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
+      #ro-horde-hud [data-monster-header],#ro-character-details-toggle{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}#ro-horde-hud [data-monster-header]{pointer-events:auto}#ro-horde-hud[hidden]{display:none!important}#ro-horde-hud [data-monster-toggle]{pointer-events:auto;touch-action:manipulation}#ro-horde-hud [data-monster-counts]{pointer-events:auto}#ro-horde-hud [data-monster-header]{display:flex;align-items:center;justify-content:space-between;gap:4px}#ro-horde-hud [data-monster-toggle]{padding:0 5px;min-width:22px;line-height:20px;color:#e8eef8;background:#26344c;border:1px solid #738ab466;border-radius:3px;cursor:pointer}#ro-horde-hud [data-monster-counts][hidden]{display:none}#ro-horde-hud [data-horde-progress][data-status=idle]{color:#9da9bb}#ro-horde-hud [data-horde-progress]{font-weight:700;color:#ffd78a;font-size:14px}#ro-horde-hud [data-horde-progress][data-status=complete]{color:#76f0b0}#ro-horde-hud [data-horde-progress][data-status=canceled]{color:#9da9bb}#ro-horde-hud [data-monster-total]{margin-top:7px;padding-top:6px;border-top:1px solid #738ab444;font-weight:700}#ro-horde-hud [data-monster-counts]>div{display:flex;justify-content:space-between;gap:10px;padding:2px 0}#ro-horde-hud b{font-variant-numeric:tabular-nums}
       .stg-mobs.ro-mob-schedule{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}.stg-mobs .ro-timed-mob{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:auto;min-width:112px;max-width:180px;height:auto;padding:8px;box-sizing:border-box}.ro-timed-mob [data-ro-mob-time]{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;line-height:1.4}.ro-timed-mob [data-ro-mob-time] b{font-size:12px;overflow-wrap:anywhere}#stg-detail [data-ro-mob-level]{display:block;width:fit-content;max-width:100%;box-sizing:border-box;font-size:12px;font-weight:700;line-height:1.5;color:#ffe08a;background:#20304c;border:1px solid #a18442;border-radius:4px;padding:1px 6px}#stg-detail .stg-boss [data-ro-mob-level]{margin:3px auto}.ro-timed-mob [data-ro-mob-time] small{display:block;font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.85}
       #ro-unwanted-dialog .ro-filter-panel.ro-equipment-filter{background:#0c1423;color:#e5edf8;border-color:#415573;width:min(1280px,96vw)}
       #ro-unwanted-dialog .ro-gear-toolbar,#ro-unwanted-dialog .ro-gear-actions,#ro-unwanted-dialog .ro-gear-tabs{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
@@ -38,7 +38,7 @@
       #ro-unwanted-dialog .ro-tier-batch{display:flex;align-items:center;gap:5px}#ro-unwanted-dialog .ro-tier-batch select{width:auto;min-width:95px;background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
       #ro-unwanted-dialog .ro-tier-batch{display:flex;align-items:center;gap:5px;flex-wrap:nowrap}#ro-unwanted-dialog .ro-tier-batch select{width:auto;min-width:100px;background:#1a2940;color:#e5edf8;border:1px solid #415573;border-radius:6px;padding:7px 10px}
       #ro-unwanted-dialog .ro-gear-tier-switches{flex-wrap:wrap;gap:5px;margin-top:9px}#ro-unwanted-dialog .ro-gear-tier-switches button{min-height:34px;min-width:36px}#ro-unwanted-dialog .ro-gear-bonus-preview{margin:7px 0;color:#b9e5d1;font-size:13px;line-height:1.5}#ro-unwanted-dialog .ro-gear-expanded summary{cursor:pointer;color:#bac9dc;font-size:12px;padding:5px 0}#ro-unwanted-dialog .ro-gear-expanded .ro-gear-tier{font-size:12px}#ro-unwanted-dialog .ro-gear-expanded .ro-gear-tier b{flex:0 0 70px;overflow-wrap:anywhere}
-      #ro-unwanted-dialog select.ro-gear-filter-select{width:132px;flex:0 1 132px;margin-left:auto;min-width:0;text-overflow:ellipsis}#ro-unwanted-dialog .ro-gear-card header b{min-width:0;overflow-wrap:anywhere}
+      #ro-unwanted-dialog .ro-gear-card .ro-gear-filter-select{box-sizing:border-box;width:112px;max-width:112px;flex:0 0 112px;margin:0 0 0 8px}#ro-unwanted-dialog .ro-gear-filter-select>summary{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#ro-unwanted-dialog .ro-gear-card header b{min-width:0;overflow-wrap:break-word}
       #ro-unwanted-dialog .ro-detail-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}#ro-unwanted-dialog .ro-detail-list{max-height:55vh;overflow:auto}#ro-unwanted-dialog .ro-detail-list-row{display:flex;align-items:center}#ro-unwanted-dialog .ro-detail-list-row button:first-child{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#ro-unwanted-dialog .ro-detail-list-row button.active{background:#b9e5d1}#ro-unwanted-dialog .ro-detail-list-row button:not(:first-child){flex:none;padding:4px}
       #ro-unwanted-dialog .ro-detail-editor{min-width:0}#ro-unwanted-dialog .ro-gear-detail-field>b{flex:0 0 105px}#ro-unwanted-dialog .ro-gear-actions span:empty{display:none}#ro-unwanted-dialog .ro-selected-skills{margin:5px 0 12px}
       @media(max-width:700px){#ro-unwanted-dialog .ro-detail-layout{grid-template-columns:minmax(0,1fr)}#ro-unwanted-dialog .ro-detail-list{max-height:160px}#ro-unwanted-dialog .ro-gear-grid{grid-template-columns:minmax(0,1fr)}}
@@ -66,6 +66,7 @@
       #ro-unwanted-dialog .ro-filter-multi-list{position:fixed;z-index:2147483647;min-width:0;width:320px;max-width:calc(100vw - 24px);box-sizing:border-box;max-height:300px;overflow:auto;background:white;border:1px solid #738ab4;box-shadow:0 4px 12px #0004;padding:6px}
       #ro-unwanted-dialog .ro-filter-multi-list label{display:flex;flex-wrap:nowrap;margin:3px;cursor:pointer;white-space:normal;overflow-wrap:anywhere}
       #ro-unwanted-dialog .ro-filter-multi-list input{flex:none}
+      #ro-unwanted-dialog .ro-filter-multi-list label[hidden]{display:none}#ro-unwanted-dialog .ro-filter-multi-list .ro-filter-search{display:block;box-sizing:border-box;width:100%;margin:0 0 6px;padding:7px;border:1px solid #a0aec7;border-radius:4px}
       #picker[data-ro-ap-hidden]{visibility:hidden!important;pointer-events:none!important}
       #ro-ap-menu{position:fixed;z-index:2147483647;background:#172238;color:#fff;border:1px solid #738ab4;border-radius:8px;padding:6px;box-shadow:0 6px 24px #0009;font:14px sans-serif;min-width:180px}
       #ro-ap-menu>div{padding:7px 10px;color:#b9c8e4;max-width:280px;overflow-wrap:anywhere}
@@ -93,7 +94,7 @@
         #ro-unwanted-dialog .ro-gear-card{padding:8px}
         #ro-unwanted-dialog .ro-gear-card header{flex-wrap:wrap;gap:4px}
         #ro-unwanted-dialog .ro-gear-card header b{flex:1;min-width:90px}
-        #ro-unwanted-dialog select.ro-gear-filter-select{flex:0 0 100%;width:100%;margin:4px 0 0}
+        #ro-unwanted-dialog .ro-gear-card .ro-gear-filter-select{margin:4px 0 4px 8px}
         #ro-unwanted-dialog .ro-gear-tabs{flex-wrap:nowrap;overflow-x:auto;padding:4px 0;overscroll-behavior-x:contain}
         #ro-unwanted-dialog .ro-gear-tabs button{flex:none;white-space:nowrap;margin:0}
         #ro-unwanted-dialog .ro-gear-toolbar button,#ro-unwanted-dialog .ro-gear-actions button{margin:2px;padding:6px 8px}
@@ -118,6 +119,7 @@
     `;
     document.head.append(style);
     safariDiagnostics?.mount();
+    startWorldBossObserver();
     document.addEventListener('pointerdown',advancedManualInput,true);
     document.addEventListener('touchstart',advancedManualInput,{capture:true,passive:true});
     window.addEventListener('keydown',advancedManualInput,true);
@@ -193,6 +195,7 @@
     // Recover overlays independently of native ticks and DOM observer timing.
     function refreshBattleOverlays(){
       if(activeGame&&!pickerIsOpen()&&!touchUiIsQuiet()){
+        runHelperHook(activeGame,'怪潮站位按鈕',updateHordeScoutButton);
         runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
         runHelperHook(activeGame,'角色資料',updateCharacterDetails);
       }

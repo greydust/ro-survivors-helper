@@ -1,0 +1,20 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const {parseHTML}=require('linkedom');
+const {document}=parseHTML('<html><body><div id="opt-tabs"><button data-opt-tab="game" class="active"></button></div><div id="opt-body"></div></body></html>');
+let clicks=0,now=0,saved=null;
+const context=vm.createContext({document,Date:{now:()=>now},localStorage:{getItem:()=>saved,setItem:(_,v)=>saved=v},getComputedStyle:el=>({display:el.style.display,visibility:el.style.visibility}),notify:()=>{}});
+vm.runInContext('let keepOffline=false;'+fs.readFileSync('src/world-boss.js','utf8')+';globalThis.api={tryAutoWorldBoss,updateWorldBossOption,offline:v=>keepOffline=v};',context);
+const {api}=context;
+function chip(){document.querySelector('#wb-chip')?.remove();const el=document.createElement('div');el.id='wb-chip';el.innerHTML='<button id="wb-join">進場</button>';document.body.append(el);el.firstChild.onclick=()=>clicks++;return el;}
+let el=chip();api.tryAutoWorldBoss();assert.equal(clicks,0,'default off');
+api.updateWorldBossOption();api.updateWorldBossOption();assert.equal(document.querySelectorAll('[data-ro-auto-world-boss]').length,1);
+const input=document.querySelector('[data-ro-auto-world-boss]');input.checked=true;el.firstChild.disabled=true;input.onchange();assert.equal(saved,'true');assert.equal(clicks,0);
+el.firstChild.disabled=false;el.hidden=true;api.tryAutoWorldBoss();assert.equal(clicks,0);
+el.hidden=false;api.offline(true);api.tryAutoWorldBoss();assert.equal(clicks,0);
+api.offline(false);api.tryAutoWorldBoss();assert.equal(clicks,1);
+el.innerHTML='<button id="wb-join">進場</button>';el.firstChild.onclick=()=>clicks++;api.tryAutoWorldBoss();assert.equal(clicks,1,'native redraw must not retry');
+el=chip();api.tryAutoWorldBoss();assert.equal(clicks,1,'reconnect must not retry');
+now+=4*60*60*1000;api.tryAutoWorldBoss();assert.equal(clicks,2,'next event');
+el=chip();now+=4*60*60*1000;el.firstChild.onclick=null;api.tryAutoWorldBoss();assert.equal(clicks,2,'wait for native handler');
+el.firstChild.onclick=()=>clicks++;api.tryAutoWorldBoss();assert.equal(clicks,3);
+console.log('World boss: opt-in, persistence, visibility, offline priority, native handler, redraw/reconnect dedup and next event passed');

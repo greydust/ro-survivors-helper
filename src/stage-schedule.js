@@ -43,7 +43,51 @@
       &&JSON.stringify(s.bosses.map(b=>b.id).sort())===JSON.stringify(bosses));
     return candidates.length===1?{id:candidates[0][0],script:candidates[0][1]}:null;
   }
-  let stageLevelRules=null,stageRulesRequest=null;
+  let stageLevelRules=null,stageRulesRequest=null,stageCardRules=null;
+  function parseStageCardRules(source){
+    const sliders=source.match(/\bZo=(\[\{key:"count".*?\]);/s);
+    const curve=source.match(/\}\)\(Zo,(\{"MAX"[^\n]+?\}),ar\)/);
+    if(!sliders||!curve)throw Error('Unknown native card rules');
+    // Extract only numeric slider metadata; never execute the public module.
+    const fields=[...sliders[1].matchAll(/key:"([^"]+)"[^}]*?min:([\d.]+),max:([\d.]+),om:([\d.]+)/g)]
+      .map(m=>({key:m[1],min:+m[2],max:+m[3],om:+m[4]}));
+    const config=JSON.parse(curve[1]);
+    if(fields.length!==6||![config.CARD_MAX,config.CARD_ALPHA,config.HORDE].every(Number.isFinite)||!Array.isArray(config.BOSS_CARD))throw Error('Unknown native card rules');
+    return {fields,config};
+  }
+  function stageCardMultipliers(values){
+    if(!stageCardRules)return null;
+    const {fields,config:C}=stageCardRules;
+    const val=s=>Math.min(s.max,Math.max(s.min,+values[s.key]||s.min));
+    const normal=fields.filter(s=>s.key!=='tier');
+    let base=1,extra=1;
+    for(const s of normal){base+=(Math.min(val(s),s.om)-s.min)/(s.om-s.min)/normal.length;extra*=Math.max(1,val(s)/s.om);}
+    extra*=val(fields.find(s=>s.key==='tier'));
+    const old=Math.min(20,base*Math.pow(extra,.37));
+    const gm=Math.exp(fields.reduce((n,s)=>n+Math.log(Math.max(1,val(s))),0)/fields.length);
+    const count=fields.find(s=>s.key==='count'),events=fields.find(s=>s.key==='events');
+    const amount=(n,e)=>n*(1+C.HORDE*(e-1));
+    const volume=Math.max(1,amount(val(count),val(events))/amount(Math.min(val(count),count.om),Math.min(val(events),events.om)));
+    const mob=Math.max(base,Math.min(C.CARD_MAX,Math.pow(gm,Math.log(C.CARD_MAX)/Math.log(20))))*Math.pow(volume,-C.CARD_ALPHA);
+    const table=C.BOSS_CARD;
+    let boss=old;
+    if(table.length&&gm>table[0][0]){
+      let rate=table.at(-1)[1];
+      for(let i=1;i<table.length;i++)if(gm<=table[i][0]){const [g0,v0]=table[i-1],[g1,v1]=table[i];rate=v0+(v1-v0)*(Math.log(gm)-Math.log(g0))/(Math.log(g1)-Math.log(g0));break;}
+      boss=Math.max(old,rate);
+    }
+    return {mob,boss};
+  }
+  function updateStageCardReward(){
+    const reward=document.querySelector('#npc-text .diff .diff-reward');
+    if(!reward)return;
+    const values=Object.fromEntries([...document.querySelectorAll('#npc-text .diff input[data-key]')].map(input=>[input.dataset.key,+input.value]));
+    const rates=stageCardMultipliers(values);
+    let label=reward.querySelector('[data-ro-card-reward]');
+    if(!label){label=document.createElement('span');label.dataset.roCardReward='';label.title='每隻怪物的卡片掉落機率倍率；一般怪與首領使用不同公式。周目改變卡片版本，不額外提高掉卡率。';reward.append(label);}
+    const text=rates?' · 卡片 一般 ×'+Number(rates.mob.toFixed(2))+'／首領 ×'+Number(rates.boss.toFixed(2)):' · 卡片 —';
+    if(label.textContent!==text)label.textContent=text;
+  }
   function parseStageLevelRules(source){
     // Read JSON and stage metadata only; never execute downloaded source.
     const config=JSON.parse(source.match(/var RO_LAPC=(\{[^;]+\});/)[1]);
@@ -61,7 +105,9 @@
     if(url.origin!==new URL(location.href).origin)return Promise.resolve();
     stageRulesRequest=(async()=>{
       try{const response=await fetch(url.href,{credentials:'omit'});if(!response.ok)throw Error('HTTP '+response.status);
-        stageLevelRules=parseStageLevelRules(await response.text());updateStageSpawnSchedule();
+        const source=await response.text();
+        try{stageCardRules=parseStageCardRules(source);}catch(error){console.warn('[RO助手] 無法讀取卡片掉落設定',error);}
+        stageLevelRules=parseStageLevelRules(source);updateStageSpawnSchedule();
       }catch(error){console.warn('[RO助手] 無法讀取目前周目設定；多周目等級暫顯示 —',error);}
     })();
     return stageRulesRequest;
@@ -97,12 +143,14 @@
     return base+offset;
   }
   function updateStageSpawnSchedule(){
+    updateStageCardReward();
     const detail=document.querySelector('#stg-detail'),mobs=detail?.querySelector('.stg-mobs'),bosses=detail?.querySelector('.stg-bosses');
     if(!detail||(!mobs&&!bosses))return;
     detail.querySelector('section[data-ro-spawn-schedule]')?.remove();
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
     const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
+    updateStageSpecialMonsters(detail,selected,lap);
     if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
     for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
@@ -124,5 +172,35 @@
       let line=boss.querySelector('[data-ro-mob-level]');
       if(!line){line=document.createElement('span');line.dataset.roMobLevel='';line.title='計算經驗衰減使用的怪物等級（含目前周目修正）';const name=boss.querySelector('b');if(name)name.after(line);else boss.append(line);}
       if(line.textContent!==text)line.textContent=text;
+    }
+  }
+  function updateStageSpecialMonsters(detail,selected,lap){
+    const entries=new Map();
+    for(const [key,label] of [['rare','稀有怪'],['intruder','闖入頭目']]){
+      const spawn=selected?.script?.[key];
+      if(!spawn?.id)continue;
+      const def=gameCatalog?.bj?.[spawn.id],nativeName=def?.name;
+      const name=(typeof gameCatalog?.ff==='function'&&nativeName?gameCatalog.ff(nativeName):null)||MONSTER_NAMES[spawn.id]||nativeName||spawn.id;
+      const existing=entries.get(spawn.id);
+      if(existing){existing.labels.push(label);continue;}
+      entries.set(spawn.id,{id:spawn.id,name,labels:[label],level:stageMonsterLevel(spawn.id,selected,lap),time:spawnTime(spawn.at??spawn.t)});
+    }
+    let section=detail.querySelector('[data-ro-special-monsters]');
+    if(!entries.size){section?.remove();return;}
+    const signature=JSON.stringify([selected.id,[...entries.values()]]);
+    if(section?.dataset.roSignature===signature)return;
+    if(!section){section=document.createElement('section');section.dataset.roSpecialMonsters='';detail.append(section);}
+    section.dataset.roSignature=signature;section.replaceChildren();
+    const title=document.createElement('h4');title.textContent='稀有怪／闖入頭目';section.append(title);
+    const note=document.createElement('p');note.textContent='條件式登場，不保證每場出現；時間為關卡設定的預定登場時間。';section.append(note);
+    const list=document.createElement('div');list.className='stg-mobs ro-mob-schedule';section.append(list);
+    for(const row of entries.values()){
+      const card=document.createElement('div');card.className='ro-timed-mob';
+      const caption=document.createElement('span');caption.dataset.roMobTime='';
+      const name=document.createElement('b');name.textContent=row.name;
+      const kind=document.createElement('small');kind.textContent=row.labels.join('／');
+      const level=document.createElement('span');level.dataset.roMobLevel='';level.textContent='等級 '+(row.level??'—');level.title='計算經驗衰減使用的怪物等級（含目前周目修正）';
+      const time=document.createElement('small');time.textContent=row.time==='時間未提供'?row.time:'預定 '+row.time;
+      caption.append(name,kind,level,time);card.append(caption);list.append(card);
     }
   }

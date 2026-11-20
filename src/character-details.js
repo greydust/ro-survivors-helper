@@ -43,15 +43,18 @@
     if(!button){
       button=document.createElement('button');button.id='ro-character-details-toggle';button.type='button';
       button.textContent='角色詳細資料';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ro-character-details');
-      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};document.body.append(button);
+      button.onclick=event=>{event.stopPropagation();if(characterDetails)closeCharacterDetails();else openCharacterDetails();};document.body.append(button);installFloatingHelperDrag(button);
     }
-    if(typeof buffs.getBoundingClientRect==='function'){
-      const rect=buffs.getBoundingClientRect(),view=helperViewport();
-      const left=Math.max(view.left+8,Math.min(rect.left,view.left+view.width-110))+'px';
-      const top=Math.max(view.top+8,Math.min(rect.bottom+6,view.top+view.height-48))+'px';
-      if(button.style.left!==left)button.style.left=left;
-      if(button.style.top!==top)button.style.top=top;
-    }
+    const view=helperViewport(),compact=innerWidth<=720||innerHeight<=500;
+    const panel=document.querySelector('#ro-horde-hud'),rect=panel?.getBoundingClientRect?.();
+    const panelHeight=rect?.height||panel?.offsetHeight||64;
+    const buttonHeight=button.getBoundingClientRect?.().height||(compact?36:26);
+    const panelTop=rect?.height?rect.top:compact?parseFloat(panel?.style.top)||view.top+76:view.top+view.height-12-panelHeight;
+    const left=compact?(rect?.height?rect.left:parseFloat(panel?.style.left)||view.left+8):view.left+view.width-12-(button.getBoundingClientRect?.().width||110);
+    const top=compact?panelTop+panelHeight+6:panelTop-buttonHeight-6;
+    const position={left:Math.max(view.left+8,Math.min(left,view.left+view.width-110))+'px',top:Math.max(view.top+8,Math.min(top,view.top+view.height-buttonHeight-8))+'px',right:'auto',bottom:'auto'};
+    for(const [key,value] of Object.entries(position))if(button.style[key]!==value)button.style[key]=value;
+    placeFloatingHelperButton(button);
     if(!characterDetails)return;
     const populate=(target,rows)=>{
       const signature=JSON.stringify(rows);if(target.dataset.signature===signature)return;

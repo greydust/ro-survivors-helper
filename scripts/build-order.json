@@ -1,6 +1,7 @@
 [
   "header.js",
   "offline.js",
+  "world-boss.js",
   "minimap.js",
   "weather.js",
   "battle-preferences.js",

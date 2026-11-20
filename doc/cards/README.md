@@ -23,3 +23,5 @@ node tests/card-page.test.cjs
 `template.html` 與 `page.js` 為原始碼，`npm run build:cards` 將資料與程式內嵌成可直接開啟的 `index.html`。遊戲更新不會自動更新此快照。
 
 2026-11-18 新版核對：支援 `intruder` 特殊入侵首領來源；重新匯出現行掉落、固定能力與職業 GS。詳細範圍及驗證限制見 [相容性檢查](../COMPATIBILITY.md)。
+
+2026-11-19：更新目前公開模組來源與原生能力說明，188 種卡片、六版本與職業 GS 不變；見 [本次核對](../COMPATIBILITY.md#2026-11-19-公開資料更新)。

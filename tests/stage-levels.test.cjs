@@ -15,6 +15,25 @@ for(const id of ['prt_castle','c2_gef','c2_clock','c2_abyss','c2_glast','c2_nif'
  context.api.updateStageSpawnSchedule();assert.equal(document.querySelector('.stg-mobs [data-ro-mob-level]').textContent,'等級 '+native.monsters[mob].level);assert.equal(document.querySelector('.stg-bosses [data-ro-mob-level]').textContent,'等級 '+native.monsters[boss].level);
 }
 assert.equal(context.api.stageMonsterLevel('unknown',{id:'prontera',script:native.scripts.prontera},6),null,'unknown data is never invented');
+for(const [stageId,script] of Object.entries(native.scripts).filter(([,s])=>s.intruder)){
+ const id=script.intruder.id;
+ document.body.innerHTML=`<div id="lap-tabs"><button data-laptab="6" class="primary"></button></div><div id="stg-detail"><div class="stg-banner" style="--art:url('/assets/stages/${stageId}.jpg')"></div><div class="stg-mobs"></div></div>`;
+ context.api.updateStageSpawnSchedule();
+ const section=document.querySelector('[data-ro-special-monsters]');assert(section,'native intruder must be listed');
+ assert(section.textContent.includes(native.monsters[id].name));
+ assert.equal(section.querySelector('[data-ro-mob-level]').textContent,'等級 '+context.api.nativeLevel(id,stageId,6));
+ assert(section.textContent.includes('不保證每場出現'));
+ context.api.updateStageSpawnSchedule();assert.equal(document.querySelector('[data-ro-special-monsters]'),section);
+ document.querySelector('.stg-banner').style.setProperty('--art',"url('/assets/stages/prontera.jpg')");
+ context.api.updateStageSpawnSchedule();assert.equal(document.querySelector('[data-ro-special-monsters]'),null,'stage changes remove stale intruders');
+}
+const custom=native.scripts.helper_test={waves:[],bosses:[],rare:{id:'poring',at:65},intruder:{id:'poring',at:65}};
+document.body.innerHTML='<div id="stg-detail"><div class="stg-banner" style="--art:url(/assets/stages/helper_test.jpg)"></div><div class="stg-mobs"></div></div>';
+context.api.updateStageSpawnSchedule();
+assert.equal(document.querySelectorAll('[data-ro-special-monsters] .ro-timed-mob').length,1);
+assert(document.querySelector('[data-ro-special-monsters]').textContent.includes('稀有怪／闖入頭目'));
+assert(document.querySelector('[data-ro-special-monsters]').textContent.includes('預定 01:05'));
+delete native.scripts.helper_test;
 console.log(`Stage levels: ${checked} current native monster/lap cases across all ${native.stages.length} stages match, including story/special UI at lap 6`);
 
 // Current public source is parsed as data; changed numeric settings need no helper edit.

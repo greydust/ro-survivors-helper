@@ -33,6 +33,22 @@ function setup(initialStorage=[]){
 const fresh=id=>({id,isNew:true,rarity:0}),up=(id,aspect='dmg')=>({id,isNew:false,rarity:1,upgrade:{aspect,amount:1}}),item=(slot,id,quality=0,refine=0)=>({slot,item:id,quality,refine});
 const normalize=value=>JSON.parse(JSON.stringify(value));
 {
+ for(const mode of ['story','endless','world-boss-host','world-boss-instance','world-boss-picker']){
+  const e=setup(),g=e.game();e.api.configure({});
+  if(mode==='story')g.isStory=true;
+  if(mode==='endless')g.endless={};
+  if(mode==='world-boss-host')g.coop={host:-1};
+  if(mode==='world-boss-instance')e.ctx.window.__WBF={game:g};
+  if(mode==='world-boss-picker')e.document.body.classList.add('wb-picking');
+  const cards=[fresh('must')];let rendered=null;
+  e.api.capture(g,cards,'skill',offers=>{rendered=offers;});e.advance(500);
+  assert.equal(rendered,cards,mode+' retains native selection');
+  assert.equal(g.chosen.length,0,mode+' must remain manual');
+  assert.equal(e.api.state(),null,mode+' must not capture the picker');
+ }
+ console.log('PASS advanced choice only captures expedition choices, preserving special-mode pickers');
+}
+{
  const snapshot=JSON.parse(fs.readFileSync('tests/fixtures/third-job-native.json','utf8'));
  const thirdJobs=snapshot.jobs.filter(job=>snapshot.trees.some(tree=>tree.job===job.id));
  assert.equal(thirdJobs.length,16);assert.equal(snapshot.trees.length,48);

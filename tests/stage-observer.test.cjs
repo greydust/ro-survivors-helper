@@ -29,7 +29,7 @@ const assert = require('node:assert/strict');
     'globalThis.stageTest={updateStageSpawnSchedule,updateHordeHud,updateInventoryViews,scan,setDefs:value=>smithDefs=value,setCatalog:value=>gameCatalog=value};})();'),context);
   const settle=()=>new Promise(resolve=>setTimeout(resolve,30));
   try{
-    context.stageTest.setCatalog({ca:{test:{runLength:1020,bosses:[{t:840,id:'mastering'}],waves:[{from:0,to:1020,pool:['poring']}]}}});
+    context.stageTest.setCatalog({ca:{test:{runLength:1020,bosses:[{t:840,id:'mastering'}],intruder:{id:'ghost',at:480},waves:[{from:0,to:1020,pool:['poring']}]}}});
     context.stageTest.scan();await settle();
     assert(!overflow,'stage annotations must not create an observer loop');
     const after=callbacks;
@@ -39,7 +39,7 @@ const assert = require('node:assert/strict');
     const stable=callbacks;
     for(let i=0;i<20;i++)context.stageTest.updateStageSpawnSchedule();
     await settle();assert.equal(callbacks,stable,'repeated rendering must perform no DOM writes');
-    assert.equal(window.document.querySelectorAll('[data-ro-mob-time]').length,1);
+    assert.equal(window.document.querySelectorAll('[data-ro-mob-time]').length,2);
     assert(window.document.querySelector('[data-ro-mob-time]').textContent.includes('14:00'));
     console.log('PASS expedition annotations settle with a real MutationObserver');
     window.document.body.insertAdjacentHTML('beforeend','<div id="hud"></div><div id="loot-rolls"></div>');

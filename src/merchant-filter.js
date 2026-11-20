@@ -7,7 +7,8 @@
   const RARITIES=[['0','普通'],['1','優良'],['2','稀有'],['3','史詩'],['4','傳說']];
   const selections=value=>Array.isArray(value)?value:(value===undefined||value===null||value===''?[]:[value]);
   const copy=value=>JSON.parse(JSON.stringify(value));
-  const emptyEquipmentFilter=()=>({version:3,unwantedRarities:[],disabledTiers:{},filters:[],assignments:{}});
+  const defaultEquipmentDetail=()=>({id:'default',name:'預設',first:[],second:[],third:[],fourth:[],skills:[]});
+  const emptyEquipmentFilter=()=>({version:4,unwantedRarities:[],disabledTiers:{},filters:[defaultEquipmentDetail()],assignments:{}});
   let filterStore=emptyEquipmentFilter(),filterDraft=null,filterDialog=null;
   function captureMerchantInventory() {
     const button=document.querySelector('#shop-filters [data-f].active');
@@ -78,7 +79,7 @@
     legend.after(unwanted,filter);
   }
   function formButton(text,action) {const button=document.createElement('button');button.type='button';button.className='ro-btn small';button.textContent=text;button.onclick=action;return button;}
-  function formMulti(options,value,onchange,placeholder='不限') {
+  function formMulti(options,value,onchange,placeholder='不限',formatSelection=null,searchPlaceholder='') {
     const details=document.createElement('details');details.className='ro-filter-multi';
     const summary=document.createElement('summary'),list=document.createElement('div');list.className='ro-filter-multi-list';details.append(summary,list);
     const position=()=>{
@@ -98,14 +99,21 @@
       position();document.addEventListener('scroll',position,true);window.addEventListener('resize',position);window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);document.addEventListener('pointerdown',outside,true);
     };
     let selected=selections(value).map(String);
-    const refresh=()=>{const names=options.filter(([id])=>selected.includes(String(id))).map(([,name])=>name.split(' ｜ ')[0]);summary.textContent=names.length?names.join('、')+'（OR）':placeholder;};
-    const clear=formButton('清除選擇',()=>{selected=[];list.querySelectorAll('input').forEach(input=>input.checked=false);refresh();onchange([]);});list.append(clear);
+    const refresh=()=>{const names=options.filter(([id])=>selected.includes(String(id))).map(([,name])=>name.split(' ｜ ')[0]);summary.textContent=names.length?(formatSelection?formatSelection(names):names.join('、')+'（OR）'):placeholder;};
+    const clear=formButton('清除選擇',()=>{selected=[];list.querySelectorAll('input[type=checkbox]').forEach(input=>input.checked=false);refresh();onchange([]);});list.append(clear);
+    const searchRows=[];
+    if(searchPlaceholder){
+      const search=document.createElement('input');search.type='search';search.placeholder=searchPlaceholder;search.setAttribute('aria-label',searchPlaceholder);search.className='ro-filter-search';
+      const empty=document.createElement('p');empty.textContent='找不到符合的技能';empty.hidden=true;
+      search.oninput=()=>{const query=search.value.trim().toLocaleLowerCase();let count=0;for(const [label,name] of searchRows){label.hidden=!name.toLocaleLowerCase().includes(query);if(!label.hidden)count++;}empty.hidden=count>0;};
+      list.prepend(search);list.append(empty);
+    }
     for(const [id,name]of options){
       const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=id;input.checked=selected.includes(String(id));
       input.onchange=()=>{selected=input.checked?[...new Set([...selected,String(id)])]:selected.filter(entry=>entry!==String(id));refresh();onchange([...selected]);};
       label.append(input);
       label.append(document.createTextNode(name));
-      list.append(label);
+      searchRows.push([label,name]);list.append(label);
     }
     refresh();return details;
   }

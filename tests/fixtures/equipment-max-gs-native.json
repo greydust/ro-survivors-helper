@@ -1,8 +1,8 @@
 {
-  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hza78cd192.js",
-  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzf64b3f03.js",
-  "sourceSha256": "ee90428caab0b35f32fc96a53db072edb914caf293c44c1dc4b58299eb91984a",
-  "mainSourceSha256": "8d09b2d48b6224644e1f80bb3a970b16636a454fbd1b2f8bea404e786f1c84d2",
+  "source": "https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz67ef3a9e.js",
+  "mainSource": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzd525412f.js",
+  "sourceSha256": "b1470a198a656699d3dfaa4fa87a950c879be33afe9be37bf8b84bb50789b04d",
+  "mainSourceSha256": "6420ce2ccbf8d5a466ab92de4cd30aadd9690da972425e1f3697474e03a480bd",
   "scoreConditions": {
     "quality": 4,
     "refine": 0,

@@ -18,8 +18,8 @@
 
 本次公開資料來源：
 
-- https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz2f3bd05c.js
-- https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzb6eb53b9.js
+- https://ro.hans-webgametw.com/build/soul_linker-DllBVIRO.hz1c5a3ce7.js
+- https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzde022fc2.js
 
 遊戲更新不會自動更新此快照。裝備與圖像權利屬原權利人。
 
