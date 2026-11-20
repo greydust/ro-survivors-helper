@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.20
+// @version      2.2.21
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.20'};
+  window[runtimeKey]={version:'2.2.21'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -2372,6 +2372,7 @@
     const selected=selectedStageScript(detail,gameCatalog?.ca),rows=stageSpawnRows(selected?.script);
     const byId=new Map(rows.map(row=>[row.id,row]));
     const lap=Number(document.querySelector('#lap-tabs [data-laptab].primary')?.dataset.laptab)||1;
+    updateStageSpecialMonsters(detail,selected,lap);
     if(mobs&&!mobs.classList.contains('ro-mob-schedule'))mobs.classList.add('ro-mob-schedule');
     for(const mob of mobs?.querySelectorAll('[data-mob]')||[]){
       const id=mob.dataset.mob,row=byId.get(id),times=row?row.times.split('、'):['時段未提供'];
@@ -2393,6 +2394,36 @@
       let line=boss.querySelector('[data-ro-mob-level]');
       if(!line){line=document.createElement('span');line.dataset.roMobLevel='';line.title='計算經驗衰減使用的怪物等級（含目前周目修正）';const name=boss.querySelector('b');if(name)name.after(line);else boss.append(line);}
       if(line.textContent!==text)line.textContent=text;
+    }
+  }
+  function updateStageSpecialMonsters(detail,selected,lap){
+    const entries=new Map();
+    for(const [key,label] of [['rare','稀有怪'],['intruder','闖入頭目']]){
+      const spawn=selected?.script?.[key];
+      if(!spawn?.id)continue;
+      const def=gameCatalog?.bj?.[spawn.id],nativeName=def?.name;
+      const name=(typeof gameCatalog?.ff==='function'&&nativeName?gameCatalog.ff(nativeName):null)||MONSTER_NAMES[spawn.id]||nativeName||spawn.id;
+      const existing=entries.get(spawn.id);
+      if(existing){existing.labels.push(label);continue;}
+      entries.set(spawn.id,{id:spawn.id,name,labels:[label],level:stageMonsterLevel(spawn.id,selected,lap),time:spawnTime(spawn.at??spawn.t)});
+    }
+    let section=detail.querySelector('[data-ro-special-monsters]');
+    if(!entries.size){section?.remove();return;}
+    const signature=JSON.stringify([selected.id,[...entries.values()]]);
+    if(section?.dataset.roSignature===signature)return;
+    if(!section){section=document.createElement('section');section.dataset.roSpecialMonsters='';detail.append(section);}
+    section.dataset.roSignature=signature;section.replaceChildren();
+    const title=document.createElement('h4');title.textContent='稀有怪／闖入頭目';section.append(title);
+    const note=document.createElement('p');note.textContent='條件式登場，不保證每場出現；時間為關卡設定的預定登場時間。';section.append(note);
+    const list=document.createElement('div');list.className='stg-mobs ro-mob-schedule';section.append(list);
+    for(const row of entries.values()){
+      const card=document.createElement('div');card.className='ro-timed-mob';
+      const caption=document.createElement('span');caption.dataset.roMobTime='';
+      const name=document.createElement('b');name.textContent=row.name;
+      const kind=document.createElement('small');kind.textContent=row.labels.join('／');
+      const level=document.createElement('span');level.dataset.roMobLevel='';level.textContent='等級 '+(row.level??'—');level.title='計算經驗衰減使用的怪物等級（含目前周目修正）';
+      const time=document.createElement('small');time.textContent=row.time==='時間未提供'?row.time:'預定 '+row.time;
+      caption.append(name,kind,level,time);card.append(caption);list.append(card);
     }
   }
   function smithCategory(definition) {
