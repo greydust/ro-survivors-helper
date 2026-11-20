@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.19
+// @version      2.2.20
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.19'};
+  window[runtimeKey]={version:'2.2.20'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -188,6 +188,118 @@
   const HORDE_RING_KEY='greydust.ro.show-horde-ring.v1';
   let hideMinimapMagnets=false;
   let showHordeRing=true;
+  let hordeScout=null;
+  function setScoutButtonState(button,enabled){
+    button.setAttribute('aria-pressed',String(enabled));
+    button.setAttribute('aria-label',enabled?'關閉怪物潮站位標記':'掃描怪物潮最佳站位');
+    const slash=button.querySelector('[data-scout-slash]');if(slash)slash.style.display=enabled&&hordeScout?.result?'':'none';
+  }
+  function toggleHordeScout(button){
+    if(button.getAttribute('aria-busy')==='true')return;
+    if(hordeScout){
+      hordeScout=null;button.removeAttribute('aria-busy');setScoutButtonState(button,false);
+      button.title='怪物潮站位已關閉；點擊重新掃描';return;
+    }
+    return scanHordePosition(button);
+  }
+  const scoutReach=game=>typeof game?.logicReach==='function'?game.logicReach():game?.world3d?.viewReach;
+  function scoutIsCurrent(scan){
+    return scan&&activeGame===scan.game&&scan.game.map===scan.map&&scan.game.walk===scan.walk&&
+      scan.game.walk?.warpsKey===scan.warpsKey&&Math.abs(scoutReach(scan.game)-scan.reach)<1&&scan.game.state!=='over';
+  }
+  function scoutValidPoint(game,x,y){
+    const b=game.bounds;
+    return x>b.x0&&x<b.x1&&y>b.y0&&y<b.y1&&(!game.walk||(game.walk.walkable(x,y)&&game.walk.reachable(x,y)));
+  }
+  // Integrate each independent radius attempt, rather than treating three
+  // successful samples as three monsters. No native RNG or spawn methods run.
+  function scoutDirections(reach,count,jitters=1,samples=3){
+    const directions=[];
+    for(let i=0;i<count;i++)for(let j=0;j<jitters;j++){
+      const angle=i/count*Math.PI*2+((j+.5)/jitters-.5)*.04,c=Math.cos(angle),s=Math.sin(angle);
+      directions.push([0,90,180].map(extra=>Array.from({length:samples},(_,k)=>{
+        const radius=reach+90+extra+(k+.5)*40/samples;return [c*radius,s*radius];
+      })));
+    }
+    return directions;
+  }
+  function scoutScore(game,x,y,directions){
+    let total=0;
+    for(const attempts of directions){
+      let failure=1;
+      for(const samples of attempts){
+        let valid=0;for(const [dx,dy] of samples)if(scoutValidPoint(game,x+dx,y+dy))valid++;
+        failure*=1-valid/samples.length;if(!failure)break;
+      }
+      total+=1-failure;
+    }
+    return total/directions.length;
+  }
+  async function scanHordePosition(button){
+    const game=activeGame,reach=scoutReach(game);
+    if(!game?.map||!game.player||!game.bounds||!Number.isFinite(reach)||reach<=0||
+      (game.walk&&(!game.walk.walkable||!game.walk.reachable))){notify('目前無法取得地圖與視野資料');return;}
+    const scan={game,map:game.map,walk:game.walk,warpsKey:game.walk?.warpsKey,reach,result:null};hordeScout=scan;
+    setScoutButtonState(button,true);button.disabled=true;button.setAttribute('aria-busy','true');button.title='正在掃描怪物潮站位…';
+    try{
+      const directions=scoutDirections(reach,96),best=[];
+      let deadline=performance.now()+8;
+      const consider=(x,y)=>{
+        if(!scoutValidPoint(game,x,y))return;
+        const score=scoutScore(game,x,y,directions),distance=Math.hypot(x-game.player.x,y-game.player.y);
+        best.push({x,y,score,distance});best.sort((a,b)=>b.score-a.score||a.distance-b.distance);if(best.length>24)best.pop();
+      };
+      // Native walk cells are 32 world units; scan every cell centre.
+      const b=game.bounds;
+      for(let y=Math.floor(b.y0/32)*32+16;y<b.y1;y+=32)for(let x=Math.floor(b.x0/32)*32+16;x<b.x1;x+=32){
+        if(hordeScout!==scan||!scoutIsCurrent(scan))return;
+        consider(x,y);
+        if(performance.now()>=deadline){await new Promise(resolve=>setTimeout(resolve,0));deadline=performance.now()+8;}
+      }
+      if(scoutValidPoint(game,game.player.x,game.player.y))consider(game.player.x,game.player.y);
+      const fine=scoutDirections(reach,720,3,5);
+      for(const point of best){
+        if(hordeScout!==scan||!scoutIsCurrent(scan))return;
+        point.score=scoutScore(game,point.x,point.y,fine);
+        await new Promise(resolve=>setTimeout(resolve,0));
+      }
+      if(!scoutIsCurrent(scan)||hordeScout!==scan)return;
+      best.sort((a,b)=>b.score-a.score||a.distance-b.distance);scan.result=best[0]||null;
+      if(scan.result){
+        setScoutButtonState(button,true);
+        button.title=`怪物潮最佳站位：估計出生成功率 ${(scan.result.score*100).toFixed(1)}%（地形抽樣）；點擊關閉標記`;
+        notify(`已標記綠色三角形：估計怪物潮出生成功率 ${(scan.result.score*100).toFixed(1)}%`);
+      }else{hordeScout=null;setScoutButtonState(button,false);button.title='找不到可到達的站位；點擊重新掃描';notify('目前地圖找不到可到達的站位');}
+    }catch(error){if(hordeScout===scan){hordeScout=null;setScoutButtonState(button,false);button.title='掃描失敗；點擊重試';notify('怪物潮站位掃描失敗');}console.debug('[RO助手] 站位掃描失敗',error);}
+    finally{
+      if(hordeScout===scan||!hordeScout){button.disabled=false;button.removeAttribute('aria-busy');}
+      if(hordeScout===scan&&!scoutIsCurrent(scan)){hordeScout=null;setScoutButtonState(button,false);button.title='地圖或視野已改變；請重新掃描';}
+    }
+  }
+  function updateHordeScoutButton(){
+    const anchor=document.querySelector('#dps-toggle');if(!anchor)return;
+    let button=document.querySelector('#ro-horde-scout');
+    if(!button){
+      button=document.createElement('button');button.id='ro-horde-scout';button.className=anchor.className;button.type='button';
+      button.setAttribute('aria-label','掃描怪物潮最佳站位');button.title='依目前視野掃描怪物潮最佳站位（地形抽樣估計）';
+      button.setAttribute('aria-pressed','false');
+      button.innerHTML='<svg viewBox="0 0 20 16" width="14" height="12" aria-hidden="true"><path d="M1 8Q10 -4 19 8Q10 20 1 8Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="8" r="3" fill="currentColor"/><path data-scout-slash d="M2 1L18 15" fill="none" stroke="currentColor" stroke-width="2" style="display:none"/></svg>';
+      button.onclick=event=>{event.stopPropagation();return toggleHordeScout(button);};
+    }
+    if(anchor.nextElementSibling!==button)anchor.after(button);
+    button.style.cssText=`position:absolute;left:${anchor.offsetWidth?anchor.offsetLeft+anchor.offsetWidth+4:30}px;bottom:4px;top:auto;right:auto;width:${anchor.offsetWidth||22}px;height:${anchor.offsetHeight||22}px;margin:0;padding:0;line-height:1;border-radius:7px;pointer-events:auto;display:grid;place-items:center;opacity:.9;`;
+    if(hordeScout&&!scoutIsCurrent(hordeScout)){hordeScout=null;button.disabled=false;button.removeAttribute('aria-busy');setScoutButtonState(button,false);button.title='地圖或視野已改變；請重新掃描';}
+  }
+  function paintHordeScout(context,image,crop){
+    const scan=hordeScout;if(!scan?.result||!scoutIsCurrent(scan))return;
+    const proxy={map:scan.map,player:scan.result,logicReach:()=>scan.reach},point=hordeRingGeometry(proxy,image,crop);if(!point)return;
+    const size=6*Math.min(2,window.devicePixelRatio||1);
+    context.save();try{
+      context.setTransform(1,0,0,1,0,0);context.globalAlpha=1;context.setLineDash([]);
+      context.beginPath();context.moveTo(point.x,point.y-size);context.lineTo(point.x+size,point.y+size);context.lineTo(point.x-size,point.y+size);context.closePath();
+      context.fillStyle='#45ff73';context.strokeStyle='#123d20';context.lineWidth=Math.max(1,size/4);context.fill();context.stroke();
+    }finally{context.restore();}
+  }
   try{hideMinimapMagnets=localStorage.getItem(MINIMAP_MAGNET_KEY)==='true';}catch{}
   try{showHordeRing=localStorage.getItem(HORDE_RING_KEY)!=='false';}catch{}
   function setHordeRingEnabled(value){
@@ -255,7 +367,7 @@
         const result=Reflect.apply(restore,this,args);
         if(playerArrow&&!drawingOverlay){
           playerArrow=false;drawingOverlay=true;
-          try{paintHordeRing(this,image,crop);}catch(error){console.debug('[RO助手] 怪潮範圍繪製失敗',error);}finally{drawingOverlay=false;}
+          try{paintHordeRing(this,image,crop);paintHordeScout(this,image,crop);}catch(error){console.debug('[RO助手] 怪潮範圍繪製失敗',error);}finally{drawingOverlay=false;}
         }
         return result;
       };
@@ -271,6 +383,7 @@
     };
   }
   function updateMinimapOption(){
+    updateHordeScoutButton();
     const original=document.querySelector('#lu-p-hide');
     const row=original?.closest('label');
     if(row&&!document.querySelector('[data-ro-hide-minimap-magnets]')){
@@ -2640,7 +2753,7 @@
     const game=activeGame;
     if(!game||typeof game.step!=='function')return {ok:false,error:'請先進入一場遊戲，再啟動量測'};
     seconds=Number(seconds);if(!Number.isFinite(seconds)||seconds<1||seconds>60)return {ok:false,error:'量測秒數須為 1～60'};
-    const session={game,seconds,phase:'waiting',createdAt:performance.now(),startedAt:null,endedAt:null,records:[],stack:[],stats:new Map(),missing:[],weapons:new WeakSet(),counts:{},frames:[],lastFrame:null,frameId:null,timer:null,waitTimer:null,projectileTargets:new WeakMap(),projectileCoverage:{modelTargets:0,viewTargets:0,unwrappedTargets:0},pickupStart:null};
+    const session={game,seconds,phase:'waiting',createdAt:performance.now(),startedAt:null,endedAt:null,records:[],stack:[],stats:new Map(),missing:[],weapons:new WeakSet(),counts:{},frames:[],lastFrame:null,frameId:null,timer:null,waitTimer:null,projectileTargets:new WeakMap(),projectileCoverage:{modelTargets:0,viewTargets:0,unwrappedTargets:0},pickupStart:null,enemyTargets:new WeakMap(),enemyCoverage:{observedEnemies:0,viewTargets:0,missingViewTargets:0,unwrappedTargets:0}};
     performanceSession=session;
     function begin(){
       if(session.startedAt!==null)return;
@@ -2648,16 +2761,17 @@
       session.pickupStart=typeof pickupPerformanceSnapshot==='function'?pickupPerformanceSnapshot(game):null;
       session.timer=setTimeout(()=>stopPerformanceMeasurement('completed'),seconds*1000);
     }
-    function wrap(object,key,category,name=key,projectileVisual=false){
+    function wrap(object,key,category,name=key,scope=null){
       if(!object||typeof object[key]!=='function'){session.missing.push(name);return;}
       const descriptor=Object.getOwnPropertyDescriptor(object,key),original=object[key];
       if(descriptor&&(!descriptor.configurable||descriptor.get||descriptor.set)){session.missing.push(name);return;}
       const stat=session.stats.get(name)||{name,category,calls:0,totalMs:0,selfMs:0,maxMs:0,samples:[]};
       const wrapper=function(...args){
         if(performanceSession!==session||game.state!=='playing'||document.hidden)return Reflect.apply(original,this,args);
-        if(projectileVisual&&!session.stack.some(frame=>frame.name==='updateProjectiles'))return Reflect.apply(original,this,args);
+        if(scope&&!session.stack.some(frame=>frame.name===scope))return Reflect.apply(original,this,args);
         begin();
         if(name==='updateProjectiles')observeProjectiles();
+        if(name==='updateEnemies')observeEnemies();
         if(category==='step'){
           for(const weapon of game.weapons||[])if(weapon&&!session.weapons.has(weapon)){session.weapons.add(weapon);wrap(weapon,'update','skills','weapon:'+session.weaponsCount++);}
           for(const key of ['pickups','enemies','projectiles','fx','numbers','weapons']){const value=game[key]?.length;if(Number.isFinite(value)){const count=session.counts[key]||{samples:0,total:0,max:0};count.samples++;count.total+=value;count.max=Math.max(count.max,value);session.counts[key]=count;}}
@@ -2681,7 +2795,27 @@
         const target=projectile?.[kind];if(!target||typeof target.update!=='function')continue;
         if(session.projectileTargets.has(target))continue;
         session.projectileTargets.set(target,true);session.projectileCoverage[kind+'Targets']++;
-        if(!wrap(target,'update','effects','projectile:'+kind+'.update',true))session.projectileCoverage.unwrappedTargets++;
+        if(!wrap(target,'update','effects','projectile:'+kind+'.update','updateProjectiles'))session.projectileCoverage.unwrappedTargets++;
+      }
+    }
+    function enemyWrap(target,key,group){
+      if(!target||typeof target[key]!=='function')return false;
+      let keys=session.enemyTargets.get(target);if(!keys){keys=new Set();session.enemyTargets.set(target,keys);}
+      if(keys.has(key))return true;keys.add(key);
+      if(!wrap(target,key,'enemies','enemy:'+group+':'+key,'updateEnemies'))session.enemyCoverage.unwrappedTargets++;
+      return true;
+    }
+    function observeEnemies(){
+      for(const [key,group] of [['buildSeparation','separation'],['separate','separation'],['chaseTarget','targeting'],['followHost','targeting']])enemyWrap(game,key,group);
+      for(const key of ['lineClear','flowDir','resolve','warpAt','nearestWalkable'])enemyWrap(game.walk,key,'navigation');
+      for(const enemy of game.enemies||[]){
+        if(!enemy||typeof enemy!=='object')continue;
+        let keys=session.enemyTargets.get(enemy);if(!keys){keys=new Set();session.enemyTargets.set(enemy,keys);}
+        if(!keys.has('observed')){keys.add('observed');session.enemyCoverage.observedEnemies++;
+          if(typeof enemy.updateView==='function')session.enemyCoverage.viewTargets++;else session.enemyCoverage.missingViewTargets++;
+        }
+        enemyWrap(enemy,'updateView','view');
+        enemyWrap(game.bossBrains?.get(enemy),'update','bossAI');
       }
     }
     session.weaponsCount=0;
@@ -2714,12 +2848,16 @@
     const projectile=methods.find(row=>row.name==='updateProjectiles'),model=methods.find(row=>row.name==='projectile:model.update'),view=methods.find(row=>row.name==='projectile:view.update');
     const visualMs=(model?.selfMs||0)+(view?.selfMs||0),pickupEnd=typeof pickupPerformanceSnapshot==='function'?pickupPerformanceSnapshot(session.game):null;
     const skipped={};for(const key of ['visualCallsSkipped','beamCallsSkipped','beamPositionsSkipped','stationaryBeamPositionsSkipped'])skipped[key]=session.pickupStart&&pickupEnd?pickupEnd.counters[key]-session.pickupStart.counters[key]:null;
-    lastPerformanceReport={format:2,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
+    const enemy=methods.find(row=>row.name==='updateEnemies');
+    const enemyGroups=Object.fromEntries(['view','separation','navigation','targeting','bossAI'].map(group=>[group,methods.filter(row=>row.name.startsWith('enemy:'+group+':')).reduce((sum,row)=>sum+row.selfMs,0)]));
+    const enemyMeasured=Object.values(enemyGroups).reduce((sum,value)=>sum+value,0);
+    lastPerformanceReport={format:3,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
       pickupOptimization:{start:session.pickupStart,end:pickupEnd,skippedDuringMeasurement:skipped},
       projectileBreakdown:{totalMs:projectile?.totalMs??null,visualCallbacksMs:visualMs,remainingMs:projectile?Math.max(0,projectile.totalMs-visualMs):null,modelUpdateCalls:model?.calls||0,viewUpdateCalls:view?.calls||0,...session.projectileCoverage},
+      enemyBreakdown:{totalMs:enemy?.totalMs??null,groupsMs:enemyGroups,remainingMs:enemy?Math.max(0,enemy.selfMs):null,nestedOtherMs:enemy?Math.max(0,enemy.totalMs-enemy.selfMs-enemyMeasured):null,...session.enemyCoverage},
       categories,methods,counts:Object.fromEntries(Object.entries(session.counts).map(([key,value])=>[key,{mean:value.total/value.samples,max:value.max}])),missing:session.missing,
       frames:{samples:session.frames.length,fps:frameSum?session.frames.length*1000/frameSum:null,p95IntervalMs:performancePercentile(session.frames,.95)},
-      notes:['同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未包裝的技能 hook、地圖／玩家／助手等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
+      notes:['怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未包裝的技能 hook、地圖／玩家／助手等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
     return lastPerformanceReport;
   }
   function performanceMeasurementState(){return {phase:performanceSession?.phase||'idle',seconds:performanceSession?.seconds??null,hasReport:!!lastPerformanceReport};}
@@ -2760,6 +2898,7 @@
         summary.textContent+='\n'+label+'物品檢查：陣列 '+inventory.entries+' 筆，未死亡 '+inventory.live+' 筆／'+inventory.uniqueLiveObjects+' 個不同物件，死亡 '+inventory.dead+' 筆，重複參照 '+inventory.duplicateReferences+' 筆（'+inventory.repeatedObjects+' 個物件重複），無效 '+inventory.invalidEntries+' 筆';
         for(const row of inventory.byKind)summary.textContent+='\n  '+(row.kind===null?'[缺少或非字串 kind]':row.kind)+': '+row.entries+' 筆，未死亡 '+row.live+' 筆／'+row.uniqueLiveObjects+' 個不同物件，死亡 '+row.dead+' 筆，重複 '+row.duplicateReferences+' 筆，隱藏 '+row.hiddenLive+' 筆，吸取中 '+row.magnetLive+' 筆';
       }
+      const enemy=lastPerformanceReport.enemyBreakdown;if(enemy)summary.textContent+='\n怪物更新細分（ms）：'+Object.entries(enemy.groupsMs).map(([key,value])=>key+' '+value.toFixed(2)).join('／')+'；其餘 '+(enemy.remainingMs?.toFixed(2)??'無樣本')+'；視覺目標 '+enemy.viewTargets+'/'+enemy.observedEnemies+'；無法包裝 '+enemy.unwrappedTargets;
       if(projectile)summary.textContent+='\n投射物視覺回呼：'+projectile.visualCallbacksMs.toFixed(2)+' ms；其餘更新（含未拆出視覺）：'+(projectile.remainingMs?.toFixed(2)??'無樣本')+' ms；無法包裝目標：'+projectile.unwrappedTargets;
     }
     const text=document.createElement('textarea');text.readOnly=true;text.setAttribute('aria-label','效能報告 JSON');text.style.cssText='display:block;width:100%;height:35vh;box-sizing:border-box';text.value=lastPerformanceReport?JSON.stringify(lastPerformanceReport,null,2):'';
@@ -3449,7 +3588,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.19');
+      console.info('[RO助手] 即時自選已啟用 v2.2.20');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3924,6 +4063,7 @@
     // Recover overlays independently of native ticks and DOM observer timing.
     function refreshBattleOverlays(){
       if(activeGame&&!pickerIsOpen()&&!touchUiIsQuiet()){
+        runHelperHook(activeGame,'怪潮站位按鈕',updateHordeScoutButton);
         runHelperHook(activeGame,'怪物統計',()=>updateHordeHud(activeGame));
         runHelperHook(activeGame,'角色資料',updateCharacterDetails);
       }
