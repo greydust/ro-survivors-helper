@@ -2,8 +2,8 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.24
-// @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
+// @version      2.2.27
+// @description  裝備整理、換裝預覽、連續精煉／升星與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
 // @grant        none
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.24'};
+  window[runtimeKey]={version:'2.2.27'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -145,6 +145,54 @@
     }
   }
   installOfflineGate();
+  const EXPERIMENTAL_KEY='greydust.ro.experimental.v1';
+  let experimentalUnlocked=false,experimentalEnabled=false,experimentalClicks=0,experimentalLastClick=0,experimentalTab=null;
+  try{
+    const saved=JSON.parse(localStorage.getItem(EXPERIMENTAL_KEY)||'null');
+    experimentalUnlocked=saved?.unlocked===true;
+    experimentalEnabled=experimentalUnlocked&&saved?.enabled===true;
+  }catch{}
+  function saveExperimental(){
+    try{localStorage.setItem(EXPERIMENTAL_KEY,JSON.stringify({unlocked:experimentalUnlocked,enabled:experimentalEnabled}));}
+    catch{notify('實驗性功能設定無法保存，目前只在本分頁有效');}
+  }
+  function updateExperimentalUI(){
+    const gameTab=!!document.querySelector('#opt-tabs [data-opt-tab="game"].active');
+    if(experimentalTab!==gameTab){experimentalClicks=0;experimentalTab=gameTab;}
+    const version=document.querySelector('#opt-version');
+    let helper=document.querySelector('#ro-helper-version');
+    if(version&&helper?.previousElementSibling!==version){
+      if(!version.parentElement.hasAttribute('data-ro-version-row')){
+        const footer=document.createElement('span');footer.className='opt-version';footer.setAttribute('data-ro-version-row','');
+        version.before(footer);footer.append(version);
+      }
+      helper?.remove();helper=document.createElement('button');helper.id='ro-helper-version';helper.type='button';
+      helper.textContent='助手 v'+window[runtimeKey].version;
+      helper.style.cssText='margin-left:8px;padding:0;border:0;background:transparent;color:inherit;font:inherit;touch-action:manipulation';
+      helper.onclick=()=>{
+        if(!document.querySelector('#opt-tabs [data-opt-tab="game"].active')){experimentalClicks=0;return;}
+        const now=performance.now();
+        experimentalClicks=now-experimentalLastClick>3000?1:experimentalClicks+1;experimentalLastClick=now;
+        if(experimentalClicks>=7){experimentalClicks=0;experimentalUnlocked=true;saveExperimental();updateExperimentalUI();}
+      };
+      version.after(helper);
+    }
+    const body=document.querySelector('#opt-body');
+    let row=document.querySelector('[data-ro-experimental-row]');
+    if(!gameTab||!experimentalUnlocked){row?.remove();return;}
+    if(body&&!row){
+      row=document.createElement('label');row.className='opt-row opt-check';row.setAttribute('data-ro-experimental-row','');
+      const text=document.createElement('span'),name=document.createElement('b'),hint=document.createElement('small');
+      name.textContent='啟用實驗性功能';hint.textContent='顯示可能影響遊玩節奏的實驗性功能設定入口；關閉僅隱藏入口，既有設定仍會生效';text.append(name,hint);
+      const input=document.createElement('input');input.type='checkbox';input.setAttribute('data-ro-experimental','');
+      input.onchange=()=>{
+        experimentalEnabled=input.checked;saveExperimental();
+        clearLongPress();closeMenu();updateAdvancedChoiceUI();
+      };
+      const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,input,toggle);body.append(row);
+    }
+    const input=row?.querySelector('input');if(input)input.checked=experimentalEnabled;
+  }
   const AUTO_WORLD_BOSS_KEY='greydust.ro.auto-world-boss.v1';
   let autoWorldBoss=false,worldBossLastAttempt=-Infinity;
   const worldBossAttemptedChips=new WeakSet();
@@ -445,6 +493,9 @@
   let preferredDoubleSpeed=false,effectOpacity=null,battleSettings=null,battleSetOption=null;
   try{preferredDoubleSpeed=localStorage.getItem(SPEED_PREFERENCE_KEY)==='true';}catch{}
   try{const value=JSON.parse(localStorage.getItem(EFFECT_OPACITY_KEY)||'null');if(value&&['enemy','teammate','self'].every(key=>Number.isFinite(value[key])&&value[key]>=0&&value[key]<=1))effectOpacity=value;}catch{}
+  const pureTimedVisualAnimations=new Set([2998467724,3196408323,2875258797,3135966278,1865372911,250615790,623689834,2455663491,1550677359,3529832771,164324765]);
+  function visualFunctionHash(fn){if(typeof fn!=='function')return null;let hash=2166136261;for(const char of Function.prototype.toString.call(fn).replace(/\s+/g,''))hash=Math.imul(hash^char.charCodeAt(0),16777619)>>>0;return hash;}
+  function pureTimedVisual(effect,update){return visualFunctionHash(update)===389186106&&pureTimedVisualAnimations.has(visualFunctionHash(effect.animate));}
   const speedApis=new WeakSet(),battleVisualGames=new WeakMap();
   function installSpeedPreference(){
     const api=window.__RO_SPD;if(!api||speedApis.has(api)||!['k','set','state'].every(key=>typeof api[key]==='function'))return;
@@ -501,8 +552,10 @@
     if(!game||!game.world3d)return;
     let state=battleVisualGames.get(game);
     if(state){state.observePeers();return;}
-    state={source:null,nodes:new WeakMap(),roots:new Map(),patched:new WeakMap(),materials:new WeakMap()};battleVisualGames.set(game,state);
+    state={source:null,nodes:new WeakMap(),roots:new Map(),patched:new WeakMap(),materials:new WeakMap(),adjustedUniforms:new Set()};battleVisualGames.set(game,state);
     const factor=source=>effectOpacity?.[source]??1;
+    const fullyVisible=()=>factor('enemy')===1&&factor('teammate')===1&&factor('self')===1;
+    const resetUniforms=()=>{for(const uniform of state.adjustedUniforms)uniform.value=1;state.adjustedUniforms.clear();};
     const owner=receiver=>state.source||(receiver?.player&&receiver.player!==game.player?'teammate':'self');
     function scoped(source,action){const old=state.source;state.source=source;try{return action();}finally{state.source=old;}}
     function wrap(object,key,make){
@@ -519,7 +572,15 @@
     }
     function tagEffect(effect,source){
       if(!effect)return;tag(effect.view,source);tagEffectMeshes(effect,source);
-      wrap(effect,'update',original=>function(...args){return scoped(source,()=>Reflect.apply(original,this,args));});
+      wrap(effect,'update',original=>{
+        const pure=pureTimedVisual(effect,original),animate=effect.animate;
+        return function(delta,...rest){
+          if(pure&&this===effect&&this.animate===animate&&factor(source)===0&&!rest.length&&Number.isFinite(delta)&&delta>=0&&Number.isFinite(this.t)&&Number.isFinite(this.duration)&&this.duration>0){
+            this.t+=delta;return Math.min(1,this.t/this.duration)>=1;
+          }
+          const previous=state.source;state.source=source;try{return Reflect.apply(original,this,[delta,...rest]);}finally{state.source=previous;}
+        };
+      });
     }
     for(const method of ['updateEnemies','netBossCast','enemyArrow','groundWarning','endlessShot'])wrap(game,method,original=>function(...args){return scoped('enemy',()=>Reflect.apply(original,this,args));});
     for(const method of ['updateMapFires','dropPickup'])wrap(game,method,original=>function(...args){return scoped('environment',()=>Reflect.apply(original,this,args));});
@@ -565,29 +626,33 @@
       material.needsUpdate=true;state.materials.set(material,uniform);
     }
     wrap(world.renderer,'render',original=>function(...args){
+      resetUniforms();
+      if(fullyVisible())return Reflect.apply(original,this,args);
       const restore=[],seen=new Set();
       try{
         for(const [root,source] of state.roots){
           if(!root.parent&&Array.isArray(world.scene?.children)&&!world.scene.children.includes(root)){state.roots.delete(root);continue;}
           const value=factor(source);
-          if(value===0){restore.push([root,root.visible]);root.visible=false;}
-          const visit=node=>{for(const material of Array.isArray(node.material)?node.material:node.material?[node.material]:[]){patchMaterial(material,source);const uniform=state.materials.get(material);if(uniform&&!seen.has(uniform)){seen.add(uniform);uniform.value=value;}}};
+          if(value===1)continue;
+          if(value===0){restore.push([root,root.visible]);root.visible=false;continue;}
+          const visit=node=>{for(const material of Array.isArray(node.material)?node.material:node.material?[node.material]:[]){patchMaterial(material,source);const uniform=state.materials.get(material);if(uniform&&!seen.has(uniform)){seen.add(uniform);uniform.value=value;state.adjustedUniforms.add(uniform);}}};
           if(typeof root.traverse==='function')root.traverse(visit);else visit(root);
         }
         return Reflect.apply(original,this,args);
       }finally{for(const [root,visible] of restore)root.visible=visible;}
     });
     function draw2D(original,receiver,args){
+      if(fullyVisible())return Reflect.apply(original,receiver,args);
       const restore=[];
       try{
         if(game.fxLayer&&effectOpacity&&battleSettings&&battleSetOption){
           if(battleSettings.fxOpacity!==1)battleSetOption({fxOpacity:1});
           const visit=node=>{
-            const source=state.nodes.get(node);if(source){const value=factor(source);restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;return;}
+            const source=state.nodes.get(node);if(source){const value=factor(source);if(value===1)return;restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;return;}
             for(const child of node.children||[])visit(child);
           };
           visit(game.fxLayer);
-          for(const node of [game.wings?.s,game.wings?.feathers])if(node){const value=factor('self');restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;}
+          for(const node of [game.wings?.s,game.wings?.feathers])if(node&&factor('self')!==1){const value=factor('self');restore.push([node,node.alpha,node.visible]);node.alpha*=value;if(value===0)node.visible=false;}
         }
         return Reflect.apply(original,receiver,args);
       }finally{for(const [node,alpha,visible] of restore)if(!node.destroyed){node.alpha=alpha;node.visible=visible;}}
@@ -882,6 +947,105 @@
     }
     fpsFrame=window.requestAnimationFrame(sampleFps);
   }
+  const fieldMonsterCounters=new WeakMap(),fieldMonsterOwners=new WeakMap(),fieldMonsterStatePrototypes=new WeakMap();
+  const liveFieldMonster=enemy=>!!enemy&&!enemy.dead&&!enemy.removed&&enemy.state!=='dead'&&!(Number.isFinite(enemy.hp)&&enemy.hp<=0);
+  function syncFieldMonster(entry){
+    const state=entry.state;if(!state.reliable||entry.generation!==state.generation)return;
+    const live=entry.present&&liveFieldMonster(entry.enemy);if(live===entry.live)return;
+    entry.live=live;state.dirty=true;
+    const id=entry.enemy.def?.id||'unknown';
+    if(live){state.active.add(entry);state.names.set(id,MONSTER_NAMES[id]||entry.enemy.def?.name||id);state.counts.set(id,(state.counts.get(id)||0)+1);entry.id=id;}
+    else{state.active.delete(entry);const count=(state.counts.get(entry.id)||0)-1;if(count>0)state.counts.set(entry.id,count);else state.counts.delete(entry.id);}
+  }
+  function observeFieldMonster(state,enemy){
+    if(!enemy||typeof enemy!=='object'){state.reliable=false;return;}
+    let entry=state.records.get(enemy);if(entry&&entry.generation===state.generation){entry.references++;entry.present=true;syncFieldMonster(entry);return;}
+    entry={enemy,state,generation:state.generation,live:false,present:true,references:1,id:null};state.records.set(enemy,entry);fieldMonsterOwners.set(enemy,entry);
+    const prototype=Object.getPrototypeOf(enemy);
+    if(!prototype||Object.hasOwn(enemy,'setState'))state.reliable=false;
+    else{
+      if(!fieldMonsterStatePrototypes.has(prototype)){
+        const descriptor=Object.getOwnPropertyDescriptor(prototype,'setState'),original=prototype.setState;
+        let hash=2166136261;
+        if(typeof original==='function')for(const char of Function.prototype.toString.call(original).replace(/\s+/g,''))hash=Math.imul(hash^char.charCodeAt(0),16777619)>>>0;
+        let ready=false;
+        if(hash===1563270452&&descriptor?.configurable&&!descriptor.get&&!descriptor.set){
+          Object.defineProperty(prototype,'setState',{...descriptor,value:function(...args){
+            try{return Reflect.apply(original,this,args);}finally{const tracked=fieldMonsterOwners.get(this);if(tracked)syncFieldMonster(tracked);}
+          }});ready=true;
+        }
+        fieldMonsterStatePrototypes.set(prototype,ready);
+      }
+      if(!fieldMonsterStatePrototypes.get(prototype))state.reliable=false;
+    }
+    syncFieldMonster(entry);
+  }
+  function installFieldMonsterCounter(game){
+    if(!game||!Array.isArray(game.enemies)||fieldMonsterCounters.has(game))return;
+    const descriptor=Object.getOwnPropertyDescriptor(game,'enemies');
+    if(descriptor&&(!descriptor.configurable||descriptor.writable===false||descriptor.get||descriptor.set))return;
+    const state={game,array:game.enemies,records:new WeakMap(),active:new Set(),counts:new Map(),names:new Map(),expectedLength:game.enemies.length,rows:[],dirty:true,reliable:true,structuralReliable:true,generation:0,scans:0,patched:new WeakSet(),cleanupResults:new WeakMap()};
+    function observeArray(array){
+      if(!Array.isArray(array)){state.reliable=false;return;}
+      if(state.patched.has(array))return;
+      const pushDescriptor=Object.getOwnPropertyDescriptor(array,'push'),filterDescriptor=Object.getOwnPropertyDescriptor(array,'filter');
+      if(!Object.isExtensible(array)||pushDescriptor&&!pushDescriptor.configurable||filterDescriptor&&!filterDescriptor.configurable){state.reliable=false;return;}
+      const push=array.push,filter=array.filter;
+      Object.defineProperty(array,'push',{configurable:true,writable:true,enumerable:pushDescriptor?.enumerable??false,value:function(...enemies){
+        const result=Reflect.apply(push,this,enemies);if(this===state.array&&state.reliable){for(const enemy of enemies)observeFieldMonster(state,enemy);state.expectedLength=this.length;}return result;
+      }});
+      Object.defineProperty(array,'filter',{configurable:true,writable:true,enumerable:filterDescriptor?.enumerable??false,value:function(predicate,...rest){
+        const result=Reflect.apply(filter,this,[predicate,...rest]);
+        // Native cleanup only excludes removed enemies, already retired by death
+        // or vanish events. Array replacement itself remains fully native.
+        if(this===state.array&&state.reliable&&typeof predicate==='function'&&/^([\w$]+)=>!\1\.removed$/.test(Function.prototype.toString.call(predicate).replace(/\s+/g,'')))state.cleanupResults.set(result,{base:this,length:this.length});
+        return result;
+      }});
+      for(const key of ['pop','shift','unshift','splice']){
+        const desc=Object.getOwnPropertyDescriptor(array,key),original=array[key];
+        if(desc&&!desc.configurable){state.reliable=false;continue;}
+        Object.defineProperty(array,key,{configurable:true,writable:true,enumerable:desc?.enumerable??false,value:function(...args){
+          const result=Reflect.apply(original,this,args);
+          if(this===state.array&&state.reliable){
+            const removed=key==='splice'?result:key==='pop'||key==='shift'?[result]:[];
+            for(const enemy of removed){const entry=enemy&&state.records.get(enemy);if(entry){entry.references=Math.max(0,entry.references-1);entry.present=entry.references>0;syncFieldMonster(entry);}}
+            if(key==='unshift')for(const enemy of args)observeFieldMonster(state,enemy);
+            if(key==='splice')for(const enemy of args.slice(2))observeFieldMonster(state,enemy);
+            state.expectedLength=this.length;
+          }
+          return result;
+        }});
+      }
+      state.patched.add(array);
+    }
+    function rebuild(array){
+      state.generation++;state.active.clear();state.counts.clear();state.dirty=true;state.reliable=state.structuralReliable;state.scans++;
+      state.expectedLength=array?.length;observeArray(array);if(Array.isArray(array))for(const enemy of array)observeFieldMonster(state,enemy);
+    }
+    state.rebuild=rebuild;fieldMonsterCounters.set(game,state);
+    Object.defineProperty(game,'enemies',{configurable:true,enumerable:descriptor?.enumerable??true,get:()=>state.array,set:next=>{
+      if(next===state.array)return;
+      if(!state.reliable){state.array=next;state.expectedLength=next?.length;return;}
+      const cleanup=next&&state.cleanupResults.get(next),fast=state.reliable&&cleanup?.base===state.array&&cleanup.length===state.array.length;
+      if(next)state.cleanupResults.delete(next);
+      state.array=next;state.expectedLength=next?.length;if(fast)observeArray(next);else rebuild(next);
+    }});
+    for(const key of ['killEnemy','vanishEnemy','netUpdate','netHit','netKilled','netKill','replicaDeath','endlessDeath','hatch','blowUp']){
+      const original=game[key],desc=Object.getOwnPropertyDescriptor(game,key);if(typeof original!=='function')continue;
+      if(desc&&(!desc.configurable||desc.get||desc.set)){state.structuralReliable=false;state.reliable=false;continue;}
+      Object.defineProperty(game,key,{configurable:true,enumerable:desc?.enumerable??false,writable:true,value:function(enemy,...args){
+        try{return Reflect.apply(original,this,[enemy,...args]);}finally{const entry=state.records.get(enemy);if(entry)syncFieldMonster(entry);}
+      }});
+    }
+    rebuild(state.array);
+  }
+  function cachedFieldMonsterCounts(game){
+    installFieldMonsterCounter(game);const state=fieldMonsterCounters.get(game);
+    if(state?.reliable&&state.array?.length!==state.expectedLength)state.rebuild(state.array);
+    if(!state?.reliable){state?.active.clear();state?.counts.clear();return null;}
+    if(state.dirty){state.rows=[...state.counts].map(([id,count])=>({id,name:state.names.get(id)||id,count})).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'zh-Hant')||a.id.localeCompare(b.id));state.dirty=false;}
+    return state.rows;
+  }
   const hordeStates = new WeakMap();
   const observedHordeQueues = new WeakSet();
   let nextHordeHudAt=0;
@@ -920,6 +1084,7 @@
     };
   }
   function installHordeCount(game){
+    installFieldMonsterCounter(game);
     if(!game||hordeStates.has(game)||typeof game.horde!=='function'||typeof game.spawnEnemy!=='function')return;
     const state={latest:null,current:null,entries:new WeakMap(),processing:new Map(),pendingWaves:new Set()};hordeStates.set(game,state);
     const spawnEnemy=game.spawnEnemy,horde=game.horde;
@@ -964,6 +1129,7 @@
       complete:wave.theoretical!==null&&wave.closed&&!wave.pending.size&&!wave.canceled,canceled:wave.canceled,expired:wave.completedAt!==null&&performance.now()-wave.completedAt>=3000};
   }
   function fieldMonsterCounts(game){
+    const cached=cachedFieldMonsterCounts(game);if(cached)return cached;
     const counts=new Map();
     for(const enemy of game?.enemies||[]){
       if(!enemy||enemy.dead||enemy.removed||enemy.state==='dead'||(Number.isFinite(enemy.hp)&&enemy.hp<=0))continue;
@@ -1978,6 +2144,7 @@
   function withInventoryView(action,view){
     const original=Array.prototype.filter;
     let bagPredicate=null;
+    view.countItems=new Map();
     try{
       Array.prototype.filter=function(...args){
         const result=Reflect.apply(original,this,args);
@@ -1992,6 +2159,7 @@
           if(!bagPredicate&&/^\(?([\w$]+)\)?=>[\w$]+\([\w$]+,\1\)$/.test(source))bagPredicate=predicate;
           if(predicate!==bagPredicate)return result;
         }
+        for(const item of this)view.countItems.set(item.uid,item);
         return Reflect.apply(original,result,[item=>inventoryMatches(item,view.category,view.type)]);
       };
       return action();
@@ -2189,7 +2357,14 @@
           }
           const head=filters.querySelector('[data-f="weapon"]');if(head)head.after(extras);else filters.prepend(extras);
         }
-        for(const button of filters.querySelectorAll('[data-ro-inventory-category]'))button.classList.toggle('active',button.dataset.roInventoryCategory===view.category);
+        for(const button of filters.querySelectorAll('[data-ro-inventory-category]')){
+          button.classList.toggle('active',button.dataset.roInventoryCategory===view.category);
+          const category=button.dataset.roInventoryCategory,label=inventoryCategories.find(([key])=>key===category)?.[1]||category;
+          const count=[...(view.countItems?.values()||[])].filter(item=>inventoryMatches(item,category)).length;
+          let number=button.querySelector('small');
+          if(!number){button.textContent=label+' ';number=document.createElement('small');button.append(number);}
+          if(number.textContent!==String(count))number.textContent=String(count);
+        }
         for(const button of filters.querySelectorAll('[data-f]'))if(['onehand','twohand','head_top','head_mid','head_low'].includes(view.category))button.classList.remove('active');
         let sub=panel.querySelector('[data-ro-inventory-subtypes]');
         if(!sub){sub=document.createElement('div');sub.dataset.roInventorySubtypes='';filters.parentElement.insertBefore(sub,filters.nextSibling);}
@@ -2213,6 +2388,123 @@
       }
       updateEquipCandidates();
     }finally{inventoryUpdating=false;}
+  }
+  const BOSS_LOOT_KEY='greydust.ro.boss-loot-rainbow.v1';
+  let bossLootEnabled=false,bossLootCatalog=null,bossLootManifest=null,bossLootGear=new Set(),bossLootCards=new Set(),bossLootIcons=new Map();
+  try{bossLootEnabled=localStorage.getItem(BOSS_LOOT_KEY)==='true';}catch{}
+  function initializeBossLoot(){
+    if(!gameCatalog||(bossLootCatalog===gameCatalog&&bossLootManifest===smithAssets?.manifest))return;
+    bossLootCatalog=gameCatalog;bossLootManifest=smithAssets?.manifest;bossLootGear=new Set();bossLootCards=new Set();bossLootIcons=new Map();
+    const monsters=gameCatalog.bj||{},bosses=new Set(Object.entries(monsters).filter(([,def])=>def.boss).map(([id])=>id));
+    for(const stage of Object.values(gameCatalog.ca||{})){
+      for(const entry of [...(stage.bosses||[]),stage.rare,stage.intruder])if(entry?.id)bosses.add(entry.id);
+    }
+    const ordinary=new Set();
+    for(const [monster,drops] of Object.entries(gameCatalog.cb||{}))for(const drop of drops){
+      (bosses.has(monster)?bossLootGear:ordinary).add(Number(drop.id));
+    }
+    // A shared ordinary-monster drop is not a boss-exclusive item.
+    for(const id of ordinary)bossLootGear.delete(id);
+    for(const card of Object.values(gameCatalog.bT||{}))if(bosses.has(card.monster))bossLootCards.add(Number(card.id));
+    const functions=Object.values(gameCatalog).filter(value=>typeof value==='function');
+    const gearIcon=functions.find(fn=>/\.manifest\.items/.test(String(fn))&&/\.icon/.test(String(fn)))||gameCatalog.ck;
+    const cardIcon=functions.find(fn=>/\.manifest\.cards/.test(String(fn))&&/\.image/.test(String(fn)))||gameCatalog.cj;
+    const remember=(id,kind,fn)=>{try{const src=fn?.(id);if(src&&!new URL(src,location.href).pathname.endsWith('/'))bossLootIcons.set(new URL(src,location.href).href,kind);}catch{}};
+    for(const id of bossLootGear)remember(id,'gear',gearIcon);
+    for(const id of bossLootCards)remember(id,'card',cardIcon);
+    // Seasonal boss gear can reuse an ordinary item's artwork (2212/39044).
+    // Artwork alone cannot identify those items; require an actual item ID.
+    for(const id of ordinary)try{const src=gearIcon?.(id);if(src)bossLootIcons.delete(new URL(src,location.href).href);}catch{}
+  }
+  function bossLootDropFrame(image){
+    const toast=image.closest('.toast,.lr-row');if(toast)return toast;
+    // Ground-loot capsules can come from the native 3D HUD. Locate their
+    // existing rounded border rather than painting the artwork inside it.
+    let inDropUI=false;
+    for(let node=image.parentElement;node;node=node.parentElement){
+      if(node.matches('#hud,#toasts,#loot-rolls')||[...node.classList].some(name=>!name.startsWith('ro-')&&/pickup|loot|drop/.test(name))){inDropUI=true;break;}
+    }
+    if(!inDropUI)return null;
+    const getStyle=document.defaultView?.getComputedStyle;
+    if(!getStyle)return null;
+    for(let node=image.parentElement,depth=0;node&&depth<5;node=node.parentElement,depth++){
+      if(node.matches('.loot-row,#drop-reveal,.st-drops,.stg-loot'))return null;
+      if(node.querySelectorAll('img').length!==1||!node.textContent.trim())continue;
+      const style=getStyle.call(document.defaultView,node);
+      if(parseFloat(style.borderTopWidth)>0&&parseFloat(style.borderTopLeftRadius)>=8&&node.offsetHeight<=100&&node.offsetWidth<=500)return node;
+    }
+    return null;
+  }
+  const bossLootBorders=new Map();
+  function clearBossLootBorders(){
+    for(const border of bossLootBorders.values())border.remove();bossLootBorders.clear();
+    for(const node of document.querySelectorAll('.ro-boss-loot,.ro-boss-loot-frame,.ro-boss-loot-anchor'))node.classList.remove('ro-boss-loot','ro-boss-loot-frame','ro-boss-loot-anchor','ro-boss-loot-positioned');
+  }
+  function updateBossLoot(){
+    const gameTab=!!document.querySelector('#opt-tabs [data-opt-tab="game"].active'),body=document.querySelector('#opt-body');
+    let row=document.querySelector('[data-ro-boss-loot-option]');
+    if(!gameTab)row?.remove();
+    else if(body&&!row){
+      row=document.createElement('label');row.className='opt-row opt-check';row.setAttribute('data-ro-boss-loot-option','');
+      const text=document.createElement('span'),name=document.createElement('b'),hint=document.createElement('small');
+      name.textContent='頭目掉落物彩框';hint.textContent='以彩虹邊框標示頭目專屬裝備與卡片（含稀有、亂入頭目）';text.append(name,hint);
+      const input=document.createElement('input');input.type='checkbox';input.checked=bossLootEnabled;
+      input.onchange=()=>{bossLootEnabled=input.checked;try{localStorage.setItem(BOSS_LOOT_KEY,String(bossLootEnabled));}catch{notify('彩框設定無法保存，目前只在本分頁有效');}updateBossLoot();};
+      const toggle=document.createElement('i');toggle.className='opt-switch';row.append(text,input,toggle);body.append(row);
+    }
+    if(!bossLootEnabled){clearBossLootBorders();return;}
+    initializeBossLoot();
+    // Follow the actual artwork, including details, sockets, tooltips, the
+    // encyclopedia and results. Frame only the icon, never an entire text row.
+    const frames=new Set(),anchors=new Set(),active=new Set();
+    for(const image of document.querySelectorAll('img')){
+      let boss=false,known=false;
+      const cell=image.closest('[data-card],.sock-card[data-id],[data-gear],[data-uid]');
+      // Socketed cards can be nested in an equipment row. Its UID describes
+      // the equipment, so only use it for that row's first (equipment) image.
+      if(cell&&cell.querySelector('img')===image){
+        if(cell.hasAttribute('data-card')){known=true;boss=bossLootCards.has(Number(cell.dataset.card));}
+        else if(cell.matches('.sock-card[data-id]')){known=true;boss=bossLootCards.has(Number(cell.dataset.id));}
+        else if(cell.hasAttribute('data-gear')){known=true;boss=bossLootGear.has(Number(cell.dataset.gear));}
+        else{const item=inventoryItems.get(cell.dataset.uid);if(item){known=true;boss=bossLootGear.has(item.itemId);}}
+      }
+      if(!known&&image.matches('.big')){
+        const detail=image.closest('#cp-inv-detail,#ks-detail,#cp-eq-current');
+        const selected=detail?.id==='cp-inv-detail'?document.querySelector('#cp-inventory .sel[data-uid]'):detail?.id==='ks-detail'?document.querySelector('#kstorage .item-cell.sel[data-uid]'):null;
+        const item=detail?.id==='cp-eq-current'?equipmentCurrentItem:inventoryItems.get(selected?.dataset.uid);
+        if(item){known=true;boss=bossLootGear.has(item.itemId);}
+      }
+      if(!known)try{boss=bossLootIcons.has(new URL(image.getAttribute('src'),location.href).href);}catch{}
+      // Expedition monster drop previews describe the source, not owned loot.
+      if(image.closest('.st-drops,.stg-loot'))boss=false;
+      if(image.classList.contains('ro-boss-loot')!==boss)image.classList.toggle('ro-boss-loot',boss);
+      if(!boss)continue;
+      active.add(image);
+      const parent=image.parentElement,dropFrame=bossLootDropFrame(image);
+      const outer=dropFrame||(parent?.matches('.item-cell,.ico,.card-slot')?parent:null);
+      const host=outer||parent;if(!host)continue;
+      anchors.add(host);if(outer)frames.add(host);
+      if(!host.classList.contains('ro-boss-loot-anchor')){
+        const position=document.defaultView?.getComputedStyle?.(host)?.position;
+        if(['absolute','fixed','sticky'].includes(position))host.classList.add('ro-boss-loot-positioned');
+        host.classList.add('ro-boss-loot-anchor');
+      }
+      let border=bossLootBorders.get(image);
+      if(!border){border=document.createElement('span');border.setAttribute('data-ro-boss-loot-border','');border.setAttribute('aria-hidden','true');bossLootBorders.set(image,border);}
+      if(border.parentElement!==host)host.append(border);
+      const style=document.defaultView?.getComputedStyle?.(outer||image);
+      const left=outer?-(parseFloat(style?.borderLeftWidth)||0):(image.offsetLeft||0);
+      const top=outer?-(parseFloat(style?.borderTopWidth)||0):(image.offsetTop||0);
+      // A real child layer preserves native ::before/::after badges (E, worn)
+      // and follows the original rounded border without changing image styles.
+      for(const [key,value] of Object.entries({left:left+'px',top:top+'px',width:((outer||image).offsetWidth||0)+'px',height:((outer||image).offsetHeight||0)+'px',borderRadius:style?.borderRadius||'0px'})){
+        if(border.style[key]!==value)border.style[key]=value;
+      }
+    }
+    for(const [image,border] of bossLootBorders)if(!active.has(image)){border.remove();bossLootBorders.delete(image);}
+    for(const node of document.querySelectorAll('.ro-boss-loot-frame'))if(!frames.has(node))node.classList.remove('ro-boss-loot-frame');
+    for(const node of frames)if(!node.classList.contains('ro-boss-loot-frame'))node.classList.add('ro-boss-loot-frame');
+    for(const node of document.querySelectorAll('.ro-boss-loot-anchor'))if(!anchors.has(node))node.classList.remove('ro-boss-loot-anchor','ro-boss-loot-positioned');
   }
   let tradeItemName=null,tradeCardName=null,tradeSearchState=null;
   let tradeSearchManifest=null;
@@ -2841,13 +3133,13 @@
     const profiles=new Map(),active=[],roots=new Set(['step',...Object.keys(performanceMethods),'renderWorld','world3d.render']);
     const offsets={updateEnemies:16,step:8,updatePickups:24,updateFxList:16,rebuildGrid:4,updateProjectiles:12,renderWorld:20,'world3d.render':28};
     const interactionLabels=new Set(['game.killEnemy','game.deathEffects','game.dropGem','game.dropMeat','game.dropPickup','game.zenyPayout','game.spreadAroundChest','game.sweepPickups']);
-    const limits={interval:32,maxTargets:512,maxCollectionEntries:256,maxTimedCalls:2048,enemyInteractionReservedCalls:512};
+    const limits={interval:32,maxTargets:512,maxCollectionEntries:256,maxTimedCalls:2048,enemyInteractionReservedCalls:512,pushApartSampleInterval:64,maxPushApartTimedCalls:32};
     function begin(name){
       if(!roots.has(name)&&!name.startsWith('weapon:'))return null;
-      if(!profiles.has(name))profiles.set(name,{scope:name,updateCalls:0,sampledCalls:0,totalMs:0,nestedMeasuredMs:0,setupMs:0,restoreMs:0,attemptedMethods:0,installedMethods:0,missingMethods:0,unwrappedMethods:0,collectionEntries:0,collectionEntriesSkipped:0,targetLimitSkips:0,budgetSkippedCalls:0,workloadSamples:[],methods:new Map()});
+      if(!profiles.has(name))profiles.set(name,{scope:name,updateCalls:0,sampledCalls:0,totalMs:0,nestedMeasuredMs:0,setupMs:0,restoreMs:0,attemptedMethods:0,installedMethods:0,missingMethods:0,unwrappedMethods:0,collectionEntries:0,collectionEntriesSkipped:0,targetLimitSkips:0,budgetSkippedCalls:0,separation:name==='updateEnemies'?{calls:0,totalMs:0,selfMs:0,pairCalls:0,timedPairCalls:0,untimedPairCalls:0}:null,workloadSamples:[],methods:new Map()});
       const profile=profiles.get(name),index=profile.updateCalls++;
       if(index%limits.interval!==(offsets[name]??0))return null;
-      const ctx={profile,name,records:[],targets:new WeakMap(),stack:[],timedCalls:0,interactionTimedCalls:0,interactionCalls:{},workload:{enemies:session.game.enemies?.length??null,pickups:session.game.pickups?.length??null,fx:session.game.fx?.length??null}};
+      const ctx={profile,name,records:[],targets:new WeakMap(),stack:[],timedCalls:0,interactionTimedCalls:0,pairCalls:0,pairTimedCalls:0,interactionCalls:{},workload:{enemies:session.game.enemies?.length??null,pickups:session.game.pickups?.length??null,fx:session.game.fx?.length??null}};
       const start=performance.now();
       function hook(object,key,label){
         if(!object||typeof object[key]!=='function'){profile.missingMethods++;return;}
@@ -2861,17 +3153,30 @@
           // Only the nearest coarse scope may attribute this callback. For example,
           // step's spawn/addFx hooks must not charge work inside updateEnemies to step.
           if(performanceSession!==session||session.stack[session.stack.length-1]?.name!==name)return Reflect.apply(original,this,args);
-          const interaction=interactionLabels.has(label);
-          if(interaction)ctx.interactionCalls[label]=(ctx.interactionCalls[label]||0)+1;
-          if(ctx.timedCalls>=limits.maxTimedCalls||(name==='updateEnemies'&&!interaction&&ctx.timedCalls-ctx.interactionTimedCalls>=limits.maxTimedCalls-limits.enemyInteractionReservedCalls)){profile.budgetSkippedCalls++;return Reflect.apply(original,this,args);}
-          if(interaction)ctx.interactionTimedCalls++;
-          ctx.timedCalls++;
+          const pair=name==='updateEnemies'&&label==='game.pushApart';
+          const separate=name==='updateEnemies'&&label==='game.separate';
+          if(pair){
+            profile.separation.pairCalls++;ctx.pairCalls++;
+            // Count every candidate check, but clock only sparse pairs with an
+            // independent cap. Dense crowds cannot consume other method budgets.
+            if((ctx.pairCalls-1)%limits.pushApartSampleInterval!==Math.floor(index/limits.interval)%limits.pushApartSampleInterval||ctx.pairTimedCalls>=limits.maxPushApartTimedCalls){
+              profile.separation.untimedPairCalls++;return Reflect.apply(original,this,args);
+            }
+            ctx.pairTimedCalls++;profile.separation.timedPairCalls++;
+          }else if(!separate){
+            const interaction=interactionLabels.has(label);
+            if(interaction)ctx.interactionCalls[label]=(ctx.interactionCalls[label]||0)+1;
+            if(ctx.timedCalls>=limits.maxTimedCalls||(name==='updateEnemies'&&!interaction&&ctx.timedCalls-ctx.interactionTimedCalls>=limits.maxTimedCalls-limits.enemyInteractionReservedCalls)){profile.budgetSkippedCalls++;return Reflect.apply(original,this,args);}
+            if(interaction)ctx.interactionTimedCalls++;
+            ctx.timedCalls++;
+          }
           const frame={start:performance.now(),children:0,baseDepth:session.stack.length};ctx.stack.push(frame);
           try{return Reflect.apply(original,this,args);}
           finally{
             const elapsed=Math.max(0,performance.now()-frame.start);ctx.stack.pop();
             const parent=ctx.stack[ctx.stack.length-1];if(parent)parent.children+=elapsed;
             const self=Math.max(0,elapsed-frame.children);
+            if(separate){profile.separation.calls++;profile.separation.totalMs+=elapsed;profile.separation.selfMs+=self;}
             stat.calls++;stat.totalMs+=elapsed;stat.selfMs+=self;stat.maxMs=Math.max(stat.maxMs,elapsed);
             if(stat.samples.length<4096)stat.samples.push(elapsed);else stat.samples[(stat.calls-1)%4096]=elapsed;
           }
@@ -2953,7 +3258,7 @@
       if(!ctx)return;active.splice(active.lastIndexOf(ctx),1);
       const p=ctx.profile;p.sampledCalls++;p.totalMs+=elapsed;p.nestedMeasuredMs+=children;
       if(ctx.name==='updateEnemies'||Object.keys(ctx.interactionCalls).length){
-        p.workloadSamples.push({...ctx.workload,elapsedMs:elapsed,interactionCalls:ctx.interactionCalls,pickupsAfter:session.game.pickups?.length??null});
+        p.workloadSamples.push({...ctx.workload,elapsedMs:elapsed,interactionCalls:ctx.interactionCalls,...(ctx.name==='updateEnemies'?{pairCalls:ctx.pairCalls,pairTimedCalls:ctx.pairTimedCalls}:{}),pickupsAfter:session.game.pickups?.length??null});
         if(p.workloadSamples.length>128)p.workloadSamples.shift();
       }
       const start=performance.now();restorePerformanceRecords(ctx.records);p.restoreMs+=Math.max(0,performance.now()-start);
@@ -3091,7 +3396,7 @@
     const enemy=methods.find(row=>row.name==='updateEnemies');
     const enemyGroups=Object.fromEntries(['view','separation','navigation','targeting','bossAI'].map(group=>[group,methods.filter(row=>row.name.startsWith('enemy:'+group+':')).reduce((sum,row)=>sum+row.selfMs,0)]));
     const enemyMeasured=Object.values(enemyGroups).reduce((sum,value)=>sum+value,0);
-    lastPerformanceReport={format:6,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
+    lastPerformanceReport={format:7,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
       pickupOptimization:{start:session.pickupStart,end:pickupEnd,skippedDuringMeasurement:skipped},
       projectileBreakdown:{totalMs:projectile?.totalMs??null,visualCallbacksMs:visualMs,remainingMs:projectile?Math.max(0,projectile.totalMs-visualMs):null,modelUpdateCalls:model?.calls||0,viewUpdateCalls:view?.calls||0,...session.projectileCoverage},
       enemyBreakdown:{sampling:{interval:session.enemySampling.interval,updateCalls:session.enemySampling.updateCalls,sampledCalls:session.enemySampling.sampledCalls},totalMs:enemy?session.enemySampling.totalMs:null,groupsMs:enemyGroups,remainingMs:enemy?session.enemySampling.selfMs:null,nestedOtherMs:enemy?Math.max(0,session.enemySampling.totalMs-session.enemySampling.selfMs-enemyMeasured):null,...session.enemyCoverage},
@@ -3099,7 +3404,7 @@
       detailedSampling:{limits:session.details.limits,scopes:session.details.report()},
       categories,methods,counts:Object.fromEntries(Object.entries(session.counts).map(([key,value])=>[key,{mean:value.total/value.samples,max:value.max}])),missing:session.missing,
       frames:{samples:session.frames.length,fps:frameSum?session.frames.length*1000/frameSum:null,p95IntervalMs:performancePercentile(session.frames,.95)},
-      notes:['updateEnemies 的 detailedSampling 與既有 enemyBreakdown 錯開抽樣；workloadSamples 記錄同次抽樣的物件數與擊殺／掉落方法呼叫數，僅為關聯線索，不是因果或全程擊殺總數。怪物細節保留 512 次計時預算給擊殺／掉落鏈。','detailedSampling 各 scope 只代表自己的抽樣更新，totalMs = detailedMs + nestedMeasuredMs + remainingMs；各 scope 不相加或外推為全程。setupMs/restoreMs 為可觀察到的掛載與還原成本，未涵蓋全部計時負擔。renderWorld 含 world3d.render，不再與其相加。','怪物細節每 32 次更新抽樣一次，totalMs/groupsMs/remainingMs 僅代表抽樣更新，不外推為全程；分類與 updateEnemies 方法仍逐次計時。細節包裝僅在抽樣更新期間安裝，完成即還原，安裝及還原成本留在外層呼叫者。','怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未拆出的技能 hook／助手與行內運算等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
+      notes:['怪物細部抽樣內 separate 使用獨立整體計時；separation.pairCalls 計全部 pushApart 候選檢查呼叫（不是唯一配對或實際碰撞數）。pushApart 每 64 次選一次、每次怪物抽樣最多計時 32 次，使用獨立配額；未計時的配對成本仍含在 separate。','updateEnemies 的 detailedSampling 與既有 enemyBreakdown 錯開抽樣；workloadSamples 記錄同次抽樣的物件數與擊殺／掉落方法呼叫數，僅為關聯線索，不是因果或全程擊殺總數。怪物細節保留 512 次計時預算給擊殺／掉落鏈。','detailedSampling 各 scope 只代表自己的抽樣更新，totalMs = detailedMs + nestedMeasuredMs + remainingMs；各 scope 不相加或外推為全程。setupMs/restoreMs 為可觀察到的掛載與還原成本，未涵蓋全部計時負擔。renderWorld 含 world3d.render，不再與其相加。','怪物細節每 32 次更新抽樣一次，totalMs/groupsMs/remainingMs 僅代表抽樣更新，不外推為全程；分類與 updateEnemies 方法仍逐次計時。細節包裝僅在抽樣更新期間安裝，完成即還原，安裝及還原成本留在外層呼叫者。','怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未拆出的技能 hook／助手與行內運算等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
     return lastPerformanceReport;
   }
   function performanceMeasurementState(){return {phase:performanceSession?.phase||'idle',seconds:performanceSession?.seconds??null,hasReport:!!lastPerformanceReport};}
@@ -3141,7 +3446,7 @@
         for(const row of inventory.byKind)summary.textContent+='\n  '+(row.kind===null?'[缺少或非字串 kind]':row.kind)+': '+row.entries+' 筆，未死亡 '+row.live+' 筆／'+row.uniqueLiveObjects+' 個不同物件，死亡 '+row.dead+' 筆，重複 '+row.duplicateReferences+' 筆，隱藏 '+row.hiddenLive+' 筆，吸取中 '+row.magnetLive+' 筆';
       }
       const enemy=lastPerformanceReport.enemyBreakdown;if(enemy)summary.textContent+='\n怪物更新細分（僅抽樣 '+enemy.sampling.sampledCalls+'/'+enemy.sampling.updateCalls+' 次，ms）：'+Object.entries(enemy.groupsMs).map(([key,value])=>key+' '+value.toFixed(2)).join('／')+'；其餘 '+(enemy.remainingMs?.toFixed(2)??'無樣本')+'；視覺目標 '+enemy.viewTargets+'/'+enemy.observedEnemies+'；無法包裝 '+enemy.unwrappedTargets;
-      for(const scope of lastPerformanceReport.detailedSampling?.scopes||[]){summary.textContent+='\n細部抽樣 '+scope.scope+'：'+scope.sampledCalls+'/'+scope.updateCalls+' 次；掛載／還原 '+scope.setupMs.toFixed(2)+'／'+scope.restoreMs.toFixed(2)+' ms；未拆出 '+scope.remainingMs.toFixed(2)+' ms；超額略過 '+scope.budgetSkippedCalls+' 次';for(const row of [...scope.methods].sort((a,b)=>b.selfMs-a.selfMs).slice(0,5))summary.textContent+='\n  '+row.name+'：排他 '+row.selfMs.toFixed(2)+' ms（'+row.calls+' 次）';}
+      for(const scope of lastPerformanceReport.detailedSampling?.scopes||[]){summary.textContent+='\n細部抽樣 '+scope.scope+'：'+scope.sampledCalls+'/'+scope.updateCalls+' 次；掛載／還原 '+scope.setupMs.toFixed(2)+'／'+scope.restoreMs.toFixed(2)+' ms；未拆出 '+scope.remainingMs.toFixed(2)+' ms；超額略過 '+scope.budgetSkippedCalls+' 次';if(scope.separation)summary.textContent+='；分離整體 '+scope.separation.totalMs.toFixed(2)+' ms／'+scope.separation.calls+' 次，候選配對檢查 '+scope.separation.pairCalls+' 次（計時 '+scope.separation.timedPairCalls+' 次）';for(const row of [...scope.methods].sort((a,b)=>b.selfMs-a.selfMs).slice(0,5))summary.textContent+='\n  '+row.name+'：排他 '+row.selfMs.toFixed(2)+' ms（'+row.calls+' 次）';}
       if(projectile)summary.textContent+='\n投射物視覺回呼：'+projectile.visualCallbacksMs.toFixed(2)+' ms；其餘更新（含未拆出視覺）：'+(projectile.remainingMs?.toFixed(2)??'無樣本')+' ms；無法包裝目標：'+projectile.unwrappedTargets;
     }
     const text=document.createElement('textarea');text.readOnly=true;text.setAttribute('aria-label','效能報告 JSON');text.style.cssText='display:block;width:100%;height:35vh;box-sizing:border-box';text.value=lastPerformanceReport?JSON.stringify(lastPerformanceReport,null,2):'';
@@ -3674,7 +3979,7 @@
   }
   function updateAdvancedChoiceUI(){
     const lobby=document.querySelector('#lobby-ui');let button=document.querySelector('#ro-advanced-choice');
-    if(!lobby||lobby.classList.contains('hidden')||!document.body.classList.contains('in-lobby')){button?.remove();closeAdvancedDialog();return;}
+    if(!experimentalEnabled||!lobby||lobby.classList.contains('hidden')||!document.body.classList.contains('in-lobby')){button?.remove();closeAdvancedDialog();return;}
     if(!button){button=advancedButton('自動選卡',()=>{if(advancedDialog)return;advancedScope=advancedCharacterScope(advancedReadCharacter());advancedDialog=document.createElement('section');advancedDialog.id='ro-advanced-choice-dialog';advancedDialog.setAttribute('role','dialog');advancedDialog.setAttribute('aria-modal','true');advancedDialog.setAttribute('aria-label','自動選卡設定');document.body.append(advancedDialog);renderAdvancedDialog();});button.id='ro-advanced-choice';document.body.append(button);}
     if(!button.dataset.roDraggable){button.dataset.roDraggable='true';button.title='點一下開啟設定；長按後拖曳移動';installFloatingHelperDrag(button);}
     const blocked=nativeGameWindowOpen();
@@ -3839,7 +4144,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.23');
+      console.info('[RO助手] 即時自選已啟用 v2.2.27');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
@@ -3902,6 +4207,7 @@
     if(job&&event.target instanceof Element&&event.target.closest('#pk-cards, #pk-bar')){
       document.querySelectorAll('#pk-cards .pk-card').forEach(card=>manualCards.add(card));cancel();
     }
+    if(!experimentalEnabled){clearLongPress();return;}
     // Only skill/item slots participate. Native picker controls are untouched.
     if(!slotOf(event.target)){cancelLongPress();heldSlot=null;return;}
     if(event.pointerType==='touch')touchInputUsed=true;
@@ -3954,6 +4260,7 @@
     context(event);
   }
   function context(event) {
+    if(!experimentalEnabled)return;
     const el = event.target instanceof Element ? event.target.closest(SLOT) : null;
     if (!el || el.classList.contains('empty')) return;
     event.preventDefault();
@@ -4050,6 +4357,7 @@
       updateStageSpawnSchedule();
       updateCharacterDetails();
       updateOfflineUI();
+      updateExperimentalUI();
       updateWorldBossOption();
       updateMinimapOption();
       updatePickupOptions();
@@ -4067,6 +4375,7 @@
       else el.removeAttribute('data-ro-ap-enabled');
     });
     }
+    if(!touchUiIsQuiet())updateBossLoot();
     const picker = document.querySelector('#picker');
     if(advancedSettings.enabled){cancel();return;}
     if (!picker || picker.classList.contains('hidden')) { cancel(); return; }
@@ -4124,6 +4433,9 @@
       #minimap .ro-title{display:flex;align-items:center;gap:.3em}
       #minimap-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
       #minimap-coords{flex:0 0 auto;white-space:nowrap}
+      .ro-boss-loot-anchor:not(.ro-boss-loot-positioned){position:relative}
+      .ro-boss-loot-frame{border-color:transparent!important}
+      [data-ro-boss-loot-border]{position:absolute;display:block;box-sizing:border-box;border:2px solid transparent;background:conic-gradient(#ff65c8,#9670ff,#45caff,#48ed8b,#fff45c,#ff9445,#ff65c8) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:0}
       #chronicle{box-sizing:border-box}
       #chronicle>.chronicle-window{box-sizing:border-box;width:min(900px,calc((100vw - max(8px,env(safe-area-inset-left)) - max(8px,env(safe-area-inset-right)))/var(--ui,1)));max-height:calc((100vh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));max-height:calc((100dvh - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom)))/var(--ui,1));display:flex;flex-direction:column;min-height:0}
       #chronicle>.chronicle-window>.ro-title,#chronicle>.chronicle-window>.btn-row{flex:none}
@@ -4303,12 +4615,15 @@
         if(r.type==='attributes'&&r.attributeName==='class'&&r.oldValue===r.target.getAttribute('class'))return false;
         const el = r.target instanceof Element ? r.target : r.target.parentElement;
         if(el?.closest('#chr-perks'))return true;
+        // Loot artwork also appears in native tooltips, sockets, the wiki and
+        // results outside the inventory panels. Observe redraws and reused IDs.
+        if(bossLootEnabled&&(el?.matches('img,[data-card],.sock-card[data-id],[data-gear],[data-uid]')||[...(r.addedNodes||[])].some(n=>n instanceof Element&&(n.matches('img')||n.querySelector('img')))))return true;
         if((r.type==='attributes'&&el?.matches('.overlay,dialog'))||[...(r.addedNodes||[]),...(r.removedNodes||[])].some(n=>n instanceof Element&&(n.matches('.overlay,dialog')||n.querySelector('.overlay,dialog'))))return true;
         if(r.type==='attributes'&&!['class','src'].includes(r.attributeName))return false;
-        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters')));
+        return (el===document.body&&r.type==='attributes'&&r.attributeName==='class')||el?.closest('#lobby-ui, #lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-items, #shop-quality, #shop-filters, #opt-body, #opt-tabs, #lobby-online, #npc-text, #npc-options, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || [...r.addedNodes].some(n => n instanceof Element && (n.matches('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-items, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters') || n.querySelector('#lap-tabs, #stages, #stg-detail, #stg-list, #picker, #skillbar, #runitems, #smith, #starforge, #shop-items, #shop-quality, #opt-body, #opt-tabs, #lobby-online, #pause, #charpanel, #kstorage, #trade, #tr-inv, #tr-filters')));
       });
       if (relevant) schedule();
-    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden'] });
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ['class', 'src', 'hidden', 'open', 'style', 'aria-hidden', 'data-card', 'data-id', 'data-gear', 'data-uid'] });
     scan();
     installGameHooks();
     // Recover overlays independently of native ticks and DOM observer timing.
