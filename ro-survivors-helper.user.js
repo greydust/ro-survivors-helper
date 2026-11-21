@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.27
+// @version      2.2.30
 // @description  裝備整理、換裝預覽、連續精煉／升星與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.27'};
+  window[runtimeKey]={version:'2.2.30'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -2132,6 +2132,7 @@
   let inventoryUpdating=false;
   let inventoryItems=new Map();
   let equipmentCurrentItem=null;
+  let equipmentCurrentScoreNode=null;
   const inventoryCategories=[['all','全部'],['onehand','單手武'],['twohand','雙手武'],['head_top','頭部上'],['head_mid','頭部中'],['head_low','頭部下'],['armor','護甲'],['shield','盾牌'],['garment','披肩'],['shoes','鞋子'],['acc','飾品']];
   function gearArray(value){return Array.isArray(value)&&value.length>0&&value.every(item=>item&&typeof item.uid==='string'&&Number.isFinite(item.itemId)&&Array.isArray(item.cards));}
   function inventoryMatches(item,category,type=''){
@@ -2171,7 +2172,7 @@
     const previousScoreNode=document.querySelector('#cp-eq-current .gs b');
     const foundItems=new Map();
     let inventory=null,scoreCandidate=null;
-    const isInventory=value=>gearArray(value)&&value.some(item=>item.uid===uid);
+    const isInventory=value=>gearArray(value)&&(uid===undefined||value.some(item=>item.uid===uid));
     try{
       Array.prototype.find=function(...args){
         const result=Reflect.apply(find,this,args);
@@ -2192,12 +2193,30 @@
         const result=Reflect.apply(map,this,[callback,thisArg]);
         // Native candidate scorer returns {g: gear, s: score}. Reuse that
         // closure for pristine copies, preserving job, Tier and affix weights.
-        if(gearArray(this)&&result.length===this.length&&result.every((row,index)=>row?.g===this[index]&&Number.isFinite(row.s))){
-          scoreCandidate=item=>Reflect.apply(callback,thisArg,[item,0,this]);
+        // Empty native candidate lists still carry the same scorer closure.
+        // Recognize its verified object shape, then validate on a worn item
+        // read by the native renderer before trusting it.
+        let emptyScorer=false;
+        if(this.length===0&&foundItems.size&&/\bg\s*:\s*[\w$]+\s*,\s*s\s*:/.test(String(callback))){
+          try{const item=foundItems.values().next().value,row=Reflect.apply(callback,thisArg,[item,0,[item]]);emptyScorer=row?.g===item&&Number.isFinite(row.s);}catch{}
+        }
+        if(emptyScorer||gearArray(this)&&result.length===this.length&&result.every((row,index)=>row?.g===this[index]&&Number.isFinite(row.s))){
+          const source=this;
+          scoreCandidate=item=>{
+            // A map callback can read its index/source as well as its first
+            // argument. Supplying index 0 and the untouched source scores the
+            // first real item repeatedly instead of each pristine copy.
+            const items=source.slice();
+            let index=source.findIndex(entry=>entry.uid===item.uid);
+            if(index<0)index=items.length;
+            items[index]=item;
+            return Reflect.apply(callback,thisArg===source?items:thisArg,[item,index,items]);
+          };
           for(const item of this){
+            equipmentBaseScores.delete(item.uid);
             try{
               const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
-              const scored=Reflect.apply(callback,thisArg,[base,0,this]);
+              const scored=scoreCandidate(base);
               if(scored?.g===base&&Number.isFinite(scored.s))equipmentBaseScores.set(item.uid,String(scored.s));
             }catch{/* Unknown native scoring must leave the original display intact. */}
           }
@@ -2218,6 +2237,7 @@
         try{
           const original=scoreCandidate(item);
           if(original?.g!==item||original.s!==Number(score.replaceAll(',','')))continue;
+          equipmentBaseScores.delete(item.uid);
           const base={...item,refine:0,star:0,cards:item.cards.map(()=>null)};
           const scored=scoreCandidate(base);
           if(scored?.g===base&&Number.isFinite(scored.s)){
@@ -2227,6 +2247,7 @@
       }
       if(scoreCandidate||scoreNode!==previousScoreNode)equipmentCurrentItem=null;
       if(matches.length&&matches.every(item=>equipmentBaseScores.get(item.uid)===equipmentBaseScores.get(matches[0].uid)))equipmentCurrentItem=matches[0];
+      equipmentCurrentScoreNode=equipmentCurrentItem?scoreNode:null;
       if(!equipmentCurrentItem)currentRoot?.querySelector('[data-ro-equipment-base-gs]')?.remove();
       paintEquipmentBaseScores(uid);
       return {result,current:equipmentCurrentItem};
@@ -2264,23 +2285,52 @@
   const probedEquipRows=new WeakSet();
   function appendEquipmentBaseScore(root,uid){
     const gs=root?.querySelector('.gs'),score=equipmentBaseScores.get(uid);
-    if(!gs||score===undefined)return;
+    if(!gs)return;
     let note=gs.querySelector('[data-ro-equipment-base-gs]');
+    if(score===undefined){note?.remove();return;}
     if(!note){note=document.createElement('span');note.dataset.roEquipmentBaseGs='';gs.querySelector('b')?.after(note);}
     const text=' ('+score+')';if(note.textContent!==text)note.textContent=text;
     if(note.title!=='基底 GS：不含卡片、精煉加值與星數；保留品質、Tier 與詞綴')note.title='基底 GS：不含卡片、精煉加值與星數；保留品質、Tier 與詞綴';
   }
   function paintEquipmentBaseScores(uid){
-    appendEquipmentBaseScore(document.querySelector('#cp-eq-current'),equipmentCurrentItem?.uid);
+    paintEquipmentCurrentBaseScore();
     appendEquipmentBaseScore(document.querySelector('#cp-eq-cmp .cmp-head'),uid);
+  }
+  function paintEquipmentCurrentBaseScore(){
+    const current=document.querySelector('#cp-eq-current');
+    // A native slot redraw invalidates the identity even if the new item's
+    // total GS happens to equal the previous item's. Never repaint by cache.
+    if(current?.querySelector('.gs b')!==equipmentCurrentScoreNode)equipmentCurrentItem=null;
+    appendEquipmentBaseScore(current,equipmentCurrentItem?.uid);
   }
   function updateCandidateScores(list,rows){
     for(const row of rows)appendEquipmentBaseScore(row,row.dataset.uid);
-    appendEquipmentBaseScore(document.querySelector('#cp-eq-current'),equipmentCurrentItem?.uid);
+    paintEquipmentCurrentBaseScore();
   }
+  const probedEquipmentCurrentNodes=new WeakSet();
   function updateEquipCandidates(){
     const panel=document.querySelector('#charpanel'),list=document.querySelector('#cp-eq-list');
     if(!panel||panel.classList.contains('hidden')||document.querySelector('#cp-tab-equip')?.classList.contains('hidden')||!list||!smithDefs)return;
+    const scoreNode=document.querySelector('#cp-eq-current .gs b');
+    // Also acquire the scorer on first open when this slot has no candidates.
+    if(scoreNode&&scoreNode!==equipmentCurrentScoreNode&&!probedEquipmentCurrentNodes.has(scoreNode)){
+      probedEquipmentCurrentNodes.add(scoreNode);
+      const slot=panel.querySelector('.equip-slot.sel[data-slot]'),click=nativeInventoryHandler(slot,'onclick');
+      if(typeof click==='function'){
+        withEquipmentScoreCapture(()=>Reflect.apply(click,slot,[]));
+        const rendered=document.querySelector('#cp-eq-current .gs b');
+        if(rendered)probedEquipmentCurrentNodes.add(rendered);
+      }
+    }
+    for(const slot of panel.querySelectorAll('.equip-slot[data-slot]')){
+      const click=slot.onclick,stored=inventoryNativeHandlers.get(slot);
+      if(click===stored?.equipmentSlotWrapper||typeof click!=='function')continue;
+      const wrapper=function(...args){
+        const result=withEquipmentScoreCapture(()=>Reflect.apply(click,this,args)).result;
+        updateEquipCandidates();return result;
+      };
+      inventoryNativeHandlers.set(slot,{onclick:click,equipmentSlotWrapper:wrapper});slot.onclick=wrapper;
+    }
     const rows=[...list.querySelectorAll('.cand[data-uid]')];
     if(rows.length&&!probedEquipRows.has(rows[0])){
       probedEquipRows.add(rows[0]);
@@ -2288,7 +2338,7 @@
       if(typeof enter==='function')withEquipmentScoreCapture(()=>Reflect.apply(enter,rows[0],[{pointerType:'mouse'}]),rows[0].dataset.uid);
       const selectedItem=inventoryItems.get(rows[0].dataset.uid),click=nativeInventoryHandler(rows[0],'onclick');
       if(rows[0].classList.contains('sel')&&selectedItem&&!selectedItem.isNew&&typeof click==='function')withEquipmentScoreCapture(()=>Reflect.apply(click,rows[0],[]),selectedItem.uid);
-      if(typeof leave==='function')Reflect.apply(leave,list,[]);
+      if(typeof leave==='function')withEquipmentScoreCapture(()=>Reflect.apply(leave,list,[]),rows[0].dataset.uid);
     }
     for(const row of rows){
       if(!inventoryNativeHandlers.has(row)){
@@ -2311,7 +2361,6 @@
       const leave=list.onpointerleave;inventoryNativeHandlers.set(list,{onpointerleave:leave});
       list.onpointerleave=function(event){
         const uid=list.querySelector('.cand.sel')?.dataset.uid;
-        if(!uid)return Reflect.apply(leave,this,[event]);
         const result=withEquipmentScoreCapture(()=>Reflect.apply(leave,this,[event]),uid);return result.result;
       };
       inventoryNativeHandlers.get(list).onpointerleaveWrapper=list.onpointerleave;
@@ -3462,6 +3511,7 @@
   let advancedScope=null;
   let advancedProfiles=loadAdvancedProfiles(),advancedSettings=advancedProfiles.profiles.find(profile=>profile.id===advancedProfiles.active).settings,advancedDialog=null,advancedChoice=null,advancedTimer=null,advancedClicking=false;
   const advancedMethodHooks=new WeakMap();
+  let advancedDrainQueued=false,advancedDraining=false;
   function loadAdvancedSettings(){
     try{
       const saved=JSON.parse(localStorage.getItem(advancedChoiceKey)||'null');
@@ -3742,7 +3792,31 @@
     queueAdvancedChoice();
   }
   function queueAdvancedChoice(delay){
+    if(advancedChoice?.background&&(delay===undefined||delay===0)){
+      clearTimeout(advancedTimer);advancedTimer=null;
+      // Native choose emits the next offer before returning. Register that
+      // offer now; the outer loop consumes it after choose has unwound.
+      if(advancedDraining||advancedDrainQueued)return;
+      advancedDrainQueued=true;
+      queueMicrotask(()=>{advancedDrainQueued=false;drainAdvancedChoices();});
+      return;
+    }
     clearTimeout(advancedTimer);advancedTimer=setTimeout(runAdvancedChoice,delay??(advancedChoice?.background?0:100));
+  }
+  function drainAdvancedChoices(){
+    if(advancedDraining)return;
+    advancedDraining=true;
+    const started=performance.now();
+    try{
+      while(advancedChoice?.background&&!advancedChoice.manual){
+        if(performance.now()-started>10000){cancelAdvancedChoice();break;}
+        const state=advancedChoice,actions=state.actions;
+        runAdvancedChoice();
+        // A guard (disabled settings, another game, dialog, etc.) can leave
+        // the state untouched. Do not spin while waiting for native input.
+        if(advancedChoice===state&&state.actions===actions)break;
+      }
+    }finally{advancedDraining=false;}
   }
   function installAdvancedChoiceMethods(game){
     if(advancedMethodHooks.has(game))return;
@@ -4144,7 +4218,7 @@
       });
       hooks.tick.push(helperTick);
       runHelperHook(hooks,'背包與換裝介面',updateInventoryViews);
-      console.info('[RO助手] 即時自選已啟用 v2.2.27');
+      console.info('[RO助手] 即時自選已啟用 v2.2.30');
     } catch (error) {
       console.warn('[RO助手] 勝利磁鐵未啟用', error);
       notify('勝利磁鐵載入失敗；自動選擇仍可使用');
