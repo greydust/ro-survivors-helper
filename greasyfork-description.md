@@ -73,11 +73,11 @@ RO 倖存者助手提供裝備整理、換裝預覽、連續精煉／升星與�
 
 ### 獨立查詢網頁
 
-- [裝備總覽](https://github.com/greydust/ro-survivors-helper/tree/main/doc/equipment)：依職業、Tier、部位與武器類型篩選，查看掉落來源、各階屬性及未精煉／升星／插卡的理論最高 GS 與詞綴範例。
-- [卡片總覽](https://github.com/greydust/ro-survivors-helper/tree/main/doc/cards)：依部位分類，查看各週目版本能力，並選擇職業、依 GS 排序。
-- [職業天賦與技能](https://github.com/greydust/ro-survivors-helper/tree/main/doc/jobs)：查看轉職繼承的天賦樹、各級效果、技能強化與上限。
+- [裝備總覽](https://htmlpreview.github.io/?https://github.com/greydust/ro-survivors-helper/blob/main/doc/equipment/index.html)：依職業、Tier、部位與武器類型篩選，查看掉落來源、各階屬性及未精煉／升星／插卡的理論最高 GS 與詞綴範例。
+- [卡片總覽](https://htmlpreview.github.io/?https://github.com/greydust/ro-survivors-helper/blob/main/doc/cards/index.html)：依部位分類，查看各週目版本能力，並選擇職業、依 GS 排序。
+- [職業天賦與技能](https://htmlpreview.github.io/?https://github.com/greydust/ro-survivors-helper/blob/main/doc/jobs/index.html)：查看轉職繼承的天賦樹、各級效果、技能強化與上限。
 
-下載對應目錄後直接開啟 `index.html`；圖示需連線載入。
+點擊連結即可開啟查詢網頁；圖示需連線載入。
 
 ### 手機與 Safari
 
