@@ -2,7 +2,7 @@
 // @name         RO倖存者助手
 // @namespace    greydust.ro.auto-pick
 // @license      MIT
-// @version      2.2.23
+// @version      2.2.24
 // @description  主城設定進階自動選卡、升級優先序、放逐與刷新；裝備整理與客戶端體驗優化。
 // @match        https://ro.hans-webgametw.com/*
 // @run-at       document-start
@@ -18,7 +18,7 @@
   }
   const runtimeKey=Symbol.for('greydust.ro.helper.runtime');
   if(window[runtimeKey]){console.info('[RO助手] 本頁已啟用助手；更新版本請重新整理後再執行');return;}
-  window[runtimeKey]={version:'2.2.23'};
+  window[runtimeKey]={version:'2.2.24'};
   const OFFLINE_KEY='greydust.ro.keep-offline.v1';
   let keepOffline=false;
   try{keepOffline=localStorage.getItem(OFFLINE_KEY)==='true';}catch{}
@@ -641,9 +641,9 @@
   const UNLIMITED_MAGNETS_KEY='greydust.ro.unlimited-magnets.v1';
   let unlimitedMagnets=false,magnetLimitReady=false;
   try{unlimitedMagnets=localStorage.getItem(UNLIMITED_MAGNETS_KEY)==='true';}catch{}
-  const MERGE_MONEY_KEY='greydust.ro.merge-money.v1',MONEY_PILE_LIMIT=350;
-  let mergeMoney=false;
-  try{mergeMoney=localStorage.getItem(MERGE_MONEY_KEY)==='true';}catch{}
+  const MERGE_MONEY_KEY='greydust.ro.merge-money.v1',QUICK_MERGE_KEY='greydust.ro.quick-merge-ground-items.v1',MONEY_PILE_LIMIT=350;
+  let quickMergeGroundItems=false;
+  try{quickMergeGroundItems=(localStorage.getItem(QUICK_MERGE_KEY)??localStorage.getItem(MERGE_MONEY_KEY))==='true';}catch{}
   const moneyMergeGames=new WeakSet(),moneyMergeMetrics={mergedObjects:0};
   const pickupHelpers=new WeakMap(),pickupVisualPrototypes=new WeakSet(),beamVisuals=new WeakSet(),pickupWorlds=new WeakSet(),pickupPositionWorlds=new WeakSet();
   const pickupMetrics={visualCallsSkipped:0,beamCallsSkipped:0,beamPositionsSkipped:0,stationaryBeamPositionsSkipped:0,pickupVisualReady:false,beamVisualReady:false};
@@ -722,27 +722,78 @@
     if(pickupHelpers.has(game))return;
     for(const item of game.pickups||[]){patchPickupVisual(Object.getPrototypeOf(item));patchBeamVisual(item.beam);}
     patchPickupWorld(game.world3d);pickupHelpers.set(game,true);
+    installQuickGroundMerge(game);
     installMagnetLimitOption(game);
     mergeMoneyPickups(game);
   }
   function mergeMoneyPickups(game){
-    if(!mergeMoney||!game||!moneyMergeGames.has(game)||game.coop||game.deterministic)return;
+    if(!quickMergeGroundItems||!game||!moneyMergeGames.has(game)||game.coop||game.deterministic)return;
     const keep=[],seen=new Set();let merged=0;
     for(const item of game.pickups||[]){
       if(!item||seen.has(item)||item.dead||item.kind!=='zeny'||item.magnet||item.vacuum||(item.nid!=null&&item.nid!==0)||!Number.isSafeInteger(item.value)||item.value<1||!Number.isFinite(item.x)||!Number.isFinite(item.y))continue;
       seen.add(item);
       if(keep.length<MONEY_PILE_LIMIT){keep.push(item);continue;}
-      let target=null,distance=Infinity;
-      for(const pile of keep){
-        if(!Number.isSafeInteger(pile.value+item.value))continue;
-        const d=(pile.x-item.x)**2+(pile.y-item.y)**2;
-        if(d<distance){target=pile;distance=d;}
-      }
+      const target=keep.find(pile=>Number.isSafeInteger(pile.value+item.value));
       if(!target)continue;
       target.value+=item.value;item.dead=true;merged++;
     }
     if(merged){moneyMergeMetrics.mergedObjects+=merged;game.sweepPickups();}
   }
+  const quickMergeGames=new WeakMap(),quickMergeMetrics={gemMerges:0,meatMerges:0};
+  function nativePickupHash(fn){let hash=2166136261;for(const char of compactFunction(fn))hash=Math.imul(hash^char.charCodeAt(0),16777619)>>>0;return hash;}
+  function firstMergeTarget(game,kind,limit){
+    let count=0,first=null;
+    for(const item of game.pickups||[]){
+      if(!item||item.dead||!(kind==='gem'?['gem_blue','gem_yellow','gem_red'].includes(item.kind):item.kind===kind))continue;
+      count++;if(!first&&(item.nid==null||item.nid===0))first=item;
+      if(count>=limit)return first;
+    }
+    return null;
+  }
+  function installQuickGroundMerge(game){
+    if(quickMergeGames.has(game))return;
+    const ready={gems:false,meat:false};quickMergeGames.set(game,ready);
+    const enabled=receiver=>quickMergeGroundItems&&!receiver.coop&&!receiver.deterministic;
+    const gem=game.dropGem;
+    if(typeof gem==='function'&&nativePickupHash(gem)===3418360540){
+      game.dropGem=function(x,y,value,...rest){
+        if(enabled(this)&&!rest.length&&Number.isSafeInteger(value)&&value>0){
+          const target=firstMergeTarget(this,'gem',351);
+          if(target&&Number.isSafeInteger(target.value)&&Number.isSafeInteger(target.value+value)){
+            target.value+=value;quickMergeMetrics.gemMerges++;return;
+          }
+        }
+        return Reflect.apply(gem,this,[x,y,value,...rest]);
+      };ready.gems=true;
+    }
+    const meat=game.dropMeat;
+    if(typeof meat==='function'&&nativePickupHash(meat)===1695133623){
+      game.dropMeat=function(...args){
+        if(enabled(this)&&args.length<=3&&Number.isFinite(args[0])&&Number.isFinite(args[1])&&(args[2]===undefined||Number.isFinite(args[2])&&args[2]>=0)){
+          const target=firstMergeTarget(this,'meat',60);
+          if(target&&Number.isSafeInteger(target.value)&&typeof this.dropPickup==='function'){
+            const game=this;
+            // The verified native method calculates healing and lastMeatAt itself.
+            // deterministic is only read by RO_MEAT here; intercept the resulting
+            // meat drop instead of copying private healing constants.
+            const receiver=new Proxy(game,{get(object,key){
+              if(key==='deterministic')return true;
+              if(key==='dropPickup')return function(kind,x,y,value,...rest){
+                if(kind==='meat'&&Number.isSafeInteger(value)&&value>=0&&Number.isSafeInteger(target.value+value)){
+                  target.value+=value;quickMergeMetrics.meatMerges++;return;
+                }
+                return Reflect.apply(game.dropPickup,game,[kind,x,y,value,...rest]);
+              };
+              return Reflect.get(object,key,object);
+            }});
+            return Reflect.apply(meat,receiver,args);
+          }
+        }
+        return Reflect.apply(meat,this,args);
+      };ready.meat=true;
+    }
+  }
+  function quickMergeDiagnostics(game){const ready=quickMergeGames.get(game)||{gems:false,meat:false};return {enabled:quickMergeGroundItems,active:quickMergeGroundItems&&!!game&&!game.coop&&!game.deterministic&&(ready.gems||ready.meat||moneyMergeGames.has(game)),ready:{...ready,money:moneyMergeGames.has(game)},gemThreshold:351,moneyLimit:350,meatThreshold:60,...quickMergeMetrics};}
   function installMagnetLimitOption(game){
     const original=game.dropPickup;
     if(typeof original!=='function')return;
@@ -768,7 +819,7 @@
     let previous=anchor;
     for(const [key,title,hint,value,set] of [
       ['unlimited-magnets','解除磁鐵數量上限','解除地上同時最多三個磁鐵的限制；掉落機率不變。',unlimitedMagnets,checked=>{unlimitedMagnets=checked;return UNLIMITED_MAGNETS_KEY;}],
-      ['merge-money','合併金錢','單人戰鬥將超過 350 個、未吸取的金錢堆合併，保留總金額；組隊與確定性模式不套用。',mergeMoney,checked=>{mergeMoney=checked;if(checked)mergeMoneyPickups(activeGame);return MERGE_MONEY_KEY;}],
+      ['quick-merge-pickups','地面物品快速合併','寶石超過 350 顆、金錢超過 350 堆、肉達 60 個後，改併入同類第一個可合併物品；保留總量，但會改變掉落位置與吸取時機。限單人模式。',quickMergeGroundItems,checked=>{quickMergeGroundItems=checked;if(checked)mergeMoneyPickups(activeGame);return QUICK_MERGE_KEY;}],
       ['hide-weather','隱藏戰鬥天氣','停用戶外雨滴、閃電、天氣霧色及其動畫與環境音，室內光影維持原樣。',hideBattleWeather,checked=>{hideBattleWeather=checked;installWeatherEffects(weatherGame);return HIDE_WEATHER_KEY;}],
       ['show-fps','顯示 FPS','在戰鬥畫面左下角顯示畫面更新率。',showFps,checked=>{showFps=checked;updateFpsDisplay(fpsGame);return FPS_KEY;}]
     ]){
@@ -784,8 +835,8 @@
     }
     if(typeof updatePerformanceOption==='function')updatePerformanceOption();
   }
-  function moneyMergeDiagnostics(game){return {enabled:mergeMoney,ready:moneyMergeGames.has(game),active:mergeMoney&&moneyMergeGames.has(game)&&!game.coop&&!game.deterministic,limit:MONEY_PILE_LIMIT,...moneyMergeMetrics};}
-  function pickupDiagnostics(){return {unlimitedMagnets,magnetLimitReady,optimizeHiddenPickups,moneyMerging:moneyMergeDiagnostics(activeGame),count:activeGame?.pickups?.length??0,...pickupMetrics};}
+  function moneyMergeDiagnostics(game){return {enabled:quickMergeGroundItems,ready:moneyMergeGames.has(game),active:quickMergeGroundItems&&moneyMergeGames.has(game)&&!game.coop&&!game.deterministic,limit:MONEY_PILE_LIMIT,...moneyMergeMetrics};}
+  function pickupDiagnostics(){return {unlimitedMagnets,magnetLimitReady,optimizeHiddenPickups,moneyMerging:moneyMergeDiagnostics(activeGame),quickMerging:quickMergeDiagnostics(activeGame),count:activeGame?.pickups?.length??0,...pickupMetrics};}
   function pickupPerformanceSnapshot(game){
     const current={live:0,hidden:0,visualPatched:0,beams:0,hiddenBeams:0,beamPatched:0};
     const inventory={entries:0,invalidEntries:0,live:0,dead:0,uniqueObjects:0,uniqueLiveObjects:0,duplicateReferences:0,repeatedObjects:0},kinds=new Map(),seen=new Map();
@@ -807,7 +858,7 @@
       if(pickupVisualPrototypes.has(Object.getPrototypeOf(item)))current.visualPatched++;
       if(item.beam){current.beams++;if(item.beam.group?.visible===false)current.hiddenBeams++;if(beamVisuals.has(item.beam))current.beamPatched++;}
     }
-    return {enabled:optimizeHiddenPickups,helpersInstalled:pickupHelpers.has(game),beamPositionPatched:pickupPositionWorlds.has(game?.world3d),moneyMerging:moneyMergeDiagnostics(game),current,inventory:{...inventory,byKind:[...kinds.values()].sort((a,b)=>b.entries-a.entries)},counters:{...pickupMetrics}};
+    return {enabled:optimizeHiddenPickups,helpersInstalled:pickupHelpers.has(game),beamPositionPatched:pickupPositionWorlds.has(game?.world3d),moneyMerging:moneyMergeDiagnostics(game),quickMerging:quickMergeDiagnostics(game),current,inventory:{...inventory,byKind:[...kinds.values()].sort((a,b)=>b.entries-a.entries)},counters:{...pickupMetrics}};
   }
 
   function updateFpsDisplay(game){
@@ -2788,14 +2839,15 @@
   // Detail timing uses a separate stack: it never changes the coarse category accounting.
   function createPerformanceDetailSampler(session){
     const profiles=new Map(),active=[],roots=new Set(['step',...Object.keys(performanceMethods),'renderWorld','world3d.render']);
-    const offsets={step:8,updatePickups:24,updateFxList:16,rebuildGrid:4,updateProjectiles:12,renderWorld:20,'world3d.render':28};
-    const limits={interval:32,maxTargets:512,maxCollectionEntries:256,maxTimedCalls:2048};
+    const offsets={updateEnemies:16,step:8,updatePickups:24,updateFxList:16,rebuildGrid:4,updateProjectiles:12,renderWorld:20,'world3d.render':28};
+    const interactionLabels=new Set(['game.killEnemy','game.deathEffects','game.dropGem','game.dropMeat','game.dropPickup','game.zenyPayout','game.spreadAroundChest','game.sweepPickups']);
+    const limits={interval:32,maxTargets:512,maxCollectionEntries:256,maxTimedCalls:2048,enemyInteractionReservedCalls:512};
     function begin(name){
-      if(name==='updateEnemies'||(!roots.has(name)&&!name.startsWith('weapon:')))return null; // Existing enemy sampler owns this scope.
-      if(!profiles.has(name))profiles.set(name,{scope:name,updateCalls:0,sampledCalls:0,totalMs:0,nestedMeasuredMs:0,setupMs:0,restoreMs:0,attemptedMethods:0,installedMethods:0,missingMethods:0,unwrappedMethods:0,collectionEntries:0,collectionEntriesSkipped:0,targetLimitSkips:0,budgetSkippedCalls:0,methods:new Map()});
+      if(!roots.has(name)&&!name.startsWith('weapon:'))return null;
+      if(!profiles.has(name))profiles.set(name,{scope:name,updateCalls:0,sampledCalls:0,totalMs:0,nestedMeasuredMs:0,setupMs:0,restoreMs:0,attemptedMethods:0,installedMethods:0,missingMethods:0,unwrappedMethods:0,collectionEntries:0,collectionEntriesSkipped:0,targetLimitSkips:0,budgetSkippedCalls:0,workloadSamples:[],methods:new Map()});
       const profile=profiles.get(name),index=profile.updateCalls++;
       if(index%limits.interval!==(offsets[name]??0))return null;
-      const ctx={profile,name,records:[],targets:new WeakMap(),stack:[],timedCalls:0};
+      const ctx={profile,name,records:[],targets:new WeakMap(),stack:[],timedCalls:0,interactionTimedCalls:0,interactionCalls:{},workload:{enemies:session.game.enemies?.length??null,pickups:session.game.pickups?.length??null,fx:session.game.fx?.length??null}};
       const start=performance.now();
       function hook(object,key,label){
         if(!object||typeof object[key]!=='function'){profile.missingMethods++;return;}
@@ -2809,7 +2861,10 @@
           // Only the nearest coarse scope may attribute this callback. For example,
           // step's spawn/addFx hooks must not charge work inside updateEnemies to step.
           if(performanceSession!==session||session.stack[session.stack.length-1]?.name!==name)return Reflect.apply(original,this,args);
-          if(ctx.timedCalls>=limits.maxTimedCalls){profile.budgetSkippedCalls++;return Reflect.apply(original,this,args);}
+          const interaction=interactionLabels.has(label);
+          if(interaction)ctx.interactionCalls[label]=(ctx.interactionCalls[label]||0)+1;
+          if(ctx.timedCalls>=limits.maxTimedCalls||(name==='updateEnemies'&&!interaction&&ctx.timedCalls-ctx.interactionTimedCalls>=limits.maxTimedCalls-limits.enemyInteractionReservedCalls)){profile.budgetSkippedCalls++;return Reflect.apply(original,this,args);}
+          if(interaction)ctx.interactionTimedCalls++;
           ctx.timedCalls++;
           const frame={start:performance.now(),children:0,baseDepth:session.stack.length};ctx.stack.push(frame);
           try{return Reflect.apply(original,this,args);}
@@ -2837,13 +2892,25 @@
         for(const item of items){if(count++>=limits.maxCollectionEntries){profile.collectionEntriesSkipped+=Math.max(1,(items.length??items.size??count)-limits.maxCollectionEntries);break;}profile.collectionEntries++;if(item)visit(item);}
       }
       const game=session.game,world=game.world3d;
-      const combat=['enemiesInRadius','damageEnemy','killEnemy','addFx','addNumber','healPlayer','hurtPlayer'];
+      const drops=['killEnemy','deathEffects','dropGem','dropMeat','dropPickup','zenyPayout','spreadAroundChest','sweepPickups'];
+      const combat=['enemiesInRadius','damageEnemy',...drops,'addFx','addNumber','healPlayer','hurtPlayer'];
       if(name==='step'){
-        hooks(game,['updateCamera','warpSwirls','updateMapFires','spawn','spawnEnemy','horde','flushHeal','trickleHeal','buffValue','stateHash','meteorRain','leaveUpperFloor','addFx','addNumber'],'game');
+        hooks(game,['updateCamera','warpSwirls','updateMapFires','spawn','spawnEnemy','horde','flushHeal','trickleHeal','buffValue','stateHash','meteorRain','leaveUpperFloor','addFx','addNumber',...drops],'game');
         for(const key of ['player','pet','hall','atmosphere','gloom','ambient','mapEffects','endless','story'])hooks(game[key],['update'],key);
         hooks(game.walk,['updateFlow','resolve','warpAt'],'walk');
         hooks(world,['setView','project'],'world');
         collection(game.scheduled,item=>hook(item,'fn','scheduled.callback'));
+      }else if(name==='updateEnemies'){
+        hooks(game,[...combat,'holdDots','activePoisons','petrifiedMult','logDamage','buildSeparation','separate','pushApart','chaseTarget','followHost','spawnPoint','sproutPoint','hatch','blowUp','emerge','recycleDistance'],'game');
+        hooks(game.walk,['lineClear','flowDir','resolve','warpAt','nearestWalkable'],'walk');
+        ctx.workload.enemySubset={entries:0,dead:0,poison:0,bleed:0,burn:0};
+        collection(game.enemies,enemy=>{
+          const subset=ctx.workload.enemySubset;subset.entries++;if(enemy.dead)subset.dead++;
+          for(const [key,until] of [['poison','poisonUntil'],['bleed','bleedUntil'],['burn','burnUntil']])if(enemy[until]>game.time)subset[key]++;
+          hooks(enemy,['stopped','setState','face'], 'enemy');
+          hooks(enemy.sprite,['update'],'enemy.sprite');
+          hooks(game.bossBrains?.get(enemy),['update'],'bossAI');
+        });
       }else if(name==='updateFxList'){
         for(const key of ['fx','numbers'])collection(game[key],item=>{
           const kind=key==='numbers'?'numbers':item.roHid||item.view?.visible===false?'fx.hidden':'fx.visible';
@@ -2885,6 +2952,10 @@
     function end(ctx,elapsed,children){
       if(!ctx)return;active.splice(active.lastIndexOf(ctx),1);
       const p=ctx.profile;p.sampledCalls++;p.totalMs+=elapsed;p.nestedMeasuredMs+=children;
+      if(ctx.name==='updateEnemies'||Object.keys(ctx.interactionCalls).length){
+        p.workloadSamples.push({...ctx.workload,elapsedMs:elapsed,interactionCalls:ctx.interactionCalls,pickupsAfter:session.game.pickups?.length??null});
+        if(p.workloadSamples.length>128)p.workloadSamples.shift();
+      }
       const start=performance.now();restorePerformanceRecords(ctx.records);p.restoreMs+=Math.max(0,performance.now()-start);
     }
     function baseFinished(elapsed){
@@ -3020,7 +3091,7 @@
     const enemy=methods.find(row=>row.name==='updateEnemies');
     const enemyGroups=Object.fromEntries(['view','separation','navigation','targeting','bossAI'].map(group=>[group,methods.filter(row=>row.name.startsWith('enemy:'+group+':')).reduce((sum,row)=>sum+row.selfMs,0)]));
     const enemyMeasured=Object.values(enemyGroups).reduce((sum,value)=>sum+value,0);
-    lastPerformanceReport={format:5,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
+    lastPerformanceReport={format:6,reason,seconds:session.startedAt===null?0:(session.endedAt-session.startedAt)/1000,gameSteps:steps,coop:!!session.game.coop,replica:!!session.game.coop?.replica,
       pickupOptimization:{start:session.pickupStart,end:pickupEnd,skippedDuringMeasurement:skipped},
       projectileBreakdown:{totalMs:projectile?.totalMs??null,visualCallbacksMs:visualMs,remainingMs:projectile?Math.max(0,projectile.totalMs-visualMs):null,modelUpdateCalls:model?.calls||0,viewUpdateCalls:view?.calls||0,...session.projectileCoverage},
       enemyBreakdown:{sampling:{interval:session.enemySampling.interval,updateCalls:session.enemySampling.updateCalls,sampledCalls:session.enemySampling.sampledCalls},totalMs:enemy?session.enemySampling.totalMs:null,groupsMs:enemyGroups,remainingMs:enemy?session.enemySampling.selfMs:null,nestedOtherMs:enemy?Math.max(0,session.enemySampling.totalMs-session.enemySampling.selfMs-enemyMeasured):null,...session.enemyCoverage},
@@ -3028,7 +3099,7 @@
       detailedSampling:{limits:session.details.limits,scopes:session.details.report()},
       categories,methods,counts:Object.fromEntries(Object.entries(session.counts).map(([key,value])=>[key,{mean:value.total/value.samples,max:value.max}])),missing:session.missing,
       frames:{samples:session.frames.length,fps:frameSum?session.frames.length*1000/frameSum:null,p95IntervalMs:performancePercentile(session.frames,.95)},
-      notes:['detailedSampling 各 scope 只代表自己的抽樣更新，totalMs = detailedMs + nestedMeasuredMs + remainingMs；各 scope 不相加或外推為全程。setupMs/restoreMs 為可觀察到的掛載與還原成本，未涵蓋全部計時負擔。renderWorld 含 world3d.render，不再與其相加。','怪物細節每 32 次更新抽樣一次，totalMs/groupsMs/remainingMs 僅代表抽樣更新，不外推為全程；分類與 updateEnemies 方法仍逐次計時。細節包裝僅在抽樣更新期間安裝，完成即還原，安裝及還原成本留在外層呼叫者。','怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未拆出的技能 hook／助手與行內運算等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
+      notes:['updateEnemies 的 detailedSampling 與既有 enemyBreakdown 錯開抽樣；workloadSamples 記錄同次抽樣的物件數與擊殺／掉落方法呼叫數，僅為關聯線索，不是因果或全程擊殺總數。怪物細節保留 512 次計時預算給擊殺／掉落鏈。','detailedSampling 各 scope 只代表自己的抽樣更新，totalMs = detailedMs + nestedMeasuredMs + remainingMs；各 scope 不相加或外推為全程。setupMs/restoreMs 為可觀察到的掛載與還原成本，未涵蓋全部計時負擔。renderWorld 含 world3d.render，不再與其相加。','怪物細節每 32 次更新抽樣一次，totalMs/groupsMs/remainingMs 僅代表抽樣更新，不外推為全程；分類與 updateEnemies 方法仍逐次計時。細節包裝僅在抽樣更新期間安裝，完成即還原，安裝及還原成本留在外層呼叫者。','怪物細分使用排他耗時，groupsMs、remainingMs、nestedOtherMs 合計為 totalMs，已含於原分類；其餘不是純邏輯。逐怪物掃描與計時增加負擔，請使用同版本比較；同次更新內新增目標可能漏拆。','同步 JavaScript／CPU 耗時，含計時負擔；不是 GPU 計時。','拾取更新包含距離掃描、吸取移動、視覺更新、收集與清理，無法單獨代表距離掃描。','分類使用排除已量測子呼叫後的耗時，避免重複相加；各方法 totalMs 為含子呼叫耗時。','每遊戲步平均不是每畫面幀平均；3D 繪圖單獨列出，不納入遊戲步占比。','未拆出的技能 hook／助手與行內運算等工作歸其餘；p95 取各方法最多最近 4096 次樣本。','物件數為陣列長度，可能包含等待清除的物件。','投射物視覺回呼僅計 updateProjectiles 內 model.update／view.update 的排他耗時；其餘包含移動、碰撞、傷害、命中特效建立、清理及未拆出的視覺工作，並非純邏輯。畫面投影 placeOverlay 不在此範圍。','拾取 start/end 為當前場景快照；skippedDuringMeasurement 為期間差值，零代表沒有觀察到略過，不能單憑零判定優化失效。投射物逐物件計時會增加負擔，不能直接和舊版當作無負擔基準比較。']};
     return lastPerformanceReport;
   }
   function performanceMeasurementState(){return {phase:performanceSession?.phase||'idle',seconds:performanceSession?.seconds??null,hasReport:!!lastPerformanceReport};}
