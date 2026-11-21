@@ -1,0 +1,10 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const fixture=JSON.parse(fs.readFileSync('tests/fixtures/cannon-spear-native.json'));
+const context=vm.createContext({});
+vm.runInContext(Object.values(fixture.helpers).join(';')+`;globalThis.Skill=class {${fixture.aim} ${fixture.fire}}`,context);
+const w=new context.Skill();
+w.id='cannon_spear';w.cfg={aim:'spread'};w.mod=()=>({});w.count=()=>1;w.targets=()=>1;
+const queries=[];const game={player:{},priorityEnemies(count,range){queries.push({count,range});return [];},addProjectile(){throw Error('Empty field must not create a projectile');}};
+assert.equal(w.aim(game),null);assert.equal(w.fire(game),false);
+assert.deepEqual(queries,[{count:1,range:600},{count:1,range:600}]);
+console.log('PASS native Cannon Spear: inherited 600 target range, null aim and no projectile when no enemies');

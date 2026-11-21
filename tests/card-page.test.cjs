@@ -36,6 +36,8 @@ search.value='元宵節';search.oninput();assert(cards().length>5);assert(cards(
 document.querySelector('[data-category="garment"]').click();assert(cards().every(c=>data.records.find(r=>r.id===Number(c.dataset.cardId)).slot==='garment'));assert(search.value==='元宵節');
 search.value='不存在的卡片999999';search.oninput();assert(document.querySelector('.empty-result'));
 const find=id=>data.records.find(c=>c.id===id),v=(id,lap)=>find(id).versions.find(v=>v.lap===lap);
+assert.equal(v(4111,1).scores.swordsman,20,'native MINI floor applies even when ability weighting is lower');
+assert.equal(v(4111,6).scores.swordsman,70,'modified MINI floor scales through lap six');
 for(const [id,score] of [[4195,35],[4172,50],[4287,37],[4225,33],[4239,18]])assert.equal(v(id,4).scores.swordsman,score);
 assert.deepEqual(v(4287,4).bonuses,['-12.5% 承受傷害','+2.5% Flee']);assert(v(4195,4).bonuses.includes('-10% 承受傷害'));
 assert(data.records.find(c=>c.monster==='墨蛇君').sources.some(s=>s.stage==='元宵節'&&s.rare),'native intruder sources must be included');

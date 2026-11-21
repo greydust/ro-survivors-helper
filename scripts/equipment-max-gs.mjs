@@ -1,4 +1,5 @@
 import vm from 'node:vm';
+import {installNativeCardFloor} from './native-card-score.mjs';
 
 // All scoring, equipment eligibility and affix bounds come from the downloaded
 // public build. This module never invokes the game's random affix generator.
@@ -17,7 +18,8 @@ export function createEquipmentScorer(main, catalog, sandbox) {
     section('function RO_STARM(','function RO_STARNM(')+
     section('const Bk=','function Hk(')+
     section('function RO_EQJ(','function _n(')+bow+
-    ';globalThis.native={score:or,base:Ma,bonus:vf,bonuses:Gm,eligible:qn,skills:QM};',context,{timeout:1000});
+    ';globalThis.native={score:or,cardScore:Ti,rawCardScore:Ti__raw,base:Ma,bonus:vf,bonuses:Gm,eligible:qn,skills:QM};',context,{timeout:1000});
+  installNativeCardFloor(context,main,catalog);
   vm.runInContext('globalThis.affixMetadata={main:Object.keys(ru),mainValue:vG,third:yG,fourth:bG,values:Object.fromEntries(Object.entries(Qy).map(([key,value])=>[key,value.base])),skillMax:y0[1],slots:Fv[4],layouts:Fv};',sandbox,{timeout:1000});
   const rules=sandbox.affixMetadata,native=context.native;
   if(JSON.stringify(rules.slots)!=='[1,2,3,4]'||!sandbox.HZAF?.pool)throw Error('Unsupported legendary affix layout');

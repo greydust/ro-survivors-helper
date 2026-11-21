@@ -4,6 +4,7 @@ import vm from 'node:vm';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {parseHTML} from 'linkedom';
+import {createEquipmentScorer} from './equipment-max-gs.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const input=process.argv[2];
@@ -36,10 +37,7 @@ if(process.argv[6]){
 
 const main=fs.readFileSync(process.argv[4],'utf8');
 const lapConfig=JSON.parse(main.match(/var RO_LAPC=(\{[^;]+\});/)[1]);
-const scoreStart=main.indexOf('const Bk='),scoreEnd=main.indexOf('function PC(',scoreStart);
-if(scoreStart<0||scoreEnd<0)throw Error('Native GS scoring section unavailable');
-const scoreContext=vm.createContext({es:catalog.bW,be:catalog.j,Yo:catalog.bX});
-vm.runInContext(main.slice(scoreStart,scoreEnd)+';globalThis.score=(card,job)=>Math.max(0,Math.round(card.bonuses.reduce((sum,bonus)=>sum+vf(bonus,job),0)));',scoreContext,{timeout:1000});
+const scorer=createEquipmentScorer(main,catalog,sandbox);
 const jobIds=[...new Set([...raw.matchAll(/"?id"?:"([^" ]+)"/g)].map(m=>m[1]))].filter(id=>catalog.j(id)?.id===id);
 const jobs=jobIds.map(id=>({id,name:catalog.ff(catalog.j(id).name),scaling:catalog.j(id).scaling}));
 if(!jobs.some(j=>j.id==='swordsman')||!jobs.some(j=>j.id==='mage'))throw Error('Native job catalog unavailable');
@@ -48,7 +46,7 @@ const slots=[['weapon','武器'],['shield','盾牌'],['headgear','頭部'],['arm
 const records=Object.values(catalog.bT).filter(card=>!card.lap&&card.id<lapConfig.cardStep).map(base=>{
  const monster=catalog.bj[base.monster];if(!monster)throw Error('Unknown card monster '+base.monster);
  const sources=Object.entries(stages).filter(([id])=>{const stage=catalog.ca[id];return stage&&(stage.waves.some(w=>w.pool.includes(base.monster))||stage.bosses.some(b=>b.id===base.monster)||[stage.rare,stage.intruder].some(s=>s?.id===base.monster));}).map(([id,name])=>({stage:name,boss:!!monster.boss,rare:[catalog.ca[id].rare,catalog.ca[id].intruder].some(s=>s?.id===base.monster)}));
- const versions=Array.from({length:lapConfig.max},(_,i)=>{const card=catalog.bT[base.id+lapConfig.cardStep*i];if(!card)throw Error('Missing native card version '+base.id+' lap '+(i+1));return {id:card.id,lap:i+1,label:i?'改'+(i===1?'':i):'普通版',bonuses:catalog.dr(card.bonuses),scores:Object.fromEntries(jobs.map(job=>[job.id,scoreContext.score(card,job.id)]))};}).reverse();
+ const versions=Array.from({length:lapConfig.max},(_,i)=>{const card=catalog.bT[base.id+lapConfig.cardStep*i];if(!card)throw Error('Missing native card version '+base.id+' lap '+(i+1));return {id:card.id,lap:i+1,label:i?'改'+(i===1?'':i):'普通版',bonuses:catalog.dr(card.bonuses),scores:Object.fromEntries(jobs.map(job=>[job.id,scorer.native.cardScore(card,job.id)]))};}).reverse();
  return {id:base.id,name:catalog.ff(monster.name)+'卡片',monster:catalog.ff(monster.name),slot:base.compound,boss:monster.boss||null,sources,versions};
 });
 if(records.some(r=>!slots.some(([slot])=>r.slot===slot)))throw Error('Unknown compound slot: '+[...new Set(records.map(r=>r.slot))]);

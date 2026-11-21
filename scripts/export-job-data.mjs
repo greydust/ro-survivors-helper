@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 import {loadPublicModule} from './public-module.mjs';
+import {skillBaseStats} from './job-base-stats.mjs';
 
 const [file,url,mainFile,mainUrl,manifestFile]=process.argv.slice(2);
 if(!manifestFile)throw Error('Usage: node scripts/export-job-data.mjs <core file> <core URL> <main file> <main URL> <manifest file>');
@@ -62,7 +63,11 @@ const skills=[...skillIds].map(id=>{
     capText:effect.max===undefined?'無固定上限':`效果總值 ${c.cP(effect,effect.max)}`,note:`初始 ${c.cP(effect,effect.base)}`});
   const unlocks=jobs.flatMap(j=>j.talents.filter(t=>t.learn===id||(id==='atk_infused'&&/^mage\.[012]\.(fire|water|wind)_infusion$/.test(t.id))).map(t=>({job:j.id,branch:t.branch,talent:t.id})));
   return {id,name:tr(d.name),icon:icon(d.icon),kind:d.kind,type:d.type??null,tags:d.tags?.map(tag=>tr(c.cH[tag]??tag))??[],
-    desc:text(d.desc(1)),weapons:d.weapons?.map(weaponName)??[],needsShield:!!d.needsShield,basic:id.startsWith('atk_'),unlocks,upgrades};
+    desc:text(d.desc(1)),weapons:d.weapons?.map(weaponName)??[],needsShield:!!d.needsShield,basic:id.startsWith('atk_'),unlocks,upgrades,
+    baseStats:skillBaseStats(w,{translate:tr,formatEffect:c.cP,description:text(d.desc(1)),resolve:expression=>{
+      if(!/^[\w$]+(?:\.[\w$]+)*$/.test(expression))return null;
+      try{return vm.runInContext(expression,vm.createContext(sandbox),{timeout:100});}catch{return null;}
+    }})};
 });
 const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
 const data={updatedAt:new Date().toISOString().slice(0,10),source:url,sourceSha256:sha(raw),mainSource:mainUrl,mainSourceSha256:sha(fs.readFileSync(mainFile)),manifestSource:'https://ro.hans-webgametw.com/assets/manifest.json',manifestSha256:sha(fs.readFileSync(manifestFile)),jobs,skills};

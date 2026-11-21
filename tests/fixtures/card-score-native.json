@@ -1,0 +1,7661 @@
+{
+  "source": "https://ro.hans-webgametw.com/build/main-BNOcv2PN.hzd525412f.js",
+  "stageHelper": "function yo(a){const e=tt[a],t=e.bosses.map(s=>({id:s.id,t:s.t}));return{monsters:[...new Set(e.waves.flatMap(s=>s.pool))],minis:t.slice(0,-1),mvp:t[t.length-1],map:e.map,storyOnly:e.storyOnly}}",
+  "stageExpression": "[{id:\"prontera\",name:\"Campos de Prontera\",place:\"Al sur de Prontera\",levels:\"1–8\",tier:1,gsMin:0,...yo(\"prontera\")},{id:\"sewer\",name:\"Alcantarillas de Prontera\",place:\"Bajo las calles de Prontera\",levels:\"9–12\",tier:1,gsMin:20,...yo(\"sewer\")},{id:\"sunken\",name:\"Barco hundido\",place:\"Costa de Alberta\",levels:\"13–15\",tier:1,gsMin:40,story:\"sunken_story\",...yo(\"sunken\")},{id:\"byalan\",name:\"Isla de Byalan\",place:\"Mazmorra de Izlude\",levels:\"16–20\",tier:2,gsMin:110,...yo(\"byalan\")},{id:\"payon\",name:\"Bosque de Payon\",place:\"Alrededores de Payon\",levels:\"21–25\",tier:2,gsMin:135,...yo(\"payon\")},{id:\"payon_cave\",name:\"Cueva de Payon\",place:\"Bajo las montañas de Payon\",levels:\"26–30\",tier:2,gsMin:165,...yo(\"payon_cave\")},{id:\"prt_castle\",name:\"Castillo de Prontera\",place:\"Sala del trono\",levels:\"31–35\",tier:2,gsMin:185,jobLvMin:50,...yo(\"prt_castle\")},{id:\"orcs\",name:\"Aldea orca\",place:\"Campos de Geffen\",levels:\"31–40\",tier:3,gsMin:400,...yo(\"orcs\")},{id:\"pyramid\",name:\"Pirámides de Morroc\",place:\"Desierto de Morroc\",levels:\"41–50\",tier:3,gsMin:650,...yo(\"pyramid\")},{id:\"maze\",name:\"Bosque laberinto\",place:\"Al norte de Prontera\",levels:\"51–60\",tier:3,gsMin:900,...yo(\"maze\")},{id:\"xmas\",name:\"Navidad\",place:\"Lutie\",levels:\"61–65\",tier:3,special:true,gsMin:900,...yo(\"xmas\")},{id:\"louyang\",name:\"Feria de faroles de Louyang\",place:\"Louyang\",levels:\"61–70\",tier:3,special:true,gsMin:900,...yo(\"louyang\")},{id:\"c2_gef\",name:\"Mazmorra de Geffen\",place:\"Bajo Geffen\",levels:\"71–76\",tier:8,chapter:2,gsMin:2360,...yo(\"c2_gef\")},{id:\"c2_clock\",name:\"Sótano de la Torre del Reloj\",place:\"Al De Baran\",levels:\"77–82\",tier:8,chapter:2,gsMin:2410,...yo(\"c2_clock\")},{id:\"c2_abyss\",name:\"Lago del Abismo\",place:\"Nido de dragones\",levels:\"83–88\",tier:8,chapter:2,gsMin:2460,...yo(\"c2_abyss\")},{id:\"c2_glast\",name:\"Monasterio de Glast Heim\",place:\"Glast Heim\",levels:\"89–94\",tier:8,chapter:2,gsMin:2500,...yo(\"c2_glast\")},{id:\"c2_nif\",name:\"Campos de Niflheim\",place:\"Niflheim\",levels:\"95–99\",tier:8,chapter:2,gsMin:2550,...yo(\"c2_nif\")}]",
+  "floor": "var RO_CARDFLOOR=(()=>{let MV=null,MI=null;const F={\"mini\":20,\"mvp\":30},M=[1,1.5,2,2.5,3,3.5],NO=new Set([4144]);const sets=()=>{if(MV)return;const a=new Set,b=new Set;for(const s of xe||[]){if(!s)continue;if(s.mvp&&s.mvp.id)a.add(s.mvp.id);for(const m of s.minis||[])if(m&&m.id)b.add(m.id)}if(a.size)MV=a,MI=b};return(a,e,v)=>{try{const c=typeof a==\"number\"?Ht[a]:a;if(!c)return v;sets();if(!MV)return v;const b=c.base??c.id,o=Ht[b]||c,f=MV.has(o.monster)?F.mvp:MI.has(o.monster)?F.mini:0;if(!f)return v;const k=c.lap?(NO.has(b)?1:M[c.lap-1]||1):1;return Math.max(v,Math.round(f*k))}catch(x){return v}}})();",
+  "scripts": {
+    "prontera": {
+      "bosses": [
+        {
+          "t": 150,
+          "id": "eclipse"
+        },
+        {
+          "t": 300,
+          "id": "toad"
+        },
+        {
+          "t": 450,
+          "id": "dragon_fly"
+        },
+        {
+          "t": 600,
+          "id": "vocal"
+        },
+        {
+          "t": 720,
+          "id": "mastering"
+        }
+      ],
+      "map": "prt_fild08",
+      "waves": [
+        {
+          "pool": [
+            "poring",
+            "lunatic",
+            "fabre",
+            "poring",
+            "lunatic",
+            "fabre",
+            "pupa"
+          ]
+        },
+        {
+          "pool": [
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "poring",
+            "lunatic",
+            "drops",
+            "picky",
+            "roda_frog",
+            "peco_egg",
+            "chonchon"
+          ]
+        },
+        {
+          "pool": [
+            "drops",
+            "picky",
+            "roda_frog",
+            "condor",
+            "savage_babe"
+          ]
+        },
+        {
+          "pool": [
+            "condor",
+            "savage_babe",
+            "creamy",
+            "hornet",
+            "mandragora"
+          ]
+        },
+        {
+          "pool": [
+            "creamy",
+            "hornet",
+            "mandragora",
+            "baby_desert_wolf",
+            "rocker"
+          ]
+        },
+        {
+          "pool": [
+            "hornet",
+            "creamy",
+            "baby_desert_wolf",
+            "rocker"
+          ]
+        },
+        {
+          "pool": [
+            "creamy",
+            "baby_desert_wolf",
+            "rocker",
+            "hornet",
+            "mandragora"
+          ]
+        }
+      ]
+    },
+    "sewer": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "tarou_bite"
+        },
+        {
+          "t": 180,
+          "id": "tarou_plague"
+        },
+        {
+          "t": 180,
+          "id": "tarou_burrow"
+        },
+        {
+          "t": 480,
+          "id": "golden_thief_bug"
+        }
+      ],
+      "map": "prt_sewer",
+      "waves": [
+        {
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou"
+          ]
+        },
+        {
+          "pool": [
+            "thief_bug",
+            "familiar",
+            "tarou",
+            "thief_bug_egg"
+          ]
+        },
+        {
+          "pool": [
+            "tarou",
+            "plankton",
+            "drainliar",
+            "thief_bug"
+          ]
+        },
+        {
+          "pool": [
+            "drainliar",
+            "thief_bug_female",
+            "plankton",
+            "tarou"
+          ]
+        },
+        {
+          "pool": [
+            "thief_bug_female",
+            "cramp",
+            "drainliar",
+            "plankton"
+          ]
+        }
+      ]
+    },
+    "sunken": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "penomena"
+        },
+        {
+          "t": 600,
+          "id": "drake"
+        }
+      ],
+      "map": "sunken_deck",
+      "waves": [
+        {
+          "pool": [
+            "kukre",
+            "marina"
+          ]
+        },
+        {
+          "pool": [
+            "kukre",
+            "marina",
+            "hydra",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "marina",
+            "hydra",
+            "whisper",
+            "sword_fish"
+          ]
+        },
+        {
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel"
+          ]
+        },
+        {
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel",
+            "hydra"
+          ]
+        }
+      ]
+    },
+    "sunken_story": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 420,
+          "id": "drake"
+        }
+      ],
+      "map": "sunken",
+      "waves": [
+        {
+          "pool": [
+            "kukre",
+            "marina"
+          ]
+        },
+        {
+          "pool": [
+            "kukre",
+            "marina",
+            "hydra",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "marina",
+            "hydra",
+            "whisper",
+            "sword_fish"
+          ]
+        },
+        {
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel"
+          ]
+        },
+        {
+          "pool": [
+            "whisper",
+            "sword_fish",
+            "pirate_skel",
+            "hydra"
+          ]
+        }
+      ]
+    },
+    "byalan": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "deviace"
+        },
+        {
+          "t": 360,
+          "id": "strouf"
+        },
+        {
+          "t": 540,
+          "id": "king_dramoh"
+        },
+        {
+          "t": 720,
+          "id": "kraken"
+        }
+      ],
+      "map": "byalan",
+      "waves": [
+        {
+          "pool": [
+            "vadon",
+            "cornutus"
+          ]
+        },
+        {
+          "pool": [
+            "vadon",
+            "cornutus",
+            "marse"
+          ]
+        },
+        {
+          "pool": [
+            "cornutus",
+            "marse",
+            "obeaune",
+            "marine_sphere"
+          ]
+        },
+        {
+          "pool": [
+            "marse",
+            "obeaune",
+            "phen",
+            "marine_sphere"
+          ]
+        },
+        {
+          "pool": [
+            "obeaune",
+            "phen",
+            "merman",
+            "marine_sphere"
+          ]
+        },
+        {
+          "pool": [
+            "phen",
+            "merman",
+            "obeaune",
+            "marse"
+          ]
+        }
+      ]
+    },
+    "payon": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "angeling"
+        },
+        {
+          "t": 360,
+          "id": "deviling"
+        },
+        {
+          "t": 600,
+          "id": "vagabond_wolf"
+        },
+        {
+          "t": 840,
+          "id": "eddga"
+        }
+      ],
+      "map": "pay_fild08",
+      "waves": [
+        {
+          "pool": [
+            "spore",
+            "willow",
+            "poporing"
+          ]
+        },
+        {
+          "pool": [
+            "spore",
+            "willow",
+            "poporing",
+            "snake",
+            "worm_tail"
+          ]
+        },
+        {
+          "pool": [
+            "poporing",
+            "snake",
+            "worm_tail",
+            "poison_spore",
+            "smokie"
+          ]
+        },
+        {
+          "pool": [
+            "worm_tail",
+            "poison_spore",
+            "smokie",
+            "wolf",
+            "elder_willow"
+          ]
+        },
+        {
+          "pool": [
+            "smokie",
+            "wolf",
+            "elder_willow",
+            "dragon_tail",
+            "bigfoot"
+          ]
+        },
+        {
+          "pool": [
+            "wolf",
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi"
+          ]
+        },
+        {
+          "pool": [
+            "dragon_tail",
+            "bigfoot",
+            "greatest_general",
+            "dokebi",
+            "nine_tail"
+          ]
+        }
+      ]
+    },
+    "payon_cave": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 360,
+          "id": "cat_o_nine_tail"
+        },
+        {
+          "t": 600,
+          "id": "hyegun"
+        },
+        {
+          "t": 840,
+          "id": "moonlight"
+        }
+      ],
+      "map": "payon_cave",
+      "waves": [
+        {
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing"
+          ]
+        },
+        {
+          "pool": [
+            "zombie",
+            "skeleton",
+            "poporing",
+            "skel_archer"
+          ]
+        },
+        {
+          "pool": [
+            "skeleton",
+            "skel_archer",
+            "zombie",
+            "skel_soldier"
+          ]
+        },
+        {
+          "pool": [
+            "skel_soldier",
+            "skel_archer",
+            "munak",
+            "bon_gun"
+          ]
+        },
+        {
+          "pool": [
+            "munak",
+            "bon_gun",
+            "sohee",
+            "horong"
+          ]
+        },
+        {
+          "pool": [
+            "sohee",
+            "horong",
+            "nine_tail",
+            "bon_gun",
+            "munak"
+          ]
+        }
+      ]
+    },
+    "prt_castle": {
+      "bosses": [
+        {
+          "t": 90,
+          "id": "high_orc"
+        }
+      ],
+      "map": "prt_throne",
+      "storyOnly": true,
+      "waves": [
+        {
+          "pool": [
+            "orc_warrior"
+          ]
+        },
+        {
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ]
+        },
+        {
+          "pool": [
+            "orc_warrior",
+            "orc_lady"
+          ]
+        }
+      ]
+    },
+    "orcs": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "goblin_leader"
+        },
+        {
+          "t": 360,
+          "id": "kobold_leader"
+        },
+        {
+          "t": 600,
+          "id": "high_orc"
+        },
+        {
+          "t": 840,
+          "id": "orc_hero"
+        }
+      ],
+      "map": "gef_fild10",
+      "waves": [
+        {
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby"
+          ]
+        },
+        {
+          "pool": [
+            "goblin",
+            "kobold",
+            "orc_baby",
+            "goblin_archer"
+          ]
+        },
+        {
+          "pool": [
+            "kobold",
+            "wolf",
+            "orc_warrior",
+            "goblin_archer"
+          ]
+        },
+        {
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "goblin"
+          ]
+        },
+        {
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie"
+          ]
+        },
+        {
+          "pool": [
+            "orc_warrior",
+            "orc_lady",
+            "orc_archer",
+            "orc_zombie",
+            "kobold",
+            "wolf"
+          ]
+        }
+      ]
+    },
+    "pyramid": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "ghostring"
+        },
+        {
+          "t": 360,
+          "id": "ancient_mummy"
+        },
+        {
+          "t": 600,
+          "id": "skeleton_general"
+        },
+        {
+          "t": 840,
+          "id": "osiris"
+        }
+      ],
+      "map": "moc_pryd04",
+      "waves": [
+        {
+          "pool": [
+            "zombie",
+            "verit",
+            "skeleton"
+          ]
+        },
+        {
+          "pool": [
+            "verit",
+            "mummy",
+            "orc_skeleton"
+          ]
+        },
+        {
+          "pool": [
+            "mummy",
+            "orc_skeleton",
+            "skel_archer",
+            "matyr"
+          ]
+        },
+        {
+          "pool": [
+            "mummy",
+            "isis",
+            "orc_skeleton",
+            "skel_soldier",
+            "matyr"
+          ]
+        },
+        {
+          "pool": [
+            "isis",
+            "matyr",
+            "minorous",
+            "mummy",
+            "skel_archer"
+          ]
+        },
+        {
+          "pool": [
+            "minorous",
+            "isis",
+            "matyr",
+            "mummy",
+            "orc_skeleton",
+            "verit"
+          ]
+        }
+      ]
+    },
+    "maze": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "leib_olmai"
+        },
+        {
+          "t": 360,
+          "id": "sasquatch"
+        },
+        {
+          "t": 600,
+          "id": "deviling"
+        },
+        {
+          "t": 840,
+          "id": "baphomet"
+        }
+      ],
+      "map": "prt_maze02",
+      "waves": [
+        {
+          "pool": [
+            "hunter_fly",
+            "side_winder"
+          ]
+        },
+        {
+          "pool": [
+            "hunter_fly",
+            "side_winder",
+            "argiope"
+          ]
+        },
+        {
+          "pool": [
+            "side_winder",
+            "argiope",
+            "baphomet_jr"
+          ]
+        },
+        {
+          "pool": [
+            "argiope",
+            "baphomet_jr",
+            "killer_mantis",
+            "hunter_fly"
+          ]
+        },
+        {
+          "pool": [
+            "baphomet_jr",
+            "killer_mantis",
+            "side_winder",
+            "argiope"
+          ]
+        },
+        {
+          "pool": [
+            "killer_mantis",
+            "baphomet_jr",
+            "argiope",
+            "hunter_fly",
+            "side_winder"
+          ]
+        }
+      ]
+    },
+    "xmas": {
+      "bosses": [
+        {
+          "t": 110,
+          "id": "gazeti"
+        },
+        {
+          "t": 240,
+          "id": "freezer"
+        },
+        {
+          "t": 370,
+          "id": "ice_titan"
+        },
+        {
+          "t": 520,
+          "id": "hatii"
+        },
+        {
+          "t": 520,
+          "id": "baby_hatii"
+        },
+        {
+          "t": 750,
+          "id": "antonio"
+        }
+      ],
+      "map": "xmas",
+      "waves": [
+        {
+          "pool": [
+            "christmas_goblin",
+            "cookie"
+          ]
+        },
+        {
+          "pool": [
+            "christmas_goblin",
+            "cookie",
+            "christmas_cookie"
+          ]
+        },
+        {
+          "pool": [
+            "christmas_cookie",
+            "cruiser",
+            "myst_case"
+          ]
+        },
+        {
+          "pool": [
+            "cruiser",
+            "myst_case",
+            "siroma",
+            "snowier"
+          ]
+        },
+        {
+          "pool": [
+            "siroma",
+            "teddy_bear",
+            "snowier",
+            "myst_case"
+          ]
+        },
+        {
+          "pool": [
+            "teddy_bear",
+            "snowier",
+            "siroma",
+            "cruiser",
+            "christmas_cookie"
+          ]
+        }
+      ]
+    },
+    "louyang": {
+      "bosses": [
+        {
+          "t": 120,
+          "id": "wooden_golem"
+        },
+        {
+          "t": 330,
+          "id": "zhu_po_long"
+        },
+        {
+          "t": 330,
+          "id": "the_paper"
+        },
+        {
+          "t": 570,
+          "id": "wanderer"
+        },
+        {
+          "t": 690,
+          "id": "green_maiden"
+        },
+        {
+          "t": 810,
+          "id": "white_lady"
+        }
+      ],
+      "map": "louyang",
+      "waves": [
+        {
+          "pool": [
+            "leaf_cat",
+            "dumpling_child"
+          ]
+        },
+        {
+          "pool": [
+            "leaf_cat",
+            "dumpling_child",
+            "stone_shooter"
+          ]
+        },
+        {
+          "pool": [
+            "stone_shooter",
+            "iron_fist",
+            "kapha"
+          ]
+        },
+        {
+          "pool": [
+            "iron_fist",
+            "kapha",
+            "spring_rabbit",
+            "dumpling_child"
+          ]
+        },
+        {
+          "pool": [
+            "kapha",
+            "spring_rabbit",
+            "enchanted_peach_tree",
+            "iron_fist"
+          ]
+        },
+        {
+          "pool": [
+            "spring_rabbit",
+            "enchanted_peach_tree",
+            "kapha",
+            "stone_shooter",
+            "leaf_cat"
+          ]
+        }
+      ]
+    },
+    "c2_gef": {
+      "bosses": [
+        {
+          "t": 180,
+          "id": "giant_whisper"
+        },
+        {
+          "t": 360,
+          "id": "ogretooth"
+        },
+        {
+          "t": 600,
+          "id": "doppelganger"
+        },
+        {
+          "t": 840,
+          "id": "dracula"
+        }
+      ],
+      "map": "gef_dun01",
+      "waves": [
+        {
+          "pool": [
+            "jakk",
+            "drainliar",
+            "ghoul"
+          ]
+        },
+        {
+          "pool": [
+            "jakk",
+            "ghoul",
+            "marionette",
+            "drainliar"
+          ]
+        },
+        {
+          "pool": [
+            "ghoul",
+            "marionette",
+            "whisper",
+            "deviruchi"
+          ]
+        },
+        {
+          "pool": [
+            "marionette",
+            "deviruchi",
+            "nightmare",
+            "jakk"
+          ]
+        },
+        {
+          "pool": [
+            "deviruchi",
+            "nightmare",
+            "ghoul",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "nightmare",
+            "deviruchi",
+            "marionette",
+            "ghoul",
+            "jakk",
+            "whisper"
+          ]
+        }
+      ]
+    },
+    "c2_clock": {
+      "bosses": [
+        {
+          "t": 150,
+          "id": "clock_tower_manager"
+        },
+        {
+          "t": 300,
+          "id": "owl_duke"
+        },
+        {
+          "t": 480,
+          "id": "executioner"
+        },
+        {
+          "t": 660,
+          "id": "mysteltainn"
+        },
+        {
+          "t": 840,
+          "id": "owl_baron"
+        }
+      ],
+      "map": "alde_dun03",
+      "waves": [
+        {
+          "pool": [
+            "punk",
+            "clock"
+          ]
+        },
+        {
+          "pool": [
+            "punk",
+            "clock",
+            "alarm"
+          ]
+        },
+        {
+          "pool": [
+            "alarm",
+            "rideword",
+            "bathory",
+            "mimic"
+          ]
+        },
+        {
+          "pool": [
+            "rideword",
+            "bathory",
+            "joker",
+            "clock"
+          ]
+        },
+        {
+          "pool": [
+            "joker",
+            "dark_frame",
+            "alarm",
+            "rideword"
+          ]
+        },
+        {
+          "pool": [
+            "dark_frame",
+            "joker",
+            "mimic",
+            "rideword",
+            "alarm",
+            "bathory"
+          ]
+        }
+      ]
+    },
+    "c2_abyss": {
+      "bosses": [
+        {
+          "t": 300,
+          "id": "ferus"
+        },
+        {
+          "t": 300,
+          "id": "acidus"
+        },
+        {
+          "t": 600,
+          "id": "hydrolancer"
+        },
+        {
+          "t": 840,
+          "id": "detardeurus"
+        }
+      ],
+      "map": "abyss_03",
+      "waves": [
+        {
+          "pool": [
+            "novus",
+            "novus_novus",
+            "dragon_egg"
+          ]
+        },
+        {
+          "pool": [
+            "novus",
+            "novus_novus",
+            "ferus_ferus",
+            "dragon_egg"
+          ]
+        },
+        {
+          "pool": [
+            "ferus_ferus",
+            "novus_novus",
+            "ancient_mimic",
+            "dragon_egg"
+          ]
+        },
+        {
+          "pool": [
+            "ferus_ferus",
+            "acidus_acidus",
+            "ancient_mimic",
+            "novus"
+          ]
+        },
+        {
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "novus_novus",
+            "dragon_egg"
+          ]
+        },
+        {
+          "pool": [
+            "acidus_acidus",
+            "ferus_ferus",
+            "ancient_mimic",
+            "novus",
+            "novus_novus"
+          ]
+        }
+      ]
+    },
+    "c2_glast": {
+      "bosses": [
+        {
+          "t": 150,
+          "id": "chimera"
+        },
+        {
+          "t": 300,
+          "id": "abysmal_knight"
+        },
+        {
+          "t": 480,
+          "id": "bloody_knight"
+        },
+        {
+          "t": 660,
+          "id": "dark_illusion"
+        },
+        {
+          "t": 840,
+          "id": "dark_lord"
+        }
+      ],
+      "map": "gl_church",
+      "waves": [
+        {
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner"
+          ]
+        },
+        {
+          "pool": [
+            "zombie_prisoner",
+            "skeleton_prisoner",
+            "raydric"
+          ]
+        },
+        {
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "skeleton_prisoner"
+          ]
+        },
+        {
+          "pool": [
+            "raydric",
+            "raydric_archer",
+            "evil_druid",
+            "wraith"
+          ]
+        },
+        {
+          "pool": [
+            "evil_druid",
+            "khalitzburg",
+            "raydric_archer",
+            "wraith"
+          ]
+        },
+        {
+          "pool": [
+            "khalitzburg",
+            "evil_druid",
+            "raydric",
+            "raydric_archer",
+            "wraith",
+            "zombie_prisoner"
+          ]
+        }
+      ]
+    },
+    "c2_nif": {
+      "bosses": [
+        {
+          "t": 240,
+          "id": "bloody_murderer"
+        },
+        {
+          "t": 540,
+          "id": "loli_ruri"
+        },
+        {
+          "t": 540,
+          "id": "dullahan"
+        },
+        {
+          "t": 840,
+          "id": "lord_of_the_dead"
+        }
+      ],
+      "map": "nif_fild01",
+      "waves": [
+        {
+          "pool": [
+            "lude",
+            "quve",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "lude",
+            "quve",
+            "heirozoist",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "quve",
+            "heirozoist",
+            "gibbet",
+            "lude"
+          ]
+        },
+        {
+          "pool": [
+            "heirozoist",
+            "gibbet",
+            "disguise",
+            "whisper"
+          ]
+        },
+        {
+          "pool": [
+            "gibbet",
+            "disguise",
+            "heirozoist",
+            "quve"
+          ]
+        },
+        {
+          "pool": [
+            "disguise",
+            "gibbet",
+            "heirozoist",
+            "lude",
+            "quve",
+            "whisper"
+          ]
+        }
+      ]
+    },
+    "endless": {
+      "bosses": [],
+      "map": "endless",
+      "waves": [
+        {
+          "pool": [
+            "poring"
+          ]
+        }
+      ]
+    }
+  },
+  "cards": {
+    "4001": {
+      "id": 4001,
+      "monster": "poring"
+    },
+    "4002": {
+      "id": 4002,
+      "monster": "fabre"
+    },
+    "4003": {
+      "id": 4003,
+      "monster": "pupa"
+    },
+    "4004": {
+      "id": 4004,
+      "monster": "drops"
+    },
+    "4006": {
+      "id": 4006,
+      "monster": "lunatic"
+    },
+    "4007": {
+      "id": 4007,
+      "monster": "peco_egg"
+    },
+    "4008": {
+      "id": 4008,
+      "monster": "picky"
+    },
+    "4009": {
+      "id": 4009,
+      "monster": "chonchon"
+    },
+    "4010": {
+      "id": 4010,
+      "monster": "willow"
+    },
+    "4012": {
+      "id": 4012,
+      "monster": "thief_bug_egg"
+    },
+    "4014": {
+      "id": 4014,
+      "monster": "roda_frog"
+    },
+    "4015": {
+      "id": 4015,
+      "monster": "condor"
+    },
+    "4016": {
+      "id": 4016,
+      "monster": "thief_bug"
+    },
+    "4017": {
+      "id": 4017,
+      "monster": "savage_babe"
+    },
+    "4019": {
+      "id": 4019,
+      "monster": "hornet"
+    },
+    "4020": {
+      "id": 4020,
+      "monster": "familiar"
+    },
+    "4021": {
+      "id": 4021,
+      "monster": "rocker"
+    },
+    "4022": {
+      "id": 4022,
+      "monster": "spore"
+    },
+    "4023": {
+      "id": 4023,
+      "monster": "baby_desert_wolf"
+    },
+    "4024": {
+      "id": 4024,
+      "monster": "plankton"
+    },
+    "4025": {
+      "id": 4025,
+      "monster": "skeleton"
+    },
+    "4026": {
+      "id": 4026,
+      "monster": "thief_bug_female"
+    },
+    "4027": {
+      "id": 4027,
+      "monster": "kukre"
+    },
+    "4028": {
+      "id": 4028,
+      "monster": "tarou"
+    },
+    "4029": {
+      "id": 4029,
+      "monster": "wolf"
+    },
+    "4030": {
+      "id": 4030,
+      "monster": "mandragora"
+    },
+    "4033": {
+      "id": 4033,
+      "monster": "poporing"
+    },
+    "4034": {
+      "id": 4034,
+      "monster": "worm_tail"
+    },
+    "4035": {
+      "id": 4035,
+      "monster": "hydra"
+    },
+    "4037": {
+      "id": 4037,
+      "monster": "snake"
+    },
+    "4038": {
+      "id": 4038,
+      "monster": "zombie"
+    },
+    "4040": {
+      "id": 4040,
+      "monster": "creamy"
+    },
+    "4044": {
+      "id": 4044,
+      "monster": "smokie"
+    },
+    "4047": {
+      "id": 4047,
+      "monster": "ghostring"
+    },
+    "4048": {
+      "id": 4048,
+      "monster": "poison_spore"
+    },
+    "4049": {
+      "id": 4049,
+      "monster": "vadon"
+    },
+    "4052": {
+      "id": 4052,
+      "monster": "elder_willow"
+    },
+    "4054": {
+      "id": 4054,
+      "monster": "angeling"
+    },
+    "4055": {
+      "id": 4055,
+      "monster": "marina"
+    },
+    "4060": {
+      "id": 4060,
+      "monster": "goblin"
+    },
+    "4061": {
+      "id": 4061,
+      "monster": "cornutus"
+    },
+    "4066": {
+      "id": 4066,
+      "monster": "orc_warrior"
+    },
+    "4069": {
+      "id": 4069,
+      "monster": "drainliar"
+    },
+    "4071": {
+      "id": 4071,
+      "monster": "orc_zombie"
+    },
+    "4073": {
+      "id": 4073,
+      "monster": "pirate_skel"
+    },
+    "4074": {
+      "id": 4074,
+      "monster": "bigfoot"
+    },
+    "4077": {
+      "id": 4077,
+      "monster": "phen"
+    },
+    "4084": {
+      "id": 4084,
+      "monster": "marine_sphere"
+    },
+    "4085": {
+      "id": 4085,
+      "monster": "orc_skeleton"
+    },
+    "4086": {
+      "id": 4086,
+      "monster": "skel_soldier"
+    },
+    "4089": {
+      "id": 4089,
+      "monster": "sword_fish"
+    },
+    "4090": {
+      "id": 4090,
+      "monster": "munak"
+    },
+    "4091": {
+      "id": 4091,
+      "monster": "kobold"
+    },
+    "4093": {
+      "id": 4093,
+      "monster": "obeaune"
+    },
+    "4094": {
+      "id": 4094,
+      "monster": "skel_archer"
+    },
+    "4095": {
+      "id": 4095,
+      "monster": "marse"
+    },
+    "4097": {
+      "id": 4097,
+      "monster": "matyr"
+    },
+    "4098": {
+      "id": 4098,
+      "monster": "dokebi"
+    },
+    "4100": {
+      "id": 4100,
+      "monster": "sohee"
+    },
+    "4102": {
+      "id": 4102,
+      "monster": "whisper"
+    },
+    "4103": {
+      "id": 4103,
+      "monster": "horong"
+    },
+    "4106": {
+      "id": 4106,
+      "monster": "mummy"
+    },
+    "4107": {
+      "id": 4107,
+      "monster": "verit"
+    },
+    "4109": {
+      "id": 4109,
+      "monster": "jakk"
+    },
+    "4110": {
+      "id": 4110,
+      "monster": "ghoul"
+    },
+    "4111": {
+      "id": 4111,
+      "monster": "strouf"
+    },
+    "4113": {
+      "id": 4113,
+      "monster": "marionette"
+    },
+    "4114": {
+      "id": 4114,
+      "monster": "argiope"
+    },
+    "4115": {
+      "id": 4115,
+      "monster": "hunter_fly"
+    },
+    "4116": {
+      "id": 4116,
+      "monster": "isis"
+    },
+    "4117": {
+      "id": 4117,
+      "monster": "side_winder"
+    },
+    "4119": {
+      "id": 4119,
+      "monster": "bathory"
+    },
+    "4122": {
+      "id": 4122,
+      "monster": "deviruchi"
+    },
+    "4123": {
+      "id": 4123,
+      "monster": "eddga"
+    },
+    "4125": {
+      "id": 4125,
+      "monster": "deviace"
+    },
+    "4126": {
+      "id": 4126,
+      "monster": "minorous"
+    },
+    "4127": {
+      "id": 4127,
+      "monster": "nightmare"
+    },
+    "4128": {
+      "id": 4128,
+      "monster": "golden_thief_bug"
+    },
+    "4129": {
+      "id": 4129,
+      "monster": "baphomet_jr"
+    },
+    "4131": {
+      "id": 4131,
+      "monster": "moonlight"
+    },
+    "4133": {
+      "id": 4133,
+      "monster": "raydric"
+    },
+    "4134": {
+      "id": 4134,
+      "monster": "dracula"
+    },
+    "4136": {
+      "id": 4136,
+      "monster": "khalitzburg"
+    },
+    "4137": {
+      "id": 4137,
+      "monster": "drake"
+    },
+    "4139": {
+      "id": 4139,
+      "monster": "joker"
+    },
+    "4140": {
+      "id": 4140,
+      "monster": "abysmal_knight"
+    },
+    "4141": {
+      "id": 4141,
+      "monster": "evil_druid"
+    },
+    "4142": {
+      "id": 4142,
+      "monster": "doppelganger"
+    },
+    "4143": {
+      "id": 4143,
+      "monster": "orc_hero"
+    },
+    "4144": {
+      "id": 4144,
+      "monster": "osiris"
+    },
+    "4147": {
+      "id": 4147,
+      "monster": "baphomet"
+    },
+    "4155": {
+      "id": 4155,
+      "monster": "goblin_leader"
+    },
+    "4157": {
+      "id": 4157,
+      "monster": "goblin_archer"
+    },
+    "4159": {
+      "id": 4159,
+      "monster": "nine_tail"
+    },
+    "4168": {
+      "id": 4168,
+      "monster": "dark_lord"
+    },
+    "4169": {
+      "id": 4169,
+      "monster": "dark_illusion"
+    },
+    "4170": {
+      "id": 4170,
+      "monster": "dark_frame"
+    },
+    "4172": {
+      "id": 4172,
+      "monster": "the_paper"
+    },
+    "4174": {
+      "id": 4174,
+      "monster": "deviling"
+    },
+    "4176": {
+      "id": 4176,
+      "monster": "dullahan"
+    },
+    "4178": {
+      "id": 4178,
+      "monster": "dragon_tail"
+    },
+    "4179": {
+      "id": 4179,
+      "monster": "dragon_fly"
+    },
+    "4181": {
+      "id": 4181,
+      "monster": "disguise"
+    },
+    "4183": {
+      "id": 4183,
+      "monster": "vagabond_wolf"
+    },
+    "4185": {
+      "id": 4185,
+      "monster": "rideword"
+    },
+    "4187": {
+      "id": 4187,
+      "monster": "raydric_archer"
+    },
+    "4188": {
+      "id": 4188,
+      "monster": "leib_olmai"
+    },
+    "4190": {
+      "id": 4190,
+      "monster": "wraith"
+    },
+    "4191": {
+      "id": 4191,
+      "monster": "loli_ruri"
+    },
+    "4193": {
+      "id": 4193,
+      "monster": "lude"
+    },
+    "4195": {
+      "id": 4195,
+      "monster": "leaf_cat"
+    },
+    "4197": {
+      "id": 4197,
+      "monster": "mastering"
+    },
+    "4199": {
+      "id": 4199,
+      "monster": "merman"
+    },
+    "4205": {
+      "id": 4205,
+      "monster": "mimic"
+    },
+    "4206": {
+      "id": 4206,
+      "monster": "myst_case"
+    },
+    "4207": {
+      "id": 4207,
+      "monster": "mysteltainn"
+    },
+    "4210": {
+      "id": 4210,
+      "monster": "wanderer"
+    },
+    "4211": {
+      "id": 4211,
+      "monster": "vocal"
+    },
+    "4212": {
+      "id": 4212,
+      "monster": "bon_gun"
+    },
+    "4214": {
+      "id": 4214,
+      "monster": "bloody_murderer"
+    },
+    "4216": {
+      "id": 4216,
+      "monster": "sasquatch"
+    },
+    "4217": {
+      "id": 4217,
+      "monster": "enchanted_peach_tree"
+    },
+    "4221": {
+      "id": 4221,
+      "monster": "skeleton_general"
+    },
+    "4222": {
+      "id": 4222,
+      "monster": "skeleton_prisoner"
+    },
+    "4225": {
+      "id": 4225,
+      "monster": "stone_shooter"
+    },
+    "4227": {
+      "id": 4227,
+      "monster": "spring_rabbit"
+    },
+    "4229": {
+      "id": 4229,
+      "monster": "clock_tower_manager"
+    },
+    "4235": {
+      "id": 4235,
+      "monster": "christmas_cookie"
+    },
+    "4237": {
+      "id": 4237,
+      "monster": "owl_duke"
+    },
+    "4238": {
+      "id": 4238,
+      "monster": "owl_baron"
+    },
+    "4239": {
+      "id": 4239,
+      "monster": "iron_fist"
+    },
+    "4243": {
+      "id": 4243,
+      "monster": "antonio"
+    },
+    "4244": {
+      "id": 4244,
+      "monster": "alarm"
+    },
+    "4248": {
+      "id": 4248,
+      "monster": "ancient_mummy"
+    },
+    "4250": {
+      "id": 4250,
+      "monster": "executioner"
+    },
+    "4254": {
+      "id": 4254,
+      "monster": "ogretooth"
+    },
+    "4255": {
+      "id": 4255,
+      "monster": "orc_lady"
+    },
+    "4256": {
+      "id": 4256,
+      "monster": "orc_archer"
+    },
+    "4259": {
+      "id": 4259,
+      "monster": "wooden_golem"
+    },
+    "4266": {
+      "id": 4266,
+      "monster": "eclipse"
+    },
+    "4275": {
+      "id": 4275,
+      "monster": "zombie_prisoner"
+    },
+    "4276": {
+      "id": 4276,
+      "monster": "lord_of_the_dead"
+    },
+    "4278": {
+      "id": 4278,
+      "monster": "gibbet"
+    },
+    "4283": {
+      "id": 4283,
+      "monster": "greatest_general"
+    },
+    "4287": {
+      "id": 4287,
+      "monster": "kapha"
+    },
+    "4290": {
+      "id": 4290,
+      "monster": "cat_o_nine_tail"
+    },
+    "4291": {
+      "id": 4291,
+      "monster": "kobold_leader"
+    },
+    "4293": {
+      "id": 4293,
+      "monster": "cookie"
+    },
+    "4294": {
+      "id": 4294,
+      "monster": "quve"
+    },
+    "4296": {
+      "id": 4296,
+      "monster": "cramp"
+    },
+    "4297": {
+      "id": 4297,
+      "monster": "cruiser"
+    },
+    "4299": {
+      "id": 4299,
+      "monster": "clock"
+    },
+    "4300": {
+      "id": 4300,
+      "monster": "chimera"
+    },
+    "4301": {
+      "id": 4301,
+      "monster": "killer_mantis"
+    },
+    "4303": {
+      "id": 4303,
+      "monster": "giant_whisper"
+    },
+    "4306": {
+      "id": 4306,
+      "monster": "toad"
+    },
+    "4313": {
+      "id": 4313,
+      "monster": "punk"
+    },
+    "4314": {
+      "id": 4314,
+      "monster": "penomena"
+    },
+    "4318": {
+      "id": 4318,
+      "monster": "stormy_knight"
+    },
+    "4319": {
+      "id": 4319,
+      "monster": "freezer"
+    },
+    "4320": {
+      "id": 4320,
+      "monster": "bloody_knight"
+    },
+    "4321": {
+      "id": 4321,
+      "monster": "heirozoist"
+    },
+    "4322": {
+      "id": 4322,
+      "monster": "high_orc"
+    },
+    "4323": {
+      "id": 4323,
+      "monster": "baby_hatii"
+    },
+    "4324": {
+      "id": 4324,
+      "monster": "hatii"
+    },
+    "4328": {
+      "id": 4328,
+      "monster": "hyegun"
+    },
+    "4330": {
+      "id": 4330,
+      "monster": "evil_snake_lord"
+    },
+    "4340": {
+      "id": 4340,
+      "monster": "teddy_bear"
+    },
+    "4372": {
+      "id": 4372,
+      "monster": "white_lady"
+    },
+    "4375": {
+      "id": 4375,
+      "monster": "orc_baby"
+    },
+    "4378": {
+      "id": 4378,
+      "monster": "acidus"
+    },
+    "4379": {
+      "id": 4379,
+      "monster": "acidus_acidus"
+    },
+    "4380": {
+      "id": 4380,
+      "monster": "ferus"
+    },
+    "4381": {
+      "id": 4381,
+      "monster": "ferus_ferus"
+    },
+    "4382": {
+      "id": 4382,
+      "monster": "novus_novus"
+    },
+    "4383": {
+      "id": 4383,
+      "monster": "novus"
+    },
+    "4384": {
+      "id": 4384,
+      "monster": "hydrolancer"
+    },
+    "4385": {
+      "id": 4385,
+      "monster": "dragon_egg"
+    },
+    "4386": {
+      "id": 4386,
+      "monster": "detardeurus"
+    },
+    "4387": {
+      "id": 4387,
+      "monster": "ancient_mimic"
+    },
+    "4415": {
+      "id": 4415,
+      "monster": "snowier"
+    },
+    "4416": {
+      "id": 4416,
+      "monster": "siroma"
+    },
+    "4417": {
+      "id": 4417,
+      "monster": "ice_titan"
+    },
+    "4418": {
+      "id": 4418,
+      "monster": "gazeti"
+    },
+    "4419": {
+      "id": 4419,
+      "monster": "ktullanux"
+    },
+    "4441": {
+      "id": 4441,
+      "monster": "fallen_bishop_hibram"
+    },
+    "4524": {
+      "id": 4524,
+      "monster": "king_dramoh"
+    },
+    "4525": {
+      "id": 4525,
+      "monster": "kraken"
+    },
+    "1004001": {
+      "id": 1004001,
+      "base": 4001,
+      "lap": 2,
+      "monster": "poring"
+    },
+    "1004002": {
+      "id": 1004002,
+      "base": 4002,
+      "lap": 2,
+      "monster": "fabre"
+    },
+    "1004003": {
+      "id": 1004003,
+      "base": 4003,
+      "lap": 2,
+      "monster": "pupa"
+    },
+    "1004004": {
+      "id": 1004004,
+      "base": 4004,
+      "lap": 2,
+      "monster": "drops"
+    },
+    "1004006": {
+      "id": 1004006,
+      "base": 4006,
+      "lap": 2,
+      "monster": "lunatic"
+    },
+    "1004007": {
+      "id": 1004007,
+      "base": 4007,
+      "lap": 2,
+      "monster": "peco_egg"
+    },
+    "1004008": {
+      "id": 1004008,
+      "base": 4008,
+      "lap": 2,
+      "monster": "picky"
+    },
+    "1004009": {
+      "id": 1004009,
+      "base": 4009,
+      "lap": 2,
+      "monster": "chonchon"
+    },
+    "1004010": {
+      "id": 1004010,
+      "base": 4010,
+      "lap": 2,
+      "monster": "willow"
+    },
+    "1004012": {
+      "id": 1004012,
+      "base": 4012,
+      "lap": 2,
+      "monster": "thief_bug_egg"
+    },
+    "1004014": {
+      "id": 1004014,
+      "base": 4014,
+      "lap": 2,
+      "monster": "roda_frog"
+    },
+    "1004015": {
+      "id": 1004015,
+      "base": 4015,
+      "lap": 2,
+      "monster": "condor"
+    },
+    "1004016": {
+      "id": 1004016,
+      "base": 4016,
+      "lap": 2,
+      "monster": "thief_bug"
+    },
+    "1004017": {
+      "id": 1004017,
+      "base": 4017,
+      "lap": 2,
+      "monster": "savage_babe"
+    },
+    "1004019": {
+      "id": 1004019,
+      "base": 4019,
+      "lap": 2,
+      "monster": "hornet"
+    },
+    "1004020": {
+      "id": 1004020,
+      "base": 4020,
+      "lap": 2,
+      "monster": "familiar"
+    },
+    "1004021": {
+      "id": 1004021,
+      "base": 4021,
+      "lap": 2,
+      "monster": "rocker"
+    },
+    "1004022": {
+      "id": 1004022,
+      "base": 4022,
+      "lap": 2,
+      "monster": "spore"
+    },
+    "1004023": {
+      "id": 1004023,
+      "base": 4023,
+      "lap": 2,
+      "monster": "baby_desert_wolf"
+    },
+    "1004024": {
+      "id": 1004024,
+      "base": 4024,
+      "lap": 2,
+      "monster": "plankton"
+    },
+    "1004025": {
+      "id": 1004025,
+      "base": 4025,
+      "lap": 2,
+      "monster": "skeleton"
+    },
+    "1004026": {
+      "id": 1004026,
+      "base": 4026,
+      "lap": 2,
+      "monster": "thief_bug_female"
+    },
+    "1004027": {
+      "id": 1004027,
+      "base": 4027,
+      "lap": 2,
+      "monster": "kukre"
+    },
+    "1004028": {
+      "id": 1004028,
+      "base": 4028,
+      "lap": 2,
+      "monster": "tarou"
+    },
+    "1004029": {
+      "id": 1004029,
+      "base": 4029,
+      "lap": 2,
+      "monster": "wolf"
+    },
+    "1004030": {
+      "id": 1004030,
+      "base": 4030,
+      "lap": 2,
+      "monster": "mandragora"
+    },
+    "1004033": {
+      "id": 1004033,
+      "base": 4033,
+      "lap": 2,
+      "monster": "poporing"
+    },
+    "1004034": {
+      "id": 1004034,
+      "base": 4034,
+      "lap": 2,
+      "monster": "worm_tail"
+    },
+    "1004035": {
+      "id": 1004035,
+      "base": 4035,
+      "lap": 2,
+      "monster": "hydra"
+    },
+    "1004037": {
+      "id": 1004037,
+      "base": 4037,
+      "lap": 2,
+      "monster": "snake"
+    },
+    "1004038": {
+      "id": 1004038,
+      "base": 4038,
+      "lap": 2,
+      "monster": "zombie"
+    },
+    "1004040": {
+      "id": 1004040,
+      "base": 4040,
+      "lap": 2,
+      "monster": "creamy"
+    },
+    "1004044": {
+      "id": 1004044,
+      "base": 4044,
+      "lap": 2,
+      "monster": "smokie"
+    },
+    "1004047": {
+      "id": 1004047,
+      "base": 4047,
+      "lap": 2,
+      "monster": "ghostring"
+    },
+    "1004048": {
+      "id": 1004048,
+      "base": 4048,
+      "lap": 2,
+      "monster": "poison_spore"
+    },
+    "1004049": {
+      "id": 1004049,
+      "base": 4049,
+      "lap": 2,
+      "monster": "vadon"
+    },
+    "1004052": {
+      "id": 1004052,
+      "base": 4052,
+      "lap": 2,
+      "monster": "elder_willow"
+    },
+    "1004054": {
+      "id": 1004054,
+      "base": 4054,
+      "lap": 2,
+      "monster": "angeling"
+    },
+    "1004055": {
+      "id": 1004055,
+      "base": 4055,
+      "lap": 2,
+      "monster": "marina"
+    },
+    "1004060": {
+      "id": 1004060,
+      "base": 4060,
+      "lap": 2,
+      "monster": "goblin"
+    },
+    "1004061": {
+      "id": 1004061,
+      "base": 4061,
+      "lap": 2,
+      "monster": "cornutus"
+    },
+    "1004066": {
+      "id": 1004066,
+      "base": 4066,
+      "lap": 2,
+      "monster": "orc_warrior"
+    },
+    "1004069": {
+      "id": 1004069,
+      "base": 4069,
+      "lap": 2,
+      "monster": "drainliar"
+    },
+    "1004071": {
+      "id": 1004071,
+      "base": 4071,
+      "lap": 2,
+      "monster": "orc_zombie"
+    },
+    "1004073": {
+      "id": 1004073,
+      "base": 4073,
+      "lap": 2,
+      "monster": "pirate_skel"
+    },
+    "1004074": {
+      "id": 1004074,
+      "base": 4074,
+      "lap": 2,
+      "monster": "bigfoot"
+    },
+    "1004077": {
+      "id": 1004077,
+      "base": 4077,
+      "lap": 2,
+      "monster": "phen"
+    },
+    "1004084": {
+      "id": 1004084,
+      "base": 4084,
+      "lap": 2,
+      "monster": "marine_sphere"
+    },
+    "1004085": {
+      "id": 1004085,
+      "base": 4085,
+      "lap": 2,
+      "monster": "orc_skeleton"
+    },
+    "1004086": {
+      "id": 1004086,
+      "base": 4086,
+      "lap": 2,
+      "monster": "skel_soldier"
+    },
+    "1004089": {
+      "id": 1004089,
+      "base": 4089,
+      "lap": 2,
+      "monster": "sword_fish"
+    },
+    "1004090": {
+      "id": 1004090,
+      "base": 4090,
+      "lap": 2,
+      "monster": "munak"
+    },
+    "1004091": {
+      "id": 1004091,
+      "base": 4091,
+      "lap": 2,
+      "monster": "kobold"
+    },
+    "1004093": {
+      "id": 1004093,
+      "base": 4093,
+      "lap": 2,
+      "monster": "obeaune"
+    },
+    "1004094": {
+      "id": 1004094,
+      "base": 4094,
+      "lap": 2,
+      "monster": "skel_archer"
+    },
+    "1004095": {
+      "id": 1004095,
+      "base": 4095,
+      "lap": 2,
+      "monster": "marse"
+    },
+    "1004097": {
+      "id": 1004097,
+      "base": 4097,
+      "lap": 2,
+      "monster": "matyr"
+    },
+    "1004098": {
+      "id": 1004098,
+      "base": 4098,
+      "lap": 2,
+      "monster": "dokebi"
+    },
+    "1004100": {
+      "id": 1004100,
+      "base": 4100,
+      "lap": 2,
+      "monster": "sohee"
+    },
+    "1004102": {
+      "id": 1004102,
+      "base": 4102,
+      "lap": 2,
+      "monster": "whisper"
+    },
+    "1004103": {
+      "id": 1004103,
+      "base": 4103,
+      "lap": 2,
+      "monster": "horong"
+    },
+    "1004106": {
+      "id": 1004106,
+      "base": 4106,
+      "lap": 2,
+      "monster": "mummy"
+    },
+    "1004107": {
+      "id": 1004107,
+      "base": 4107,
+      "lap": 2,
+      "monster": "verit"
+    },
+    "1004109": {
+      "id": 1004109,
+      "base": 4109,
+      "lap": 2,
+      "monster": "jakk"
+    },
+    "1004110": {
+      "id": 1004110,
+      "base": 4110,
+      "lap": 2,
+      "monster": "ghoul"
+    },
+    "1004111": {
+      "id": 1004111,
+      "base": 4111,
+      "lap": 2,
+      "monster": "strouf"
+    },
+    "1004113": {
+      "id": 1004113,
+      "base": 4113,
+      "lap": 2,
+      "monster": "marionette"
+    },
+    "1004114": {
+      "id": 1004114,
+      "base": 4114,
+      "lap": 2,
+      "monster": "argiope"
+    },
+    "1004115": {
+      "id": 1004115,
+      "base": 4115,
+      "lap": 2,
+      "monster": "hunter_fly"
+    },
+    "1004116": {
+      "id": 1004116,
+      "base": 4116,
+      "lap": 2,
+      "monster": "isis"
+    },
+    "1004117": {
+      "id": 1004117,
+      "base": 4117,
+      "lap": 2,
+      "monster": "side_winder"
+    },
+    "1004119": {
+      "id": 1004119,
+      "base": 4119,
+      "lap": 2,
+      "monster": "bathory"
+    },
+    "1004122": {
+      "id": 1004122,
+      "base": 4122,
+      "lap": 2,
+      "monster": "deviruchi"
+    },
+    "1004123": {
+      "id": 1004123,
+      "base": 4123,
+      "lap": 2,
+      "monster": "eddga"
+    },
+    "1004125": {
+      "id": 1004125,
+      "base": 4125,
+      "lap": 2,
+      "monster": "deviace"
+    },
+    "1004126": {
+      "id": 1004126,
+      "base": 4126,
+      "lap": 2,
+      "monster": "minorous"
+    },
+    "1004127": {
+      "id": 1004127,
+      "base": 4127,
+      "lap": 2,
+      "monster": "nightmare"
+    },
+    "1004128": {
+      "id": 1004128,
+      "base": 4128,
+      "lap": 2,
+      "monster": "golden_thief_bug"
+    },
+    "1004129": {
+      "id": 1004129,
+      "base": 4129,
+      "lap": 2,
+      "monster": "baphomet_jr"
+    },
+    "1004131": {
+      "id": 1004131,
+      "base": 4131,
+      "lap": 2,
+      "monster": "moonlight"
+    },
+    "1004133": {
+      "id": 1004133,
+      "base": 4133,
+      "lap": 2,
+      "monster": "raydric"
+    },
+    "1004134": {
+      "id": 1004134,
+      "base": 4134,
+      "lap": 2,
+      "monster": "dracula"
+    },
+    "1004136": {
+      "id": 1004136,
+      "base": 4136,
+      "lap": 2,
+      "monster": "khalitzburg"
+    },
+    "1004137": {
+      "id": 1004137,
+      "base": 4137,
+      "lap": 2,
+      "monster": "drake"
+    },
+    "1004139": {
+      "id": 1004139,
+      "base": 4139,
+      "lap": 2,
+      "monster": "joker"
+    },
+    "1004140": {
+      "id": 1004140,
+      "base": 4140,
+      "lap": 2,
+      "monster": "abysmal_knight"
+    },
+    "1004141": {
+      "id": 1004141,
+      "base": 4141,
+      "lap": 2,
+      "monster": "evil_druid"
+    },
+    "1004142": {
+      "id": 1004142,
+      "base": 4142,
+      "lap": 2,
+      "monster": "doppelganger"
+    },
+    "1004143": {
+      "id": 1004143,
+      "base": 4143,
+      "lap": 2,
+      "monster": "orc_hero"
+    },
+    "1004144": {
+      "id": 1004144,
+      "base": 4144,
+      "lap": 2,
+      "monster": "osiris"
+    },
+    "1004147": {
+      "id": 1004147,
+      "base": 4147,
+      "lap": 2,
+      "monster": "baphomet"
+    },
+    "1004155": {
+      "id": 1004155,
+      "base": 4155,
+      "lap": 2,
+      "monster": "goblin_leader"
+    },
+    "1004157": {
+      "id": 1004157,
+      "base": 4157,
+      "lap": 2,
+      "monster": "goblin_archer"
+    },
+    "1004159": {
+      "id": 1004159,
+      "base": 4159,
+      "lap": 2,
+      "monster": "nine_tail"
+    },
+    "1004168": {
+      "id": 1004168,
+      "base": 4168,
+      "lap": 2,
+      "monster": "dark_lord"
+    },
+    "1004169": {
+      "id": 1004169,
+      "base": 4169,
+      "lap": 2,
+      "monster": "dark_illusion"
+    },
+    "1004170": {
+      "id": 1004170,
+      "base": 4170,
+      "lap": 2,
+      "monster": "dark_frame"
+    },
+    "1004172": {
+      "id": 1004172,
+      "base": 4172,
+      "lap": 2,
+      "monster": "the_paper"
+    },
+    "1004174": {
+      "id": 1004174,
+      "base": 4174,
+      "lap": 2,
+      "monster": "deviling"
+    },
+    "1004176": {
+      "id": 1004176,
+      "base": 4176,
+      "lap": 2,
+      "monster": "dullahan"
+    },
+    "1004178": {
+      "id": 1004178,
+      "base": 4178,
+      "lap": 2,
+      "monster": "dragon_tail"
+    },
+    "1004179": {
+      "id": 1004179,
+      "base": 4179,
+      "lap": 2,
+      "monster": "dragon_fly"
+    },
+    "1004181": {
+      "id": 1004181,
+      "base": 4181,
+      "lap": 2,
+      "monster": "disguise"
+    },
+    "1004183": {
+      "id": 1004183,
+      "base": 4183,
+      "lap": 2,
+      "monster": "vagabond_wolf"
+    },
+    "1004185": {
+      "id": 1004185,
+      "base": 4185,
+      "lap": 2,
+      "monster": "rideword"
+    },
+    "1004187": {
+      "id": 1004187,
+      "base": 4187,
+      "lap": 2,
+      "monster": "raydric_archer"
+    },
+    "1004188": {
+      "id": 1004188,
+      "base": 4188,
+      "lap": 2,
+      "monster": "leib_olmai"
+    },
+    "1004190": {
+      "id": 1004190,
+      "base": 4190,
+      "lap": 2,
+      "monster": "wraith"
+    },
+    "1004191": {
+      "id": 1004191,
+      "base": 4191,
+      "lap": 2,
+      "monster": "loli_ruri"
+    },
+    "1004193": {
+      "id": 1004193,
+      "base": 4193,
+      "lap": 2,
+      "monster": "lude"
+    },
+    "1004195": {
+      "id": 1004195,
+      "base": 4195,
+      "lap": 2,
+      "monster": "leaf_cat"
+    },
+    "1004197": {
+      "id": 1004197,
+      "base": 4197,
+      "lap": 2,
+      "monster": "mastering"
+    },
+    "1004199": {
+      "id": 1004199,
+      "base": 4199,
+      "lap": 2,
+      "monster": "merman"
+    },
+    "1004205": {
+      "id": 1004205,
+      "base": 4205,
+      "lap": 2,
+      "monster": "mimic"
+    },
+    "1004206": {
+      "id": 1004206,
+      "base": 4206,
+      "lap": 2,
+      "monster": "myst_case"
+    },
+    "1004207": {
+      "id": 1004207,
+      "base": 4207,
+      "lap": 2,
+      "monster": "mysteltainn"
+    },
+    "1004210": {
+      "id": 1004210,
+      "base": 4210,
+      "lap": 2,
+      "monster": "wanderer"
+    },
+    "1004211": {
+      "id": 1004211,
+      "base": 4211,
+      "lap": 2,
+      "monster": "vocal"
+    },
+    "1004212": {
+      "id": 1004212,
+      "base": 4212,
+      "lap": 2,
+      "monster": "bon_gun"
+    },
+    "1004214": {
+      "id": 1004214,
+      "base": 4214,
+      "lap": 2,
+      "monster": "bloody_murderer"
+    },
+    "1004216": {
+      "id": 1004216,
+      "base": 4216,
+      "lap": 2,
+      "monster": "sasquatch"
+    },
+    "1004217": {
+      "id": 1004217,
+      "base": 4217,
+      "lap": 2,
+      "monster": "enchanted_peach_tree"
+    },
+    "1004221": {
+      "id": 1004221,
+      "base": 4221,
+      "lap": 2,
+      "monster": "skeleton_general"
+    },
+    "1004222": {
+      "id": 1004222,
+      "base": 4222,
+      "lap": 2,
+      "monster": "skeleton_prisoner"
+    },
+    "1004225": {
+      "id": 1004225,
+      "base": 4225,
+      "lap": 2,
+      "monster": "stone_shooter"
+    },
+    "1004227": {
+      "id": 1004227,
+      "base": 4227,
+      "lap": 2,
+      "monster": "spring_rabbit"
+    },
+    "1004229": {
+      "id": 1004229,
+      "base": 4229,
+      "lap": 2,
+      "monster": "clock_tower_manager"
+    },
+    "1004235": {
+      "id": 1004235,
+      "base": 4235,
+      "lap": 2,
+      "monster": "christmas_cookie"
+    },
+    "1004237": {
+      "id": 1004237,
+      "base": 4237,
+      "lap": 2,
+      "monster": "owl_duke"
+    },
+    "1004238": {
+      "id": 1004238,
+      "base": 4238,
+      "lap": 2,
+      "monster": "owl_baron"
+    },
+    "1004239": {
+      "id": 1004239,
+      "base": 4239,
+      "lap": 2,
+      "monster": "iron_fist"
+    },
+    "1004243": {
+      "id": 1004243,
+      "base": 4243,
+      "lap": 2,
+      "monster": "antonio"
+    },
+    "1004244": {
+      "id": 1004244,
+      "base": 4244,
+      "lap": 2,
+      "monster": "alarm"
+    },
+    "1004248": {
+      "id": 1004248,
+      "base": 4248,
+      "lap": 2,
+      "monster": "ancient_mummy"
+    },
+    "1004250": {
+      "id": 1004250,
+      "base": 4250,
+      "lap": 2,
+      "monster": "executioner"
+    },
+    "1004254": {
+      "id": 1004254,
+      "base": 4254,
+      "lap": 2,
+      "monster": "ogretooth"
+    },
+    "1004255": {
+      "id": 1004255,
+      "base": 4255,
+      "lap": 2,
+      "monster": "orc_lady"
+    },
+    "1004256": {
+      "id": 1004256,
+      "base": 4256,
+      "lap": 2,
+      "monster": "orc_archer"
+    },
+    "1004259": {
+      "id": 1004259,
+      "base": 4259,
+      "lap": 2,
+      "monster": "wooden_golem"
+    },
+    "1004266": {
+      "id": 1004266,
+      "base": 4266,
+      "lap": 2,
+      "monster": "eclipse"
+    },
+    "1004275": {
+      "id": 1004275,
+      "base": 4275,
+      "lap": 2,
+      "monster": "zombie_prisoner"
+    },
+    "1004276": {
+      "id": 1004276,
+      "base": 4276,
+      "lap": 2,
+      "monster": "lord_of_the_dead"
+    },
+    "1004278": {
+      "id": 1004278,
+      "base": 4278,
+      "lap": 2,
+      "monster": "gibbet"
+    },
+    "1004283": {
+      "id": 1004283,
+      "base": 4283,
+      "lap": 2,
+      "monster": "greatest_general"
+    },
+    "1004287": {
+      "id": 1004287,
+      "base": 4287,
+      "lap": 2,
+      "monster": "kapha"
+    },
+    "1004290": {
+      "id": 1004290,
+      "base": 4290,
+      "lap": 2,
+      "monster": "cat_o_nine_tail"
+    },
+    "1004291": {
+      "id": 1004291,
+      "base": 4291,
+      "lap": 2,
+      "monster": "kobold_leader"
+    },
+    "1004293": {
+      "id": 1004293,
+      "base": 4293,
+      "lap": 2,
+      "monster": "cookie"
+    },
+    "1004294": {
+      "id": 1004294,
+      "base": 4294,
+      "lap": 2,
+      "monster": "quve"
+    },
+    "1004296": {
+      "id": 1004296,
+      "base": 4296,
+      "lap": 2,
+      "monster": "cramp"
+    },
+    "1004297": {
+      "id": 1004297,
+      "base": 4297,
+      "lap": 2,
+      "monster": "cruiser"
+    },
+    "1004299": {
+      "id": 1004299,
+      "base": 4299,
+      "lap": 2,
+      "monster": "clock"
+    },
+    "1004300": {
+      "id": 1004300,
+      "base": 4300,
+      "lap": 2,
+      "monster": "chimera"
+    },
+    "1004301": {
+      "id": 1004301,
+      "base": 4301,
+      "lap": 2,
+      "monster": "killer_mantis"
+    },
+    "1004303": {
+      "id": 1004303,
+      "base": 4303,
+      "lap": 2,
+      "monster": "giant_whisper"
+    },
+    "1004306": {
+      "id": 1004306,
+      "base": 4306,
+      "lap": 2,
+      "monster": "toad"
+    },
+    "1004313": {
+      "id": 1004313,
+      "base": 4313,
+      "lap": 2,
+      "monster": "punk"
+    },
+    "1004314": {
+      "id": 1004314,
+      "base": 4314,
+      "lap": 2,
+      "monster": "penomena"
+    },
+    "1004318": {
+      "id": 1004318,
+      "base": 4318,
+      "lap": 2,
+      "monster": "stormy_knight"
+    },
+    "1004319": {
+      "id": 1004319,
+      "base": 4319,
+      "lap": 2,
+      "monster": "freezer"
+    },
+    "1004320": {
+      "id": 1004320,
+      "base": 4320,
+      "lap": 2,
+      "monster": "bloody_knight"
+    },
+    "1004321": {
+      "id": 1004321,
+      "base": 4321,
+      "lap": 2,
+      "monster": "heirozoist"
+    },
+    "1004322": {
+      "id": 1004322,
+      "base": 4322,
+      "lap": 2,
+      "monster": "high_orc"
+    },
+    "1004323": {
+      "id": 1004323,
+      "base": 4323,
+      "lap": 2,
+      "monster": "baby_hatii"
+    },
+    "1004324": {
+      "id": 1004324,
+      "base": 4324,
+      "lap": 2,
+      "monster": "hatii"
+    },
+    "1004328": {
+      "id": 1004328,
+      "base": 4328,
+      "lap": 2,
+      "monster": "hyegun"
+    },
+    "1004330": {
+      "id": 1004330,
+      "base": 4330,
+      "lap": 2,
+      "monster": "evil_snake_lord"
+    },
+    "1004340": {
+      "id": 1004340,
+      "base": 4340,
+      "lap": 2,
+      "monster": "teddy_bear"
+    },
+    "1004372": {
+      "id": 1004372,
+      "base": 4372,
+      "lap": 2,
+      "monster": "white_lady"
+    },
+    "1004375": {
+      "id": 1004375,
+      "base": 4375,
+      "lap": 2,
+      "monster": "orc_baby"
+    },
+    "1004378": {
+      "id": 1004378,
+      "base": 4378,
+      "lap": 2,
+      "monster": "acidus"
+    },
+    "1004379": {
+      "id": 1004379,
+      "base": 4379,
+      "lap": 2,
+      "monster": "acidus_acidus"
+    },
+    "1004380": {
+      "id": 1004380,
+      "base": 4380,
+      "lap": 2,
+      "monster": "ferus"
+    },
+    "1004381": {
+      "id": 1004381,
+      "base": 4381,
+      "lap": 2,
+      "monster": "ferus_ferus"
+    },
+    "1004382": {
+      "id": 1004382,
+      "base": 4382,
+      "lap": 2,
+      "monster": "novus_novus"
+    },
+    "1004383": {
+      "id": 1004383,
+      "base": 4383,
+      "lap": 2,
+      "monster": "novus"
+    },
+    "1004384": {
+      "id": 1004384,
+      "base": 4384,
+      "lap": 2,
+      "monster": "hydrolancer"
+    },
+    "1004385": {
+      "id": 1004385,
+      "base": 4385,
+      "lap": 2,
+      "monster": "dragon_egg"
+    },
+    "1004386": {
+      "id": 1004386,
+      "base": 4386,
+      "lap": 2,
+      "monster": "detardeurus"
+    },
+    "1004387": {
+      "id": 1004387,
+      "base": 4387,
+      "lap": 2,
+      "monster": "ancient_mimic"
+    },
+    "1004415": {
+      "id": 1004415,
+      "base": 4415,
+      "lap": 2,
+      "monster": "snowier"
+    },
+    "1004416": {
+      "id": 1004416,
+      "base": 4416,
+      "lap": 2,
+      "monster": "siroma"
+    },
+    "1004417": {
+      "id": 1004417,
+      "base": 4417,
+      "lap": 2,
+      "monster": "ice_titan"
+    },
+    "1004418": {
+      "id": 1004418,
+      "base": 4418,
+      "lap": 2,
+      "monster": "gazeti"
+    },
+    "1004419": {
+      "id": 1004419,
+      "base": 4419,
+      "lap": 2,
+      "monster": "ktullanux"
+    },
+    "1004441": {
+      "id": 1004441,
+      "base": 4441,
+      "lap": 2,
+      "monster": "fallen_bishop_hibram"
+    },
+    "1004524": {
+      "id": 1004524,
+      "base": 4524,
+      "lap": 2,
+      "monster": "king_dramoh"
+    },
+    "1004525": {
+      "id": 1004525,
+      "base": 4525,
+      "lap": 2,
+      "monster": "kraken"
+    },
+    "2004001": {
+      "id": 2004001,
+      "base": 4001,
+      "lap": 3,
+      "monster": "poring"
+    },
+    "2004002": {
+      "id": 2004002,
+      "base": 4002,
+      "lap": 3,
+      "monster": "fabre"
+    },
+    "2004003": {
+      "id": 2004003,
+      "base": 4003,
+      "lap": 3,
+      "monster": "pupa"
+    },
+    "2004004": {
+      "id": 2004004,
+      "base": 4004,
+      "lap": 3,
+      "monster": "drops"
+    },
+    "2004006": {
+      "id": 2004006,
+      "base": 4006,
+      "lap": 3,
+      "monster": "lunatic"
+    },
+    "2004007": {
+      "id": 2004007,
+      "base": 4007,
+      "lap": 3,
+      "monster": "peco_egg"
+    },
+    "2004008": {
+      "id": 2004008,
+      "base": 4008,
+      "lap": 3,
+      "monster": "picky"
+    },
+    "2004009": {
+      "id": 2004009,
+      "base": 4009,
+      "lap": 3,
+      "monster": "chonchon"
+    },
+    "2004010": {
+      "id": 2004010,
+      "base": 4010,
+      "lap": 3,
+      "monster": "willow"
+    },
+    "2004012": {
+      "id": 2004012,
+      "base": 4012,
+      "lap": 3,
+      "monster": "thief_bug_egg"
+    },
+    "2004014": {
+      "id": 2004014,
+      "base": 4014,
+      "lap": 3,
+      "monster": "roda_frog"
+    },
+    "2004015": {
+      "id": 2004015,
+      "base": 4015,
+      "lap": 3,
+      "monster": "condor"
+    },
+    "2004016": {
+      "id": 2004016,
+      "base": 4016,
+      "lap": 3,
+      "monster": "thief_bug"
+    },
+    "2004017": {
+      "id": 2004017,
+      "base": 4017,
+      "lap": 3,
+      "monster": "savage_babe"
+    },
+    "2004019": {
+      "id": 2004019,
+      "base": 4019,
+      "lap": 3,
+      "monster": "hornet"
+    },
+    "2004020": {
+      "id": 2004020,
+      "base": 4020,
+      "lap": 3,
+      "monster": "familiar"
+    },
+    "2004021": {
+      "id": 2004021,
+      "base": 4021,
+      "lap": 3,
+      "monster": "rocker"
+    },
+    "2004022": {
+      "id": 2004022,
+      "base": 4022,
+      "lap": 3,
+      "monster": "spore"
+    },
+    "2004023": {
+      "id": 2004023,
+      "base": 4023,
+      "lap": 3,
+      "monster": "baby_desert_wolf"
+    },
+    "2004024": {
+      "id": 2004024,
+      "base": 4024,
+      "lap": 3,
+      "monster": "plankton"
+    },
+    "2004025": {
+      "id": 2004025,
+      "base": 4025,
+      "lap": 3,
+      "monster": "skeleton"
+    },
+    "2004026": {
+      "id": 2004026,
+      "base": 4026,
+      "lap": 3,
+      "monster": "thief_bug_female"
+    },
+    "2004027": {
+      "id": 2004027,
+      "base": 4027,
+      "lap": 3,
+      "monster": "kukre"
+    },
+    "2004028": {
+      "id": 2004028,
+      "base": 4028,
+      "lap": 3,
+      "monster": "tarou"
+    },
+    "2004029": {
+      "id": 2004029,
+      "base": 4029,
+      "lap": 3,
+      "monster": "wolf"
+    },
+    "2004030": {
+      "id": 2004030,
+      "base": 4030,
+      "lap": 3,
+      "monster": "mandragora"
+    },
+    "2004033": {
+      "id": 2004033,
+      "base": 4033,
+      "lap": 3,
+      "monster": "poporing"
+    },
+    "2004034": {
+      "id": 2004034,
+      "base": 4034,
+      "lap": 3,
+      "monster": "worm_tail"
+    },
+    "2004035": {
+      "id": 2004035,
+      "base": 4035,
+      "lap": 3,
+      "monster": "hydra"
+    },
+    "2004037": {
+      "id": 2004037,
+      "base": 4037,
+      "lap": 3,
+      "monster": "snake"
+    },
+    "2004038": {
+      "id": 2004038,
+      "base": 4038,
+      "lap": 3,
+      "monster": "zombie"
+    },
+    "2004040": {
+      "id": 2004040,
+      "base": 4040,
+      "lap": 3,
+      "monster": "creamy"
+    },
+    "2004044": {
+      "id": 2004044,
+      "base": 4044,
+      "lap": 3,
+      "monster": "smokie"
+    },
+    "2004047": {
+      "id": 2004047,
+      "base": 4047,
+      "lap": 3,
+      "monster": "ghostring"
+    },
+    "2004048": {
+      "id": 2004048,
+      "base": 4048,
+      "lap": 3,
+      "monster": "poison_spore"
+    },
+    "2004049": {
+      "id": 2004049,
+      "base": 4049,
+      "lap": 3,
+      "monster": "vadon"
+    },
+    "2004052": {
+      "id": 2004052,
+      "base": 4052,
+      "lap": 3,
+      "monster": "elder_willow"
+    },
+    "2004054": {
+      "id": 2004054,
+      "base": 4054,
+      "lap": 3,
+      "monster": "angeling"
+    },
+    "2004055": {
+      "id": 2004055,
+      "base": 4055,
+      "lap": 3,
+      "monster": "marina"
+    },
+    "2004060": {
+      "id": 2004060,
+      "base": 4060,
+      "lap": 3,
+      "monster": "goblin"
+    },
+    "2004061": {
+      "id": 2004061,
+      "base": 4061,
+      "lap": 3,
+      "monster": "cornutus"
+    },
+    "2004066": {
+      "id": 2004066,
+      "base": 4066,
+      "lap": 3,
+      "monster": "orc_warrior"
+    },
+    "2004069": {
+      "id": 2004069,
+      "base": 4069,
+      "lap": 3,
+      "monster": "drainliar"
+    },
+    "2004071": {
+      "id": 2004071,
+      "base": 4071,
+      "lap": 3,
+      "monster": "orc_zombie"
+    },
+    "2004073": {
+      "id": 2004073,
+      "base": 4073,
+      "lap": 3,
+      "monster": "pirate_skel"
+    },
+    "2004074": {
+      "id": 2004074,
+      "base": 4074,
+      "lap": 3,
+      "monster": "bigfoot"
+    },
+    "2004077": {
+      "id": 2004077,
+      "base": 4077,
+      "lap": 3,
+      "monster": "phen"
+    },
+    "2004084": {
+      "id": 2004084,
+      "base": 4084,
+      "lap": 3,
+      "monster": "marine_sphere"
+    },
+    "2004085": {
+      "id": 2004085,
+      "base": 4085,
+      "lap": 3,
+      "monster": "orc_skeleton"
+    },
+    "2004086": {
+      "id": 2004086,
+      "base": 4086,
+      "lap": 3,
+      "monster": "skel_soldier"
+    },
+    "2004089": {
+      "id": 2004089,
+      "base": 4089,
+      "lap": 3,
+      "monster": "sword_fish"
+    },
+    "2004090": {
+      "id": 2004090,
+      "base": 4090,
+      "lap": 3,
+      "monster": "munak"
+    },
+    "2004091": {
+      "id": 2004091,
+      "base": 4091,
+      "lap": 3,
+      "monster": "kobold"
+    },
+    "2004093": {
+      "id": 2004093,
+      "base": 4093,
+      "lap": 3,
+      "monster": "obeaune"
+    },
+    "2004094": {
+      "id": 2004094,
+      "base": 4094,
+      "lap": 3,
+      "monster": "skel_archer"
+    },
+    "2004095": {
+      "id": 2004095,
+      "base": 4095,
+      "lap": 3,
+      "monster": "marse"
+    },
+    "2004097": {
+      "id": 2004097,
+      "base": 4097,
+      "lap": 3,
+      "monster": "matyr"
+    },
+    "2004098": {
+      "id": 2004098,
+      "base": 4098,
+      "lap": 3,
+      "monster": "dokebi"
+    },
+    "2004100": {
+      "id": 2004100,
+      "base": 4100,
+      "lap": 3,
+      "monster": "sohee"
+    },
+    "2004102": {
+      "id": 2004102,
+      "base": 4102,
+      "lap": 3,
+      "monster": "whisper"
+    },
+    "2004103": {
+      "id": 2004103,
+      "base": 4103,
+      "lap": 3,
+      "monster": "horong"
+    },
+    "2004106": {
+      "id": 2004106,
+      "base": 4106,
+      "lap": 3,
+      "monster": "mummy"
+    },
+    "2004107": {
+      "id": 2004107,
+      "base": 4107,
+      "lap": 3,
+      "monster": "verit"
+    },
+    "2004109": {
+      "id": 2004109,
+      "base": 4109,
+      "lap": 3,
+      "monster": "jakk"
+    },
+    "2004110": {
+      "id": 2004110,
+      "base": 4110,
+      "lap": 3,
+      "monster": "ghoul"
+    },
+    "2004111": {
+      "id": 2004111,
+      "base": 4111,
+      "lap": 3,
+      "monster": "strouf"
+    },
+    "2004113": {
+      "id": 2004113,
+      "base": 4113,
+      "lap": 3,
+      "monster": "marionette"
+    },
+    "2004114": {
+      "id": 2004114,
+      "base": 4114,
+      "lap": 3,
+      "monster": "argiope"
+    },
+    "2004115": {
+      "id": 2004115,
+      "base": 4115,
+      "lap": 3,
+      "monster": "hunter_fly"
+    },
+    "2004116": {
+      "id": 2004116,
+      "base": 4116,
+      "lap": 3,
+      "monster": "isis"
+    },
+    "2004117": {
+      "id": 2004117,
+      "base": 4117,
+      "lap": 3,
+      "monster": "side_winder"
+    },
+    "2004119": {
+      "id": 2004119,
+      "base": 4119,
+      "lap": 3,
+      "monster": "bathory"
+    },
+    "2004122": {
+      "id": 2004122,
+      "base": 4122,
+      "lap": 3,
+      "monster": "deviruchi"
+    },
+    "2004123": {
+      "id": 2004123,
+      "base": 4123,
+      "lap": 3,
+      "monster": "eddga"
+    },
+    "2004125": {
+      "id": 2004125,
+      "base": 4125,
+      "lap": 3,
+      "monster": "deviace"
+    },
+    "2004126": {
+      "id": 2004126,
+      "base": 4126,
+      "lap": 3,
+      "monster": "minorous"
+    },
+    "2004127": {
+      "id": 2004127,
+      "base": 4127,
+      "lap": 3,
+      "monster": "nightmare"
+    },
+    "2004128": {
+      "id": 2004128,
+      "base": 4128,
+      "lap": 3,
+      "monster": "golden_thief_bug"
+    },
+    "2004129": {
+      "id": 2004129,
+      "base": 4129,
+      "lap": 3,
+      "monster": "baphomet_jr"
+    },
+    "2004131": {
+      "id": 2004131,
+      "base": 4131,
+      "lap": 3,
+      "monster": "moonlight"
+    },
+    "2004133": {
+      "id": 2004133,
+      "base": 4133,
+      "lap": 3,
+      "monster": "raydric"
+    },
+    "2004134": {
+      "id": 2004134,
+      "base": 4134,
+      "lap": 3,
+      "monster": "dracula"
+    },
+    "2004136": {
+      "id": 2004136,
+      "base": 4136,
+      "lap": 3,
+      "monster": "khalitzburg"
+    },
+    "2004137": {
+      "id": 2004137,
+      "base": 4137,
+      "lap": 3,
+      "monster": "drake"
+    },
+    "2004139": {
+      "id": 2004139,
+      "base": 4139,
+      "lap": 3,
+      "monster": "joker"
+    },
+    "2004140": {
+      "id": 2004140,
+      "base": 4140,
+      "lap": 3,
+      "monster": "abysmal_knight"
+    },
+    "2004141": {
+      "id": 2004141,
+      "base": 4141,
+      "lap": 3,
+      "monster": "evil_druid"
+    },
+    "2004142": {
+      "id": 2004142,
+      "base": 4142,
+      "lap": 3,
+      "monster": "doppelganger"
+    },
+    "2004143": {
+      "id": 2004143,
+      "base": 4143,
+      "lap": 3,
+      "monster": "orc_hero"
+    },
+    "2004144": {
+      "id": 2004144,
+      "base": 4144,
+      "lap": 3,
+      "monster": "osiris"
+    },
+    "2004147": {
+      "id": 2004147,
+      "base": 4147,
+      "lap": 3,
+      "monster": "baphomet"
+    },
+    "2004155": {
+      "id": 2004155,
+      "base": 4155,
+      "lap": 3,
+      "monster": "goblin_leader"
+    },
+    "2004157": {
+      "id": 2004157,
+      "base": 4157,
+      "lap": 3,
+      "monster": "goblin_archer"
+    },
+    "2004159": {
+      "id": 2004159,
+      "base": 4159,
+      "lap": 3,
+      "monster": "nine_tail"
+    },
+    "2004168": {
+      "id": 2004168,
+      "base": 4168,
+      "lap": 3,
+      "monster": "dark_lord"
+    },
+    "2004169": {
+      "id": 2004169,
+      "base": 4169,
+      "lap": 3,
+      "monster": "dark_illusion"
+    },
+    "2004170": {
+      "id": 2004170,
+      "base": 4170,
+      "lap": 3,
+      "monster": "dark_frame"
+    },
+    "2004172": {
+      "id": 2004172,
+      "base": 4172,
+      "lap": 3,
+      "monster": "the_paper"
+    },
+    "2004174": {
+      "id": 2004174,
+      "base": 4174,
+      "lap": 3,
+      "monster": "deviling"
+    },
+    "2004176": {
+      "id": 2004176,
+      "base": 4176,
+      "lap": 3,
+      "monster": "dullahan"
+    },
+    "2004178": {
+      "id": 2004178,
+      "base": 4178,
+      "lap": 3,
+      "monster": "dragon_tail"
+    },
+    "2004179": {
+      "id": 2004179,
+      "base": 4179,
+      "lap": 3,
+      "monster": "dragon_fly"
+    },
+    "2004181": {
+      "id": 2004181,
+      "base": 4181,
+      "lap": 3,
+      "monster": "disguise"
+    },
+    "2004183": {
+      "id": 2004183,
+      "base": 4183,
+      "lap": 3,
+      "monster": "vagabond_wolf"
+    },
+    "2004185": {
+      "id": 2004185,
+      "base": 4185,
+      "lap": 3,
+      "monster": "rideword"
+    },
+    "2004187": {
+      "id": 2004187,
+      "base": 4187,
+      "lap": 3,
+      "monster": "raydric_archer"
+    },
+    "2004188": {
+      "id": 2004188,
+      "base": 4188,
+      "lap": 3,
+      "monster": "leib_olmai"
+    },
+    "2004190": {
+      "id": 2004190,
+      "base": 4190,
+      "lap": 3,
+      "monster": "wraith"
+    },
+    "2004191": {
+      "id": 2004191,
+      "base": 4191,
+      "lap": 3,
+      "monster": "loli_ruri"
+    },
+    "2004193": {
+      "id": 2004193,
+      "base": 4193,
+      "lap": 3,
+      "monster": "lude"
+    },
+    "2004195": {
+      "id": 2004195,
+      "base": 4195,
+      "lap": 3,
+      "monster": "leaf_cat"
+    },
+    "2004197": {
+      "id": 2004197,
+      "base": 4197,
+      "lap": 3,
+      "monster": "mastering"
+    },
+    "2004199": {
+      "id": 2004199,
+      "base": 4199,
+      "lap": 3,
+      "monster": "merman"
+    },
+    "2004205": {
+      "id": 2004205,
+      "base": 4205,
+      "lap": 3,
+      "monster": "mimic"
+    },
+    "2004206": {
+      "id": 2004206,
+      "base": 4206,
+      "lap": 3,
+      "monster": "myst_case"
+    },
+    "2004207": {
+      "id": 2004207,
+      "base": 4207,
+      "lap": 3,
+      "monster": "mysteltainn"
+    },
+    "2004210": {
+      "id": 2004210,
+      "base": 4210,
+      "lap": 3,
+      "monster": "wanderer"
+    },
+    "2004211": {
+      "id": 2004211,
+      "base": 4211,
+      "lap": 3,
+      "monster": "vocal"
+    },
+    "2004212": {
+      "id": 2004212,
+      "base": 4212,
+      "lap": 3,
+      "monster": "bon_gun"
+    },
+    "2004214": {
+      "id": 2004214,
+      "base": 4214,
+      "lap": 3,
+      "monster": "bloody_murderer"
+    },
+    "2004216": {
+      "id": 2004216,
+      "base": 4216,
+      "lap": 3,
+      "monster": "sasquatch"
+    },
+    "2004217": {
+      "id": 2004217,
+      "base": 4217,
+      "lap": 3,
+      "monster": "enchanted_peach_tree"
+    },
+    "2004221": {
+      "id": 2004221,
+      "base": 4221,
+      "lap": 3,
+      "monster": "skeleton_general"
+    },
+    "2004222": {
+      "id": 2004222,
+      "base": 4222,
+      "lap": 3,
+      "monster": "skeleton_prisoner"
+    },
+    "2004225": {
+      "id": 2004225,
+      "base": 4225,
+      "lap": 3,
+      "monster": "stone_shooter"
+    },
+    "2004227": {
+      "id": 2004227,
+      "base": 4227,
+      "lap": 3,
+      "monster": "spring_rabbit"
+    },
+    "2004229": {
+      "id": 2004229,
+      "base": 4229,
+      "lap": 3,
+      "monster": "clock_tower_manager"
+    },
+    "2004235": {
+      "id": 2004235,
+      "base": 4235,
+      "lap": 3,
+      "monster": "christmas_cookie"
+    },
+    "2004237": {
+      "id": 2004237,
+      "base": 4237,
+      "lap": 3,
+      "monster": "owl_duke"
+    },
+    "2004238": {
+      "id": 2004238,
+      "base": 4238,
+      "lap": 3,
+      "monster": "owl_baron"
+    },
+    "2004239": {
+      "id": 2004239,
+      "base": 4239,
+      "lap": 3,
+      "monster": "iron_fist"
+    },
+    "2004243": {
+      "id": 2004243,
+      "base": 4243,
+      "lap": 3,
+      "monster": "antonio"
+    },
+    "2004244": {
+      "id": 2004244,
+      "base": 4244,
+      "lap": 3,
+      "monster": "alarm"
+    },
+    "2004248": {
+      "id": 2004248,
+      "base": 4248,
+      "lap": 3,
+      "monster": "ancient_mummy"
+    },
+    "2004250": {
+      "id": 2004250,
+      "base": 4250,
+      "lap": 3,
+      "monster": "executioner"
+    },
+    "2004254": {
+      "id": 2004254,
+      "base": 4254,
+      "lap": 3,
+      "monster": "ogretooth"
+    },
+    "2004255": {
+      "id": 2004255,
+      "base": 4255,
+      "lap": 3,
+      "monster": "orc_lady"
+    },
+    "2004256": {
+      "id": 2004256,
+      "base": 4256,
+      "lap": 3,
+      "monster": "orc_archer"
+    },
+    "2004259": {
+      "id": 2004259,
+      "base": 4259,
+      "lap": 3,
+      "monster": "wooden_golem"
+    },
+    "2004266": {
+      "id": 2004266,
+      "base": 4266,
+      "lap": 3,
+      "monster": "eclipse"
+    },
+    "2004275": {
+      "id": 2004275,
+      "base": 4275,
+      "lap": 3,
+      "monster": "zombie_prisoner"
+    },
+    "2004276": {
+      "id": 2004276,
+      "base": 4276,
+      "lap": 3,
+      "monster": "lord_of_the_dead"
+    },
+    "2004278": {
+      "id": 2004278,
+      "base": 4278,
+      "lap": 3,
+      "monster": "gibbet"
+    },
+    "2004283": {
+      "id": 2004283,
+      "base": 4283,
+      "lap": 3,
+      "monster": "greatest_general"
+    },
+    "2004287": {
+      "id": 2004287,
+      "base": 4287,
+      "lap": 3,
+      "monster": "kapha"
+    },
+    "2004290": {
+      "id": 2004290,
+      "base": 4290,
+      "lap": 3,
+      "monster": "cat_o_nine_tail"
+    },
+    "2004291": {
+      "id": 2004291,
+      "base": 4291,
+      "lap": 3,
+      "monster": "kobold_leader"
+    },
+    "2004293": {
+      "id": 2004293,
+      "base": 4293,
+      "lap": 3,
+      "monster": "cookie"
+    },
+    "2004294": {
+      "id": 2004294,
+      "base": 4294,
+      "lap": 3,
+      "monster": "quve"
+    },
+    "2004296": {
+      "id": 2004296,
+      "base": 4296,
+      "lap": 3,
+      "monster": "cramp"
+    },
+    "2004297": {
+      "id": 2004297,
+      "base": 4297,
+      "lap": 3,
+      "monster": "cruiser"
+    },
+    "2004299": {
+      "id": 2004299,
+      "base": 4299,
+      "lap": 3,
+      "monster": "clock"
+    },
+    "2004300": {
+      "id": 2004300,
+      "base": 4300,
+      "lap": 3,
+      "monster": "chimera"
+    },
+    "2004301": {
+      "id": 2004301,
+      "base": 4301,
+      "lap": 3,
+      "monster": "killer_mantis"
+    },
+    "2004303": {
+      "id": 2004303,
+      "base": 4303,
+      "lap": 3,
+      "monster": "giant_whisper"
+    },
+    "2004306": {
+      "id": 2004306,
+      "base": 4306,
+      "lap": 3,
+      "monster": "toad"
+    },
+    "2004313": {
+      "id": 2004313,
+      "base": 4313,
+      "lap": 3,
+      "monster": "punk"
+    },
+    "2004314": {
+      "id": 2004314,
+      "base": 4314,
+      "lap": 3,
+      "monster": "penomena"
+    },
+    "2004318": {
+      "id": 2004318,
+      "base": 4318,
+      "lap": 3,
+      "monster": "stormy_knight"
+    },
+    "2004319": {
+      "id": 2004319,
+      "base": 4319,
+      "lap": 3,
+      "monster": "freezer"
+    },
+    "2004320": {
+      "id": 2004320,
+      "base": 4320,
+      "lap": 3,
+      "monster": "bloody_knight"
+    },
+    "2004321": {
+      "id": 2004321,
+      "base": 4321,
+      "lap": 3,
+      "monster": "heirozoist"
+    },
+    "2004322": {
+      "id": 2004322,
+      "base": 4322,
+      "lap": 3,
+      "monster": "high_orc"
+    },
+    "2004323": {
+      "id": 2004323,
+      "base": 4323,
+      "lap": 3,
+      "monster": "baby_hatii"
+    },
+    "2004324": {
+      "id": 2004324,
+      "base": 4324,
+      "lap": 3,
+      "monster": "hatii"
+    },
+    "2004328": {
+      "id": 2004328,
+      "base": 4328,
+      "lap": 3,
+      "monster": "hyegun"
+    },
+    "2004330": {
+      "id": 2004330,
+      "base": 4330,
+      "lap": 3,
+      "monster": "evil_snake_lord"
+    },
+    "2004340": {
+      "id": 2004340,
+      "base": 4340,
+      "lap": 3,
+      "monster": "teddy_bear"
+    },
+    "2004372": {
+      "id": 2004372,
+      "base": 4372,
+      "lap": 3,
+      "monster": "white_lady"
+    },
+    "2004375": {
+      "id": 2004375,
+      "base": 4375,
+      "lap": 3,
+      "monster": "orc_baby"
+    },
+    "2004378": {
+      "id": 2004378,
+      "base": 4378,
+      "lap": 3,
+      "monster": "acidus"
+    },
+    "2004379": {
+      "id": 2004379,
+      "base": 4379,
+      "lap": 3,
+      "monster": "acidus_acidus"
+    },
+    "2004380": {
+      "id": 2004380,
+      "base": 4380,
+      "lap": 3,
+      "monster": "ferus"
+    },
+    "2004381": {
+      "id": 2004381,
+      "base": 4381,
+      "lap": 3,
+      "monster": "ferus_ferus"
+    },
+    "2004382": {
+      "id": 2004382,
+      "base": 4382,
+      "lap": 3,
+      "monster": "novus_novus"
+    },
+    "2004383": {
+      "id": 2004383,
+      "base": 4383,
+      "lap": 3,
+      "monster": "novus"
+    },
+    "2004384": {
+      "id": 2004384,
+      "base": 4384,
+      "lap": 3,
+      "monster": "hydrolancer"
+    },
+    "2004385": {
+      "id": 2004385,
+      "base": 4385,
+      "lap": 3,
+      "monster": "dragon_egg"
+    },
+    "2004386": {
+      "id": 2004386,
+      "base": 4386,
+      "lap": 3,
+      "monster": "detardeurus"
+    },
+    "2004387": {
+      "id": 2004387,
+      "base": 4387,
+      "lap": 3,
+      "monster": "ancient_mimic"
+    },
+    "2004415": {
+      "id": 2004415,
+      "base": 4415,
+      "lap": 3,
+      "monster": "snowier"
+    },
+    "2004416": {
+      "id": 2004416,
+      "base": 4416,
+      "lap": 3,
+      "monster": "siroma"
+    },
+    "2004417": {
+      "id": 2004417,
+      "base": 4417,
+      "lap": 3,
+      "monster": "ice_titan"
+    },
+    "2004418": {
+      "id": 2004418,
+      "base": 4418,
+      "lap": 3,
+      "monster": "gazeti"
+    },
+    "2004419": {
+      "id": 2004419,
+      "base": 4419,
+      "lap": 3,
+      "monster": "ktullanux"
+    },
+    "2004441": {
+      "id": 2004441,
+      "base": 4441,
+      "lap": 3,
+      "monster": "fallen_bishop_hibram"
+    },
+    "2004524": {
+      "id": 2004524,
+      "base": 4524,
+      "lap": 3,
+      "monster": "king_dramoh"
+    },
+    "2004525": {
+      "id": 2004525,
+      "base": 4525,
+      "lap": 3,
+      "monster": "kraken"
+    },
+    "3004001": {
+      "id": 3004001,
+      "base": 4001,
+      "lap": 4,
+      "monster": "poring"
+    },
+    "3004002": {
+      "id": 3004002,
+      "base": 4002,
+      "lap": 4,
+      "monster": "fabre"
+    },
+    "3004003": {
+      "id": 3004003,
+      "base": 4003,
+      "lap": 4,
+      "monster": "pupa"
+    },
+    "3004004": {
+      "id": 3004004,
+      "base": 4004,
+      "lap": 4,
+      "monster": "drops"
+    },
+    "3004006": {
+      "id": 3004006,
+      "base": 4006,
+      "lap": 4,
+      "monster": "lunatic"
+    },
+    "3004007": {
+      "id": 3004007,
+      "base": 4007,
+      "lap": 4,
+      "monster": "peco_egg"
+    },
+    "3004008": {
+      "id": 3004008,
+      "base": 4008,
+      "lap": 4,
+      "monster": "picky"
+    },
+    "3004009": {
+      "id": 3004009,
+      "base": 4009,
+      "lap": 4,
+      "monster": "chonchon"
+    },
+    "3004010": {
+      "id": 3004010,
+      "base": 4010,
+      "lap": 4,
+      "monster": "willow"
+    },
+    "3004012": {
+      "id": 3004012,
+      "base": 4012,
+      "lap": 4,
+      "monster": "thief_bug_egg"
+    },
+    "3004014": {
+      "id": 3004014,
+      "base": 4014,
+      "lap": 4,
+      "monster": "roda_frog"
+    },
+    "3004015": {
+      "id": 3004015,
+      "base": 4015,
+      "lap": 4,
+      "monster": "condor"
+    },
+    "3004016": {
+      "id": 3004016,
+      "base": 4016,
+      "lap": 4,
+      "monster": "thief_bug"
+    },
+    "3004017": {
+      "id": 3004017,
+      "base": 4017,
+      "lap": 4,
+      "monster": "savage_babe"
+    },
+    "3004019": {
+      "id": 3004019,
+      "base": 4019,
+      "lap": 4,
+      "monster": "hornet"
+    },
+    "3004020": {
+      "id": 3004020,
+      "base": 4020,
+      "lap": 4,
+      "monster": "familiar"
+    },
+    "3004021": {
+      "id": 3004021,
+      "base": 4021,
+      "lap": 4,
+      "monster": "rocker"
+    },
+    "3004022": {
+      "id": 3004022,
+      "base": 4022,
+      "lap": 4,
+      "monster": "spore"
+    },
+    "3004023": {
+      "id": 3004023,
+      "base": 4023,
+      "lap": 4,
+      "monster": "baby_desert_wolf"
+    },
+    "3004024": {
+      "id": 3004024,
+      "base": 4024,
+      "lap": 4,
+      "monster": "plankton"
+    },
+    "3004025": {
+      "id": 3004025,
+      "base": 4025,
+      "lap": 4,
+      "monster": "skeleton"
+    },
+    "3004026": {
+      "id": 3004026,
+      "base": 4026,
+      "lap": 4,
+      "monster": "thief_bug_female"
+    },
+    "3004027": {
+      "id": 3004027,
+      "base": 4027,
+      "lap": 4,
+      "monster": "kukre"
+    },
+    "3004028": {
+      "id": 3004028,
+      "base": 4028,
+      "lap": 4,
+      "monster": "tarou"
+    },
+    "3004029": {
+      "id": 3004029,
+      "base": 4029,
+      "lap": 4,
+      "monster": "wolf"
+    },
+    "3004030": {
+      "id": 3004030,
+      "base": 4030,
+      "lap": 4,
+      "monster": "mandragora"
+    },
+    "3004033": {
+      "id": 3004033,
+      "base": 4033,
+      "lap": 4,
+      "monster": "poporing"
+    },
+    "3004034": {
+      "id": 3004034,
+      "base": 4034,
+      "lap": 4,
+      "monster": "worm_tail"
+    },
+    "3004035": {
+      "id": 3004035,
+      "base": 4035,
+      "lap": 4,
+      "monster": "hydra"
+    },
+    "3004037": {
+      "id": 3004037,
+      "base": 4037,
+      "lap": 4,
+      "monster": "snake"
+    },
+    "3004038": {
+      "id": 3004038,
+      "base": 4038,
+      "lap": 4,
+      "monster": "zombie"
+    },
+    "3004040": {
+      "id": 3004040,
+      "base": 4040,
+      "lap": 4,
+      "monster": "creamy"
+    },
+    "3004044": {
+      "id": 3004044,
+      "base": 4044,
+      "lap": 4,
+      "monster": "smokie"
+    },
+    "3004047": {
+      "id": 3004047,
+      "base": 4047,
+      "lap": 4,
+      "monster": "ghostring"
+    },
+    "3004048": {
+      "id": 3004048,
+      "base": 4048,
+      "lap": 4,
+      "monster": "poison_spore"
+    },
+    "3004049": {
+      "id": 3004049,
+      "base": 4049,
+      "lap": 4,
+      "monster": "vadon"
+    },
+    "3004052": {
+      "id": 3004052,
+      "base": 4052,
+      "lap": 4,
+      "monster": "elder_willow"
+    },
+    "3004054": {
+      "id": 3004054,
+      "base": 4054,
+      "lap": 4,
+      "monster": "angeling"
+    },
+    "3004055": {
+      "id": 3004055,
+      "base": 4055,
+      "lap": 4,
+      "monster": "marina"
+    },
+    "3004060": {
+      "id": 3004060,
+      "base": 4060,
+      "lap": 4,
+      "monster": "goblin"
+    },
+    "3004061": {
+      "id": 3004061,
+      "base": 4061,
+      "lap": 4,
+      "monster": "cornutus"
+    },
+    "3004066": {
+      "id": 3004066,
+      "base": 4066,
+      "lap": 4,
+      "monster": "orc_warrior"
+    },
+    "3004069": {
+      "id": 3004069,
+      "base": 4069,
+      "lap": 4,
+      "monster": "drainliar"
+    },
+    "3004071": {
+      "id": 3004071,
+      "base": 4071,
+      "lap": 4,
+      "monster": "orc_zombie"
+    },
+    "3004073": {
+      "id": 3004073,
+      "base": 4073,
+      "lap": 4,
+      "monster": "pirate_skel"
+    },
+    "3004074": {
+      "id": 3004074,
+      "base": 4074,
+      "lap": 4,
+      "monster": "bigfoot"
+    },
+    "3004077": {
+      "id": 3004077,
+      "base": 4077,
+      "lap": 4,
+      "monster": "phen"
+    },
+    "3004084": {
+      "id": 3004084,
+      "base": 4084,
+      "lap": 4,
+      "monster": "marine_sphere"
+    },
+    "3004085": {
+      "id": 3004085,
+      "base": 4085,
+      "lap": 4,
+      "monster": "orc_skeleton"
+    },
+    "3004086": {
+      "id": 3004086,
+      "base": 4086,
+      "lap": 4,
+      "monster": "skel_soldier"
+    },
+    "3004089": {
+      "id": 3004089,
+      "base": 4089,
+      "lap": 4,
+      "monster": "sword_fish"
+    },
+    "3004090": {
+      "id": 3004090,
+      "base": 4090,
+      "lap": 4,
+      "monster": "munak"
+    },
+    "3004091": {
+      "id": 3004091,
+      "base": 4091,
+      "lap": 4,
+      "monster": "kobold"
+    },
+    "3004093": {
+      "id": 3004093,
+      "base": 4093,
+      "lap": 4,
+      "monster": "obeaune"
+    },
+    "3004094": {
+      "id": 3004094,
+      "base": 4094,
+      "lap": 4,
+      "monster": "skel_archer"
+    },
+    "3004095": {
+      "id": 3004095,
+      "base": 4095,
+      "lap": 4,
+      "monster": "marse"
+    },
+    "3004097": {
+      "id": 3004097,
+      "base": 4097,
+      "lap": 4,
+      "monster": "matyr"
+    },
+    "3004098": {
+      "id": 3004098,
+      "base": 4098,
+      "lap": 4,
+      "monster": "dokebi"
+    },
+    "3004100": {
+      "id": 3004100,
+      "base": 4100,
+      "lap": 4,
+      "monster": "sohee"
+    },
+    "3004102": {
+      "id": 3004102,
+      "base": 4102,
+      "lap": 4,
+      "monster": "whisper"
+    },
+    "3004103": {
+      "id": 3004103,
+      "base": 4103,
+      "lap": 4,
+      "monster": "horong"
+    },
+    "3004106": {
+      "id": 3004106,
+      "base": 4106,
+      "lap": 4,
+      "monster": "mummy"
+    },
+    "3004107": {
+      "id": 3004107,
+      "base": 4107,
+      "lap": 4,
+      "monster": "verit"
+    },
+    "3004109": {
+      "id": 3004109,
+      "base": 4109,
+      "lap": 4,
+      "monster": "jakk"
+    },
+    "3004110": {
+      "id": 3004110,
+      "base": 4110,
+      "lap": 4,
+      "monster": "ghoul"
+    },
+    "3004111": {
+      "id": 3004111,
+      "base": 4111,
+      "lap": 4,
+      "monster": "strouf"
+    },
+    "3004113": {
+      "id": 3004113,
+      "base": 4113,
+      "lap": 4,
+      "monster": "marionette"
+    },
+    "3004114": {
+      "id": 3004114,
+      "base": 4114,
+      "lap": 4,
+      "monster": "argiope"
+    },
+    "3004115": {
+      "id": 3004115,
+      "base": 4115,
+      "lap": 4,
+      "monster": "hunter_fly"
+    },
+    "3004116": {
+      "id": 3004116,
+      "base": 4116,
+      "lap": 4,
+      "monster": "isis"
+    },
+    "3004117": {
+      "id": 3004117,
+      "base": 4117,
+      "lap": 4,
+      "monster": "side_winder"
+    },
+    "3004119": {
+      "id": 3004119,
+      "base": 4119,
+      "lap": 4,
+      "monster": "bathory"
+    },
+    "3004122": {
+      "id": 3004122,
+      "base": 4122,
+      "lap": 4,
+      "monster": "deviruchi"
+    },
+    "3004123": {
+      "id": 3004123,
+      "base": 4123,
+      "lap": 4,
+      "monster": "eddga"
+    },
+    "3004125": {
+      "id": 3004125,
+      "base": 4125,
+      "lap": 4,
+      "monster": "deviace"
+    },
+    "3004126": {
+      "id": 3004126,
+      "base": 4126,
+      "lap": 4,
+      "monster": "minorous"
+    },
+    "3004127": {
+      "id": 3004127,
+      "base": 4127,
+      "lap": 4,
+      "monster": "nightmare"
+    },
+    "3004128": {
+      "id": 3004128,
+      "base": 4128,
+      "lap": 4,
+      "monster": "golden_thief_bug"
+    },
+    "3004129": {
+      "id": 3004129,
+      "base": 4129,
+      "lap": 4,
+      "monster": "baphomet_jr"
+    },
+    "3004131": {
+      "id": 3004131,
+      "base": 4131,
+      "lap": 4,
+      "monster": "moonlight"
+    },
+    "3004133": {
+      "id": 3004133,
+      "base": 4133,
+      "lap": 4,
+      "monster": "raydric"
+    },
+    "3004134": {
+      "id": 3004134,
+      "base": 4134,
+      "lap": 4,
+      "monster": "dracula"
+    },
+    "3004136": {
+      "id": 3004136,
+      "base": 4136,
+      "lap": 4,
+      "monster": "khalitzburg"
+    },
+    "3004137": {
+      "id": 3004137,
+      "base": 4137,
+      "lap": 4,
+      "monster": "drake"
+    },
+    "3004139": {
+      "id": 3004139,
+      "base": 4139,
+      "lap": 4,
+      "monster": "joker"
+    },
+    "3004140": {
+      "id": 3004140,
+      "base": 4140,
+      "lap": 4,
+      "monster": "abysmal_knight"
+    },
+    "3004141": {
+      "id": 3004141,
+      "base": 4141,
+      "lap": 4,
+      "monster": "evil_druid"
+    },
+    "3004142": {
+      "id": 3004142,
+      "base": 4142,
+      "lap": 4,
+      "monster": "doppelganger"
+    },
+    "3004143": {
+      "id": 3004143,
+      "base": 4143,
+      "lap": 4,
+      "monster": "orc_hero"
+    },
+    "3004144": {
+      "id": 3004144,
+      "base": 4144,
+      "lap": 4,
+      "monster": "osiris"
+    },
+    "3004147": {
+      "id": 3004147,
+      "base": 4147,
+      "lap": 4,
+      "monster": "baphomet"
+    },
+    "3004155": {
+      "id": 3004155,
+      "base": 4155,
+      "lap": 4,
+      "monster": "goblin_leader"
+    },
+    "3004157": {
+      "id": 3004157,
+      "base": 4157,
+      "lap": 4,
+      "monster": "goblin_archer"
+    },
+    "3004159": {
+      "id": 3004159,
+      "base": 4159,
+      "lap": 4,
+      "monster": "nine_tail"
+    },
+    "3004168": {
+      "id": 3004168,
+      "base": 4168,
+      "lap": 4,
+      "monster": "dark_lord"
+    },
+    "3004169": {
+      "id": 3004169,
+      "base": 4169,
+      "lap": 4,
+      "monster": "dark_illusion"
+    },
+    "3004170": {
+      "id": 3004170,
+      "base": 4170,
+      "lap": 4,
+      "monster": "dark_frame"
+    },
+    "3004172": {
+      "id": 3004172,
+      "base": 4172,
+      "lap": 4,
+      "monster": "the_paper"
+    },
+    "3004174": {
+      "id": 3004174,
+      "base": 4174,
+      "lap": 4,
+      "monster": "deviling"
+    },
+    "3004176": {
+      "id": 3004176,
+      "base": 4176,
+      "lap": 4,
+      "monster": "dullahan"
+    },
+    "3004178": {
+      "id": 3004178,
+      "base": 4178,
+      "lap": 4,
+      "monster": "dragon_tail"
+    },
+    "3004179": {
+      "id": 3004179,
+      "base": 4179,
+      "lap": 4,
+      "monster": "dragon_fly"
+    },
+    "3004181": {
+      "id": 3004181,
+      "base": 4181,
+      "lap": 4,
+      "monster": "disguise"
+    },
+    "3004183": {
+      "id": 3004183,
+      "base": 4183,
+      "lap": 4,
+      "monster": "vagabond_wolf"
+    },
+    "3004185": {
+      "id": 3004185,
+      "base": 4185,
+      "lap": 4,
+      "monster": "rideword"
+    },
+    "3004187": {
+      "id": 3004187,
+      "base": 4187,
+      "lap": 4,
+      "monster": "raydric_archer"
+    },
+    "3004188": {
+      "id": 3004188,
+      "base": 4188,
+      "lap": 4,
+      "monster": "leib_olmai"
+    },
+    "3004190": {
+      "id": 3004190,
+      "base": 4190,
+      "lap": 4,
+      "monster": "wraith"
+    },
+    "3004191": {
+      "id": 3004191,
+      "base": 4191,
+      "lap": 4,
+      "monster": "loli_ruri"
+    },
+    "3004193": {
+      "id": 3004193,
+      "base": 4193,
+      "lap": 4,
+      "monster": "lude"
+    },
+    "3004195": {
+      "id": 3004195,
+      "base": 4195,
+      "lap": 4,
+      "monster": "leaf_cat"
+    },
+    "3004197": {
+      "id": 3004197,
+      "base": 4197,
+      "lap": 4,
+      "monster": "mastering"
+    },
+    "3004199": {
+      "id": 3004199,
+      "base": 4199,
+      "lap": 4,
+      "monster": "merman"
+    },
+    "3004205": {
+      "id": 3004205,
+      "base": 4205,
+      "lap": 4,
+      "monster": "mimic"
+    },
+    "3004206": {
+      "id": 3004206,
+      "base": 4206,
+      "lap": 4,
+      "monster": "myst_case"
+    },
+    "3004207": {
+      "id": 3004207,
+      "base": 4207,
+      "lap": 4,
+      "monster": "mysteltainn"
+    },
+    "3004210": {
+      "id": 3004210,
+      "base": 4210,
+      "lap": 4,
+      "monster": "wanderer"
+    },
+    "3004211": {
+      "id": 3004211,
+      "base": 4211,
+      "lap": 4,
+      "monster": "vocal"
+    },
+    "3004212": {
+      "id": 3004212,
+      "base": 4212,
+      "lap": 4,
+      "monster": "bon_gun"
+    },
+    "3004214": {
+      "id": 3004214,
+      "base": 4214,
+      "lap": 4,
+      "monster": "bloody_murderer"
+    },
+    "3004216": {
+      "id": 3004216,
+      "base": 4216,
+      "lap": 4,
+      "monster": "sasquatch"
+    },
+    "3004217": {
+      "id": 3004217,
+      "base": 4217,
+      "lap": 4,
+      "monster": "enchanted_peach_tree"
+    },
+    "3004221": {
+      "id": 3004221,
+      "base": 4221,
+      "lap": 4,
+      "monster": "skeleton_general"
+    },
+    "3004222": {
+      "id": 3004222,
+      "base": 4222,
+      "lap": 4,
+      "monster": "skeleton_prisoner"
+    },
+    "3004225": {
+      "id": 3004225,
+      "base": 4225,
+      "lap": 4,
+      "monster": "stone_shooter"
+    },
+    "3004227": {
+      "id": 3004227,
+      "base": 4227,
+      "lap": 4,
+      "monster": "spring_rabbit"
+    },
+    "3004229": {
+      "id": 3004229,
+      "base": 4229,
+      "lap": 4,
+      "monster": "clock_tower_manager"
+    },
+    "3004235": {
+      "id": 3004235,
+      "base": 4235,
+      "lap": 4,
+      "monster": "christmas_cookie"
+    },
+    "3004237": {
+      "id": 3004237,
+      "base": 4237,
+      "lap": 4,
+      "monster": "owl_duke"
+    },
+    "3004238": {
+      "id": 3004238,
+      "base": 4238,
+      "lap": 4,
+      "monster": "owl_baron"
+    },
+    "3004239": {
+      "id": 3004239,
+      "base": 4239,
+      "lap": 4,
+      "monster": "iron_fist"
+    },
+    "3004243": {
+      "id": 3004243,
+      "base": 4243,
+      "lap": 4,
+      "monster": "antonio"
+    },
+    "3004244": {
+      "id": 3004244,
+      "base": 4244,
+      "lap": 4,
+      "monster": "alarm"
+    },
+    "3004248": {
+      "id": 3004248,
+      "base": 4248,
+      "lap": 4,
+      "monster": "ancient_mummy"
+    },
+    "3004250": {
+      "id": 3004250,
+      "base": 4250,
+      "lap": 4,
+      "monster": "executioner"
+    },
+    "3004254": {
+      "id": 3004254,
+      "base": 4254,
+      "lap": 4,
+      "monster": "ogretooth"
+    },
+    "3004255": {
+      "id": 3004255,
+      "base": 4255,
+      "lap": 4,
+      "monster": "orc_lady"
+    },
+    "3004256": {
+      "id": 3004256,
+      "base": 4256,
+      "lap": 4,
+      "monster": "orc_archer"
+    },
+    "3004259": {
+      "id": 3004259,
+      "base": 4259,
+      "lap": 4,
+      "monster": "wooden_golem"
+    },
+    "3004266": {
+      "id": 3004266,
+      "base": 4266,
+      "lap": 4,
+      "monster": "eclipse"
+    },
+    "3004275": {
+      "id": 3004275,
+      "base": 4275,
+      "lap": 4,
+      "monster": "zombie_prisoner"
+    },
+    "3004276": {
+      "id": 3004276,
+      "base": 4276,
+      "lap": 4,
+      "monster": "lord_of_the_dead"
+    },
+    "3004278": {
+      "id": 3004278,
+      "base": 4278,
+      "lap": 4,
+      "monster": "gibbet"
+    },
+    "3004283": {
+      "id": 3004283,
+      "base": 4283,
+      "lap": 4,
+      "monster": "greatest_general"
+    },
+    "3004287": {
+      "id": 3004287,
+      "base": 4287,
+      "lap": 4,
+      "monster": "kapha"
+    },
+    "3004290": {
+      "id": 3004290,
+      "base": 4290,
+      "lap": 4,
+      "monster": "cat_o_nine_tail"
+    },
+    "3004291": {
+      "id": 3004291,
+      "base": 4291,
+      "lap": 4,
+      "monster": "kobold_leader"
+    },
+    "3004293": {
+      "id": 3004293,
+      "base": 4293,
+      "lap": 4,
+      "monster": "cookie"
+    },
+    "3004294": {
+      "id": 3004294,
+      "base": 4294,
+      "lap": 4,
+      "monster": "quve"
+    },
+    "3004296": {
+      "id": 3004296,
+      "base": 4296,
+      "lap": 4,
+      "monster": "cramp"
+    },
+    "3004297": {
+      "id": 3004297,
+      "base": 4297,
+      "lap": 4,
+      "monster": "cruiser"
+    },
+    "3004299": {
+      "id": 3004299,
+      "base": 4299,
+      "lap": 4,
+      "monster": "clock"
+    },
+    "3004300": {
+      "id": 3004300,
+      "base": 4300,
+      "lap": 4,
+      "monster": "chimera"
+    },
+    "3004301": {
+      "id": 3004301,
+      "base": 4301,
+      "lap": 4,
+      "monster": "killer_mantis"
+    },
+    "3004303": {
+      "id": 3004303,
+      "base": 4303,
+      "lap": 4,
+      "monster": "giant_whisper"
+    },
+    "3004306": {
+      "id": 3004306,
+      "base": 4306,
+      "lap": 4,
+      "monster": "toad"
+    },
+    "3004313": {
+      "id": 3004313,
+      "base": 4313,
+      "lap": 4,
+      "monster": "punk"
+    },
+    "3004314": {
+      "id": 3004314,
+      "base": 4314,
+      "lap": 4,
+      "monster": "penomena"
+    },
+    "3004318": {
+      "id": 3004318,
+      "base": 4318,
+      "lap": 4,
+      "monster": "stormy_knight"
+    },
+    "3004319": {
+      "id": 3004319,
+      "base": 4319,
+      "lap": 4,
+      "monster": "freezer"
+    },
+    "3004320": {
+      "id": 3004320,
+      "base": 4320,
+      "lap": 4,
+      "monster": "bloody_knight"
+    },
+    "3004321": {
+      "id": 3004321,
+      "base": 4321,
+      "lap": 4,
+      "monster": "heirozoist"
+    },
+    "3004322": {
+      "id": 3004322,
+      "base": 4322,
+      "lap": 4,
+      "monster": "high_orc"
+    },
+    "3004323": {
+      "id": 3004323,
+      "base": 4323,
+      "lap": 4,
+      "monster": "baby_hatii"
+    },
+    "3004324": {
+      "id": 3004324,
+      "base": 4324,
+      "lap": 4,
+      "monster": "hatii"
+    },
+    "3004328": {
+      "id": 3004328,
+      "base": 4328,
+      "lap": 4,
+      "monster": "hyegun"
+    },
+    "3004330": {
+      "id": 3004330,
+      "base": 4330,
+      "lap": 4,
+      "monster": "evil_snake_lord"
+    },
+    "3004340": {
+      "id": 3004340,
+      "base": 4340,
+      "lap": 4,
+      "monster": "teddy_bear"
+    },
+    "3004372": {
+      "id": 3004372,
+      "base": 4372,
+      "lap": 4,
+      "monster": "white_lady"
+    },
+    "3004375": {
+      "id": 3004375,
+      "base": 4375,
+      "lap": 4,
+      "monster": "orc_baby"
+    },
+    "3004378": {
+      "id": 3004378,
+      "base": 4378,
+      "lap": 4,
+      "monster": "acidus"
+    },
+    "3004379": {
+      "id": 3004379,
+      "base": 4379,
+      "lap": 4,
+      "monster": "acidus_acidus"
+    },
+    "3004380": {
+      "id": 3004380,
+      "base": 4380,
+      "lap": 4,
+      "monster": "ferus"
+    },
+    "3004381": {
+      "id": 3004381,
+      "base": 4381,
+      "lap": 4,
+      "monster": "ferus_ferus"
+    },
+    "3004382": {
+      "id": 3004382,
+      "base": 4382,
+      "lap": 4,
+      "monster": "novus_novus"
+    },
+    "3004383": {
+      "id": 3004383,
+      "base": 4383,
+      "lap": 4,
+      "monster": "novus"
+    },
+    "3004384": {
+      "id": 3004384,
+      "base": 4384,
+      "lap": 4,
+      "monster": "hydrolancer"
+    },
+    "3004385": {
+      "id": 3004385,
+      "base": 4385,
+      "lap": 4,
+      "monster": "dragon_egg"
+    },
+    "3004386": {
+      "id": 3004386,
+      "base": 4386,
+      "lap": 4,
+      "monster": "detardeurus"
+    },
+    "3004387": {
+      "id": 3004387,
+      "base": 4387,
+      "lap": 4,
+      "monster": "ancient_mimic"
+    },
+    "3004415": {
+      "id": 3004415,
+      "base": 4415,
+      "lap": 4,
+      "monster": "snowier"
+    },
+    "3004416": {
+      "id": 3004416,
+      "base": 4416,
+      "lap": 4,
+      "monster": "siroma"
+    },
+    "3004417": {
+      "id": 3004417,
+      "base": 4417,
+      "lap": 4,
+      "monster": "ice_titan"
+    },
+    "3004418": {
+      "id": 3004418,
+      "base": 4418,
+      "lap": 4,
+      "monster": "gazeti"
+    },
+    "3004419": {
+      "id": 3004419,
+      "base": 4419,
+      "lap": 4,
+      "monster": "ktullanux"
+    },
+    "3004441": {
+      "id": 3004441,
+      "base": 4441,
+      "lap": 4,
+      "monster": "fallen_bishop_hibram"
+    },
+    "3004524": {
+      "id": 3004524,
+      "base": 4524,
+      "lap": 4,
+      "monster": "king_dramoh"
+    },
+    "3004525": {
+      "id": 3004525,
+      "base": 4525,
+      "lap": 4,
+      "monster": "kraken"
+    },
+    "4004001": {
+      "id": 4004001,
+      "base": 4001,
+      "lap": 5,
+      "monster": "poring"
+    },
+    "4004002": {
+      "id": 4004002,
+      "base": 4002,
+      "lap": 5,
+      "monster": "fabre"
+    },
+    "4004003": {
+      "id": 4004003,
+      "base": 4003,
+      "lap": 5,
+      "monster": "pupa"
+    },
+    "4004004": {
+      "id": 4004004,
+      "base": 4004,
+      "lap": 5,
+      "monster": "drops"
+    },
+    "4004006": {
+      "id": 4004006,
+      "base": 4006,
+      "lap": 5,
+      "monster": "lunatic"
+    },
+    "4004007": {
+      "id": 4004007,
+      "base": 4007,
+      "lap": 5,
+      "monster": "peco_egg"
+    },
+    "4004008": {
+      "id": 4004008,
+      "base": 4008,
+      "lap": 5,
+      "monster": "picky"
+    },
+    "4004009": {
+      "id": 4004009,
+      "base": 4009,
+      "lap": 5,
+      "monster": "chonchon"
+    },
+    "4004010": {
+      "id": 4004010,
+      "base": 4010,
+      "lap": 5,
+      "monster": "willow"
+    },
+    "4004012": {
+      "id": 4004012,
+      "base": 4012,
+      "lap": 5,
+      "monster": "thief_bug_egg"
+    },
+    "4004014": {
+      "id": 4004014,
+      "base": 4014,
+      "lap": 5,
+      "monster": "roda_frog"
+    },
+    "4004015": {
+      "id": 4004015,
+      "base": 4015,
+      "lap": 5,
+      "monster": "condor"
+    },
+    "4004016": {
+      "id": 4004016,
+      "base": 4016,
+      "lap": 5,
+      "monster": "thief_bug"
+    },
+    "4004017": {
+      "id": 4004017,
+      "base": 4017,
+      "lap": 5,
+      "monster": "savage_babe"
+    },
+    "4004019": {
+      "id": 4004019,
+      "base": 4019,
+      "lap": 5,
+      "monster": "hornet"
+    },
+    "4004020": {
+      "id": 4004020,
+      "base": 4020,
+      "lap": 5,
+      "monster": "familiar"
+    },
+    "4004021": {
+      "id": 4004021,
+      "base": 4021,
+      "lap": 5,
+      "monster": "rocker"
+    },
+    "4004022": {
+      "id": 4004022,
+      "base": 4022,
+      "lap": 5,
+      "monster": "spore"
+    },
+    "4004023": {
+      "id": 4004023,
+      "base": 4023,
+      "lap": 5,
+      "monster": "baby_desert_wolf"
+    },
+    "4004024": {
+      "id": 4004024,
+      "base": 4024,
+      "lap": 5,
+      "monster": "plankton"
+    },
+    "4004025": {
+      "id": 4004025,
+      "base": 4025,
+      "lap": 5,
+      "monster": "skeleton"
+    },
+    "4004026": {
+      "id": 4004026,
+      "base": 4026,
+      "lap": 5,
+      "monster": "thief_bug_female"
+    },
+    "4004027": {
+      "id": 4004027,
+      "base": 4027,
+      "lap": 5,
+      "monster": "kukre"
+    },
+    "4004028": {
+      "id": 4004028,
+      "base": 4028,
+      "lap": 5,
+      "monster": "tarou"
+    },
+    "4004029": {
+      "id": 4004029,
+      "base": 4029,
+      "lap": 5,
+      "monster": "wolf"
+    },
+    "4004030": {
+      "id": 4004030,
+      "base": 4030,
+      "lap": 5,
+      "monster": "mandragora"
+    },
+    "4004033": {
+      "id": 4004033,
+      "base": 4033,
+      "lap": 5,
+      "monster": "poporing"
+    },
+    "4004034": {
+      "id": 4004034,
+      "base": 4034,
+      "lap": 5,
+      "monster": "worm_tail"
+    },
+    "4004035": {
+      "id": 4004035,
+      "base": 4035,
+      "lap": 5,
+      "monster": "hydra"
+    },
+    "4004037": {
+      "id": 4004037,
+      "base": 4037,
+      "lap": 5,
+      "monster": "snake"
+    },
+    "4004038": {
+      "id": 4004038,
+      "base": 4038,
+      "lap": 5,
+      "monster": "zombie"
+    },
+    "4004040": {
+      "id": 4004040,
+      "base": 4040,
+      "lap": 5,
+      "monster": "creamy"
+    },
+    "4004044": {
+      "id": 4004044,
+      "base": 4044,
+      "lap": 5,
+      "monster": "smokie"
+    },
+    "4004047": {
+      "id": 4004047,
+      "base": 4047,
+      "lap": 5,
+      "monster": "ghostring"
+    },
+    "4004048": {
+      "id": 4004048,
+      "base": 4048,
+      "lap": 5,
+      "monster": "poison_spore"
+    },
+    "4004049": {
+      "id": 4004049,
+      "base": 4049,
+      "lap": 5,
+      "monster": "vadon"
+    },
+    "4004052": {
+      "id": 4004052,
+      "base": 4052,
+      "lap": 5,
+      "monster": "elder_willow"
+    },
+    "4004054": {
+      "id": 4004054,
+      "base": 4054,
+      "lap": 5,
+      "monster": "angeling"
+    },
+    "4004055": {
+      "id": 4004055,
+      "base": 4055,
+      "lap": 5,
+      "monster": "marina"
+    },
+    "4004060": {
+      "id": 4004060,
+      "base": 4060,
+      "lap": 5,
+      "monster": "goblin"
+    },
+    "4004061": {
+      "id": 4004061,
+      "base": 4061,
+      "lap": 5,
+      "monster": "cornutus"
+    },
+    "4004066": {
+      "id": 4004066,
+      "base": 4066,
+      "lap": 5,
+      "monster": "orc_warrior"
+    },
+    "4004069": {
+      "id": 4004069,
+      "base": 4069,
+      "lap": 5,
+      "monster": "drainliar"
+    },
+    "4004071": {
+      "id": 4004071,
+      "base": 4071,
+      "lap": 5,
+      "monster": "orc_zombie"
+    },
+    "4004073": {
+      "id": 4004073,
+      "base": 4073,
+      "lap": 5,
+      "monster": "pirate_skel"
+    },
+    "4004074": {
+      "id": 4004074,
+      "base": 4074,
+      "lap": 5,
+      "monster": "bigfoot"
+    },
+    "4004077": {
+      "id": 4004077,
+      "base": 4077,
+      "lap": 5,
+      "monster": "phen"
+    },
+    "4004084": {
+      "id": 4004084,
+      "base": 4084,
+      "lap": 5,
+      "monster": "marine_sphere"
+    },
+    "4004085": {
+      "id": 4004085,
+      "base": 4085,
+      "lap": 5,
+      "monster": "orc_skeleton"
+    },
+    "4004086": {
+      "id": 4004086,
+      "base": 4086,
+      "lap": 5,
+      "monster": "skel_soldier"
+    },
+    "4004089": {
+      "id": 4004089,
+      "base": 4089,
+      "lap": 5,
+      "monster": "sword_fish"
+    },
+    "4004090": {
+      "id": 4004090,
+      "base": 4090,
+      "lap": 5,
+      "monster": "munak"
+    },
+    "4004091": {
+      "id": 4004091,
+      "base": 4091,
+      "lap": 5,
+      "monster": "kobold"
+    },
+    "4004093": {
+      "id": 4004093,
+      "base": 4093,
+      "lap": 5,
+      "monster": "obeaune"
+    },
+    "4004094": {
+      "id": 4004094,
+      "base": 4094,
+      "lap": 5,
+      "monster": "skel_archer"
+    },
+    "4004095": {
+      "id": 4004095,
+      "base": 4095,
+      "lap": 5,
+      "monster": "marse"
+    },
+    "4004097": {
+      "id": 4004097,
+      "base": 4097,
+      "lap": 5,
+      "monster": "matyr"
+    },
+    "4004098": {
+      "id": 4004098,
+      "base": 4098,
+      "lap": 5,
+      "monster": "dokebi"
+    },
+    "4004100": {
+      "id": 4004100,
+      "base": 4100,
+      "lap": 5,
+      "monster": "sohee"
+    },
+    "4004102": {
+      "id": 4004102,
+      "base": 4102,
+      "lap": 5,
+      "monster": "whisper"
+    },
+    "4004103": {
+      "id": 4004103,
+      "base": 4103,
+      "lap": 5,
+      "monster": "horong"
+    },
+    "4004106": {
+      "id": 4004106,
+      "base": 4106,
+      "lap": 5,
+      "monster": "mummy"
+    },
+    "4004107": {
+      "id": 4004107,
+      "base": 4107,
+      "lap": 5,
+      "monster": "verit"
+    },
+    "4004109": {
+      "id": 4004109,
+      "base": 4109,
+      "lap": 5,
+      "monster": "jakk"
+    },
+    "4004110": {
+      "id": 4004110,
+      "base": 4110,
+      "lap": 5,
+      "monster": "ghoul"
+    },
+    "4004111": {
+      "id": 4004111,
+      "base": 4111,
+      "lap": 5,
+      "monster": "strouf"
+    },
+    "4004113": {
+      "id": 4004113,
+      "base": 4113,
+      "lap": 5,
+      "monster": "marionette"
+    },
+    "4004114": {
+      "id": 4004114,
+      "base": 4114,
+      "lap": 5,
+      "monster": "argiope"
+    },
+    "4004115": {
+      "id": 4004115,
+      "base": 4115,
+      "lap": 5,
+      "monster": "hunter_fly"
+    },
+    "4004116": {
+      "id": 4004116,
+      "base": 4116,
+      "lap": 5,
+      "monster": "isis"
+    },
+    "4004117": {
+      "id": 4004117,
+      "base": 4117,
+      "lap": 5,
+      "monster": "side_winder"
+    },
+    "4004119": {
+      "id": 4004119,
+      "base": 4119,
+      "lap": 5,
+      "monster": "bathory"
+    },
+    "4004122": {
+      "id": 4004122,
+      "base": 4122,
+      "lap": 5,
+      "monster": "deviruchi"
+    },
+    "4004123": {
+      "id": 4004123,
+      "base": 4123,
+      "lap": 5,
+      "monster": "eddga"
+    },
+    "4004125": {
+      "id": 4004125,
+      "base": 4125,
+      "lap": 5,
+      "monster": "deviace"
+    },
+    "4004126": {
+      "id": 4004126,
+      "base": 4126,
+      "lap": 5,
+      "monster": "minorous"
+    },
+    "4004127": {
+      "id": 4004127,
+      "base": 4127,
+      "lap": 5,
+      "monster": "nightmare"
+    },
+    "4004128": {
+      "id": 4004128,
+      "base": 4128,
+      "lap": 5,
+      "monster": "golden_thief_bug"
+    },
+    "4004129": {
+      "id": 4004129,
+      "base": 4129,
+      "lap": 5,
+      "monster": "baphomet_jr"
+    },
+    "4004131": {
+      "id": 4004131,
+      "base": 4131,
+      "lap": 5,
+      "monster": "moonlight"
+    },
+    "4004133": {
+      "id": 4004133,
+      "base": 4133,
+      "lap": 5,
+      "monster": "raydric"
+    },
+    "4004134": {
+      "id": 4004134,
+      "base": 4134,
+      "lap": 5,
+      "monster": "dracula"
+    },
+    "4004136": {
+      "id": 4004136,
+      "base": 4136,
+      "lap": 5,
+      "monster": "khalitzburg"
+    },
+    "4004137": {
+      "id": 4004137,
+      "base": 4137,
+      "lap": 5,
+      "monster": "drake"
+    },
+    "4004139": {
+      "id": 4004139,
+      "base": 4139,
+      "lap": 5,
+      "monster": "joker"
+    },
+    "4004140": {
+      "id": 4004140,
+      "base": 4140,
+      "lap": 5,
+      "monster": "abysmal_knight"
+    },
+    "4004141": {
+      "id": 4004141,
+      "base": 4141,
+      "lap": 5,
+      "monster": "evil_druid"
+    },
+    "4004142": {
+      "id": 4004142,
+      "base": 4142,
+      "lap": 5,
+      "monster": "doppelganger"
+    },
+    "4004143": {
+      "id": 4004143,
+      "base": 4143,
+      "lap": 5,
+      "monster": "orc_hero"
+    },
+    "4004144": {
+      "id": 4004144,
+      "base": 4144,
+      "lap": 5,
+      "monster": "osiris"
+    },
+    "4004147": {
+      "id": 4004147,
+      "base": 4147,
+      "lap": 5,
+      "monster": "baphomet"
+    },
+    "4004155": {
+      "id": 4004155,
+      "base": 4155,
+      "lap": 5,
+      "monster": "goblin_leader"
+    },
+    "4004157": {
+      "id": 4004157,
+      "base": 4157,
+      "lap": 5,
+      "monster": "goblin_archer"
+    },
+    "4004159": {
+      "id": 4004159,
+      "base": 4159,
+      "lap": 5,
+      "monster": "nine_tail"
+    },
+    "4004168": {
+      "id": 4004168,
+      "base": 4168,
+      "lap": 5,
+      "monster": "dark_lord"
+    },
+    "4004169": {
+      "id": 4004169,
+      "base": 4169,
+      "lap": 5,
+      "monster": "dark_illusion"
+    },
+    "4004170": {
+      "id": 4004170,
+      "base": 4170,
+      "lap": 5,
+      "monster": "dark_frame"
+    },
+    "4004172": {
+      "id": 4004172,
+      "base": 4172,
+      "lap": 5,
+      "monster": "the_paper"
+    },
+    "4004174": {
+      "id": 4004174,
+      "base": 4174,
+      "lap": 5,
+      "monster": "deviling"
+    },
+    "4004176": {
+      "id": 4004176,
+      "base": 4176,
+      "lap": 5,
+      "monster": "dullahan"
+    },
+    "4004178": {
+      "id": 4004178,
+      "base": 4178,
+      "lap": 5,
+      "monster": "dragon_tail"
+    },
+    "4004179": {
+      "id": 4004179,
+      "base": 4179,
+      "lap": 5,
+      "monster": "dragon_fly"
+    },
+    "4004181": {
+      "id": 4004181,
+      "base": 4181,
+      "lap": 5,
+      "monster": "disguise"
+    },
+    "4004183": {
+      "id": 4004183,
+      "base": 4183,
+      "lap": 5,
+      "monster": "vagabond_wolf"
+    },
+    "4004185": {
+      "id": 4004185,
+      "base": 4185,
+      "lap": 5,
+      "monster": "rideword"
+    },
+    "4004187": {
+      "id": 4004187,
+      "base": 4187,
+      "lap": 5,
+      "monster": "raydric_archer"
+    },
+    "4004188": {
+      "id": 4004188,
+      "base": 4188,
+      "lap": 5,
+      "monster": "leib_olmai"
+    },
+    "4004190": {
+      "id": 4004190,
+      "base": 4190,
+      "lap": 5,
+      "monster": "wraith"
+    },
+    "4004191": {
+      "id": 4004191,
+      "base": 4191,
+      "lap": 5,
+      "monster": "loli_ruri"
+    },
+    "4004193": {
+      "id": 4004193,
+      "base": 4193,
+      "lap": 5,
+      "monster": "lude"
+    },
+    "4004195": {
+      "id": 4004195,
+      "base": 4195,
+      "lap": 5,
+      "monster": "leaf_cat"
+    },
+    "4004197": {
+      "id": 4004197,
+      "base": 4197,
+      "lap": 5,
+      "monster": "mastering"
+    },
+    "4004199": {
+      "id": 4004199,
+      "base": 4199,
+      "lap": 5,
+      "monster": "merman"
+    },
+    "4004205": {
+      "id": 4004205,
+      "base": 4205,
+      "lap": 5,
+      "monster": "mimic"
+    },
+    "4004206": {
+      "id": 4004206,
+      "base": 4206,
+      "lap": 5,
+      "monster": "myst_case"
+    },
+    "4004207": {
+      "id": 4004207,
+      "base": 4207,
+      "lap": 5,
+      "monster": "mysteltainn"
+    },
+    "4004210": {
+      "id": 4004210,
+      "base": 4210,
+      "lap": 5,
+      "monster": "wanderer"
+    },
+    "4004211": {
+      "id": 4004211,
+      "base": 4211,
+      "lap": 5,
+      "monster": "vocal"
+    },
+    "4004212": {
+      "id": 4004212,
+      "base": 4212,
+      "lap": 5,
+      "monster": "bon_gun"
+    },
+    "4004214": {
+      "id": 4004214,
+      "base": 4214,
+      "lap": 5,
+      "monster": "bloody_murderer"
+    },
+    "4004216": {
+      "id": 4004216,
+      "base": 4216,
+      "lap": 5,
+      "monster": "sasquatch"
+    },
+    "4004217": {
+      "id": 4004217,
+      "base": 4217,
+      "lap": 5,
+      "monster": "enchanted_peach_tree"
+    },
+    "4004221": {
+      "id": 4004221,
+      "base": 4221,
+      "lap": 5,
+      "monster": "skeleton_general"
+    },
+    "4004222": {
+      "id": 4004222,
+      "base": 4222,
+      "lap": 5,
+      "monster": "skeleton_prisoner"
+    },
+    "4004225": {
+      "id": 4004225,
+      "base": 4225,
+      "lap": 5,
+      "monster": "stone_shooter"
+    },
+    "4004227": {
+      "id": 4004227,
+      "base": 4227,
+      "lap": 5,
+      "monster": "spring_rabbit"
+    },
+    "4004229": {
+      "id": 4004229,
+      "base": 4229,
+      "lap": 5,
+      "monster": "clock_tower_manager"
+    },
+    "4004235": {
+      "id": 4004235,
+      "base": 4235,
+      "lap": 5,
+      "monster": "christmas_cookie"
+    },
+    "4004237": {
+      "id": 4004237,
+      "base": 4237,
+      "lap": 5,
+      "monster": "owl_duke"
+    },
+    "4004238": {
+      "id": 4004238,
+      "base": 4238,
+      "lap": 5,
+      "monster": "owl_baron"
+    },
+    "4004239": {
+      "id": 4004239,
+      "base": 4239,
+      "lap": 5,
+      "monster": "iron_fist"
+    },
+    "4004243": {
+      "id": 4004243,
+      "base": 4243,
+      "lap": 5,
+      "monster": "antonio"
+    },
+    "4004244": {
+      "id": 4004244,
+      "base": 4244,
+      "lap": 5,
+      "monster": "alarm"
+    },
+    "4004248": {
+      "id": 4004248,
+      "base": 4248,
+      "lap": 5,
+      "monster": "ancient_mummy"
+    },
+    "4004250": {
+      "id": 4004250,
+      "base": 4250,
+      "lap": 5,
+      "monster": "executioner"
+    },
+    "4004254": {
+      "id": 4004254,
+      "base": 4254,
+      "lap": 5,
+      "monster": "ogretooth"
+    },
+    "4004255": {
+      "id": 4004255,
+      "base": 4255,
+      "lap": 5,
+      "monster": "orc_lady"
+    },
+    "4004256": {
+      "id": 4004256,
+      "base": 4256,
+      "lap": 5,
+      "monster": "orc_archer"
+    },
+    "4004259": {
+      "id": 4004259,
+      "base": 4259,
+      "lap": 5,
+      "monster": "wooden_golem"
+    },
+    "4004266": {
+      "id": 4004266,
+      "base": 4266,
+      "lap": 5,
+      "monster": "eclipse"
+    },
+    "4004275": {
+      "id": 4004275,
+      "base": 4275,
+      "lap": 5,
+      "monster": "zombie_prisoner"
+    },
+    "4004276": {
+      "id": 4004276,
+      "base": 4276,
+      "lap": 5,
+      "monster": "lord_of_the_dead"
+    },
+    "4004278": {
+      "id": 4004278,
+      "base": 4278,
+      "lap": 5,
+      "monster": "gibbet"
+    },
+    "4004283": {
+      "id": 4004283,
+      "base": 4283,
+      "lap": 5,
+      "monster": "greatest_general"
+    },
+    "4004287": {
+      "id": 4004287,
+      "base": 4287,
+      "lap": 5,
+      "monster": "kapha"
+    },
+    "4004290": {
+      "id": 4004290,
+      "base": 4290,
+      "lap": 5,
+      "monster": "cat_o_nine_tail"
+    },
+    "4004291": {
+      "id": 4004291,
+      "base": 4291,
+      "lap": 5,
+      "monster": "kobold_leader"
+    },
+    "4004293": {
+      "id": 4004293,
+      "base": 4293,
+      "lap": 5,
+      "monster": "cookie"
+    },
+    "4004294": {
+      "id": 4004294,
+      "base": 4294,
+      "lap": 5,
+      "monster": "quve"
+    },
+    "4004296": {
+      "id": 4004296,
+      "base": 4296,
+      "lap": 5,
+      "monster": "cramp"
+    },
+    "4004297": {
+      "id": 4004297,
+      "base": 4297,
+      "lap": 5,
+      "monster": "cruiser"
+    },
+    "4004299": {
+      "id": 4004299,
+      "base": 4299,
+      "lap": 5,
+      "monster": "clock"
+    },
+    "4004300": {
+      "id": 4004300,
+      "base": 4300,
+      "lap": 5,
+      "monster": "chimera"
+    },
+    "4004301": {
+      "id": 4004301,
+      "base": 4301,
+      "lap": 5,
+      "monster": "killer_mantis"
+    },
+    "4004303": {
+      "id": 4004303,
+      "base": 4303,
+      "lap": 5,
+      "monster": "giant_whisper"
+    },
+    "4004306": {
+      "id": 4004306,
+      "base": 4306,
+      "lap": 5,
+      "monster": "toad"
+    },
+    "4004313": {
+      "id": 4004313,
+      "base": 4313,
+      "lap": 5,
+      "monster": "punk"
+    },
+    "4004314": {
+      "id": 4004314,
+      "base": 4314,
+      "lap": 5,
+      "monster": "penomena"
+    },
+    "4004318": {
+      "id": 4004318,
+      "base": 4318,
+      "lap": 5,
+      "monster": "stormy_knight"
+    },
+    "4004319": {
+      "id": 4004319,
+      "base": 4319,
+      "lap": 5,
+      "monster": "freezer"
+    },
+    "4004320": {
+      "id": 4004320,
+      "base": 4320,
+      "lap": 5,
+      "monster": "bloody_knight"
+    },
+    "4004321": {
+      "id": 4004321,
+      "base": 4321,
+      "lap": 5,
+      "monster": "heirozoist"
+    },
+    "4004322": {
+      "id": 4004322,
+      "base": 4322,
+      "lap": 5,
+      "monster": "high_orc"
+    },
+    "4004323": {
+      "id": 4004323,
+      "base": 4323,
+      "lap": 5,
+      "monster": "baby_hatii"
+    },
+    "4004324": {
+      "id": 4004324,
+      "base": 4324,
+      "lap": 5,
+      "monster": "hatii"
+    },
+    "4004328": {
+      "id": 4004328,
+      "base": 4328,
+      "lap": 5,
+      "monster": "hyegun"
+    },
+    "4004330": {
+      "id": 4004330,
+      "base": 4330,
+      "lap": 5,
+      "monster": "evil_snake_lord"
+    },
+    "4004340": {
+      "id": 4004340,
+      "base": 4340,
+      "lap": 5,
+      "monster": "teddy_bear"
+    },
+    "4004372": {
+      "id": 4004372,
+      "base": 4372,
+      "lap": 5,
+      "monster": "white_lady"
+    },
+    "4004375": {
+      "id": 4004375,
+      "base": 4375,
+      "lap": 5,
+      "monster": "orc_baby"
+    },
+    "4004378": {
+      "id": 4004378,
+      "base": 4378,
+      "lap": 5,
+      "monster": "acidus"
+    },
+    "4004379": {
+      "id": 4004379,
+      "base": 4379,
+      "lap": 5,
+      "monster": "acidus_acidus"
+    },
+    "4004380": {
+      "id": 4004380,
+      "base": 4380,
+      "lap": 5,
+      "monster": "ferus"
+    },
+    "4004381": {
+      "id": 4004381,
+      "base": 4381,
+      "lap": 5,
+      "monster": "ferus_ferus"
+    },
+    "4004382": {
+      "id": 4004382,
+      "base": 4382,
+      "lap": 5,
+      "monster": "novus_novus"
+    },
+    "4004383": {
+      "id": 4004383,
+      "base": 4383,
+      "lap": 5,
+      "monster": "novus"
+    },
+    "4004384": {
+      "id": 4004384,
+      "base": 4384,
+      "lap": 5,
+      "monster": "hydrolancer"
+    },
+    "4004385": {
+      "id": 4004385,
+      "base": 4385,
+      "lap": 5,
+      "monster": "dragon_egg"
+    },
+    "4004386": {
+      "id": 4004386,
+      "base": 4386,
+      "lap": 5,
+      "monster": "detardeurus"
+    },
+    "4004387": {
+      "id": 4004387,
+      "base": 4387,
+      "lap": 5,
+      "monster": "ancient_mimic"
+    },
+    "4004415": {
+      "id": 4004415,
+      "base": 4415,
+      "lap": 5,
+      "monster": "snowier"
+    },
+    "4004416": {
+      "id": 4004416,
+      "base": 4416,
+      "lap": 5,
+      "monster": "siroma"
+    },
+    "4004417": {
+      "id": 4004417,
+      "base": 4417,
+      "lap": 5,
+      "monster": "ice_titan"
+    },
+    "4004418": {
+      "id": 4004418,
+      "base": 4418,
+      "lap": 5,
+      "monster": "gazeti"
+    },
+    "4004419": {
+      "id": 4004419,
+      "base": 4419,
+      "lap": 5,
+      "monster": "ktullanux"
+    },
+    "4004441": {
+      "id": 4004441,
+      "base": 4441,
+      "lap": 5,
+      "monster": "fallen_bishop_hibram"
+    },
+    "4004524": {
+      "id": 4004524,
+      "base": 4524,
+      "lap": 5,
+      "monster": "king_dramoh"
+    },
+    "4004525": {
+      "id": 4004525,
+      "base": 4525,
+      "lap": 5,
+      "monster": "kraken"
+    },
+    "5004001": {
+      "id": 5004001,
+      "base": 4001,
+      "lap": 6,
+      "monster": "poring"
+    },
+    "5004002": {
+      "id": 5004002,
+      "base": 4002,
+      "lap": 6,
+      "monster": "fabre"
+    },
+    "5004003": {
+      "id": 5004003,
+      "base": 4003,
+      "lap": 6,
+      "monster": "pupa"
+    },
+    "5004004": {
+      "id": 5004004,
+      "base": 4004,
+      "lap": 6,
+      "monster": "drops"
+    },
+    "5004006": {
+      "id": 5004006,
+      "base": 4006,
+      "lap": 6,
+      "monster": "lunatic"
+    },
+    "5004007": {
+      "id": 5004007,
+      "base": 4007,
+      "lap": 6,
+      "monster": "peco_egg"
+    },
+    "5004008": {
+      "id": 5004008,
+      "base": 4008,
+      "lap": 6,
+      "monster": "picky"
+    },
+    "5004009": {
+      "id": 5004009,
+      "base": 4009,
+      "lap": 6,
+      "monster": "chonchon"
+    },
+    "5004010": {
+      "id": 5004010,
+      "base": 4010,
+      "lap": 6,
+      "monster": "willow"
+    },
+    "5004012": {
+      "id": 5004012,
+      "base": 4012,
+      "lap": 6,
+      "monster": "thief_bug_egg"
+    },
+    "5004014": {
+      "id": 5004014,
+      "base": 4014,
+      "lap": 6,
+      "monster": "roda_frog"
+    },
+    "5004015": {
+      "id": 5004015,
+      "base": 4015,
+      "lap": 6,
+      "monster": "condor"
+    },
+    "5004016": {
+      "id": 5004016,
+      "base": 4016,
+      "lap": 6,
+      "monster": "thief_bug"
+    },
+    "5004017": {
+      "id": 5004017,
+      "base": 4017,
+      "lap": 6,
+      "monster": "savage_babe"
+    },
+    "5004019": {
+      "id": 5004019,
+      "base": 4019,
+      "lap": 6,
+      "monster": "hornet"
+    },
+    "5004020": {
+      "id": 5004020,
+      "base": 4020,
+      "lap": 6,
+      "monster": "familiar"
+    },
+    "5004021": {
+      "id": 5004021,
+      "base": 4021,
+      "lap": 6,
+      "monster": "rocker"
+    },
+    "5004022": {
+      "id": 5004022,
+      "base": 4022,
+      "lap": 6,
+      "monster": "spore"
+    },
+    "5004023": {
+      "id": 5004023,
+      "base": 4023,
+      "lap": 6,
+      "monster": "baby_desert_wolf"
+    },
+    "5004024": {
+      "id": 5004024,
+      "base": 4024,
+      "lap": 6,
+      "monster": "plankton"
+    },
+    "5004025": {
+      "id": 5004025,
+      "base": 4025,
+      "lap": 6,
+      "monster": "skeleton"
+    },
+    "5004026": {
+      "id": 5004026,
+      "base": 4026,
+      "lap": 6,
+      "monster": "thief_bug_female"
+    },
+    "5004027": {
+      "id": 5004027,
+      "base": 4027,
+      "lap": 6,
+      "monster": "kukre"
+    },
+    "5004028": {
+      "id": 5004028,
+      "base": 4028,
+      "lap": 6,
+      "monster": "tarou"
+    },
+    "5004029": {
+      "id": 5004029,
+      "base": 4029,
+      "lap": 6,
+      "monster": "wolf"
+    },
+    "5004030": {
+      "id": 5004030,
+      "base": 4030,
+      "lap": 6,
+      "monster": "mandragora"
+    },
+    "5004033": {
+      "id": 5004033,
+      "base": 4033,
+      "lap": 6,
+      "monster": "poporing"
+    },
+    "5004034": {
+      "id": 5004034,
+      "base": 4034,
+      "lap": 6,
+      "monster": "worm_tail"
+    },
+    "5004035": {
+      "id": 5004035,
+      "base": 4035,
+      "lap": 6,
+      "monster": "hydra"
+    },
+    "5004037": {
+      "id": 5004037,
+      "base": 4037,
+      "lap": 6,
+      "monster": "snake"
+    },
+    "5004038": {
+      "id": 5004038,
+      "base": 4038,
+      "lap": 6,
+      "monster": "zombie"
+    },
+    "5004040": {
+      "id": 5004040,
+      "base": 4040,
+      "lap": 6,
+      "monster": "creamy"
+    },
+    "5004044": {
+      "id": 5004044,
+      "base": 4044,
+      "lap": 6,
+      "monster": "smokie"
+    },
+    "5004047": {
+      "id": 5004047,
+      "base": 4047,
+      "lap": 6,
+      "monster": "ghostring"
+    },
+    "5004048": {
+      "id": 5004048,
+      "base": 4048,
+      "lap": 6,
+      "monster": "poison_spore"
+    },
+    "5004049": {
+      "id": 5004049,
+      "base": 4049,
+      "lap": 6,
+      "monster": "vadon"
+    },
+    "5004052": {
+      "id": 5004052,
+      "base": 4052,
+      "lap": 6,
+      "monster": "elder_willow"
+    },
+    "5004054": {
+      "id": 5004054,
+      "base": 4054,
+      "lap": 6,
+      "monster": "angeling"
+    },
+    "5004055": {
+      "id": 5004055,
+      "base": 4055,
+      "lap": 6,
+      "monster": "marina"
+    },
+    "5004060": {
+      "id": 5004060,
+      "base": 4060,
+      "lap": 6,
+      "monster": "goblin"
+    },
+    "5004061": {
+      "id": 5004061,
+      "base": 4061,
+      "lap": 6,
+      "monster": "cornutus"
+    },
+    "5004066": {
+      "id": 5004066,
+      "base": 4066,
+      "lap": 6,
+      "monster": "orc_warrior"
+    },
+    "5004069": {
+      "id": 5004069,
+      "base": 4069,
+      "lap": 6,
+      "monster": "drainliar"
+    },
+    "5004071": {
+      "id": 5004071,
+      "base": 4071,
+      "lap": 6,
+      "monster": "orc_zombie"
+    },
+    "5004073": {
+      "id": 5004073,
+      "base": 4073,
+      "lap": 6,
+      "monster": "pirate_skel"
+    },
+    "5004074": {
+      "id": 5004074,
+      "base": 4074,
+      "lap": 6,
+      "monster": "bigfoot"
+    },
+    "5004077": {
+      "id": 5004077,
+      "base": 4077,
+      "lap": 6,
+      "monster": "phen"
+    },
+    "5004084": {
+      "id": 5004084,
+      "base": 4084,
+      "lap": 6,
+      "monster": "marine_sphere"
+    },
+    "5004085": {
+      "id": 5004085,
+      "base": 4085,
+      "lap": 6,
+      "monster": "orc_skeleton"
+    },
+    "5004086": {
+      "id": 5004086,
+      "base": 4086,
+      "lap": 6,
+      "monster": "skel_soldier"
+    },
+    "5004089": {
+      "id": 5004089,
+      "base": 4089,
+      "lap": 6,
+      "monster": "sword_fish"
+    },
+    "5004090": {
+      "id": 5004090,
+      "base": 4090,
+      "lap": 6,
+      "monster": "munak"
+    },
+    "5004091": {
+      "id": 5004091,
+      "base": 4091,
+      "lap": 6,
+      "monster": "kobold"
+    },
+    "5004093": {
+      "id": 5004093,
+      "base": 4093,
+      "lap": 6,
+      "monster": "obeaune"
+    },
+    "5004094": {
+      "id": 5004094,
+      "base": 4094,
+      "lap": 6,
+      "monster": "skel_archer"
+    },
+    "5004095": {
+      "id": 5004095,
+      "base": 4095,
+      "lap": 6,
+      "monster": "marse"
+    },
+    "5004097": {
+      "id": 5004097,
+      "base": 4097,
+      "lap": 6,
+      "monster": "matyr"
+    },
+    "5004098": {
+      "id": 5004098,
+      "base": 4098,
+      "lap": 6,
+      "monster": "dokebi"
+    },
+    "5004100": {
+      "id": 5004100,
+      "base": 4100,
+      "lap": 6,
+      "monster": "sohee"
+    },
+    "5004102": {
+      "id": 5004102,
+      "base": 4102,
+      "lap": 6,
+      "monster": "whisper"
+    },
+    "5004103": {
+      "id": 5004103,
+      "base": 4103,
+      "lap": 6,
+      "monster": "horong"
+    },
+    "5004106": {
+      "id": 5004106,
+      "base": 4106,
+      "lap": 6,
+      "monster": "mummy"
+    },
+    "5004107": {
+      "id": 5004107,
+      "base": 4107,
+      "lap": 6,
+      "monster": "verit"
+    },
+    "5004109": {
+      "id": 5004109,
+      "base": 4109,
+      "lap": 6,
+      "monster": "jakk"
+    },
+    "5004110": {
+      "id": 5004110,
+      "base": 4110,
+      "lap": 6,
+      "monster": "ghoul"
+    },
+    "5004111": {
+      "id": 5004111,
+      "base": 4111,
+      "lap": 6,
+      "monster": "strouf"
+    },
+    "5004113": {
+      "id": 5004113,
+      "base": 4113,
+      "lap": 6,
+      "monster": "marionette"
+    },
+    "5004114": {
+      "id": 5004114,
+      "base": 4114,
+      "lap": 6,
+      "monster": "argiope"
+    },
+    "5004115": {
+      "id": 5004115,
+      "base": 4115,
+      "lap": 6,
+      "monster": "hunter_fly"
+    },
+    "5004116": {
+      "id": 5004116,
+      "base": 4116,
+      "lap": 6,
+      "monster": "isis"
+    },
+    "5004117": {
+      "id": 5004117,
+      "base": 4117,
+      "lap": 6,
+      "monster": "side_winder"
+    },
+    "5004119": {
+      "id": 5004119,
+      "base": 4119,
+      "lap": 6,
+      "monster": "bathory"
+    },
+    "5004122": {
+      "id": 5004122,
+      "base": 4122,
+      "lap": 6,
+      "monster": "deviruchi"
+    },
+    "5004123": {
+      "id": 5004123,
+      "base": 4123,
+      "lap": 6,
+      "monster": "eddga"
+    },
+    "5004125": {
+      "id": 5004125,
+      "base": 4125,
+      "lap": 6,
+      "monster": "deviace"
+    },
+    "5004126": {
+      "id": 5004126,
+      "base": 4126,
+      "lap": 6,
+      "monster": "minorous"
+    },
+    "5004127": {
+      "id": 5004127,
+      "base": 4127,
+      "lap": 6,
+      "monster": "nightmare"
+    },
+    "5004128": {
+      "id": 5004128,
+      "base": 4128,
+      "lap": 6,
+      "monster": "golden_thief_bug"
+    },
+    "5004129": {
+      "id": 5004129,
+      "base": 4129,
+      "lap": 6,
+      "monster": "baphomet_jr"
+    },
+    "5004131": {
+      "id": 5004131,
+      "base": 4131,
+      "lap": 6,
+      "monster": "moonlight"
+    },
+    "5004133": {
+      "id": 5004133,
+      "base": 4133,
+      "lap": 6,
+      "monster": "raydric"
+    },
+    "5004134": {
+      "id": 5004134,
+      "base": 4134,
+      "lap": 6,
+      "monster": "dracula"
+    },
+    "5004136": {
+      "id": 5004136,
+      "base": 4136,
+      "lap": 6,
+      "monster": "khalitzburg"
+    },
+    "5004137": {
+      "id": 5004137,
+      "base": 4137,
+      "lap": 6,
+      "monster": "drake"
+    },
+    "5004139": {
+      "id": 5004139,
+      "base": 4139,
+      "lap": 6,
+      "monster": "joker"
+    },
+    "5004140": {
+      "id": 5004140,
+      "base": 4140,
+      "lap": 6,
+      "monster": "abysmal_knight"
+    },
+    "5004141": {
+      "id": 5004141,
+      "base": 4141,
+      "lap": 6,
+      "monster": "evil_druid"
+    },
+    "5004142": {
+      "id": 5004142,
+      "base": 4142,
+      "lap": 6,
+      "monster": "doppelganger"
+    },
+    "5004143": {
+      "id": 5004143,
+      "base": 4143,
+      "lap": 6,
+      "monster": "orc_hero"
+    },
+    "5004144": {
+      "id": 5004144,
+      "base": 4144,
+      "lap": 6,
+      "monster": "osiris"
+    },
+    "5004147": {
+      "id": 5004147,
+      "base": 4147,
+      "lap": 6,
+      "monster": "baphomet"
+    },
+    "5004155": {
+      "id": 5004155,
+      "base": 4155,
+      "lap": 6,
+      "monster": "goblin_leader"
+    },
+    "5004157": {
+      "id": 5004157,
+      "base": 4157,
+      "lap": 6,
+      "monster": "goblin_archer"
+    },
+    "5004159": {
+      "id": 5004159,
+      "base": 4159,
+      "lap": 6,
+      "monster": "nine_tail"
+    },
+    "5004168": {
+      "id": 5004168,
+      "base": 4168,
+      "lap": 6,
+      "monster": "dark_lord"
+    },
+    "5004169": {
+      "id": 5004169,
+      "base": 4169,
+      "lap": 6,
+      "monster": "dark_illusion"
+    },
+    "5004170": {
+      "id": 5004170,
+      "base": 4170,
+      "lap": 6,
+      "monster": "dark_frame"
+    },
+    "5004172": {
+      "id": 5004172,
+      "base": 4172,
+      "lap": 6,
+      "monster": "the_paper"
+    },
+    "5004174": {
+      "id": 5004174,
+      "base": 4174,
+      "lap": 6,
+      "monster": "deviling"
+    },
+    "5004176": {
+      "id": 5004176,
+      "base": 4176,
+      "lap": 6,
+      "monster": "dullahan"
+    },
+    "5004178": {
+      "id": 5004178,
+      "base": 4178,
+      "lap": 6,
+      "monster": "dragon_tail"
+    },
+    "5004179": {
+      "id": 5004179,
+      "base": 4179,
+      "lap": 6,
+      "monster": "dragon_fly"
+    },
+    "5004181": {
+      "id": 5004181,
+      "base": 4181,
+      "lap": 6,
+      "monster": "disguise"
+    },
+    "5004183": {
+      "id": 5004183,
+      "base": 4183,
+      "lap": 6,
+      "monster": "vagabond_wolf"
+    },
+    "5004185": {
+      "id": 5004185,
+      "base": 4185,
+      "lap": 6,
+      "monster": "rideword"
+    },
+    "5004187": {
+      "id": 5004187,
+      "base": 4187,
+      "lap": 6,
+      "monster": "raydric_archer"
+    },
+    "5004188": {
+      "id": 5004188,
+      "base": 4188,
+      "lap": 6,
+      "monster": "leib_olmai"
+    },
+    "5004190": {
+      "id": 5004190,
+      "base": 4190,
+      "lap": 6,
+      "monster": "wraith"
+    },
+    "5004191": {
+      "id": 5004191,
+      "base": 4191,
+      "lap": 6,
+      "monster": "loli_ruri"
+    },
+    "5004193": {
+      "id": 5004193,
+      "base": 4193,
+      "lap": 6,
+      "monster": "lude"
+    },
+    "5004195": {
+      "id": 5004195,
+      "base": 4195,
+      "lap": 6,
+      "monster": "leaf_cat"
+    },
+    "5004197": {
+      "id": 5004197,
+      "base": 4197,
+      "lap": 6,
+      "monster": "mastering"
+    },
+    "5004199": {
+      "id": 5004199,
+      "base": 4199,
+      "lap": 6,
+      "monster": "merman"
+    },
+    "5004205": {
+      "id": 5004205,
+      "base": 4205,
+      "lap": 6,
+      "monster": "mimic"
+    },
+    "5004206": {
+      "id": 5004206,
+      "base": 4206,
+      "lap": 6,
+      "monster": "myst_case"
+    },
+    "5004207": {
+      "id": 5004207,
+      "base": 4207,
+      "lap": 6,
+      "monster": "mysteltainn"
+    },
+    "5004210": {
+      "id": 5004210,
+      "base": 4210,
+      "lap": 6,
+      "monster": "wanderer"
+    },
+    "5004211": {
+      "id": 5004211,
+      "base": 4211,
+      "lap": 6,
+      "monster": "vocal"
+    },
+    "5004212": {
+      "id": 5004212,
+      "base": 4212,
+      "lap": 6,
+      "monster": "bon_gun"
+    },
+    "5004214": {
+      "id": 5004214,
+      "base": 4214,
+      "lap": 6,
+      "monster": "bloody_murderer"
+    },
+    "5004216": {
+      "id": 5004216,
+      "base": 4216,
+      "lap": 6,
+      "monster": "sasquatch"
+    },
+    "5004217": {
+      "id": 5004217,
+      "base": 4217,
+      "lap": 6,
+      "monster": "enchanted_peach_tree"
+    },
+    "5004221": {
+      "id": 5004221,
+      "base": 4221,
+      "lap": 6,
+      "monster": "skeleton_general"
+    },
+    "5004222": {
+      "id": 5004222,
+      "base": 4222,
+      "lap": 6,
+      "monster": "skeleton_prisoner"
+    },
+    "5004225": {
+      "id": 5004225,
+      "base": 4225,
+      "lap": 6,
+      "monster": "stone_shooter"
+    },
+    "5004227": {
+      "id": 5004227,
+      "base": 4227,
+      "lap": 6,
+      "monster": "spring_rabbit"
+    },
+    "5004229": {
+      "id": 5004229,
+      "base": 4229,
+      "lap": 6,
+      "monster": "clock_tower_manager"
+    },
+    "5004235": {
+      "id": 5004235,
+      "base": 4235,
+      "lap": 6,
+      "monster": "christmas_cookie"
+    },
+    "5004237": {
+      "id": 5004237,
+      "base": 4237,
+      "lap": 6,
+      "monster": "owl_duke"
+    },
+    "5004238": {
+      "id": 5004238,
+      "base": 4238,
+      "lap": 6,
+      "monster": "owl_baron"
+    },
+    "5004239": {
+      "id": 5004239,
+      "base": 4239,
+      "lap": 6,
+      "monster": "iron_fist"
+    },
+    "5004243": {
+      "id": 5004243,
+      "base": 4243,
+      "lap": 6,
+      "monster": "antonio"
+    },
+    "5004244": {
+      "id": 5004244,
+      "base": 4244,
+      "lap": 6,
+      "monster": "alarm"
+    },
+    "5004248": {
+      "id": 5004248,
+      "base": 4248,
+      "lap": 6,
+      "monster": "ancient_mummy"
+    },
+    "5004250": {
+      "id": 5004250,
+      "base": 4250,
+      "lap": 6,
+      "monster": "executioner"
+    },
+    "5004254": {
+      "id": 5004254,
+      "base": 4254,
+      "lap": 6,
+      "monster": "ogretooth"
+    },
+    "5004255": {
+      "id": 5004255,
+      "base": 4255,
+      "lap": 6,
+      "monster": "orc_lady"
+    },
+    "5004256": {
+      "id": 5004256,
+      "base": 4256,
+      "lap": 6,
+      "monster": "orc_archer"
+    },
+    "5004259": {
+      "id": 5004259,
+      "base": 4259,
+      "lap": 6,
+      "monster": "wooden_golem"
+    },
+    "5004266": {
+      "id": 5004266,
+      "base": 4266,
+      "lap": 6,
+      "monster": "eclipse"
+    },
+    "5004275": {
+      "id": 5004275,
+      "base": 4275,
+      "lap": 6,
+      "monster": "zombie_prisoner"
+    },
+    "5004276": {
+      "id": 5004276,
+      "base": 4276,
+      "lap": 6,
+      "monster": "lord_of_the_dead"
+    },
+    "5004278": {
+      "id": 5004278,
+      "base": 4278,
+      "lap": 6,
+      "monster": "gibbet"
+    },
+    "5004283": {
+      "id": 5004283,
+      "base": 4283,
+      "lap": 6,
+      "monster": "greatest_general"
+    },
+    "5004287": {
+      "id": 5004287,
+      "base": 4287,
+      "lap": 6,
+      "monster": "kapha"
+    },
+    "5004290": {
+      "id": 5004290,
+      "base": 4290,
+      "lap": 6,
+      "monster": "cat_o_nine_tail"
+    },
+    "5004291": {
+      "id": 5004291,
+      "base": 4291,
+      "lap": 6,
+      "monster": "kobold_leader"
+    },
+    "5004293": {
+      "id": 5004293,
+      "base": 4293,
+      "lap": 6,
+      "monster": "cookie"
+    },
+    "5004294": {
+      "id": 5004294,
+      "base": 4294,
+      "lap": 6,
+      "monster": "quve"
+    },
+    "5004296": {
+      "id": 5004296,
+      "base": 4296,
+      "lap": 6,
+      "monster": "cramp"
+    },
+    "5004297": {
+      "id": 5004297,
+      "base": 4297,
+      "lap": 6,
+      "monster": "cruiser"
+    },
+    "5004299": {
+      "id": 5004299,
+      "base": 4299,
+      "lap": 6,
+      "monster": "clock"
+    },
+    "5004300": {
+      "id": 5004300,
+      "base": 4300,
+      "lap": 6,
+      "monster": "chimera"
+    },
+    "5004301": {
+      "id": 5004301,
+      "base": 4301,
+      "lap": 6,
+      "monster": "killer_mantis"
+    },
+    "5004303": {
+      "id": 5004303,
+      "base": 4303,
+      "lap": 6,
+      "monster": "giant_whisper"
+    },
+    "5004306": {
+      "id": 5004306,
+      "base": 4306,
+      "lap": 6,
+      "monster": "toad"
+    },
+    "5004313": {
+      "id": 5004313,
+      "base": 4313,
+      "lap": 6,
+      "monster": "punk"
+    },
+    "5004314": {
+      "id": 5004314,
+      "base": 4314,
+      "lap": 6,
+      "monster": "penomena"
+    },
+    "5004318": {
+      "id": 5004318,
+      "base": 4318,
+      "lap": 6,
+      "monster": "stormy_knight"
+    },
+    "5004319": {
+      "id": 5004319,
+      "base": 4319,
+      "lap": 6,
+      "monster": "freezer"
+    },
+    "5004320": {
+      "id": 5004320,
+      "base": 4320,
+      "lap": 6,
+      "monster": "bloody_knight"
+    },
+    "5004321": {
+      "id": 5004321,
+      "base": 4321,
+      "lap": 6,
+      "monster": "heirozoist"
+    },
+    "5004322": {
+      "id": 5004322,
+      "base": 4322,
+      "lap": 6,
+      "monster": "high_orc"
+    },
+    "5004323": {
+      "id": 5004323,
+      "base": 4323,
+      "lap": 6,
+      "monster": "baby_hatii"
+    },
+    "5004324": {
+      "id": 5004324,
+      "base": 4324,
+      "lap": 6,
+      "monster": "hatii"
+    },
+    "5004328": {
+      "id": 5004328,
+      "base": 4328,
+      "lap": 6,
+      "monster": "hyegun"
+    },
+    "5004330": {
+      "id": 5004330,
+      "base": 4330,
+      "lap": 6,
+      "monster": "evil_snake_lord"
+    },
+    "5004340": {
+      "id": 5004340,
+      "base": 4340,
+      "lap": 6,
+      "monster": "teddy_bear"
+    },
+    "5004372": {
+      "id": 5004372,
+      "base": 4372,
+      "lap": 6,
+      "monster": "white_lady"
+    },
+    "5004375": {
+      "id": 5004375,
+      "base": 4375,
+      "lap": 6,
+      "monster": "orc_baby"
+    },
+    "5004378": {
+      "id": 5004378,
+      "base": 4378,
+      "lap": 6,
+      "monster": "acidus"
+    },
+    "5004379": {
+      "id": 5004379,
+      "base": 4379,
+      "lap": 6,
+      "monster": "acidus_acidus"
+    },
+    "5004380": {
+      "id": 5004380,
+      "base": 4380,
+      "lap": 6,
+      "monster": "ferus"
+    },
+    "5004381": {
+      "id": 5004381,
+      "base": 4381,
+      "lap": 6,
+      "monster": "ferus_ferus"
+    },
+    "5004382": {
+      "id": 5004382,
+      "base": 4382,
+      "lap": 6,
+      "monster": "novus_novus"
+    },
+    "5004383": {
+      "id": 5004383,
+      "base": 4383,
+      "lap": 6,
+      "monster": "novus"
+    },
+    "5004384": {
+      "id": 5004384,
+      "base": 4384,
+      "lap": 6,
+      "monster": "hydrolancer"
+    },
+    "5004385": {
+      "id": 5004385,
+      "base": 4385,
+      "lap": 6,
+      "monster": "dragon_egg"
+    },
+    "5004386": {
+      "id": 5004386,
+      "base": 4386,
+      "lap": 6,
+      "monster": "detardeurus"
+    },
+    "5004387": {
+      "id": 5004387,
+      "base": 4387,
+      "lap": 6,
+      "monster": "ancient_mimic"
+    },
+    "5004415": {
+      "id": 5004415,
+      "base": 4415,
+      "lap": 6,
+      "monster": "snowier"
+    },
+    "5004416": {
+      "id": 5004416,
+      "base": 4416,
+      "lap": 6,
+      "monster": "siroma"
+    },
+    "5004417": {
+      "id": 5004417,
+      "base": 4417,
+      "lap": 6,
+      "monster": "ice_titan"
+    },
+    "5004418": {
+      "id": 5004418,
+      "base": 4418,
+      "lap": 6,
+      "monster": "gazeti"
+    },
+    "5004419": {
+      "id": 5004419,
+      "base": 4419,
+      "lap": 6,
+      "monster": "ktullanux"
+    },
+    "5004441": {
+      "id": 5004441,
+      "base": 4441,
+      "lap": 6,
+      "monster": "fallen_bishop_hibram"
+    },
+    "5004524": {
+      "id": 5004524,
+      "base": 4524,
+      "lap": 6,
+      "monster": "king_dramoh"
+    },
+    "5004525": {
+      "id": 5004525,
+      "base": 4525,
+      "lap": 6,
+      "monster": "kraken"
+    }
+  }
+}
